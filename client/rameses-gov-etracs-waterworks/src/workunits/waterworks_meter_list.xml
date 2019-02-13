@@ -1,0 +1,10 @@
+<workunit extends="com/rameses/seti2/templates/CrudList.xml" 
+          schemaName="waterworks_meter" allowCreate="true" allowOpen="true" allowDelete="false"
+          cols="serialno,brand,sizeid,capacity,account.name,account.acctname,status">
+    <invokers>
+        <invoker folderid="/explorer/master/waterworks" caption="Meter" 
+                 action="init" role="MASTER" index="-8"/>
+        <invoker folderid="/menucategory/waterworks/master" caption="Manage Meters" 
+                 action="init" role="MASTER" index="20"/>
+    </invokers>
+</workunit>

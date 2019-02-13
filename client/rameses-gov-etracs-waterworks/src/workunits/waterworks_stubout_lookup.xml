@@ -1,0 +1,21 @@
+<workunit extends="com/rameses/seti2/templates/CrudLookup.xml" 
+          schemaName="waterworks_stubout" orderBy="code"  
+          cols="objid,code,zone.code,zone.sector.code,barangay.name">
+    <invokers>
+        <invoker type="waterworks_stubout:lookup" target="popup"
+                 caption="Lookup Stubout" action="init"/>
+    </invokers>
+    <code>
+        class WaterworksStuboutLookup extends com.rameses.seti2.models.CrudLookupModel {
+        
+            def sector;
+            
+            public def getCustomFilter() { 
+                if ( sector ) {
+                    return ["zone.sector.objid=:sectorid", [sectorid: sector.objid]];
+                } 
+                return null; 
+            }
+        }
+    </code>
+</workunit>

@@ -1,0 +1,35 @@
+<workunit  schemaName="waterworks_application">
+    <invokers>
+        <invoker type="waterworks_application:create"
+                 formTitle="New Water Application" 
+                 formId="waterworks_new"
+                 action="start" />
+    </invokers>
+    
+    <code class="com.rameses.gov.etracs.waterworks.models.NewWaterworksApplication" />
+    
+    <pageflow>
+        <start>
+            <transition to="initial"/>
+        </start>
+        <page name="initial" title="Waterworks Application Initial Page">
+            <transition to="compute-fees" caption="Next" action="fetchRequirements" mnemonic="N"/>
+        </page>
+        <page name="compute-fees" title="Fees and Requirements">
+            <transition to="initial" caption="Back" mnemonic="B"/>
+            <transition to="success" caption="Submit" mnemonic="S" confirm="You are about to save the record. Proceed?" 
+                        action="saveCreate"/>
+        </page>
+        <page name="success" title="Application"> 
+            <transition to="end" caption="Close"/>
+        </page>
+        <end/>
+    </pageflow>        
+    
+    <pages>
+        <page name="initial" template="com.rameses.gov.etracs.waterworks.views.ApplicationInitialPage"/>
+        <page name="compute-fees" template="com.rameses.gov.etracs.waterworks.views.ApplicationPage"/>
+        <page name="success" template="com.rameses.gov.etracs.waterworks.views.ApplicationSuccessPage"/>
+    </pages>
+      
+</workunit>

@@ -1,0 +1,12 @@
+<workunit schemaName="waterworks_metersize">
+    <invokers>
+        <invoker type="waterworks_metersize:create" caption="Meter Size" action="create" target="popup" role="MASTER"/>
+        <invoker type="waterworks_metersize:open" caption="Meter Size" action="open" target="popup" role="MASTER"/>
+    </invokers>
+    
+    <code class="com.rameses.seti2.models.CrudFormModel"/>
+    
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.MeterSizePage"/>
+    </pages>
+</workunit>
