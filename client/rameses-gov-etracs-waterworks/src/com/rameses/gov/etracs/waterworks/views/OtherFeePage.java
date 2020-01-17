@@ -40,16 +40,16 @@ public class OtherFeePage extends javax.swing.JPanel {
         xTextField1 = new com.rameses.rcp.control.XTextField();
 
         com.rameses.rcp.control.border.XTitledBorder xTitledBorder1 = new com.rameses.rcp.control.border.XTitledBorder();
-        xTitledBorder1.setTitle("Ledger Information");
+        xTitledBorder1.setTitle("Other Fee");
         xPanel1.setBorder(xTitledBorder1);
 
         xFormPanel2.setCaptionVAlignment(com.rameses.rcp.constant.UIConstants.CENTER);
         xFormPanel2.setCaptionWidth(100);
 
-        xLookupField1.setName("entity.item"); // NOI18N
         xLookupField1.setCaption("Account");
         xLookupField1.setExpression("#{item.title}");
-        xLookupField1.setHandler("revenueitem:lookup");
+        xLookupField1.setHandler("waterworks_itemaccount:lookup");
+        xLookupField1.setName("entity.item"); // NOI18N
         xLookupField1.setPreferredSize(new java.awt.Dimension(0, 20));
         xLookupField1.setRequired(true);
         xFormPanel2.add(xLookupField1);

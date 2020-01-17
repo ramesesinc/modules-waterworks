@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 
 	<element tablename="waterworks_stubout">
 		<field name="objid" primary="true" prefix="SO"/>

@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_application">
 		<field name="objid" primary="true"  prefix="WAPP"/>
 		<field name="state" required="true" visible="false" defaultValue="OPEN"/>
@@ -43,19 +43,7 @@
 		<field name="installer_name" /> 
 		<field name="installer_objid" /> 
 		<field name="dtinstalled" /> 
-
-		<complex name="fees" ref="waterworks_application_fee" jointype="one-to-many" lazy="true">
-			<key field="objid" target="parentid"/>	
-		</complex>	
-
-		<complex name="requirements" ref="waterworks_application_requirement" jointype="one-to-many" lazy="true">
-			<key field="objid" target="parentid"/>	
-		</complex>	
-
-		<!-- do not remove it -->
-		<complex name="materials" ref="waterworks_application_bom" jointype="one-to-many" lazy="true" required="false">
-			<key field="objid" target="parentid"/>	
-		</complex>	
+		<field name="taskid" /> 
 
 		<field name="signature"/> 
 

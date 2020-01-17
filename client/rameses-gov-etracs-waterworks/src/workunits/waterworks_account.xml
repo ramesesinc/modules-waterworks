@@ -16,6 +16,9 @@
             <action role="SHARED" allowEdit="false" allowCreate="false"/> 
         </invoker>     
         
+        <!-- subitem actions -->
+        <invoker type="consumptionActions" action="viewConsumptionPayment" caption="View Payments" /> 
+        <invoker type="otherFeeActions" action="viewOtherFeePayment" caption="View Payments" />
     </invokers>
     
     <code class="com.rameses.gov.etracs.waterworks.models.AccountModel" />    

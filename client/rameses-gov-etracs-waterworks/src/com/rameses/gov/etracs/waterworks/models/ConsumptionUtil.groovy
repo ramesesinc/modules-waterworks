@@ -12,7 +12,7 @@ import java.text.*;
 
 public class ConsumptionUtil  {
     
-    @Service("WaterworksComputationService")
+    @Service(value="WaterworksComputationService", connection="waterworks")
     def compSvc;
 
     //pass the following:

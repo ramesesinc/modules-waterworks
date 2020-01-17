@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_metersize">
 		<field name="objid" primary="true" style="code"/>
 		<field name="title" required="true" indexed="true" caption="Meter Size"/>

@@ -42,7 +42,6 @@ public class CaptureConsumptionModel extends CrudFormModel {
     
     void afterCreate() {
         txnModes = captureTxnModes;
-        
         entity.txnmode = "CAPTURE";
         entity.state = 'POSTED';
         entity.acctid = masterEntity.objid;
@@ -68,7 +67,7 @@ public class CaptureConsumptionModel extends CrudFormModel {
     }
     
     public def getMasterEntity() {
-        return caller.masterEntity;
+        return caller.entity;
     }
     
     void afterSave() {

@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_batch_billing_task">
 		<field name="taskid" primary="true" prefix="WWBTCHTASK"/>
 		<field name="refid" required="true"/>

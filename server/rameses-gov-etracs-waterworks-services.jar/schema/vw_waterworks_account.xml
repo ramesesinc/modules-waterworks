@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="vw_waterworks_account">
 		<field name="objid" primary="true"/>
 		<field name="acctno" caption="AcctNo" searchable="true"/>

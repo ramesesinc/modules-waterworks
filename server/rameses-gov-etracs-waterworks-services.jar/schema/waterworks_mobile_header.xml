@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_mobile_header">
 		<field name="batchid" primary="true"  prefix="WBTC"/>
 		<field name="state" required="true"/>

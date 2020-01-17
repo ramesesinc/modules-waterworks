@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_batch_billing">
 		<field name="objid" primary="true" caption="Control No" visible="true"/>
 		

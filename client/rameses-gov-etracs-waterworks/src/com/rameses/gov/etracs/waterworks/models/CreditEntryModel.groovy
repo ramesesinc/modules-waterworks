@@ -12,13 +12,11 @@ import java.text.*;
 
 public class CreditEntryModel extends CrudFormModel {
    
-    def parent;
-    
     void afterCreate() {
+        def parent =  caller?.entity
         entity.acctid = parent.objid;
-        entity.amount = 0;   
-        entity.amtpaid = 0;
-        entity.discount = 0;
+        entity.dr = 0;   
+        entity.cr = 0;
     }
     
 }

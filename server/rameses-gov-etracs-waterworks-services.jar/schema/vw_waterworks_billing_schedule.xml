@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="vw_waterworks_billing_schedule">
 		<field name="objid" primary="true"/>
 		<field name="scheduleid"/>

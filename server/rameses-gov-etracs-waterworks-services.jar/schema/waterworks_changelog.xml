@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_changelog">
 		<field name="objid" primary="true" prefix="CHGINFO"/>
 		<field name="controlno" required="true"/>

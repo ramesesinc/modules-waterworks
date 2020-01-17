@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_account_attribute">
 		<field name="objid" primary="true"  prefix="WACCATTR"/>
 

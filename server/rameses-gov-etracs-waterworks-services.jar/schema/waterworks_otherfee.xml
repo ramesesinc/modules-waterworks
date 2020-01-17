@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_otherfee">
 		
 		<field name="objid" primary="true"  prefix="WAC"/>
@@ -9,7 +9,7 @@
 		</complex>
 	
 		<field name="item_objid" required="true"/>
-		<field name="item_code" required="true"/>
+		<field name="item_code" />
 		<field name="item_title" required="true"/>
 
 		<field name="year" required="true"/>

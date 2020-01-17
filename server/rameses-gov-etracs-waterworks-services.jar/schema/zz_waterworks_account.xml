@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_account">
 		<field name="objid" primary="true"  prefix="WA"/>
 		<field name="acctname" required="true" indexed="true" caption="Acct Name"/>

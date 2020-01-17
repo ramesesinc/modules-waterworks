@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_billing">
 		<field name="objid" primary="true"  prefix="WBILL"/>
 		<field name="state" />

@@ -1,0 +1,12 @@
+<workunit extends="com/rameses/seti2/templates/CrudSubList.xml"
+          schemaName="waterworks_credit"
+          cols="refno,refdate,dr,cr,remarks"
+          title="Credits">
+    <invokers>
+        <invoker type="waterworks_account:section" 
+                 caption="  Credits   " 
+                 action="init" index="3" 
+                 parentid = "acctid"
+                 visibleWhen="#{mode=='read'}" />
+    </invokers>
+</workunit>

@@ -12,7 +12,7 @@ INNER JOIN waterworks_sector sec ON zon.sectorid = sec.objid
 LEFT JOIN waterworks_block_schedule sked ON zon.schedule_objid = sked.objid 
 LEFT JOIN waterworks_account wa ON wa.stuboutnodeid = son.objid;
 -->	
-<schema adapter="waterworks">
+<schema>
 	<element tablename="vw_waterworks_stubout_node">
 		<field name="objid" primary="true"/>
 		<field name="indexno" caption="Seq No" indexed="true" searchable="true"/>

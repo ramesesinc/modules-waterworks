@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_attribute">
 		<field name="name" primary="true" visible="true" caption="Attribute Name"/>
 		<field name="title" caption="Attribute Title" />

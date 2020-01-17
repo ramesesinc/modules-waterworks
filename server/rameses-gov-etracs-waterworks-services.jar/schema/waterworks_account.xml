@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_account">
 		<field name="objid" primary="true"  prefix="WACC"/>
 		<field name="state"  visible="false" defaultValue="ACTIVE"/>

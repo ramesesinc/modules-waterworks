@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="vw_waterworks_billing">
 		<field name="objid" primary="key"/> 
 		<field name="batchid" /> 

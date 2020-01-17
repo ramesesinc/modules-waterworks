@@ -1,0 +1,9 @@
+<workunit extends="com/rameses/seti2/templates/CrudForm.xml"  schemaName="waterworks_itemaccount">
+    <invokers>
+        <invoker type="waterworks_itemaccount:create" caption="Waterworks Item Account" action="create" index="1" target="popup"/>
+        <invoker type="waterworks_itemaccount:open" caption="Waterworks Item Account" action="open" index="1" target="popup"/>
+    </invokers>
+     <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksItemAccountPage" />
+    </pages>
+</workunit>

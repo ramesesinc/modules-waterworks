@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 
 	<element tablename="waterworks_zone">
 		<field name="objid" primary="true" prefix="WSZ"/>

@@ -1,0 +1,6 @@
+<workunit extends="com/rameses/seti2/templates/CrudList.xml" schemaName="waterworks_itemaccount">
+    <invokers>
+        <invoker folderid="explorer/master/waterworks"  caption="Waterworks Item Account" action="init" index="20"
+            cols="objid,title,item.code,item.title,sortorder" orderBy="sortorder" role="MASTER" />
+    </invokers>
+</workunit>

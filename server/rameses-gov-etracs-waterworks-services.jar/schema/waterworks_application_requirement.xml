@@ -1,4 +1,4 @@
-<schema adapter="waterworks">
+<schema>
 
 	<element tablename="waterworks_application_requirement">
 		<field name="objid" primary="true" prefix="WAPREQ"/>

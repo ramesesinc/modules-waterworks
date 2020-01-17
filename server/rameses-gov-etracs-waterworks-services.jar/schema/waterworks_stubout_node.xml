@@ -1,5 +1,5 @@
 
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_stubout_node">
 		<field name="objid" primary="true" prefix="WNODE"/>
 		<field name="indexno" required="true" searchable="true" indexed="true" caption="Seq No"/>

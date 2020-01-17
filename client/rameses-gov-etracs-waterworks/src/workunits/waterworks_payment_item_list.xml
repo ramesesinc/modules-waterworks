@@ -1,0 +1,10 @@
+<workunit extends="com/rameses/seti2/templates/CrudList.xml" schemaName="waterworks_payment_item">
+    <invokers>
+        <invoker type="waterworks_payment_item:list" caption="View Payments" 
+                 action="init" target="popup" 
+                 customFilter="refid = :refid"
+                 cols="parent.refno,parent.refdate,parent.reftype,amount,discount,surcharge,interest,total,parent.voided" />
+        
+         <invoker type="formActions" caption="Close" action="_close" />
+    </invokers>
+</workunit>

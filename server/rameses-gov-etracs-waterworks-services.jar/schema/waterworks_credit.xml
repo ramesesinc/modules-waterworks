@@ -1,20 +1,17 @@
-<schema adapter="waterworks">
+<schema>
 	<element tablename="waterworks_credit">
 		<field name="objid" primary="true" prefix="WCRED"/>
-
-		<!-- link to payemnt -->
-		<field name="parentid"  />
 
 		<!-- link to ledger account -->
 		<field name="acctid" />
 
-		<field name="amount" required="true" type="decimal" caption="Amount"/>
-		<field name="amtpaid" required="true" type="decimal" caption="AmtPaid"/>
-		<field name="discount" required="true" type="decimal" caption="Discount"/>
-		<field name="balance" expr="amount-amtpaid" type="decimal" caption="Balance"/>
-		<field name="remarks" />
+		<field name="dr" required="true" type="decimal" caption="Dr"/>
+		<field name="cr" required="true" type="decimal" caption="Cr"/>
+		<field name="remarks" caption="Remarks"/>
 
+		<!-- link to either cashreceipt (overpayment and payment application) or billing (posting)-->
 		<field name="refno" />
+		<field name="refid" />		
 		<field name="reftype" />
 		<field name="refdate" type="date"/>
 	</element>

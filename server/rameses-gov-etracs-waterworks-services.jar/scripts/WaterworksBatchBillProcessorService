@@ -17,7 +17,7 @@ class WaterworksBatchBillProcessorService {
 	@Service("WaterworksComputationService")
 	def computeSvc;
 
-	@Service("BillingProcessService")
+	@Service("WaterworksBillingService")
 	def billingSvc;
 
 	@ProxyMethod 
@@ -44,13 +44,14 @@ class WaterworksBatchBillProcessorService {
 		u.credits = 0;
 
 
-		def pp = [ objid : o.acctid ];
+		def pp = [ acctid : o.acctid ];
 		if ( o.year && o.month ) {
 			def ym = ((o.year * 12) + o.month)-1;
-			pp.payoption = [year: (int)(ym/12), month: (int)(ym%12)];
+			pp.year = (int)(ym/12);
+			pp.month = (int)(ym%12);
 		}
 
-		def b = billingSvc.process([rulename:'waterworksbilling', params: pp]); 
+		def b = billingSvc.getBilling( pp ); 
 		if( b?.billitems) {
 			def arrears = b.billitems.findAll{ it.reftype == 'waterworks_consumption' }.sum{ it.amount  };
 			def surcharge = b.billitems.findAll{it.surcharge}?.sum{ it.surcharge };

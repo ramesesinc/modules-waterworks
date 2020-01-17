@@ -14,6 +14,9 @@ class WaterworksAccountPersistenceInterceptor{
 	@DataContext('waterworks_meter') 
 	def wmeter;
 
+	@DataContext('waterworks_credit') 
+	def creditEm;
+
 	@Before(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_account'}")
 	public void beforeCreate(def evt) {
 		def o  = evt.args[0];
@@ -43,7 +46,15 @@ class WaterworksAccountPersistenceInterceptor{
 		}
 	}
 
-	
+	@After(pattern="PersistenceService.read", eval="#{args[0]._schemaname == 'waterworks_account'}")
+	public void afterRead(def evt) {
+		def o = evt.result;
+		def amt = creditEm.find( [acctid: o.objid ]).select("amount:{SUM(dr-cr)}").val();
+		o.totalcredits = 0;
+		if(amt!=null)	o.totalcredits = amt;
+
+	}
+
 
 
 
