@@ -1,0 +1,43 @@
+<workunit  schemaName="waterworks_classification">
+    <invokers>
+        <invoker type="waterworks_classification:create"
+                 action="create" role="MASTER" target="popup" 
+                 formTitle="Waterworks Classification" 
+                 formId="waterworks_new" />
+
+        <invoker type="waterworks_classification:open" 
+                 action="open" target="popup"
+                 formTitle="#{entity.objid}" 
+                 formId="#{entity.objid}" >
+            <action role="MASTER" /> 
+            <action role="SHARED" allowEdit="false" allowCreate="false"/>             
+        </invoker>
+    </invokers>
+    
+    <code>
+    <![CDATA[ 
+
+class ClassificationModel extends com.rameses.seti2.models.CrudFormModel { 
+
+    String getTitle() {
+        if ( mode=='create' ) {
+            return 'New Classification'; 
+        } else {
+            return super.getTitle(); 
+        }
+    }
+
+    void afterCreate() {
+        entity.objid = "";
+    }
+
+
+}
+
+    ]]> 
+    </code>    
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksClassificationPage"/>
+    </pages>
+      
+</workunit>

@@ -1,0 +1,6 @@
+<workunit extends="com/rameses/seti2/templates/CrudList.xml" schemaName="waterworks_area">
+    <!-- used by rules -->
+    <invokers>
+        <invoker folderid="/explorer/master/waterworks" caption="Waterworks Area" role="MASTER" action="init" index="-10"/>
+    </invokers>
+</workunit>

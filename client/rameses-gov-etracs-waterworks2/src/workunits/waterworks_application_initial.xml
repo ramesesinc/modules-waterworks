@@ -1,0 +1,47 @@
+<workunit schemaName="waterworks_application">
+
+    <invokers>
+        <invoker folderid="/menucategory/waterworks/txn" caption="New Connection"
+                formId="waterworks_application:new"
+                 action="create" index="1" apptype="NEW"/>
+        
+        <invoker folderid="/menucategory/waterworks/txn" caption="Disconnection" 
+            formId="waterworks_application:disconnection"
+                 action="create" index="2" apptype="DISCONNECTION"/>
+
+        <invoker folderid="/menucategory/waterworks/txn" caption="Reconnection" 
+            formId="waterworks_application:reconnection"
+                 action="create" index="3" apptype="RECONNECTION"/>
+                 
+        <invoker folderid="/menucategory/waterworks/txn" caption="Change Meter" 
+                formId="waterworks_application:change_meter"
+                 action="create" index="4" apptype="CHANGE_METER"/>
+        
+        <invoker folderid="/menucategory/waterworks/txn" caption="Change Owner" 
+                formId="waterworks_application:change_owner"
+                 action="create" index="5" apptype="CHANGE_OWNER"/>
+        
+        <invoker folderid="/menucategory/waterworks/txn" caption="Change Location" 
+                formId="waterworks_application:change_location"
+                 action="create" index="5" apptype="CHANGE_LOCATION"/>
+
+        <invoker folderid="/menucategory/waterworks/txn" caption="Change Attributes"
+                 formId="waterworks_application:change_attributes" 
+                 action="create" index="5" apptype="CHANGE_ATTRIBUTES"/>
+
+        <invoker type="formActions" caption="Close" action="_close" immediate="true" />
+        <invoker type="formActions" caption="Save"
+                 action="save" confirm="You are about to save this application. Continue?"/>
+        
+        
+    </invokers>
+    
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksApplicationInitialModel" />    
+
+    <pages>
+        <page name="initial" template="com.rameses.gov.etracs.waterworks.views.WaterworksApplicationInitialPage"/>
+        <page name="search" template="com.rameses.gov.etracs.waterworks.views.WaterworksApplicationSearchPage"/>
+        <page name="entry" template="com.rameses.gov.etracs.waterworks.views.WaterworksApplicationEntryPage"/>
+    </pages>    
+    
+</workunit>

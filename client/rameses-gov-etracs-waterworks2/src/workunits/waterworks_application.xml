@@ -1,0 +1,14 @@
+<workunit schemaName="waterworks_application">
+
+    <invokers>
+        <invoker type="waterworks_application:open" caption="Waterworks Application - #{entity.apptype}" 
+                 action="open" />
+    </invokers>
+    
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksApplicationModel" />    
+
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksApplicationPage"/>
+    </pages>    
+    
+</workunit>

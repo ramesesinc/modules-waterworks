@@ -1,0 +1,12 @@
+<workunit extends="com/rameses/seti2/templates/CrudLookup.xml"
+          schemaName="waterworks_subarea">
+    <!-- used by rules -->
+    <invokers>
+        <invoker type="waterworks_subarea:lookup" 
+                orderBy="code"
+                allowOpen="#{true}"
+                cols="code,description,schedulegroupid,schedulegroup.objid,schedulegroup.description"
+                hiddenCols="nextperiod.*"
+                caption="Lookup Sub Area" action="init"/>
+    </invokers>
+</workunit>

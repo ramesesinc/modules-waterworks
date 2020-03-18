@@ -1,0 +1,34 @@
+<schema>
+	<element tablename="vw_waterworks_consumption">
+		<field name="objid" primary="true"/> 
+		<field name="acctid" />
+		<field name="batchid" />  
+		<field name="txnmode" /> 
+		<field name="year" /> 
+		<field name="month" /> 
+		<field name="monthname" expr="MONTH_ARRAY(month)"/> 
+		<field name="reading" />
+		<field name="volume" /> 
+		<field name="rate" /> 
+		<field name="amount" /> 
+		<field name="amtpaid" /> 
+		<field name="state" /> 
+		<field name="meterid" /> 
+		<field name="hold" /> 
+		<field name="discount" /> 
+
+		<field name="prevreading" /> 
+		<field name="prevyear" /> 
+		<field name="prevmonth" /> 
+		<field name="acctno" /> 
+		<field name="acctname" /> 
+		<field name="acctstate" /> 
+
+		<field name="seqno" /> 
+		<field name="balance"/>
+		<field name="scheduleid" /> 
+
+		<field name="subareaid" />
+	</element>
+</schema>
+

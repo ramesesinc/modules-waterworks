@@ -1,0 +1,15 @@
+<workunit extends="com/rameses/seti2/templates/CrudForm.xml" schemaName="waterworks_subarea">
+    <!-- used by rules -->
+    <invokers>
+        <invoker type="waterworks_subarea:create" caption="Add Subarea" action="create" target="popup"/>
+        <invoker type="waterworks_subarea:open" caption="View Subarea" action="open" target="popup" />   
+        
+        
+        <!-- form actions -->
+        <invoker type="acctActions" caption="Change Seqno" action="changeSeqno" />
+    </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksSubareaModel" />
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksSubareaPage" />
+    </pages>
+</workunit>

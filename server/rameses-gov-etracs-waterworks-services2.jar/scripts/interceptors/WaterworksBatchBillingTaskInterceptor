@@ -1,0 +1,92 @@
+import com.rameses.annotations.*;
+import treasury.facts.*;
+
+class WaterworksBatchBillingTaskInterceptor {
+	
+	@Service("DateService")
+	def dateSvc;
+
+	@Service("WaterworksBatchBillProcessorService")
+   	def batchSvc;
+
+	@DataContext("waterworks_subarea")
+	def subareaEm;
+
+	@DataContext("waterworks_batch_billing")
+	def batchEm;
+
+	@DataContext("waterworks_batch_billing_task")
+	def taskEm;
+
+	@DataContext("waterworks_consumption")
+	def wcEm;
+
+	@DataContext("vw_waterworks_consumption")
+	def vw_wcEm;
+
+	@DataContext("waterworks_billing")
+	def wbillEm;
+
+	@Service("WaterworksPostCreditService")
+	def creditSvc;
+
+	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].action == 'submit' && args[0].to == 'processing'  }")
+	public void checkErrorsBeforeProcess( evt ) {
+		def p = evt.args[0]; 
+		def errsCount = wbillEm.find( [batchid: p.refid] ).where("state = 'ERR' ").select("c:{COUNT(*)}").val();
+		if( errsCount > 0 ) throw new Exception("There are entries with errors. Please resolve these errors before proceeding");
+	}
+
+	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].taskstate == 'processing'  }")
+	public void checkCompleteProcess( evt ) {
+		def p = evt.args[0];
+		def stat = batchSvc.getBilledStatus([ objid: p.refid ]); 
+        if( stat.balance > 0 ) throw new Exception("Cannot submit. Please complete process first"); 
+	}
+
+	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].taskstate == 'approved' && args[0].action == 'revert'  }")
+	public void beforeRevertApproved( evt ) {
+		def p = evt.args[0]; 
+		wbillEm.find([ batchid: p.refid ]).update([ printed: 0 ]); 
+		wcEm.find([ batchid: p.refid ]).update([ state: 'DRAFT' ]); 
+	}
+
+	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].taskstate == 'for-review' && args[0].action == 'revert'  }")
+	public void beforeRevertForReview( evt ) {
+		def p = evt.args[0];
+		wbillEm.find([ batchid: p.refid ]).update([ surcharge:0, interest:0, otherfees:0, credits:0, arrears:0, unpaidmonths:0, billed: 0 ]); 
+		wcEm.find([ batchid: p.refid ]).update([ state: 'DRAFT' ]); 
+	}
+
+	@After(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && result.state == 'end' }") 
+	public void afterSignal( evt ) {
+		def batchid = evt.result.refid; 
+		def bb = batchEm.find([ objid: batchid ]).select('objid,subareaid').first();
+		batchEm.find([ objid: batchid ]).update([ state: 'COMPLETED' ]); 
+		wcEm.find([ batchid: batchid ]).update([ state: 'POSTED' ]);  
+		subareaEm.find([ objid: bb.subareaid ]).update([ batchid: batchid ]); 
+
+		def dtPosted = dateSvc.getServerDate();
+
+		wbillEm.find([ batchid: batchid ]).select('acctid,consumptionid,objid,billno,credits').where('credits > 0').list().each{ b-> 
+			def wcinfo = wcEm.find([ objid: b.consumptionid ]).select('objid,hold,balance').first(); 
+			if ( !wcinfo ) return; 
+			if ( wcinfo.hold.toString() != '0' ) {
+				// consumption is put onhold, do not process creditpayment 
+				return; 
+			}
+			if ( wcinfo.balance <= 0 ) { 
+				// consumption is already paid in full, do not process creditpayment 
+				return;  
+			} 
+
+			def m = [:];
+			m.refid = b.objid;
+			m.refno = b.billno;
+			m.refdate = dtPosted;
+			m.acctid = b.acctid;
+			m.amtpaid = b.credits;
+			creditSvc.post( m );
+		} 
+	} 
+} 

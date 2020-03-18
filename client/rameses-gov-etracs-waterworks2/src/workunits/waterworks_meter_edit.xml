@@ -1,0 +1,26 @@
+<workunit extends="com/rameses/seti2/templates/ChangeInfo.xml" schemaName="waterworks_meter" 
+    logSchemaName="waterworks_changelog">
+    <invokers>
+        <!-- menus inside meter -->    
+        <invoker type="waterworks_meter:form:edit" target="popup" 
+            caption="Change Meter Status" action="init" index="1"
+            tag="state"  />
+        
+        <invoker type="waterworks_meter:form:edit" target="popup" 
+            caption="Change Last Reading" action="init" index="2"
+            fields="lastreading"  tag="reading" />
+        
+        <invoker type="waterworks_meter:form:edit" target="popup"
+            caption="Change Last Reading Date" action="init" index="3"
+            fields="lastreadingdate"/>
+        
+        <invoker type="waterworks_meter:form:edit" target="popup"
+            caption="Change Capacity" action="init" index="4"
+            fields="capacity" tag="capacity" /> 
+        
+    </invokers>
+    
+    <code class="com.rameses.gov.etracs.waterworks.models.MeterEditModel" />
+        
+        
+</workunit>

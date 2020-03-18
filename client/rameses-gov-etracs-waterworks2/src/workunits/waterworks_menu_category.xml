@@ -1,0 +1,21 @@
+<!--
+<workunit extends="com/rameses/menu/templates/MenuCategory.xml" context="waterworks" cols="2">
+    <invokers>
+        <invoker type="home.action" 
+                 caption="Waterworks"  icon="home/icons/waterworks.png"
+                 visibleWhen="#{self.hasChildren('menucategory/waterworks')==true}" 
+                 index="10" action="init"/>
+        
+    </invokers> 
+</workunit>
+-->
+
+<workunit extends="com/rameses/menu/templates/FXMenuCategory.xml" context="waterworks" cols="2">
+    <invokers>
+        <invoker type="home.action" 
+                icon="home/icons/waterworks.png"
+                 role=".*"
+                 caption="Waterworks" 
+                 index="1" action="init"/>
+    </invokers> 
+</workunit>

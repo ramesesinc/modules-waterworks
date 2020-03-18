@@ -1,0 +1,26 @@
+<workunit schemaName="waterworks_batch_billing">
+    <invokers> 
+        <invoker type="waterworks_batch_billing:open" caption="Batch Billing" 
+                 action="open" formId="#{entity.objid}" formTitle="#{entity.batchno}"/>
+        
+        <invoker type="readingMenu" caption="View Actions" action="showMenuActions" 
+                 depends="selectedItem" visibleWhen="#{selectedItem != null}" 
+                 target="process" mnemonic="V"/>
+
+        <invoker type="billingMenu" caption="View Actions" action="showMenuActions" 
+                 depends="selectedBillItem" visibleWhen="#{selectedBillItem != null}" 
+                 target="process" mnemonic="V"/>
+                
+        <invoker type="formActions" caption="Print Bill" action="printBill" 
+                 visibleWhen="#{ task.state == 'approved' }"/>
+
+        <invoker type="formActions" caption="Bill Dispatcher's Receipt" action="printBillDispatcherReceipt" />
+    </invokers>
+    
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBatchBillingModel" />
+
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksBatchBillingPage" />
+        <page name="processing" template="com.rameses.gov.etracs.waterworks.views.ProgressPage" />
+    </pages>    
+</workunit>

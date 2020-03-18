@@ -1,0 +1,111 @@
+import com.rameses.annotations.*;
+import treasury.facts.*;
+
+class WaterworksBatchBillingPersistenceInterceptor {
+	
+	@Service("WorkflowTaskService")
+	def taskSvc;
+
+	@Service("WaterworksBillProcessorService")
+	def  billProcSvc;
+
+	@Service("WaterworksBatchBillProcessorService")
+   	def batchSvc;
+
+	@Service("DateService")
+	def dateSvc;
+
+	@DataContext("waterworks_subarea")
+	def subareaEm;
+
+	@DataContext("waterworks_batch_billing")
+	def batchEm;
+
+	@DataContext("waterworks_batch_billing_task")
+	def taskEm;
+
+	@DataContext("waterworks_consumption")
+	def wcEm;
+
+	@DataContext("vw_waterworks_consumption")
+	def vw_wcEm;
+
+	@DataContext("waterworks_billing")
+	def wbillEm;
+
+	
+	@Before(pattern="PersistenceService.create", eval="#{ args[0]._schemaname == 'waterworks_batch_billing' }")
+	public void beforeCreate( evt ) { 
+		def o = evt.args[0];
+		def subarea = o.subarea;
+		def zlist = batchEm.find( [subareaid: subarea.objid]).list();
+		if( zlist.find{ it.task.state != 'end' } ) {
+			throw new Exception('There is a pending transaction for this particular block/subarea. Please complete first the previous batch billing'); 
+		}
+		o.objid = 'WB' + subarea.code.replaceAll("\\s","-") + o.year + String.format( "%02d", o.month);
+		o.state = 'DRAFT';	
+	}
+
+	@After(pattern="PersistenceService.create", eval="#{ args[0]._schemaname == 'waterworks_batch_billing' }")
+	public void buildBillItems( evt ) { 
+		def o = evt.args[0];
+		def result = evt.result;
+		def m = [ batchid: result.objid ];
+
+		def subarea = o.subarea;
+
+		//update the subarea specifically the batchid and next billyear and month
+		int ym = ((o.year*12)+o.month)+1;
+		int ny = (int)(ym/12);
+		int nm = (ym % 12);
+		if( nm == 0 ) {
+			nm = 12;
+			ny = ny - 1;
+		};
+
+		subareaEm.find( [objid: o.subarea.objid] ).update( [nextperiod : [year:ny, month:nm]  ] );
+
+		//build the consumptions first. this already contains previous values like reading and hold
+		batchEm.buildConsumptions( m );
+
+		//scan thru each item and assign the billing no
+		def items = vw_wcEm.find(m).orderBy("seqno,acctno").list();
+
+		if(!items)
+			throw new Exception("No accounts processed. There must be at least one account under this subarea");
+		int i = 1;
+		items.each {
+			def b = [batchid: result.objid, consumptionid: it.objid, acctid: it.acctid, counter: i++ ]
+			billProcSvc.createBill( b );
+		};
+
+		def p = [:];
+		p.processname = 'waterworks_batch_billing';
+		p.refid = o.objid;
+		p.startdate = dateSvc.serverDate;
+		taskSvc.start(p);
+	}
+
+
+	//when removing a batch, reverse all transactions to its previous state
+	@Before(pattern="PersistenceService.removeEntity", eval="#{ args[0]._schemaname == 'waterworks_batch_billing'}")
+	void beforeRemoveEntity( evt ) {
+		def p = evt.args[0]; 
+		def bb = batchEm.find([ objid: p.objid ]).first(); 
+		if ( !bb?.task?.state.toString().matches('draft|for-reading'))
+			throw new Exception('Transaction must be in draft or for-reading state');  
+
+		//delete billitem and consumption
+		wbillEm.find([ batchid: p.objid ]).delete(); 
+		wcEm.find([ batchid: p.objid ]).delete();
+
+		batchEm.find([ objid: p.objid ]).update([ taskid: '{NULL}' ]); 
+		taskEm.find([ refid: p.objid ]).delete();
+
+		//find the subarea and move one month before and calculate the next schedule date
+		def subarea = subareaEm.find([ objid: bb.subareaid ]).first();	
+		subareaEm.find([ objid: subarea.objid ]).update([ nextperiod: [year:bb.year, month:bb.month]  ]); 
+	}
+
+	
+} 

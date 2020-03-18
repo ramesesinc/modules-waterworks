@@ -1,0 +1,10 @@
+<workunit extends="com/rameses/seti2/templates/CrudForm.xml" schemaName="waterworks_area">
+    <!-- used by rules -->
+    <invokers>
+        <invoker type="waterworks_area:create" caption="Add Area" action="create" target="popup"/>
+        <invoker type="waterworks_area:open" caption="View Area" action="open" target="popup"/>        
+    </invokers>
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksAreaPage" />
+    </pages>
+</workunit>

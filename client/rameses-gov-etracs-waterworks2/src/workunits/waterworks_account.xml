@@ -1,0 +1,37 @@
+<workunit schemaName="waterworks_account" allowCreate="false" allowEdit="true">
+
+    <invokers>
+        <invoker folderid="/menucategory/waterworks/account" caption="Add Customer Account (Capture)" 
+                 action="create" role="MASTER" index="4"/>
+        
+        <!-- create or open -->
+        <invoker type="waterworks_account:create" caption="Waterworks Customer Account (Capture)" 
+                 action="create" target="window"/>        
+        
+        <invoker type="waterworks_account:open" 
+                 formTitle="Waterworks Account (#{entity.acctno}) #{entity.acctname}" 
+                 formId="#{entity.objid}"
+                 action="open" target="window">
+            <action role="MASTER" /> 
+            <action role="SHARED" allowEdit="false" allowCreate="false"/> 
+        </invoker>     
+        
+        <invoker type="formActions" action="approve" caption="Approve" 
+                 visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; mode=='read' }" /> 
+                 
+        <invoker type="formActions" action="deactivate" caption="Deactivate"
+                 role="ADMIN"
+                 visibleWhen="#{ entity.state == 'ACTIVE' &amp;&amp; mode=='read' }" />          
+        
+        <!-- subitem actions -->
+        <invoker type="consumptionActions" action="viewConsumptionPayment" caption="View Payments" /> 
+        <invoker type="otherFeeActions" action="viewOtherFeePayment" caption="View Payments" />
+    </invokers>
+    
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksAccountModel" />    
+
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksAccountPage"/>
+    </pages>    
+    
+</workunit>

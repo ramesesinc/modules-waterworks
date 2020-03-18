@@ -1,0 +1,21 @@
+<workunit extends="com/rameses/seti2/templates/CrudForm.xml" 
+        allowCreate="false" allowDelete="false" allowEdit="false"
+          schemaName="vw_waterworks_billing">
+    <invokers>
+        <invoker type="vw_waterworks_billing:open" caption="Bill Info" action="open" target="popup"/>
+        <!-- ACTIONS -->
+        <invoker type="formActions" caption="View Account" action="viewAccount" />   
+        <invoker type="formActions" caption="Fix Errors" action="fixErrors" 
+                 visibleWhen="#{ entity.state == 'ERR' }" />
+
+        <invoker type="formActions" caption="Rebill" action="rebill" />        
+        <invoker type="formActions" caption="Add Prev Entry" action="addPrevEntry" 
+                 visibleWhen="#{ hasNoPrevEntry == true }" />   
+                      
+
+    </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillingModel" />
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksBillingPage" />
+    </pages>
+</workunit>

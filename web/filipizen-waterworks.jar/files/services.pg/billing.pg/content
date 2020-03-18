@@ -1,0 +1,49 @@
+<style>
+	.caption-class {
+		width:180px;
+	}
+</style>
+
+<script>
+	\$put( "wbill", new function() {
+
+		var self = this;
+		this.mode = "ask-acctno";
+
+		this.billno;
+		this.contact;
+		this.key;
+
+		this.findAcctno = function() {
+			self.mode = "ask-key";
+			alert('contact is ' + self.contact + ' ' + self.billno );
+		}
+
+		this.testKey = function() {
+			self.mode = "show-bill";
+			if(self.key!="1234") {
+				throw new Error("Key is not correct");
+			}
+		}
+
+	});
+</script>
+
+<div r:context="wbill" r:visibleWhen="#{ mode == 'ask-acctno'  }"  style="display:none;">
+	@wx:text( caption: "Enter Acct No", name:"billno", context:"wbill") 
+	@wx:text( caption: "Email or Phone No", name:"contact", context:"wbill") 
+	<br>
+	<button r:context="wbill" r:name="findAcctno">Search</button>
+</div>
+
+
+<div r:context="wbill" r:visibleWhen="#{ mode == 'ask-key'  }"  style="display:none;">
+	@wx:text( caption: "Enter Key sent to email or text", name:"key", context:"wbill") <br>
+	<button r:context="wbill" r:name="testKey">Search</button>
+</div>
+
+
+<div r:context="wbill" r:visibleWhen="#{ mode == 'show-bill'  }"  style="display:none;">
+	<h1>Show Bill Here</h1>
+
+</div>

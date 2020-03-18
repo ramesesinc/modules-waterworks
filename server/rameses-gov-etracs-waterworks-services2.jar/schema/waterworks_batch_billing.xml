@@ -1,0 +1,38 @@
+<schema>
+	<element tablename="waterworks_batch_billing">
+		<field name="objid" primary="true" caption="Control No" visible="true"/>
+		
+		<field name="state" required="true"/>
+		<field name="dtcreated" required="true" caption="DateCreated"/>
+		<field name="createdby_objid" required="true"/>
+		<field name="createdby_name" required="true" caption="CreatedBy"/>
+		
+		<complex name="subarea" ref="waterworks_subarea" jointype="many-to-one" includefields="code,area.objid,area.code" required="true">
+			<key field="subareaid" target="objid" />
+		</complex> 
+
+		<field name="dtposted" />
+		<field name="postedby_objid" />
+		<field name="postedby_name" />
+
+		<field name="reader_objid" required="true"/>
+		<field name="reader_name" caption="Reader" required="true"/>
+		<field name="readingdate" caption="ReadingDate"/>
+
+		<field name="year" caption="Year"/>
+		<field name="month" />
+		<field name="monthname"  expr="MONTH_ARRAY( month )" caption="Month" />
+
+		<complex name="period" ref="waterworks_billing_period" jointype="many-to-one" required="true">
+			<key field="periodid" target="objid"/>
+		</complex>
+
+		<field name="taskid" />
+		<complex name="task" ref="waterworks_batch_billing_task" jointype="many-to-one" required="false">
+			<key field="taskid" target="taskid" />
+		</complex>
+
+		
+	</element>
+</schema>
+

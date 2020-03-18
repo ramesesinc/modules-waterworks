@@ -1,0 +1,11 @@
+<workunit extends="com/rameses/seti2/templates/CrudList.xml" 
+          schemaName="waterworks_metersize" 
+          allowCreate="true" allowOpen="true" allowDelete="true">
+    <invokers>
+        <invoker folderid="/explorer/master/waterworks" 
+                 caption="Meter Size" action="init">
+            <action role="MASTER" /> 
+            <action role="SHARED" allowCreate="false" allowDelete="false" /> 
+        </invoker> 
+    </invokers>
+</workunit>

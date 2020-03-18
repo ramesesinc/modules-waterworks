@@ -1,0 +1,62 @@
+<schema>
+	<element tablename="vw_waterworks_billing">
+		<field name="objid" primary="true"/> 
+		<field name="batchid" /> 
+		<field name="acctid" /> 
+		<field name="billno" searchable="true"/> 
+		<field name="consumptionid" /> 
+		<field name="state" /> 
+		<field name="surcharge" type="decimal"/> 
+		<field name="interest" type="decimal"/> 
+		<field name="otherfees" type="decimal"/> 
+		<field name="credits" type="decimal"/> 
+		<field name="arrears" type="decimal"/> 
+		<field name="averageconsumption" /> 
+		<field name="billed" /> 
+		<field name="unpaidmonths" /> 
+		<field name="refbillno" /> 
+		<field name="printed" /> 
+		<field name="acctno" searchable="true"/> 
+		<field name="acctname" searchable="true"/> 
+		<field name="acctstate" /> 
+		<field name="addresstext" /> 
+		<field name="classificationid" /> 
+		<field name="meterstate" /> 
+		<field name="prevreading" type="integer"/> 
+		<field name="reading" type="integer"/> 
+		<field name="volume" type="integer"/> 
+		<field name="amount" type="decimal"/> 
+		<field name="amtpaid" type="decimal"/> 
+		<field name="rate" type="decimal"/> 
+		<field name="hold" /> 
+		<field name="subtotal" type="decimal"/> 
+		<field name="meterid" /> 
+		<field name="meter_objid" /> 
+		<field name="meter_capacity" type="decimal"/> 
+		<field name="meter_size" /> 
+		<field name="meter_brand" /> 
+
+		<field name="readingdate" />
+		<field name="discdate" /> 
+		<field name="duedate" /> 
+		<field name="fromperiod" /> 
+		<field name="toperiod" /> 
+		<field name="subarea_objid" /> 
+		<field name="subarea_code" /> 
+		<field name="subarea_area_code" /> 		
+		<field name="seqno" /> 
+		<field name="periodindexno" /> 
+
+		<field name="prevmonth" /> 
+		<field name="prevyear" /> 		
+		<field name="remarks" /> 	
+
+		<field name="year" /> 	
+		<field name="month" /> 	
+		<field name="monthname" expr="MONTH_ARRAY(month)" /> 	
+		<field name="errcode" type="integer"/>	
+
+	</element>
+</schema>
+
+

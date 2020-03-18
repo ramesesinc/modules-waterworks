@@ -1,0 +1,22 @@
+<schema>
+
+	<element tablename="waterworks_subarea">
+		<field name="objid" primary="true" prefix="WGRP"/>
+		<field name="code" caption="Sub Area Code" indexed="true" searchable="true"/>
+		<field name="description" caption="Description" searchable="true"/>
+
+		<complex name="area" ref="waterworks_area" jointype="many-to-one" required="true" includefields="objid,code">
+			<key field="areaid" target="objid" />
+		</complex>	
+
+		<field name="schedulegroupid" caption="Schedule Group"/>
+		<complex name="schedulegroup" ref="waterworks_schedule_group" jointype="many-to-one" required="true">
+			<key field="schedulegroupid" target="objid" />
+		</complex>	
+			
+		<field name="nextperiod_year" />
+		<field name="nextperiod_month" />
+
+	</element>
+
+</schema>

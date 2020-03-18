@@ -1,0 +1,27 @@
+<workunit extends="wtemplates/RuleMgmtController.xml" serviceName="RuleMgmtService" >
+    <invokers>
+        <invoker folderid="/explorer/rulemgmt/waterworks" 
+                tag="waterworksapplication"
+                caption="Waterworks Application Rules" 
+                action="init" 
+                 index="1" role="RULE_AUTHOR"/>
+        
+        <invoker folderid="/explorer/rulemgmt/waterworks" 
+                tag="waterworksbilling"
+                caption="Waterworks Billing Rules" 
+                 action="init" 
+                index="2" role="RULE_AUTHOR"/>
+
+        <invoker folderid="/explorer/rulemgmt/waterworks" 
+                tag="waterworksbillingschedule"
+                caption="Waterworks Billing Schedule Rules" 
+                 action="init" 
+                index="1" role="RULE_AUTHOR"/>   
+
+        <invoker folderid="/explorer/rulemgmt/waterworks" 
+                tag="waterworkscomputation"
+                caption="Waterworks Computation Rules" 
+                 action="init" 
+                index="1" role="RULE_AUTHOR"/>             
+    </invokers>
+</workunit>

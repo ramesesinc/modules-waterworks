@@ -1,0 +1,43 @@
+import com.rameses.annotations.*;
+
+class WaterworksAccountConsumptionPersistenceInterceptor{
+	
+	@DataContext("waterworks_consumption")
+	def wcEm; 
+
+	@DataContext("waterworks_account")
+	def acctEm; 
+
+	@Before(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_consumption'}")
+	public void beforeCreate( evt ) { 
+		def param = evt.args[0]; 
+		param.hold = (param.hold ? param.hold : 0); 
+
+		//check also the subarea 
+		def v = acctEm.find( [objid: param.acctid]).select("subarea.nextperiod.*").first();
+		def nextperiod = v.subarea.nextperiod;
+		if( nextperiod?.year ) {
+			int t = (nextperiod.year*12)+nextperiod.month;		
+			if( ((param.year*12)+param.month) >= t )
+				throw new Exception("Year and month entry should not be greater than the subarea next period");
+		}
+	} 
+
+	@Before(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_consumption'}")
+	public void beforeRemove( evt ) {
+		def param = evt.args[0];
+		def findBy = (param?.findBy ? param.findBy : [objid: param.objid]); 
+		def wc = wcEm.find( findBy ).first(); 
+		if ( !wc ) return; 
+
+		if ( wc.batchid ) 
+			throw new Exception('Cannot delete consumption from batch billing'); 
+		if( wc.state == 'POSTED' )	
+			throw new Exception('Cannot delete consumption that is already posted'); 
+		if ( wc.amtpaid > 0 )
+			throw new Exception("Cannot delete consumption since payment was already made");
+	} 
+
+	
+
+}
