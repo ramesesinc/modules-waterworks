@@ -33,6 +33,9 @@ class WaterworksBatchBillingPersistenceInterceptor {
 	@DataContext("waterworks_billing")
 	def wbillEm;
 
+	@DataContext("waterworks_otherfee")
+	def wotherFeeEm;
+
 	
 	@Before(pattern="PersistenceService.create", eval="#{ args[0]._schemaname == 'waterworks_batch_billing' }")
 	public void beforeCreate( evt ) { 
@@ -76,7 +79,7 @@ class WaterworksBatchBillingPersistenceInterceptor {
 		int i = 1;
 		items.each {
 			def b = [batchid: result.objid, consumptionid: it.objid, acctid: it.acctid, counter: i++ ]
-			billProcSvc.createBill( b );
+			billProcSvc.create( b );
 		};
 
 		def p = [:];
@@ -95,9 +98,10 @@ class WaterworksBatchBillingPersistenceInterceptor {
 		if ( !bb?.task?.state.toString().matches('draft|for-reading'))
 			throw new Exception('Transaction must be in draft or for-reading state');  
 
-		//delete billitem and consumption
+		//delete billitem, consumption and other fee if any
 		wbillEm.find([ batchid: p.objid ]).delete(); 
 		wcEm.find([ batchid: p.objid ]).delete();
+		wotherFeeEm.find( [batchid: p.objid] ).delete();
 
 		batchEm.find([ objid: p.objid ]).update([ taskid: '{NULL}' ]); 
 		taskEm.find([ refid: p.objid ]).delete();

@@ -228,7 +228,7 @@ public class WaterworksBillingPage extends javax.swing.JPanel {
         xFormPanel3.add(xLabel11);
 
         xLabel12.setCaption("Meter Size");
-        xLabel12.setExpression("#{ entity.meter.size }");
+        xLabel12.setExpression("#{ entity.meter.size.title }");
         xLabel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         xLabel12.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel3.add(xLabel12);
@@ -240,7 +240,7 @@ public class WaterworksBillingPage extends javax.swing.JPanel {
         xFormPanel3.add(xLabel14);
 
         xLabel10.setCaption("Meter Status");
-        xLabel10.setExpression("#{ entity.meterstate }");
+        xLabel10.setExpression("#{ entity.meter.state }");
         xLabel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         xLabel10.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel3.add(xLabel10);

@@ -13,7 +13,7 @@ class WaterworksComputationService  {
 	@DataContext("waterworks_consumption")
 	def consEm;
 
-	@DataContext("waterworks_account")
+	@DataContext("vw_waterworks_account")
 	def acctEm;
 
 	@DataContext("waterworks_meter")
@@ -74,13 +74,11 @@ class WaterworksComputationService  {
 			if( it instanceof WaterConsumption ) {
 				res.amount = it.amount;
 				res.volume = it.volume;
-				res.rate = it.rate;
 			}
 		}
 		//if there is consumption id then update it. update also the current reading of the meter
 		if(o.consumptionid) {
 			res.reading = o.reading; 
-			res.prevreading = o.prevreading; 
 			consEm.find( [objid: o.consumptionid ] ).update( res );
 		}
 		return res;

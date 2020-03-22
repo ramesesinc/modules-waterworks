@@ -47,7 +47,7 @@ public class WaterworksBillingModel extends CrudFormModel {
     }
     
     def viewAccount() {
-        def op = Inv.lookupOpener( "waterworks_account:open", [entity: [objid: entity.acctid ]]);
+        def op = Inv.lookupOpener( "waterworks_account:open", [entity: [objid: entity.acctid ]], [width:300]);
         op.target = "popup";
         return op;
     }

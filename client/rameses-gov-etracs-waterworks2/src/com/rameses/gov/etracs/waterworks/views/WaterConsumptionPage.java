@@ -37,17 +37,16 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
         xFormPanel5 = new com.rameses.rcp.control.XFormPanel();
         xIntegerField1 = new com.rameses.rcp.control.XIntegerField();
         monthList1 = new com.rameses.enterprise.components.MonthList();
-        xLabel13 = new com.rameses.rcp.control.XLabel();
-        xLabel11 = new com.rameses.rcp.control.XLabel();
+        xLabel15 = new com.rameses.rcp.control.XLabel();
         xLabel14 = new com.rameses.rcp.control.XLabel();
-        xLabel12 = new com.rameses.rcp.control.XLabel();
+        xComboBox2 = new com.rameses.rcp.control.XComboBox();
+        xButton1 = new com.rameses.rcp.control.XButton();
         xIntegerField2 = new com.rameses.rcp.control.XIntegerField();
         xIntegerField3 = new com.rameses.rcp.control.XIntegerField();
         xLabel1 = new com.rameses.rcp.control.XLabel();
         xDecimalField2 = new com.rameses.rcp.control.XDecimalField();
         xDecimalField3 = new com.rameses.rcp.control.XDecimalField();
         xCheckBox1 = new com.rameses.rcp.control.XCheckBox();
-        xButton1 = new com.rameses.rcp.control.XButton();
 
         xTabbedPane1.setItems("sections");
 
@@ -56,46 +55,49 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
         xFormPanel5.setPadding(new java.awt.Insets(0, 5, 20, 5));
 
         xIntegerField1.setCaption("Year");
+        xIntegerField1.setDisableWhen("#{ mode != 'create' }");
         xIntegerField1.setName("entity.year"); // NOI18N
         xIntegerField1.setPreferredSize(new java.awt.Dimension(80, 20));
         xFormPanel5.add(xIntegerField1);
 
         monthList1.setCaption("Month");
+        monthList1.setDisableWhen("#{ mode != 'create' }");
         monthList1.setName("entity.month"); // NOI18N
         xFormPanel5.add(monthList1);
 
-        xLabel13.setCaption("Entry Status");
-        xLabel13.setExpression("#{ entity.state }");
-        xLabel13.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
-        xLabel13.setPreferredSize(new java.awt.Dimension(0, 20));
-        xFormPanel5.add(xLabel13);
-
-        xLabel11.setCaption("Txn Type");
-        xLabel11.setExpression("#{ entity.txnmode }");
-        xLabel11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
-        xLabel11.setPreferredSize(new java.awt.Dimension(0, 20));
-        xFormPanel5.add(xLabel11);
+        xLabel15.setCaption("Meter Serial No");
+        xLabel15.setExpression("#{ account.meter.serialno }");
+        xLabel15.setVisibleWhen("#{ account.meter.objid != null }");
+        xLabel15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
+        xLabel15.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xLabel15.setPreferredSize(new java.awt.Dimension(0, 20));
+        xFormPanel5.add(xLabel15);
 
         xLabel14.setCaption("Meter Brand");
         xLabel14.setExpression("#{ account.meter.brand }");
         xLabel14.setVisibleWhen("#{ account.meter.objid != null }");
         xLabel14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
-        xLabel14.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xLabel14.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel5.add(xLabel14);
 
-        xLabel12.setCaption("Meter Status");
-        xLabel12.setExpression("#{ account.meter.state }");
-        xLabel12.setVisibleWhen("#{ account.meter.objid != null }");
-        xLabel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
-        xLabel12.setPreferredSize(new java.awt.Dimension(0, 20));
-        xFormPanel5.add(xLabel12);
+        xComboBox2.setCaption("Meter State");
+        xComboBox2.setExpression("");
+        xComboBox2.setItems("meterStates");
+        xComboBox2.setName("entity.meterstate"); // NOI18N
+        xComboBox2.setVisibleWhen("#{ entity.meterid != null }");
+        xComboBox2.setRequired(true);
+        xFormPanel5.add(xComboBox2);
+
+        xButton1.setCaption("");
+        xButton1.setVisibleWhen("#{ entity.meter?.objid != null }");
+        xButton1.setText("Calculate Amount");
+        xFormPanel5.add(xButton1);
 
         xIntegerField2.setCaption("Prev. Reading");
         xIntegerField2.setDepends(new String[] {"entity.txnmode"});
         xIntegerField2.setDisableWhen("#{ true }");
         xIntegerField2.setName("entity.prevreading"); // NOI18N
-        xIntegerField2.setVisibleWhen("#{ entity.txnmode != 'BEGIN_BALANCE' && account.meter?.objid !=null }");
+        xIntegerField2.setVisibleWhen("#{ account.meter?.objid !=null  && entity.prevyear !=null }");
         xIntegerField2.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xFormPanel5.add(xIntegerField2);
 
@@ -107,6 +109,7 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
         xLabel1.setCaption("Volume");
         xLabel1.setExpression("#{ entity.volume }");
         xLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        xLabel1.setName("entity.volume"); // NOI18N
         xLabel1.setVisibleWhen("#{ entity.prevreading != null || account.meter?.objid == null }");
         xFormPanel5.add(xLabel1);
 
@@ -144,18 +147,13 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
         });
         xFormPanel5.add(xCheckBox1);
 
-        xButton1.setVisibleWhen("#{ entity.meter?.objid != null }");
-        xButton1.setText("Calculate Amount");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(xFormPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(xButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(xFormPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 28, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -163,9 +161,7 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(xFormPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(xButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
 
         xTabbedPane1.addTab("General Info", jPanel1);
@@ -205,6 +201,7 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
     private com.rameses.enterprise.components.MonthList monthList1;
     private com.rameses.rcp.control.XButton xButton1;
     private com.rameses.rcp.control.XCheckBox xCheckBox1;
+    private com.rameses.rcp.control.XComboBox xComboBox2;
     private com.rameses.rcp.control.XDecimalField xDecimalField2;
     private com.rameses.rcp.control.XDecimalField xDecimalField3;
     private com.rameses.rcp.control.XFormPanel xFormPanel5;
@@ -212,10 +209,8 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XIntegerField xIntegerField2;
     private com.rameses.rcp.control.XIntegerField xIntegerField3;
     private com.rameses.rcp.control.XLabel xLabel1;
-    private com.rameses.rcp.control.XLabel xLabel11;
-    private com.rameses.rcp.control.XLabel xLabel12;
-    private com.rameses.rcp.control.XLabel xLabel13;
     private com.rameses.rcp.control.XLabel xLabel14;
+    private com.rameses.rcp.control.XLabel xLabel15;
     private com.rameses.rcp.control.XTabbedPane xTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }

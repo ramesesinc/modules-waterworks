@@ -1,4 +1,5 @@
 import com.rameses.annotations.*;
+import java.rmi.server.*;
 
 class WaterworksAccountPersistenceInterceptor{
 	
@@ -14,50 +15,64 @@ class WaterworksAccountPersistenceInterceptor{
 	@DataContext('waterworks_credit') 
 	def creditEm;
 
+	@DataContext('waterworks_account_info') 
+	def acctInfoEm;
+
 	@Before(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_account'}")
 	public void beforeCreate(def evt) {
 		def o  = evt.args[0];
-		o.classificationid = o.classification.objid;
+		o.objid = "WACCT" + new UID();
         if( !o.acctno ) {
         	def prefix = "WACC" + dateSvc.getServerYear();
         	o.acctno = prefix  + seqSvc.getNextFormattedSeriesA( prefix, 5 );
-        }    
+        }  
         o.state = 'DRAFT';
+        def info = [:];
+        info.putAll( o );
+        acctInfoEm.create( info );
+        o.acctinfoid = info.objid;
 	}
 
-	@Before(pattern="PersistenceService.update", eval="#{args[0]._schemaname == 'waterworks_account' && args[0].action == null }")
+	@Before(pattern="PersistenceService.update", eval="#{args[0]._schemaname == 'waterworks_account'  }")
 	public void beforeUpdate(def evt) {
 		def o = evt.args[0];
-		if( o.meter?.objid == null ) {
-			o.meterid = null;
-		}
-		else {
-			o.meterid = o.meter.objid;
-		}	
+
+		if( o.meter?.objid == null ) o.meterid = null;
+		if( o.stubout?.objid == null ) o.stuboutid = null;
+
+        def info = [:];
+        info.putAll( o );
+        info.objid = o.acctinfoid;
+		acctInfoEm.find([objid: o.acctinfoid ]).update( info );		
 	}
 
-	@After(pattern="PersistenceService.(create|update)", eval="#{args[0]._schemaname == 'waterworks_account' && args[0].action == null }")
+	@After(pattern="PersistenceService.(create|update)", eval="#{args[0]._schemaname == 'waterworks_account'  }")
 	public void afterSave(def evt) {
 		def o = evt.args[0];
-		def meters = wmeter.find([currentacctid:o.objid]).list();
+		def acctinfoid = o.acctinfoid;
+
+		def meters = wmeter.find([currentacctid:acctinfoid]).list();
 		meters.each {
 			wmeter.find( [objid: it.objid ] ).update( [currentacctid: '{NULL}'] );
 		}
+		//throw new Exception("fired " + o.meter.objid + " acctinfo " + acctinfoid);
 		if(o.meter?.objid ) {
 			def u = [:];
-			u.currentacctid = o.objid;
+			u.currentacctid = acctinfoid;
 			u.state = o.meter.state;
-			wmeter.find( [objid: o.meterid ] ).update( u ); 
+			wmeter.find( [objid: o.meter.objid ] ).update( u ); 
 		}
 	}
 
-	@After(pattern="PersistenceService.read", eval="#{args[0]._schemaname == 'waterworks_account'}")
+	@After(pattern="PersistenceService.read", eval="#{args[0]._schemaname == 'vw_waterworks_account'}")
 	public void afterRead(def evt) {
 		def o = evt.result;
 		def amt = creditEm.find( [acctid: o.objid ]).select("amount:{SUM(dr-cr)}").val();
 		o.totalcredits = 0;
 		if(amt!=null)	o.totalcredits = amt;
 	}
+
+
 
 
 }

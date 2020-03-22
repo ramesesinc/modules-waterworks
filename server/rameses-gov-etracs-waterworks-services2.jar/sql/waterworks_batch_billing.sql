@@ -17,16 +17,17 @@ from waterworks_batch_billing bb
 where bb.subareaid = $P{zoneid} ${filter} 
 order by bs.year desc, bs.month desc 
 
-
 [buildConsumptions]
 INSERT INTO waterworks_consumption ( 
-	objid,state,acctid,batchid,txnmode,reading,
+	objid,state,acctid,acctinfoid,batchid,txnmode,reading,
 	volume,rate,amount,amtpaid,meterid,year,month,hold 
 ) 
 SELECT 
 	CONCAT(a.objid,'-',br.periodid) AS objid, 
 	'DRAFT' as state, 
 	a.objid as acctid, 
+	a.acctinfoid,
+
 	br.objid as batchid, 
 	'ONLINE' as txnmode,
 	prevcon.reading, 
@@ -34,14 +35,16 @@ SELECT
 	0 AS rate,
 	0 AS amount,
 	0 AS amtpaid, 
-	a.meterid,
+	ai.meterid,
 	br.year,
 	br.month,
 	IFNULL(prevcon.hold, 0) AS hold
 FROM waterworks_batch_billing br 
-INNER JOIN waterworks_account a ON br.subareaid = a.subareaid 
-LEFT JOIN waterworks_meter wm ON wm.objid = a.meterid 	
-LEFT JOIN waterworks_consumption prevcon ON prevcon.acctid = a.objid AND (((prevcon.year*12)+prevcon.month)) = ((br.year*12)+br.month-1)
+INNER JOIN waterworks_account_info ai ON ai.subareaid = br.subareaid
+INNER JOIN waterworks_account a ON a.acctinfoid = ai.objid 
+LEFT JOIN waterworks_meter wm ON wm.objid = ai.meterid 	
+LEFT JOIN waterworks_consumption prevcon 
+	ON prevcon.acctid = a.objid AND prevcon.meterid=ai.meterid AND (((prevcon.year*12)+prevcon.month)) = ((br.year*12)+br.month-1)
 
 [findBilledStatus]
 select tmp1.*, (totalcount-billedcount) as balance 

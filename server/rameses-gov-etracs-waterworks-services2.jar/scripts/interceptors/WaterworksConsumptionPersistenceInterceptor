@@ -1,20 +1,31 @@
 import com.rameses.annotations.*;
 
-class WaterworksAccountConsumptionPersistenceInterceptor{
+class WaterworksConsumptionPersistenceInterceptor{
 	
 	@DataContext("waterworks_consumption")
 	def wcEm; 
 
-	@DataContext("waterworks_account")
+	@DataContext("waterworks_account_info")
 	def acctEm; 
+
+	@DataContext("waterworks_meter")
+	def meterEm; 
 
 	@Before(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_consumption'}")
 	public void beforeCreate( evt ) { 
 		def param = evt.args[0]; 
 		param.hold = (param.hold ? param.hold : 0); 
 
+		//check if reading is greater than capacity
+		if( param.meterid ) {
+			if(!param.reading ) throw new Exception("Please specify reading"); 
+			def mtr = meterEm.find( [objid: param.meterid ] ).first();
+			if( param.reading > mtr.capacity ) 
+				throw new Exception("Meter reading must be less than capacity of " + mtr.capacity );
+		}
+
 		//check also the subarea 
-		def v = acctEm.find( [objid: param.acctid]).select("subarea.nextperiod.*").first();
+		def v = acctEm.find( [objid: param.acctinfoid] ).select("subarea.nextperiod.*").first();
 		def nextperiod = v.subarea.nextperiod;
 		if( nextperiod?.year ) {
 			int t = (nextperiod.year*12)+nextperiod.month;		

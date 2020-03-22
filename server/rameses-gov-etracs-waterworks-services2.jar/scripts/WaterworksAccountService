@@ -1,0 +1,61 @@
+import com.rameses.annotations.*;
+
+
+/*************************************
+* this is for approving accounts
+**************************************/
+class WaterworksAccountService {
+
+    @DataContext('waterworks_account') 
+    def acctEm; 
+
+    @DataContext('waterworks_account_info') 
+    def acctInfoEm; 
+
+	@DataContext('vw_waterworks_consumption') 
+	def consEm; 
+
+	@ProxyMethod 
+	public def approve( def o ) {
+        if(!o.acctid) throw new Exception("acctid is required in WaterworksAccountService.approve")
+        def acct = acctEm.find( [objid: o.acctid ]).first();
+        if(acct.state!='DRAFT') throw new Exception("account must be in DRAFT state");
+        
+        //retrieve first all consumptions
+        def list = consEm.find( [acctid: acct.objid ]).orderBy("year,month").list();
+        if(!list) throw new Exception("There must be at least one consumption entry");
+
+        int y = list[0].year;
+        int m = list[0].month;
+
+        for( oo in list ) {
+            if( oo.year!=y && oo.month!=m ) throw new Exception("The month and year must not skip from previous. Missing Year: " + y + " Month: " + m  );
+
+            //check if volume is the same as currentreading - prevreading;
+            if( oo.prevreading!=null ) {
+                if( (oo.reading - oo.prevreading ) != oo.volume ) throw new Exception("Discrepancy in volume computation for year " + y + " month:" + m );     
+            }
+
+            //move to next month
+            int ym = ((y*12)+m) + 1;
+            y = (int)(ym / 12);
+            m = (int)(ym % 12);
+            if( m == 0 ) {
+                y = y - 1;
+                m = 12;
+            };
+            
+        }
+        throw new Exception("lusot in approve ")
+        acctEm.find( [ objid: acct.objid ]).update( [state: "ACTIVE"] );
+	}
+
+    @ProxyMethod 
+    public def deactivate( def o ) {
+        if(!o.acctid) throw new Exception("acctid is required in WaterworksAccountService.deactivate")
+        def acct = acctEm.find( [objid: o.acctid ]).first();
+        if(acct.state=='DRAFT') throw new Exception("account already in DRAFT state");
+        acctEm.find( [ objid: acct.objid ]).update( [state: "DRAFT"] );
+    }
+
+}

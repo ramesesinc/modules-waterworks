@@ -9,6 +9,9 @@ import java.text.*;
 
 public class WaterworksAccountModel extends CrudFormModel {
     
+    @Service("WaterworksAccountService")
+    def acctSvc;
+    
     def dateFormatter = new java.text.SimpleDateFormat('yyyy-MM-dd'); 
     
     def meterStates = ["ACTIVE","DISCONNECTED","DEFECTIVE"];
@@ -20,12 +23,6 @@ public class WaterworksAccountModel extends CrudFormModel {
         entity.meter = [:];
         entity.stuboutnode = [:];
     }
-
-    /*
-    def edit() {
-        return showDropdownMenu("edit");
-    }
-    */
     
     boolean isEditAllowed() {
         return (entity.state == "DRAFT" && mode!="edit");
@@ -81,11 +78,11 @@ public class WaterworksAccountModel extends CrudFormModel {
         consumptionFilter = [:];
         consumptionFilter.options = [
             "acctid = :acctid",
-            "acctid = :acctid AND (hold=1 OR (amount-discount-amtpaid) > 0) AND state='POSTED' ",
-            "acctid = :acctid AND (amount-discount-amtpaid) = 0 AND amtpaid > 0 AND state='POSTED' "
+            "acctid = :acctid AND (amount-discount-amtpaid) > 0  ",
+            "acctid = :acctid AND (amount-discount-amtpaid) = 0 AND amtpaid > 0 "
         ];
         consumptionFilter.acctid = entity.objid;
-        consumptionFilter.where = consumptionFilter.options[1] ;
+        consumptionFilter.where = consumptionFilter.options[consumptionViewOption] ;
         return consumptionFilter;
     }
     
@@ -103,10 +100,10 @@ public class WaterworksAccountModel extends CrudFormModel {
         otherFeeFilter.options = [
             "acctid = :acctid",
             "acctid = :acctid AND  (amount-discount-amtpaid) > 0",
-            "acctid = :acctid AND (amount-discount-amtpaid) = 0"
+            "acctid = :acctid AND (amount-discount-amtpaid) = 0 AND amtpaid > 0"
         ];
         otherFeeFilter.acctid = entity.objid;
-        otherFeeFilter.where = otherFeeFilter.options[1] ;
+        otherFeeFilter.where = otherFeeFilter.options[otherFeeViewOption] ;
         return otherFeeFilter;
     }
     
@@ -132,24 +129,14 @@ public class WaterworksAccountModel extends CrudFormModel {
         return [objid: entity.objid];
     }
     
-    
-    void changeState( def state, def action ) {
-        def m = [_schemaname:schemaName];
-        m.objid = entity.objid;
-        m.state = state;
-        m.action = action;
-        persistenceService.update( m );
-        entity.state = state;        
-    }
-    
     void approve() {
         if(!MsgBox.confirm("You are about to approve this account. The data cannot be edited anymore. Proceed?")) return;
-        changeState( "ACTIVE", "approve");
+        acctSvc.approve( [acctid: entity.objid ] );
         MsgBox.alert("Account successfully approved");
     }
     
     void deactivate() {
-        changeState("DRAFT","deactivate");
+        acctSvc.deactivate( [acctid: entity.objid ] );
     }
     
 }

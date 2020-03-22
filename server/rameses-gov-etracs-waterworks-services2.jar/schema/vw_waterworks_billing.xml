@@ -19,9 +19,11 @@
 		<field name="acctno" searchable="true"/> 
 		<field name="acctname" searchable="true"/> 
 		<field name="acctstate" /> 
-		<field name="addresstext" /> 
+		<field name="address_text" /> 
 		<field name="classificationid" /> 
-		<field name="meterstate" /> 
+
+		<field name="prevmonth" /> 
+		<field name="prevyear" /> 		
 		<field name="prevreading" type="integer"/> 
 		<field name="reading" type="integer"/> 
 		<field name="volume" type="integer"/> 
@@ -30,25 +32,29 @@
 		<field name="rate" type="decimal"/> 
 		<field name="hold" /> 
 		<field name="subtotal" type="decimal"/> 
-		<field name="meterid" /> 
-		<field name="meter_objid" /> 
-		<field name="meter_capacity" type="decimal"/> 
-		<field name="meter_size" /> 
-		<field name="meter_brand" /> 
+		<field name="seqno" /> 
+		<field name="periodindexno" /> 
+
+		<complex name="stubout" ref="waterworks_stubout" jointype="many-to-one" required="false">
+			<key field="stuboutid" target="objid"/> 
+		</complex>
+		
+		<complex name="subarea" ref="waterworks_subarea" jointype="many-to-one" required="true">
+			<key field="subareaid" target="objid"/> 
+		</complex>
+
+		<complex name="meter" ref="waterworks_meter" jointype="many-to-one"  required="false" 
+			includefields="objid,serialno,brand,capacity,size.*,state">
+			<key field="meterid" target="objid"/>
+		</complex>
+		<field name="meterstate" />
 
 		<field name="readingdate" />
 		<field name="discdate" /> 
 		<field name="duedate" /> 
 		<field name="fromperiod" /> 
 		<field name="toperiod" /> 
-		<field name="subarea_objid" /> 
-		<field name="subarea_code" /> 
-		<field name="subarea_area_code" /> 		
-		<field name="seqno" /> 
-		<field name="periodindexno" /> 
 
-		<field name="prevmonth" /> 
-		<field name="prevyear" /> 		
 		<field name="remarks" /> 	
 
 		<field name="year" /> 	

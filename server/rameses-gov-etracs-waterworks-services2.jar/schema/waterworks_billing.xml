@@ -2,11 +2,9 @@
 	<element tablename="waterworks_billing">
 		<field name="objid" primary="true"  prefix="WBILL"/>
 		<field name="state" />
+		<field name="batchid" required="true"/>
+		<field name="consumptionid" required="true"/>
 		<field name="billno" />
-
-		<field name="batchid" />
-		<field name="acctid" />
-		<field name="consumptionid" />
 		<field name="surcharge" type="decimal" caption="Surcharge"/>
 		<field name="interest" type="decimal" caption="Interest"/>
 		<field name="otherfees" type="decimal" caption="Other Fees"/>

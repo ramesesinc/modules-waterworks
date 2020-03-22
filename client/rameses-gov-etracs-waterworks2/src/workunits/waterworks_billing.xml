@@ -1,6 +1,6 @@
 <workunit extends="com/rameses/seti2/templates/CrudForm.xml" 
         allowCreate="false" allowDelete="false" allowEdit="false"
-          schemaName="vw_waterworks_billing">
+          schemaName="vw_waterworks_billing" entitySchemaName="waterworks_billing">
     <invokers>
         <invoker type="vw_waterworks_billing:open" caption="Bill Info" action="open" target="popup"/>
         <!-- ACTIONS -->

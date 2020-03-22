@@ -1,15 +1,11 @@
 <schema>
-	<element tablename="vw_waterworks_account">
-		<field name="objid" primary="true"  prefix="WACC"/>
-		<field name="state"  visible="false" defaultValue="ACTIVE"/>
-		<field name="dtstarted" required="false" indexed="true" type="date" caption="Date Started"/>
-		<field name="acctno" required="true" indexed="true" caption="Acct No" searchable="true"/>
+	<element tablename="waterworks_account_info">
+		<field name="objid" primary="true"  prefix="WACCINFO"/>
+
 		<field name="acctname" required="true" indexed="true" caption="Acct Name" searchable="true"/>
-		<field name="acctinfoid" />
 
-		<field name="owner_objid" caption="Owner ID"/>
+		<field name="owner_objid" visible="false" caption="Owner ID"/>
 		<field name="owner_name" indexed="true" caption="Owner Name"/>
-
 		<field name="address_type" caption="Address Type" visible="false"/>
 		<field name="address_text" caption="Address"/>
 		<field name="address_barangay_objid" required="true" caption="Barangay ID"/>
@@ -24,8 +20,6 @@
 		<field name="address_bldgname"  caption="Building Name"/>
 		<field name="address_pin" caption="PIN"/>
 		
-		<field name="remarks" />
-
 		<complex name="stubout" ref="waterworks_stubout" jointype="many-to-one" required="false">
 			<key field="stuboutid" target="objid"/> 
 		</complex>
@@ -34,26 +28,16 @@
 			<key field="subareaid" target="objid"/> 
 		</complex>
 
-		<complex name="meter" ref="waterworks_meter" jointype="many-to-one"  required="false" 
-			includefields="objid,serialno,brand,capacity,size.*,state">
+		<complex name="meter" ref="waterworks_meter" jointype="many-to-one" required="false">
 			<key field="meterid" target="objid"/>
 		</complex>
 		
-		<field name="classificationid" required="true"/>
 		<complex name="classification" ref="waterworks_classification" jointype="many-to-one" required="true">
 			<key field="classificationid" target="objid"/>
 		</complex>	
-
-		<!-- Dates -->
-
 		<field name="units" caption="Units" type="integer" defaultvalue="1"/>
-		<field name="seqno" caption="Seq No" type="integer" defaultvalue="0"/>
 
-		<complex name="attributes" ref="waterworks_account_attribute" jointype="one-to-many" required="false">
-			<key field="objid" target="parentid"/> 
-		</complex>
-
-		<field name="meterstatus"/>
+		<complex name="attributes" serializer="default" type="list"/> 
 	</element>
 
 </schema>

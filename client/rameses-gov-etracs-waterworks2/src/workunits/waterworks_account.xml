@@ -1,14 +1,15 @@
-<workunit schemaName="waterworks_account" allowCreate="false" allowEdit="true">
+<workunit schemaName="vw_waterworks_account" entitySchemaName="waterworks_account"
+          allowCreate="false" allowEdit="true">
 
     <invokers>
         <invoker folderid="/menucategory/waterworks/account" caption="Add Customer Account (Capture)" 
                  action="create" role="MASTER" index="4"/>
         
         <!-- create or open -->
-        <invoker type="waterworks_account:create" caption="Waterworks Customer Account (Capture)" 
+        <invoker type="vw_waterworks_account:create" caption="Waterworks Customer Account (Capture)" 
                  action="create" target="window"/>        
         
-        <invoker type="waterworks_account:open" 
+        <invoker type="vw_waterworks_account:open" 
                  formTitle="Waterworks Account (#{entity.acctno}) #{entity.acctname}" 
                  formId="#{entity.objid}"
                  action="open" target="window">
@@ -17,6 +18,7 @@
         </invoker>     
         
         <invoker type="formActions" action="approve" caption="Approve" 
+                 role="APPROVER"
                  visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; mode=='read' }" /> 
                  
         <invoker type="formActions" action="deactivate" caption="Deactivate"

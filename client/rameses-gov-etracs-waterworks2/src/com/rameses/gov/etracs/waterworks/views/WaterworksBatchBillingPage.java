@@ -327,7 +327,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "attibutename"}
+                new Object[]{"name", "attributename"}
                 , new Object[]{"caption", "Attributes"}
                 , new Object[]{"width", 100}
                 , new Object[]{"minWidth", 50}
