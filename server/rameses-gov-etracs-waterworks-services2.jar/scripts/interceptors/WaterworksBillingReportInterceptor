@@ -1,19 +1,54 @@
 import com.rameses.annotations.*;
 import treasury.facts.*;
+import java.text.*;
 
 class WaterworksBillingReportInterceptor {
 	
-	@Service("WaterworksBillingService")
-	def billingSvc;
+	@DataContext("vw_waterworks_billing")
+	def billingEm;
+
+	@DataContext("vw_waterworks_consumption")
+	def consEm;
+
+	@DataContext("waterworks_batch_billing")
+	def batchEm;
 
 	@After(pattern="FormReportService.getData", eval="#{ args[0].reportid == 'waterworks_billing' }")
 	public void getBillingReport( def evt ) {
 		def t = evt.args[0];
 		def result = evt.result;
-		def acctid = t.parameters.objid;
 
-		def res = billingSvc.getBilling( [acctid: acctid ] );
-		result.data = res;
+		def bill = billingEm.find( [objid: t.txnid ] ).first();
+		def ym = ((bill.year*12)+bill.month);
+
+		def list = consEm.find([acctid: bill.acctid]).select("month,year,volume").orderBy("year, month").where(" ((year*12)+month) <= :ym AND NOT(volume IS NULL)", [ym: ym]).limit(12).list();
+
+		def df = new SimpleDateFormat("yyyy-MM-dd");
+		def df2 = new SimpleDateFormat("MMMyyyy");
+		list?.each {
+			it.monthyear = df2.format( df.parse( it.year + "-" + it.month + "-01" ));
+			it.category = "A";
+		}
+
+		bill.averageconsumption = 0;
+		if( list ) {
+			bill.averageconsumption = list.sum{ it.volume } / list.size(); 
+		}
+
+		bill.barcode = bill.billno;
+		bill.history = list;
+		bill.period = batchEm.find( [objid: bill.batchid ] ).first()?.period;
+
+		bill.details = [];
+		if( bill.arrears ) bill.details << [title: "PREVIOUS BALANCE", amount: bill.arrears, group: "PREVIOUS" ];		
+		if( bill.otherfees ) bill.details << [title: "OTHER CHARGES", amount: bill.otherfees, group:  "PREVIOUS"];		
+		if( bill.surcharge ) bill.details << [title: "SURCHARGE", amount: bill.surcharge, group: "PREVIOUS"];
+		if( bill.interest ) bill.details << [title: "INTEREST", amount: bill.interest, group: "PREVIOUS"];
+		if( bill.credits ) bill.details << [title: "CREDITS FROM ADV.PAYMENT", amount: bill.credits, group: "PREVIOUS"];		
+		if( bill.amount ) bill.details << [title: "CURRENT BALANCE", amount: bill.amount, group: "CURRENT"];		
+
+		result.data = bill;
+
 	}
 
 } 

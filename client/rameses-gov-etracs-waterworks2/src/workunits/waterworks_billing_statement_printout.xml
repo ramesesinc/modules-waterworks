@@ -1,0 +1,23 @@
+<workunit extends="com/rameses/seti2/templates/FormReport.xml">
+    <invokers>
+        <invoker type="vw_waterworks_billing:form:formActions" 
+                 caption="View Billing" 
+                 target="popup" 
+                 action="preview"
+                 index="50"
+                 reportId="waterworks_billing" 
+                 reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_billing.jasper"
+                 txnid="#{entity.objid}"
+                 visibleWhen="#{true}"/>
+        
+        <invoker type="vw_waterworks_billing:form:formActions" 
+                 caption="View Statement" 
+                 target="popup" 
+                 action="preview"
+                 index="51"
+                 reportId="waterworks_statement" 
+                 reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_statement.jasper"
+                 txnid="#{entity.objid}"
+                 visibleWhen="#{true}"/>
+    </invokers> 
+</workunit>

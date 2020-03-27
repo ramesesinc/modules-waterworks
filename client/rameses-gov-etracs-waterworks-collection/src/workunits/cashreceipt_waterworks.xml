@@ -19,8 +19,10 @@
                  name="waterworks" formtype="serial" formno="51"  index="120" />        
         
         <invoker type="cashreceipt:waterworks" action="start" caption="Waterworks Collection"/>
-        <invoker type="cashreceipt:barcode:51030" action="loadBarcode" caption="Cash Receipt Waterworks"/>
     </invokers>
     
     <code class="com.rameses.gov.etracs.waterworks.models.WaterCashReceiptModel"/> 
+    <pages>
+        <page name="initial" template="com.rameses.gov.etracs.waterworks.views.WaterworksCashReceiptInitialPage" />
+    </pages>
 </workunit>

@@ -19,6 +19,7 @@
 		<field name="address_bldgno" caption="Building No"/>
 		<field name="address_bldgname"  caption="Building Name"/>
 		<field name="address_pin" caption="PIN"/>
+		<field name="meterstate"/>
 		
 		<complex name="stubout" ref="waterworks_stubout" jointype="many-to-one" required="false">
 			<key field="stuboutid" target="objid"/> 

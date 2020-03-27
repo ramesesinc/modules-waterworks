@@ -15,18 +15,11 @@ public class WaterConsumptionModel extends CrudFormModel {
     @Service("WaterworksComputationService")
     def compSvc;
     
-    @Service("DateService")
-    def dateSvc;
-    
-    def meterStates = ["ACTIVE","DISCONNECTED","DEFECTIVE"];
-    
-    def handler;
-    
-    def prev;
-    
     @FormTitle
     String title = "Monthly Consumption";
 
+    def meterStates = ["ACTIVE","DISCONNECTED","DEFECTIVE"];
+    
     def _acct;
     public void setAccount( def acct ) {
         def m = [_schemaname:"waterworks_account"];
@@ -39,21 +32,25 @@ public class WaterConsumptionModel extends CrudFormModel {
         return _acct;
     }
     
+    void calc() {
+        if(entity.prevyear ) {
+           def z = [:];
+           z.acctid = entity.acctid;
+           z.prevreading = entity.prevreading;
+           z.reading = entity.reading;
+           z.meterstate = entity.meterstate;
+           def res = compSvc.compute(z);
+           //we cannot use putAll bec. entity is a datamap
+           if(res.volume) entity.volume = res.volume;
+           if(res.amount) entity.amount = res.amount;
+           binding.refresh();
+        }
+    }
+    
     @PropertyChangeListener
     def listener = [
         "entity.reading" : { o->
-            if(entity.prevreading ) {
-                def z = [:];
-                z.acctid = entity.acctid;
-                z.prevreading = entity.prevreading;
-                z.reading = o;
-                def res = compSvc.compute(z);
-                
-                //we cannot use putAll bec. entity is a datamap
-                if(res.volume) entity.volume = res.volume;
-                if(res.amount) entity.amount = res.amount;
-                binding.refresh();
-            }
+            calc();
         }
     ];
     
@@ -83,10 +80,12 @@ public class WaterConsumptionModel extends CrudFormModel {
     void afterCreate() {
         entity.state = 'OPEN';
         entity.acctid = account.objid;
+        entity.acctstate = account.state;
         entity.account = account;
         entity.acctinfoid = account.acctinfoid;
+        entity.meter = account.meter;
         entity.meterid = account.meterid;
-        entity.meterstate = account.meter.state;
+        entity.meterstate = account.meterstate;
         entity.reading = 0;
         entity.volume = 0;
         entity.txnmode = "CAPTURE";
@@ -99,7 +98,7 @@ public class WaterConsumptionModel extends CrudFormModel {
         m.findBy = [acctid: entity.acctid, meterid: entity.meterid];
         m.where = ["batchid IS NULL"];
         m.orderBy = "year DESC, month DESC";
-        prev = queryService.findFirst(m);
+        def prev = queryService.findFirst(m);
         if(prev) {
             entity.prevreading = prev.reading;
             entity.reading = prev.reading;
@@ -113,10 +112,7 @@ public class WaterConsumptionModel extends CrudFormModel {
     }
     
     void afterSave() {
-        if(handler) 
-            handler();
-        else 
-            caller.reload();
+        caller.reload();
     }
     
     def loadConsumption(def yearmonth) {
@@ -138,6 +134,12 @@ public class WaterConsumptionModel extends CrudFormModel {
         def ym = addYearMonth( entity.year, entity.month, -1);
         loadConsumption(ym);
         reloadEntity();
+    }
+    
+    
+    
+    void recalculate() {
+        calc();
     }
     
 }

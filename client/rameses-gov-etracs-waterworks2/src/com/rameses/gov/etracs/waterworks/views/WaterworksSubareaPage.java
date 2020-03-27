@@ -290,7 +290,7 @@ public class WaterworksSubareaPage extends javax.swing.JPanel {
         schemaList3.setName("selectedAccount"); // NOI18N
         schemaList3.setOrderBy("seqno");
         schemaList3.setQueryName("entity");
-        schemaList3.setSchemaName("waterworks_account");
+        schemaList3.setSchemaName("vw_waterworks_account");
         schemaList3.setAllowSearch(true);
         xPanel2.add(schemaList3, java.awt.BorderLayout.CENTER);
 

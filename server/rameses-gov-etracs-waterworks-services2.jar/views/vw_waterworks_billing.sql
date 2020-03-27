@@ -16,7 +16,6 @@ SELECT
    wc.stuboutid,
 
    ((wb.arrears + wb.otherfees + wb.surcharge + wb.interest) - wb.credits) AS subtotal
-
 FROM waterworks_billing wb 
 INNER JOIN waterworks_batch_billing wbb ON wbb.objid = wb.batchid 
 INNER JOIN waterworks_billing_period bs on bs.objid = wbb.periodid 

@@ -18,6 +18,9 @@ class WaterworksAccountPersistenceInterceptor{
 	@DataContext('waterworks_account_info') 
 	def acctInfoEm;
 
+	@DataContext('waterworks_account_attribute') 
+	def attributeEm;
+
 	@Before(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_account'}")
 	public void beforeCreate(def evt) {
 		def o  = evt.args[0];
@@ -49,6 +52,7 @@ class WaterworksAccountPersistenceInterceptor{
 	@After(pattern="PersistenceService.(create|update)", eval="#{args[0]._schemaname == 'waterworks_account'  }")
 	public void afterSave(def evt) {
 		def o = evt.args[0];
+		def res = evt.result;
 		def acctinfoid = o.acctinfoid;
 
 		def meters = wmeter.find([currentacctid:acctinfoid]).list();
@@ -62,6 +66,16 @@ class WaterworksAccountPersistenceInterceptor{
 			u.state = o.meter.state;
 			wmeter.find( [objid: o.meter.objid ] ).update( u ); 
 		}
+		//also insert attributes for indexing;
+		attributeEm.find( [parentid: res.objid ] ).delete();
+		res.attributes?.each {
+			def m = [:];
+			m.objid = res.objid + "-" + it;
+			m.parentid = res.objid;
+			m.attribute = [name: it];
+			attributeEm.create( m );
+		}
+
 	}
 
 	@After(pattern="PersistenceService.read", eval="#{args[0]._schemaname == 'vw_waterworks_account'}")

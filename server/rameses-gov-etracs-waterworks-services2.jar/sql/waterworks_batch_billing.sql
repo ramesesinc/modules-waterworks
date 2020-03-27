@@ -1,26 +1,7 @@
-[findPendingBatchBillingBySubarea]
-SELECT 
-	bb.objid, bb.periodid, bs.year, bs.month, 
-	bb.zoneid, z.schedulegroupid 
-FROM waterworks_batch_billing bb 
-where bb.subareaid = $P{subareaid} 
-AND bb.state NOT IN ('POSTED','COMPLETED')
-order by bb.year desc, bb.month desc 
-
-[findLastBillByZone]
-select 
-	bb.objid, bb.periodid, bs.year, bs.month, 
-	bb.zoneid, z.schedulegroupid  
-from waterworks_batch_billing bb 
-	inner join waterworks_billing_period bs on bs.objid = bb.periodid 
-	inner join waterworks_subarea z on z.objid = bb.subareaid 
-where bb.subareaid = $P{zoneid} ${filter} 
-order by bs.year desc, bs.month desc 
-
 [buildConsumptions]
 INSERT INTO waterworks_consumption ( 
 	objid,state,acctid,acctinfoid,batchid,txnmode,reading,
-	volume,rate,amount,amtpaid,meterid,year,month,hold 
+	volume,rate,amount,amtpaid,meterid,year,month,hold,meterstate 
 ) 
 SELECT 
 	CONCAT(a.objid,'-',br.periodid) AS objid, 
@@ -38,13 +19,49 @@ SELECT
 	ai.meterid,
 	br.year,
 	br.month,
-	IFNULL(prevcon.hold, 0) AS hold
+	IFNULL(prevcon.hold, 0) AS hold,
+	wm.state
 FROM waterworks_batch_billing br 
 INNER JOIN waterworks_account_info ai ON ai.subareaid = br.subareaid
 INNER JOIN waterworks_account a ON a.acctinfoid = ai.objid 
 LEFT JOIN waterworks_meter wm ON wm.objid = ai.meterid 	
 LEFT JOIN waterworks_consumption prevcon 
 	ON prevcon.acctid = a.objid AND prevcon.meterid=ai.meterid AND (((prevcon.year*12)+prevcon.month)) = ((br.year*12)+br.month-1)
+
+[buildBillings]
+INSERT INTO waterworks_billing 
+
+SELECT * FROM vw_waterworks_consumption
+
+
+if( !o.batchid ) throw new Exception("batchid is required");
+		if( !o.consumptionid ) throw new Exception("consumptionid is required");
+		if( !o.acctid ) throw new Exception("acctid is required");
+		if( !o.counter ) throw new Exception("counter is required");
+
+		int errcode = getErrCode( o );
+		def wb = [:];
+		wb.state = (errcode > 0) ? "ERR" : "UNBILLED";
+		wb.batchid = o.batchid;
+		wb.acctid = o.acctid;
+		wb.consumptionid = o.consumptionid;			
+		wb.billno = o.batchid + "-" + String.format("%04d", o.counter);
+		wb.objid = wb.billno;
+		wb.discount = 0;
+		wb.surcharge = 0;
+		wb.interest = 0;
+		wb.otherfees = 0;
+		wb.credits = 0;
+		wb.arrears = 0;
+		wb.averageconsumption = 0;
+		wb.unpaidmonths = 0;
+		wb.billed = 0;
+		wb.printed = 0;
+		wb.errcode = errcode;
+		billEm.create( wb );
+		return wb;
+
+
 
 [findBilledStatus]
 select tmp1.*, (totalcount-billedcount) as balance 

@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="BarChart"
+		 name="waterworks_billing_linechart"
 
 		 language="groovy"		 columnCount="1"
 		 printOrder="Vertical"
@@ -25,8 +25,10 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 
-	<field name="month" class="java.lang.String"/>
-	<field name="consumption" class="java.lang.Integer"/>
+	<field name="monthyear" class="java.lang.String"/>
+	<field name="volume" class="java.lang.Number"/>
+	<field name="monthindex" class="java.lang.Number"/>
+	<field name="category" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -58,7 +60,7 @@
 		</pageFooter>
 		<summary>
 			<band height="81"  isSplitAllowed="true" >
-				<barChart>
+				<lineChart>
 					<chart isShowLegend="false"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
@@ -72,38 +74,38 @@
 						<dataset >
 						</dataset>
 						<categorySeries>
-							<seriesExpression><![CDATA["Month"]]></seriesExpression>
-							<categoryExpression><![CDATA[$F{month}]]></categoryExpression>
-							<valueExpression><![CDATA[$F{consumption}]]></valueExpression>
+							<seriesExpression><![CDATA[$F{category}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{monthyear}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{volume}]]></valueExpression>
 				<itemHyperlink >
 				</itemHyperlink>
 						</categorySeries>
 					</categoryDataset>
-					<barPlot >
-						<plot >
-							<seriesColor seriesOrder="0" color="#3366FF"/>
-</plot>
+					<linePlot isShowShapes="false" >
+						<plot />
+					<categoryAxisLabelExpression><![CDATA[""]]></categoryAxisLabelExpression>
 						<categoryAxisFormat>
 							<axisFormat >
 								<labelFont>
-					<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false" pdfEncoding="Cp1252"/>
+					<font fontName="SansSerif" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false" pdfEncoding="Cp1252"/>
 								</labelFont>
 								<tickLabelFont>
+					<font fontName="SansSerif" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false" pdfEncoding="Cp1252"/>
 								</tickLabelFont>
 							</axisFormat>
 						</categoryAxisFormat>
 						<valueAxisFormat>
 							<axisFormat >
 								<labelFont>
-					<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false" pdfEncoding="Cp1252"/>
+					<font fontName="SansSerif" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false" pdfEncoding="Cp1252"/>
 								</labelFont>
 								<tickLabelFont>
-					<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false" pdfEncoding="Cp1252"/>
+					<font fontName="SansSerif" pdfFontName="Helvetica" size="5" isBold="false" isItalic="false" isUnderline="true" isStrikeThrough="false" isPdfEmbedded="false" pdfEncoding="Cp1252"/>
 								</tickLabelFont>
 							</axisFormat>
 						</valueAxisFormat>
-					</barPlot>
-				</barChart>
+					</linePlot>
+				</lineChart>
 			</band>
 		</summary>
 </jasperReport>

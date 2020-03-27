@@ -21,7 +21,10 @@ public class WaterworksAccountModel extends CrudFormModel {
         entity.attributes = [];
         entity.units = 1;
         entity.meter = [:];
-        entity.stuboutnode = [:];
+    }
+    
+    void afterOpen() {
+        if(entity.attributes==null) entity.attributes = [];
     }
     
     boolean isEditAllowed() {
@@ -34,17 +37,16 @@ public class WaterworksAccountModel extends CrudFormModel {
     void addAttribute() {
         def p = [:]
         p.onselect = { o->
-            if( entity.attributes.find{ it.attribute.name == o.name  } )
+            if( entity.attributes.contains(o.name) )
                 throw new Exception("Attribute already added");
-            def mm = [attribute: o, parent: [objid: entity.objid] ];
-            addItem("attributes", mm );
+            entity.attributes << o.name;    
         }
         Modal.show( "waterworks_attribute:lookup", p );
     }
     
     void removeAttribute() {
         if(!selectedAttribute) throw new Exception("Please select an attribute");
-        removeItem( "attributes", selectedAttribute );
+        entity.attributes.remove(selectedAttribute);
     }
     
     /******************************************************************************

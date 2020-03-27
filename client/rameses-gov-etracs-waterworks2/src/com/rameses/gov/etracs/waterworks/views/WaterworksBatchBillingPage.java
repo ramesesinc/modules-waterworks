@@ -344,7 +344,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         });
         schemaList2.setCustomFilter("batchid = :batchid");
         schemaList2.setDepends(new String[] {"viewtype"});
-        schemaList2.setHandlerName("itemHandler");
+        schemaList2.setHandler("itemHandler");
         schemaList2.setName("selectedItem"); // NOI18N
         schemaList2.setOrderBy("billno");
         schemaList2.setQueryName("query");

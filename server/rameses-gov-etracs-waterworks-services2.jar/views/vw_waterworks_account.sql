@@ -25,9 +25,8 @@ SELECT
   ai.classificationid,
   ai.units,
   ai.attributes,
+  ai.meterstate
 
-  CASE WHEN wm.objid IS NULL THEN 'UNMETERED' WHEN wm.state='ACTIVE' THEN 'METERED' ELSE wm.state END AS meterstatus
-  
 FROM waterworks_account wa 
 INNER JOIN waterworks_account_info ai ON wa.acctinfoid = ai.objid  
 LEFT JOIN waterworks_meter wm ON ai.meterid = wm.objid

@@ -19,11 +19,9 @@ import com.rameses.util.*;
 
 class WaterworksBillingService {
 	
-	@DataContext('waterworks_account')
+	@DataContext('vw_waterworks_account')
 	def acctEm; 
 
-	@DataContext('waterworks_account_attribute')
-	def attrEm; 
 
 	@DataContext("vw_waterworks_consumption")
 	def wcEm;
@@ -48,7 +46,7 @@ class WaterworksBillingService {
 		def facts = [];
 
 		def arr = [];
-		def wp = [ state: 'POSTED' ];
+		def wp = [ state:'POSTED' ];
 		if ( o.year!=null && o.month!=null ) { 
 			arr << "((year * 12)+month) <= :yearmonth";
 			wp.yearmonth = (o.year * 12)+o.month;
@@ -121,10 +119,9 @@ class WaterworksBillingService {
 		factBuilder.facts = billItemFacts; 
 		factBuilder.facts << new WaterAccount( acct );
 
-		def attributes = attrEm.find( [parentid: acct.objid ] ).list();
-		if( attributes ) {
-			attributes*.attribute.each {
-				factBuilder.facts << new WaterworksAttribute(name:it.name);
+		if( acct.attributes ) {
+			acct.attributes.each {
+				factBuilder.facts << new WaterworksAttribute(name:it);
 			}
 		}
 

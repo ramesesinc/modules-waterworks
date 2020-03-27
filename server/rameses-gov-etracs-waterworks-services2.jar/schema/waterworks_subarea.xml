@@ -16,7 +16,7 @@
 			
 		<field name="nextperiod_year" />
 		<field name="nextperiod_month" />
-
+		<field name="nextperiod_monthname" expr="MONTH_ARRAY(nextperiod.month)" />
 	</element>
 
 </schema>

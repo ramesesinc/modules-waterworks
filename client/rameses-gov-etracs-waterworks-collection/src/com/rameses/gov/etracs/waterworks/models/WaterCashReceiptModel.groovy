@@ -10,9 +10,8 @@ import com.rameses.treasury.common.models.*;
 
 class WaterCashReceiptModel  extends CommonCashReceiptModel {
     
-    public boolean getAllowAdvancePayment() {
-        return true;
-    }
+    def txntype = "billing";
+    def depositAmt = 0;
     
     public String getCashReceiptServiceName() {
         return "WaterworksCashReceiptService";

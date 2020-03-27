@@ -6,36 +6,41 @@ import com.rameses.annotations.*;
 **************************************/
 class WaterworksAccountService {
 
+    @DataContext('vw_waterworks_account') 
+    def vwAcctEm; 
+
     @DataContext('waterworks_account') 
     def acctEm; 
 
-    @DataContext('waterworks_account_info') 
-    def acctInfoEm; 
-
 	@DataContext('vw_waterworks_consumption') 
-	def consEm; 
+	def vwConsEm; 
+
+    @DataContext('vw_waterworks_consumption') 
+    def consEm; 
 
 	@ProxyMethod 
 	public def approve( def o ) {
         if(!o.acctid) throw new Exception("acctid is required in WaterworksAccountService.approve")
-        def acct = acctEm.find( [objid: o.acctid ]).first();
+        def acct = vwAcctEm.find( [objid: o.acctid ]).first();
         if(acct.state!='DRAFT') throw new Exception("account must be in DRAFT state");
         
+        def np = acct.subarea.nextperiod;
+
         //retrieve first all consumptions
-        def list = consEm.find( [acctid: acct.objid ]).orderBy("year,month").list();
-        if(!list) throw new Exception("There must be at least one consumption entry");
+        def list = vwConsEm.find( [acctid: acct.objid ]).orderBy("year,month").list();
+        if(!list && acct.meter?.objid!=null) 
+            throw new Exception("There must be at least one consumption entry for metered accounts");
 
         int y = list[0].year;
         int m = list[0].month;
 
         for( oo in list ) {
             if( oo.year!=y && oo.month!=m ) throw new Exception("The month and year must not skip from previous. Missing Year: " + y + " Month: " + m  );
-
             //check if volume is the same as currentreading - prevreading;
-            if( oo.prevreading!=null ) {
-                if( (oo.reading - oo.prevreading ) != oo.volume ) throw new Exception("Discrepancy in volume computation for year " + y + " month:" + m );     
+            if( oo.prevreading!=null && oo.meter.state == 'ACTIVE' ) {
+                def xvol = (oo.reading >= oo.prevreading ?  oo.reading : oo.reading + oo.meter.capacity) - oo.prevreading;
+                if( xvol != oo.volume ) throw new Exception("There is Discrepancy in volume computation active,metered accounts for year " + y + " month:" + m );     
             }
-
             //move to next month
             int ym = ((y*12)+m) + 1;
             y = (int)(ym / 12);
@@ -44,16 +49,18 @@ class WaterworksAccountService {
                 y = y - 1;
                 m = 12;
             };
-            
         }
-        throw new Exception("lusot in approve ")
+        if( ((np.year*12)+np.month)  !=  ((y*12)+m) ) 
+            throw new Exception("Consumption entries must be a month before " + np.year + " " + np.monthname);
+
         acctEm.find( [ objid: acct.objid ]).update( [state: "ACTIVE"] );
+        consEm.find( [acctid: acct.objid ] ).update( [state: 'POSTED']);
 	}
 
     @ProxyMethod 
     public def deactivate( def o ) {
         if(!o.acctid) throw new Exception("acctid is required in WaterworksAccountService.deactivate")
-        def acct = acctEm.find( [objid: o.acctid ]).first();
+        def acct = vwAcctEm.find( [objid: o.acctid ]).first();
         if(acct.state=='DRAFT') throw new Exception("account already in DRAFT state");
         acctEm.find( [ objid: acct.objid ]).update( [state: "DRAFT"] );
     }

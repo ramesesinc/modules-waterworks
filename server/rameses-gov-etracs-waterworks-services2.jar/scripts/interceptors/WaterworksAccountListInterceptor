@@ -27,19 +27,19 @@ class WaterworksAccountListInterceptor{
 				break; 
 
 			case 'active':
-				str = "meterstatus = 'METERED' AND NOT(state='DRAFT') ";
+				str = "meterstate = 'ACTIVE' AND NOT(meterid IS NULL) AND NOT(state='DRAFT') ";
 				break;
 
 			case 'unmetered': 	
-				str = "meterstatus = 'UNMETERED'  AND NOT(state='DRAFT')";
+				str = "meterid IS NULL AND NOT(state='DRAFT')";
 				break;
 
 			case 'defective':
-				str = "meterstatus = 'DEFECTIVE'  AND NOT(state='DRAFT')";
+				str = "meterstate = 'DEFECTIVE'  AND NOT(state='DRAFT')";
 				break;
 
 			case 'disconnected':
-				str = "meterstatus = 'DISCONNECTED'  AND NOT(state='DRAFT')";
+				str = "meterstate = 'DISCONNECTED'  AND NOT(state='DRAFT')";
 				break;
 		}
 

@@ -52,6 +52,7 @@ public class WaterworksBillingPage extends javax.swing.JPanel {
         xLabel22 = new com.rameses.rcp.control.XLabel();
         xLabel23 = new com.rameses.rcp.control.XLabel();
         xLabel24 = new com.rameses.rcp.control.XLabel();
+        xLabel25 = new com.rameses.rcp.control.XLabel();
         xFormPanel3 = new com.rameses.rcp.control.XFormPanel();
         xLabel9 = new com.rameses.rcp.control.XLabel();
         xLabel11 = new com.rameses.rcp.control.XLabel();
@@ -128,7 +129,7 @@ public class WaterworksBillingPage extends javax.swing.JPanel {
         xLabel5.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel2.add(xLabel5);
 
-        xFormPanel4.setCaptionWidth(160);
+        xFormPanel4.setCaptionWidth(200);
 
         xLabel15.setCaption("Prev Unpaid");
         xLabel15.setExpression("#{ entity.arrears }");
@@ -188,6 +189,15 @@ public class WaterworksBillingPage extends javax.swing.JPanel {
         xLabel24.setPreferredSize(new java.awt.Dimension(150, 20));
         xFormPanel4.add(xLabel24);
 
+        xLabel25.setCaption("Payment during bill process");
+        xLabel25.setExpression("#{ entity.adjpayment }");
+        xLabel25.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        xLabel25.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        xLabel25.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xLabel25.setNumberFormat("#,##0.00");
+        xLabel25.setPreferredSize(new java.awt.Dimension(150, 20));
+        xFormPanel4.add(xLabel25);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -195,17 +205,17 @@ public class WaterworksBillingPage extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(xFormPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                    .addComponent(xFormPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(xFormPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(xFormPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addComponent(xFormPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(xFormPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -240,7 +250,7 @@ public class WaterworksBillingPage extends javax.swing.JPanel {
         xFormPanel3.add(xLabel14);
 
         xLabel10.setCaption("Meter Status");
-        xLabel10.setExpression("#{ entity.meter.state }");
+        xLabel10.setExpression("#{ entity.meterstate }");
         xLabel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         xLabel10.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel3.add(xLabel10);
@@ -294,7 +304,7 @@ public class WaterworksBillingPage extends javax.swing.JPanel {
 
         add(xTabbedPane1, java.awt.BorderLayout.CENTER);
 
-        xPanel1.setVisibleWhen("#{ entity.state == 'ERR' }");
+        xPanel1.setVisibleWhen("#{ errmsg != null }");
         xPanel1.setPreferredSize(new java.awt.Dimension(0, 50));
 
         xLabel8.setExpression("<html>#{errmsg}</html>");
@@ -306,7 +316,7 @@ public class WaterworksBillingPage extends javax.swing.JPanel {
             xPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(xPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(xLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 776, Short.MAX_VALUE)
+                .addComponent(xLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 783, Short.MAX_VALUE)
                 .addContainerGap())
         );
         xPanel1Layout.setVerticalGroup(
@@ -345,6 +355,7 @@ public class WaterworksBillingPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLabel xLabel22;
     private com.rameses.rcp.control.XLabel xLabel23;
     private com.rameses.rcp.control.XLabel xLabel24;
+    private com.rameses.rcp.control.XLabel xLabel25;
     private com.rameses.rcp.control.XLabel xLabel3;
     private com.rameses.rcp.control.XLabel xLabel4;
     private com.rameses.rcp.control.XLabel xLabel5;

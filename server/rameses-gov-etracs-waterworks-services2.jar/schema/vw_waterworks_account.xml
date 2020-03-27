@@ -49,11 +49,8 @@
 		<field name="units" caption="Units" type="integer" defaultvalue="1"/>
 		<field name="seqno" caption="Seq No" type="integer" defaultvalue="0"/>
 
-		<complex name="attributes" ref="waterworks_account_attribute" jointype="one-to-many" required="false">
-			<key field="objid" target="parentid"/> 
-		</complex>
-
-		<field name="meterstatus"/>
+		<field name="meterstate"/>
+		<complex name="attributes" serializer="default" type="list"/> 
 	</element>
 
 </schema>

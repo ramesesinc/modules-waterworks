@@ -31,44 +31,18 @@ class WaterworksBillProcessorService {
 	def acctEm;
 
 
-
+	/******************************************************
+	* This is called from 
+	*   1. batch billing persistence
+	*   2. Generating statement from account
+	*******************************************************/ 
 	@ProxyMethod
-	public int getErrCode(def v ) {
-		def o = vwConsumptionEm.find([objid: v.consumptionid]).first();
-		int errcode = 0;
-		if( o.acctstate == "DRAFT" ) {
-			errcode += 2;   //Account must not be in DRAFT mode;
-		} 			
-		if( o.meterid!=null && o.prevreading == null ){
-			errcode += 4;   //There must be a previous month entry;
-		};
-		return errcode;
-	}
-
-	@ProxyMethod
-	public def fixErrors(def o) {
-		int errcode = getErrCode( o );
-		def u = [:];
-		u.errcode = errcode;
-		if(errcode==0) u.state = "UNBILLED";
-		billEm.find( [objid: o.objid] ).update( u );
-		return u;
-	}
-
-	@ProxyMethod
-	public def create( def o ) {
-		if( !o.batchid ) throw new Exception("batchid is required");
-		if( !o.consumptionid ) throw new Exception("consumptionid is required");
-		if( !o.acctid ) throw new Exception("acctid is required");
-		if( !o.counter ) throw new Exception("counter is required");
-
-		int errcode = getErrCode( o );
+	public def create(def p) {
 		def wb = [:];
-		wb.state = (errcode > 0) ? "ERR" : "UNBILLED";
-		wb.batchid = o.batchid;
-		wb.acctid = o.acctid;
-		wb.consumptionid = o.consumptionid;			
-		wb.billno = o.batchid + "-" + String.format("%04d", o.counter);
+		wb.state = p.state;
+		wb.batchid = p.batchid;
+		wb.consumptionid = p.consumptionid;			
+		wb.billno = p.batchid + "-" + String.format("%04d", p.counter);
 		wb.objid = wb.billno;
 		wb.discount = 0;
 		wb.surcharge = 0;
@@ -76,18 +50,20 @@ class WaterworksBillProcessorService {
 		wb.otherfees = 0;
 		wb.credits = 0;
 		wb.arrears = 0;
+		wb.adjpayment = 0;
 		wb.averageconsumption = 0;
 		wb.unpaidmonths = 0;
 		wb.billed = 0;
 		wb.printed = 0;
-		wb.errcode = errcode;
-		billEm.create( wb );
+		billEm.create( wb );	
 		return wb;
 	}
+	
 
 	@ProxyMethod
-	public void process( o ) {
+	public def process( o ) {
 		//parameters must be objid,acctid and consumptionid 
+
 		def u = [:];
 		u.billed = 1;
 		u.arrears = 0;
@@ -95,15 +71,16 @@ class WaterworksBillProcessorService {
 		u.interest = 0;
 		u.otherfees = 0;
 		u.credits = 0;
+		u.adjpayment = 0;
 
-		def pp = [ acctid : o.acctid, year: o.year, month: o.month ];
-		/*
+		def pp = [ acctid : o.acctid ];
+
+		//we need to get only the previous month otherwise it will include the latest reading included in the bill
 		if ( o.year && o.month ) {
 			def ym = ((o.year * 12) + o.month)-1;
 			pp.year = (int)(ym/12);
 			pp.month = (int)(ym%12);
 		}
-		*/
 
 		def b = billingSvc.getBilling( pp ); 
 		if( b?.billitems) {
@@ -122,13 +99,14 @@ class WaterworksBillProcessorService {
 			}	
 		}
 		//update the waterworks_billing.
-		u.state = "FOR-READING";
+		//u.state = "FOR-READING";
 		billEm.find([ objid: o.objid ]).update( u );
 
 		//if there is no meter, run the computeSvc to get the volume and compute the consumption amount.
-		if( !b.meterid ) {
+		if( !b.meterid && o.consumptionid ) {
 			computeSvc.compute([acctid:o.acctid, consumptionid: o.consumptionid, meterstate: o.meterstate  ]);
 		}
+		return u;
 	}
 
 

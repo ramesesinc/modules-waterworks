@@ -6,11 +6,11 @@ class WaterworksBatchBillingPersistenceInterceptor {
 	@Service("WorkflowTaskService")
 	def taskSvc;
 
-	@Service("WaterworksBillProcessorService")
-	def  billProcSvc;
-
 	@Service("WaterworksBatchBillProcessorService")
    	def batchSvc;
+
+   	@Service("WaterworksBillProcessorService")
+   	def billSvc;
 
 	@Service("DateService")
 	def dateSvc;
@@ -78,8 +78,7 @@ class WaterworksBatchBillingPersistenceInterceptor {
 			throw new Exception("No accounts processed. There must be at least one account under this subarea");
 		int i = 1;
 		items.each {
-			def b = [batchid: result.objid, consumptionid: it.objid, acctid: it.acctid, counter: i++ ]
-			billProcSvc.create( b );
+			billSvc.create( [batchid: it.batchid, consumptionid: it.objid, counter: (i++), state: 'UNBILLED' ] )
 		};
 
 		def p = [:];

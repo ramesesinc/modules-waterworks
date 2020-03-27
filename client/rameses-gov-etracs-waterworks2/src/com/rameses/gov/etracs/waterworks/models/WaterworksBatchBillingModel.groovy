@@ -43,7 +43,8 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
     
    def getViewtype() {
         if(task.state.matches("draft|for-review")) {
-            return "billing";
+            //return "billing";
+            return "reading";
         }
         else {
             return "reading";
@@ -83,11 +84,11 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
             menuitem.func( item );
         },
         isColumnEditable: {item,colName->
-            if(task?.state != "for-reading") return false;
+            //if(task?.state != "for-reading") return false;
             if (colName == "reading" && item.meterid!=null) {
                 return true; 
             }
-            else if (colName == "volume" && item.meter.state == 'DEFECTIVE') {
+            else if (colName == "volume" && item.meterstate == 'DEFECTIVE') {
                 return true; 
             }
             else {
@@ -98,16 +99,19 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
             if(colName.matches("reading|volume")) {
                 def res = calcConsumption(item);
                 item.putAll(res);
+                itemHandler.refreshSelectedItem();
             }
         },
         isForceUpdate: {
             return true; 
         }    
-    ];
+    ] ;
    
    def calcConsumption( def item ) {
-       def z = [:];
+        def z = [:];
         z.acctid = item.acctid;
+        z.consumptionid = item.consumptionid;
+        z.meterstate = item.meterstate;
         z.prevreading = item.prevreading;
         z.reading = item.reading;
         z.volume = item.volume;

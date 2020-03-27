@@ -16,7 +16,8 @@
 		<field name="printed"/>
 		<field name="refbillno"/>
 		<field name="remarks"/>
-		<field name="errcode" type="integer"/>		
+		<field name="errcode" type="integer"/>
+		<field name="adjpayment" type="decimal" caption="Adj.Payment"/>		
 	</element>
 </schema>
 

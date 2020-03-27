@@ -12,34 +12,21 @@ public class WaterworksBillingModel extends CrudFormModel {
     @Service("WaterworksBillProcessorService")
     def billProcessor;
     
+    @Service("WaterworksComputationService")
+    def compSvc;
+    
     String errmsg;
     
-    public boolean getAcctNotActivated() {
-        return ((entity.errcode & 2)==2);
-    }
-    
-    public boolean getHasNoPrevEntry() {
-        return ((entity.errcode & 4)==4);
-    }
-    
     void afterInit() {
-        def buff = [];
-        if( acctNotActivated ) buff << "<div>Account is not yet activated. Click on Activate";
-        if( hasNoPrevEntry ) buff << "<div>Please include a previous entry. Click on Add Prev Entry then click activate to complete";
-        if(buff) {
-            errmsg = "Please correct the ff. errors <br>" + buff.join("<br>");            
+        if( entity.acctstate == "DRAFT") {
+            errmsg = "Account is still not active"
         }
-    }
-    
-    void fixErrors() {
-        def u = billProcessor.fixErrors( entity );
-        if(u) entity.putAll( u );
     }
     
     def addPrevEntry() {
         def m = [:];
         m.account = [objid: entity.acctid];
-        return Inv.lookupOpener("waterworks_consumption:create", m);
+        return Inv.lookupOpener("vw_waterworks_consumption:create", m);
     }
     
     void updateBillStatus() {
@@ -47,7 +34,7 @@ public class WaterworksBillingModel extends CrudFormModel {
     }
     
     def viewAccount() {
-        def op = Inv.lookupOpener( "waterworks_account:open", [entity: [objid: entity.acctid ]], [width:300]);
+        def op = Inv.lookupOpener( "vw_waterworks_account:open", [entity: [objid: entity.acctid ]]);
         op.target = "popup";
         return op;
     }
@@ -61,4 +48,40 @@ public class WaterworksBillingModel extends CrudFormModel {
         caller.itemHandler.moveNextRecord();
         reloadEntity();
     }
+    
+    void rebill() {
+        def bill = billProcessor.process( entity );
+        if(bill) entity.putAll( bill );
+        binding.refresh();
+    }
+    
+    void recalc() {
+        def z = [:];
+        z.acctid = entity.acctid;
+        z.consumptionid = entity.consumptionid;
+        z.prevreading = entity.prevreading;
+        z.reading = entity.reading;
+        z.meterstate = entity.meterstate;
+        def res = compSvc.compute(z);
+        //we cannot use putAll bec. entity is a datamap
+        if(res.volume) entity.volume = res.volume;
+        if(res.amount) entity.amount = res.amount;
+        binding.refresh();
+        MsgBox.alert("recalc");
+    }
+    
+    def editReading() {
+        def h = { o->
+            entity.reading = o;
+            recalc();
+        }
+        def d = [value: entity.reading];
+        return Inv.lookupOpener("decimal:prompt", [data:d, handler: h]);
+    }
+    
+    def printBill() {
+        
+        MsgBox.alert("print Bill");
+    }
+    
 }

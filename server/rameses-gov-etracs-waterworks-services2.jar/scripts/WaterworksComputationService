@@ -33,20 +33,21 @@ class WaterworksComputationService  {
 		def facts = [];
 		facts << new WaterAccount( acct );
 		if( acct.attributes ) {
-			acct.attributes*.attribute.each {
-				facts << new WaterworksAttribute(name:it.name);
+			acct.attributes.each {
+				facts << new WaterworksAttribute(name:it);
 			}
 		}
 
 		def meter = acct.meter;
-		
+		def meterstate = o.meterstate;
+		if(!meterstate) meterstate = acct.meterstate;
+
 		//if no meter then do not compute volume based on reading
 		if( meter ) {
+			meter.state = meterstate;
+			
 			if(!o.prevreading) throw new Exception("prevreading is required in WaterworksComputationService");
 			if(!o.reading) throw new Exception("reading is required in WaterworksComputationService");
-
-			def meterstate = meter.state;
-			//throw new Exception("meter state is " + meterstate );
 
 			if( o.prevreading >= meter.capacity ) {
                 throw new Exception("Prev reading must be less than meter capacity");
@@ -76,11 +77,12 @@ class WaterworksComputationService  {
 				res.volume = it.volume;
 			}
 		}
-		//if there is consumption id then update it. update also the current reading of the meter
+		//if there is consumption id then update it. 
 		if(o.consumptionid) {
 			res.reading = o.reading; 
 			consEm.find( [objid: o.consumptionid ] ).update( res );
 		}
+
 		return res;
 	}
 

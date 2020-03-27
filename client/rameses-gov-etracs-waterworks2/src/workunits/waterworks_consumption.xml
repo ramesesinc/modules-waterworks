@@ -11,6 +11,9 @@
             <action role="MASTER" />
             <action role="SHARED" allowCreate="false" allowEdit="false" allowDelete="false" />
         </invoker>
+        
+        <invoker type="formActions" caption="Recalculate" action="recalculate" 
+                 visibleWhen="#{ entity.acctstate == 'DRAFT' &amp;&amp; mode != 'read'  }"/> 
     </invokers>
 
     <code class="com.rameses.gov.etracs.waterworks.models.WaterConsumptionModel"/>
