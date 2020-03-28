@@ -17,7 +17,7 @@ class WaterworksBatchBillProcessorService {
 	@Service("WaterworksComputationService")
 	def computeSvc;
 
-	@Service("WaterworksBillingService")
+	@Service("WaterworksBillingRuleService")
 	def billingSvc;
 
 	@ProxyMethod 

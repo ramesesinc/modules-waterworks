@@ -21,5 +21,12 @@
 			<key field="objid" target="parentid"/>
 		</complex>	
 		<field name="remarks" />
+
+		<!-- this is to mark the billid being paid. optional applicable only to billing and deposit transactions -->
+		<field name="billid" />
+
+		<!-- refer to cash receipt initial payment -->
+		<field name="pmttxntype"/>
+
 	</element>
 </schema>

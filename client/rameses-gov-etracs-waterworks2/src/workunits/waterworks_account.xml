@@ -21,9 +21,12 @@
                  role="APPROVER"
                  visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; mode=='read' }" /> 
                  
+        <invoker type="formActions" action="generateBill" caption="Generate Statement" 
+                 visibleWhen="#{ entity.billid ==null &amp;&amp; mode=='read' }" /> 
+
         <invoker type="formActions" action="deactivate" caption="Deactivate"
-                 role="ADMIN"
-                 visibleWhen="#{ entity.state == 'ACTIVE' &amp;&amp; mode=='read' }" />          
+        role="ADMIN"
+        visibleWhen="#{ entity.state == 'ACTIVE' &amp;&amp; mode=='read' }" />          
         
         <!-- subitem actions -->
         <invoker type="consumptionActions" action="viewConsumptionPayment" caption="View Payments" /> 

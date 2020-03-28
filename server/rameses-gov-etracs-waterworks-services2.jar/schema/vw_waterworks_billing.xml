@@ -11,6 +11,7 @@
 		<field name="otherfees" type="decimal"/> 
 		<field name="credits" type="decimal"/> 
 		<field name="arrears" type="decimal"/> 
+		<field name="otherfeearrears" type="decimal" />
 		<field name="adjpayment" type="decimal"/>
 		<field name="averageconsumption" /> 
 		<field name="billed" /> 

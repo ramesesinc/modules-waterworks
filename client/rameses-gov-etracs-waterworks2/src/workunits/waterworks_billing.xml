@@ -14,7 +14,9 @@
         <invoker type="formActions" caption="Edit Reading" action="editReading" />
         <invoker type="formActions" caption="Edit Volume" action="editVolume" />
              
-        <invoker type="formActions" caption="View History" action="viewHistory" />      
+        <invoker type="formActions" caption="View History" action="viewHistory" />  
+        
+            
         
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillingModel" />

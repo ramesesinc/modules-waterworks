@@ -21,6 +21,9 @@ class WaterworksAccountPersistenceInterceptor{
 	@DataContext('waterworks_account_attribute') 
 	def attributeEm;
 
+	@DataContext('vw_waterworks_billing') 
+	def billEm;
+
 	@Before(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_account'}")
 	public void beforeCreate(def evt) {
 		def o  = evt.args[0];
@@ -84,6 +87,12 @@ class WaterworksAccountPersistenceInterceptor{
 		def amt = creditEm.find( [acctid: o.objid ]).select("amount:{SUM(dr-cr)}").val();
 		o.totalcredits = 0;
 		if(amt!=null)	o.totalcredits = amt;
+
+		//load the latest bill
+		def bill = billEm.find( [acctid: o.objid ]).where("state IN ('PENDING', 'POSTED') ").orderBy("year DESC, month DESC").first();
+		if( bill ) {
+			o.billid = bill.objid;
+		}
 	}
 
 

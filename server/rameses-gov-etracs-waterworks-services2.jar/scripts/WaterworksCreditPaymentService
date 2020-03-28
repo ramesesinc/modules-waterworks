@@ -1,0 +1,110 @@
+import com.rameses.annotations.*;
+
+/**
+* This service is called from the WaterworksBillingService process method.
+* It checks if there is a balance in the waterworks_credit table.
+* If there is a balance, it attempts to post/pay the amount to the ledgers
+* creates a waterworks_payment entry of type billingcredit, and adds
+* an entry in the waterworks_credit ledger on the cr side for the amount applied.
+**/
+class WaterworksCreditPaymentService {
+	
+	@DataContext("waterworks_payment")
+	def paymentEm;
+
+	@DataContext("waterworks_consumption")
+	def consEm;
+
+	@DataContext("waterworks_otherfee")
+	def otherFeeEm;
+
+	@DataContext("waterworks_credit")
+	def creditEm;
+
+	@Service("WaterworksBillingRuleService")
+	def billRuleSvc;
+
+	@ProxyMethod
+	public def postPayment( def b ) {
+		if(!b.acctid) throw new Exception("acctid is required in WaterworksCreditPaymentService.postPayment");
+		if(!b.billid) throw new Exception("billid is required in WaterworksCreditPaymentService.postPayment");
+		if(!b.amtpaid) throw new Exception("amtpaid or credit amount to apply is required in WaterworksCreditPaymentService.postPayment");
+
+		//run the billing to apply payment
+		def res = billRuleSvc.execute( b );
+
+		//post to the ledgers. discount should only be applied once
+		def billitems = res.billitems;
+		def items = [];
+		billitems.each {
+			if(it.discount == null) it.discount = 0;
+			if(it.amount == null ) it.amount = 0;
+			if(it.reftype == 'waterworks_consumption') {
+				consEm.find( [objid: it.refid ]  ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ] , [amt: it.amount]  );
+				items << it;
+			}
+			else if( it.reftype == 'waterworks_otherfee') {
+				otherFeeEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ], [amt: it.amount] );
+				items << it;
+			}
+		}
+
+		def postDate = dateSvc.getServerDate();
+
+		//insert into the cr side of the credit ledger
+		def c = [:];
+		c.acctid = b.acctid;
+		c.refid = b.objid;
+		c.refdate = postDate;
+		c.refno = b.billno;
+		c.reftype = "billing";
+		c.dr = 0;		
+		c.cr = items.sum{ it.amount };
+		creditEm.create( c );
+
+		//insert into waterworks_payment so we can log and allow it to be voided
+		def pmt = [:];
+		pmt.txndate = postDate;
+		pmt.acctid = b.acctid;
+		pmt.refdate = postDate;
+		pmt.refno = b.billno;
+		pmt.reftype = "billing";
+		pmt.refid = b.objid;
+		pmt.amount = b.amount;
+		pmt.voided = 0;
+		pmt.txnmode = rct.txnmode;
+		pmt.remarks = rct.remarks;
+		pmt.items = items;
+		if(rct.billid) pmt.billid = rct.billid;
+		pmt.discount = pmt.items.sum( it.discount );
+		paymentEm.create( pmt );
+	}
+
+	@ProxyMethod 
+	public def voidPayment( param ) {
+		if(!param.billid) throw new Exception("billid is required in WaterworksCreditPaymentService.voidPayment")
+
+		//check first if we can still void the transaction
+		def pmt = paymentEm.find( [refid: param.billid  ]).first(1);
+		if(!pmt) throw new Exception("payment not found");
+
+		if(!pmt.items) throw new Exception("payment items not found!");
+
+		pmt.items.each {
+			if(it.reftype == "waterworks_consumption") {
+				consEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid - :amt}", discount: 0 ], [amt: it.amount] );
+			}
+			else if(it.reftype == "waterworks_otherfee"  ) {
+				otherFeeEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid - :amt}", discount: 0 ], [amt: it.amount] );
+			}
+		}
+		//really delete the payment since this will not matter anymore
+		paymentEm.find( [objid: pmt.objid] ).delete();
+
+		//delete also the credit entry
+		creditEm.find( [refid: param.billid ] ).delete();
+
+	}
+
+
+}

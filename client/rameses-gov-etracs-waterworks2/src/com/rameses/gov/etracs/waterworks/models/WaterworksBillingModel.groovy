@@ -9,7 +9,7 @@ import java.text.*;
 
 public class WaterworksBillingModel extends CrudFormModel {
     
-    @Service("WaterworksBillProcessorService")
+    @Service("WaterworksBillingService")
     def billProcessor;
     
     @Service("WaterworksComputationService")

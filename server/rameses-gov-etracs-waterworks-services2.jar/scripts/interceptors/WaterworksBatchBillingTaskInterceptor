@@ -27,7 +27,7 @@ class WaterworksBatchBillingTaskInterceptor {
 	@DataContext("waterworks_billing")
 	def wbillEm;
 
-	@Service("WaterworksPostCreditService")
+	@Service("WaterworksCreditPaymentService")
 	def creditSvc;
 
 	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].action == 'submit' && args[0].to == 'processing'  }")

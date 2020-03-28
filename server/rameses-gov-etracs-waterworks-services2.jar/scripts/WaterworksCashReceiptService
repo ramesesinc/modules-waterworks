@@ -2,7 +2,7 @@ import com.rameses.annotations.*;
 
 class WaterworksCashReceiptService {
 
-    @Service('WaterworksBillingService') 
+    @Service('WaterworksBillingRuleService') 
     def billingSvc; 
 
     @Service("NumberService")
@@ -37,6 +37,10 @@ class WaterworksCashReceiptService {
         //attach the accounts before returning to the client
 
         rct.billitems = res.billitems;
+
+
+        rct.pmttxntype = pp.txntype;
+
         return rct;
 	}
 

@@ -12,6 +12,7 @@ public class WaterworksAccountModel extends CrudFormModel {
     @Service("WaterworksAccountService")
     def acctSvc;
     
+    
     def dateFormatter = new java.text.SimpleDateFormat('yyyy-MM-dd'); 
     
     def meterStates = ["ACTIVE","DISCONNECTED","DEFECTIVE"];
@@ -139,6 +140,10 @@ public class WaterworksAccountModel extends CrudFormModel {
     
     void deactivate() {
         acctSvc.deactivate( [acctid: entity.objid ] );
+    }
+    
+    void generateBill() {
+        acctSvc.generateBill( [objid: entity.objid ] );
     }
     
 }

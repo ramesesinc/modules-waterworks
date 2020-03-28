@@ -30,5 +30,6 @@
 		<field name="month" caption="Month"/>		
 
 		<field name="hold" />
+
 	</element>
 </schema>

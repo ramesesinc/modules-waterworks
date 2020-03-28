@@ -23,16 +23,11 @@ class WaterworksPaymentService {
 		if(!rct.billitems) throw new Exception("Please include billitems");
 		if(!rct.acctid ) throw new Exception("acctid is required");
 
-		if(!rct.reftype) rct.reftype = "cashreceipt";
-		if(!rct.txndate) rct.txndate = dateSvc.getServerDate();
-		if(!rct.txnmode) rct.txnmode = "CAPTURE";
-		if(!rct.refno) rct.refno = rct.receiptno;
-		if(!rct.refdate ) rct.refdate = rct.receiptdate;
-
-
 		//post to the ledgers. discount should only be applied once
 		def billitems = rct.billitems;
 		billitems.each {
+			if(it.discount == null) it.discount = 0;
+			if(it.amount == null ) it.amount = 0;
 			if(it.reftype == 'waterworks_consumption') {
 				consEm.find( [objid: it.refid ]  ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ] , [amt: it.amount]  );
 			}
@@ -40,21 +35,18 @@ class WaterworksPaymentService {
 				otherFeeEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ], [amt: it.amount] );
 			}
 			else if( it.reftype == 'waterworks_credit' ) {
+				//this is for overpayments and deposits
 				def c = [:];
 				c.acctid = rct.acctid;
 				c.refid = rct.objid;
 				c.refdate = rct.receiptdate;
 				c.refno = rct.receiptno;
 				c.reftype = "cashreceipt";
-				if( it.amount > 0 ) {
-					c.dr = it.amount;
-					c.cr = 0;
-				}
-				else {
-					c.dr = 0;
-					c.cr = it.amount * -1;
-				}
+				c.dr = it.amount;
+				c.cr = 0;
 				c = creditEm.create( c );
+
+				//this is for reference when voiding
 				it.refid = c.objid;
 			}
 			else {
@@ -64,19 +56,21 @@ class WaterworksPaymentService {
 
 		//post only at the last so the credit refid can be applied.
 		def pmt = [:];
-		pmt.txndate = rct.txndate;
+		pmt.txndate = dateSvc.getServerDate();;
 		pmt.acctid = rct.acctid;
-		pmt.refdate = rct.refdate;
-		pmt.refno = rct.refno;
-		pmt.reftype = rct.reftype;
+		pmt.refdate = rct.receiptdate;
+		pmt.refno = rct.receiptno;
+		pmt.reftype = "cashreceipt";
 		pmt.refid = rct.objid;
+		pmt.discount = pmt.items.sum( it.discount );		
 		pmt.amount = rct.amount;
 		pmt.voided = 0;
 		pmt.txnmode = rct.txnmode;
 		pmt.remarks = rct.remarks;
+		pmt.pmttxntype = rct.pmttxntype;
 		pmt.items = rct.billitems.collect{ [refid: it.refid, reftype:it.reftype, amount: it.amount, discount: it.discount, surcharge: it.surcharge, interest: it.interest, remarks: it.remarks]  };
+		if(rct.billid) pmt.billid = rct.billid;
 		paymentEm.create( pmt );
-
 	}
 
 	@ProxyMethod 
@@ -100,7 +94,6 @@ class WaterworksPaymentService {
 			}
 		}
 		paymentEm.find( [objid: pmt.objid] ).update( [voided: 1 ] );
-
 	}
 
 

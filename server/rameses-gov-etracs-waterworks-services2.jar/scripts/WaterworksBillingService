@@ -10,154 +10,120 @@ import com.rameses.util.*;
 
 
 /****************************************************************************************
-* Applicable for billing one item only.
-* This is called on the ff. instances:
-*   1. Batch billing - to get the arrears or overpayments if any
-*   2. Cash Receipt - to display the receipts
-*   3.  
+* This is for individual bills
 *****************************************************************************************/
-
 class WaterworksBillingService {
 	
-	@DataContext('vw_waterworks_account')
-	def acctEm; 
+	@Service("WaterworksComputationService")
+	def computeSvc;
+
+	@Service("WaterworksBillingRuleService")
+	def billingSvc;
+
+	@DataContext('waterworks_billing')
+	def billEm; 
+
+	@DataContext('vw_waterworks_billing')
+	def vwBillEm; 
 
 
-	@DataContext("vw_waterworks_consumption")
-	def wcEm;
+	@DataContext('waterworks_account')
+	def acctEm;
 
-	@DataContext("waterworks_credit")
-	def wcCreditEm;
 
-	@DataContext("waterworks_otherfee")
-	def wotherEm;
+	@Service("WaterworksCreditPaymentService")
+	def creditSvc;
 
-	@DataContext("waterworks_itemaccount")
-	def itemAccountEm;
+	@DataContext('waterworks_otherfee')
+	def otherFeeEm;
 
-	@Service("BillingRuleService")
-	def ruleSvc;	
+	@DataContext('waterworks_credit')
+	def creditEm;
 
-	@Service("WaterworksScheduleService")
-	def schedSvc;
+	/******************************************************
+	* This is called from 
+	*   1. batch billing persistence
+	*   2. Generating statement from account
+	*******************************************************/ 
+	@ProxyMethod
+	public def create(def p) {
+		def wb = [:];
+		wb.state = p.state;
+		wb.batchid = p.batchid;
+		wb.consumptionid = p.consumptionid;
+		wb.billno = p.billno;			
+		wb.objid = wb.billno;
+		wb.discount = 0;
+		wb.surcharge = 0;
+		wb.interest = 0;
+		wb.otherfees = 0;
+		wb.credits = 0;
+		wb.arrears = 0;
+		wb.adjpayment = 0;
+		wb.averageconsumption = 0;
+		wb.unpaidmonths = 0;
+		wb.billed = 0;
+		wb.printed = 0;
+		billEm.create( wb );	
+		return wb;
+	}
+	
 
-	def loadBillItems( o ) {
+	@ProxyMethod
+	public def process( o ) {
+		//parameter should be the bill 
 
-		def facts = [];
+		//update first the otherfees billid for this year and month
+		def bill = vwBillEm.find( [objid:  o.objid ] ).first();
+		otherFeeEm.find( [acctid: bill.acctid] ).where( "year =:yr AND month = :mon", [yr: bill.year, mon: bill.month ] ).update( [billid: bill.objid ] );
 
-		def arr = [];
-		def wp = [ state:'POSTED' ];
-		if ( o.year!=null && o.month!=null ) { 
-			arr << "((year * 12)+month) <= :yearmonth";
-			wp.yearmonth = (o.year * 12)+o.month;
-		} 
-		def wheres = []; 
-		wheres.addAll( arr ); 
-		wheres << " state = :state "; 
-		wheres << " (amount - amtpaid - discount) > 0 ";
+		def u = [:];
+		u.billed = 1;
+		u.arrears = 0;
+		u.surcharge = 0;
+		u.interest = 0;
+		u.adjpayment = 0;
 
-		def select = "hold,year,month,volume,amount:{amount-amtpaid-discount},";
-		select += "principal:{amount},amtpaid,refid:{objid},reftype:{'waterworks_consumption'}";
-		def conList = wcEm.find([acctid: o.acctid]).select(select).where(wheres.join(" AND "), wp).orderBy("year,month").list();
+		u.credits = creditEm.find( [acctid: bill.acctid] ).select("c:{SUM(dr-cr)}").val();
+		if(u.credits == null) u.credits = 0;
+		u.otherfees = otherFeeEm.find( [billid: bill.objid ] ).select( "c:{SUM(amount)}").val();
+		if(u.otherfees==null) u.otherfees = 0;
 
-		conList.each {
-			def sked = schedSvc.getSchedule( [ scheduleid: o.scheduleid, year:it.year, month: it.month ] );
-			facts << new WaterBillingPeriod( sked );
-			if( it.hold ) {
-				it.amount = 0;
-				it.amtpaid = 0;
-			}	
-			facts << new WaterBillItem(it);
+		def pp = [ acctid : bill.acctid, billid: bill.objid ];
+		//we need to get only the previous month otherwise it will include the latest reading included in the bill
+		def ym = ((bill.year * 12) + bill.month)-1;
+		pp.year = (int)(ym/12);
+		pp.month = (int)(ym%12);
+
+		def b = billingSvc.getBilling( pp ); 
+		if( b?.billitems) {
+			def arrears = b.billitems.findAll{ it.reftype == 'waterworks_consumption' }.sum{ it.amount  };
+			def surcharge = b.billitems.findAll{it.surcharge}?.sum{ it.surcharge };
+			def interest = b.billitems.findAll{it.interest}?.sum{ it.interest };
+			def otherFees = b.billitems.findAll{ it.reftype == 'waterworks_otherfee' }?.sum{ it.amount };
+
+			if( arrears ) u.arrears = arrears;
+			if( surcharge ) u.surcharge = surcharge;
+			if( interest ) u.interest = interest;
+			if( otherFees ) u.otherfeearrears = otherFees;
 		}
 
-		//select for other fees
-		wheres = []; 
-		wheres.addAll( arr );  
-		wheres << "(amount - amtpaid - discount) > 0"; 
-		select = "year,month,item.*,billcode:{item.objid},amount:{amount-amtpaid-discount},amtpaid,principal:{amount},refid:{objid},reftype:{'waterworks_otherfee'}";
-		conList = wotherEm.find([acctid: o.acctid]).select(select).where(wheres.join(" AND "), wp).orderBy("year,month").list();
-		conList.each {
-			facts << new MonthBillItem(it);
+		//if there is no meter, run the computeSvc to get the volume and compute the consumption amount.
+		if( !bill.meterid ) {
+			computeSvc.compute([acctid:bill.acctid, consumptionid: bill.consumptionid, meterstate: bill.meterstate  ]);
 		}
-
-		//if there are no water or other billitems then immediately return the list
-		if(!facts && o.request_action=='cashreceipt' ) return facts;
-
-		//if request action is credit payment, do not include credit items
-		if( o.request_action == 'creditpayment') return facts;
-
-		//select credit for advance payments not yet deducted
-		def cr = wcCreditEm.find( [acctid: o.acctid] ).select( "amount:{SUM(cr-dr)}").first();
-		if(cr!=null && cr.amount !=null && cr.amount != 0 ) {
-			cr.reftype = "waterworks_credit";
-			facts << new CreditBalanceBillItem( cr );
-		}
-		return facts;
+				
+		billEm.find([ objid: bill.objid ]).update( u );
+		return u;
 	}
 
 	@ProxyMethod
-	public def getBilling( pp ) {
-		def acct = acctEm.find([ objid: pp.acctid ]).first();
-		if(!acct) {
-			acct = acctEm.find( [acctno: pp.acctid ] ).first();
+	public def approve( def o ) {
+		def creditAmt = creditEm.find( [acctid: o.acctid] ).select("c:{SUM(dr-cr)}").val();
+		if(creditAmt > 0 ) {
+			creditSvc.postPayment( [acctid: o.acctid, billid: o.billid, amtpaid: creditAmt ] );
 		}
-		if(!acct) throw new Exception("Account not found");
-
-		def scheduleid = acct.subarea.schedulegroupid;
-
-		def pv = [year: pp.year, month: pp.month, acctid: acct.objid, scheduleid: scheduleid ];
-		if( pp.request_action ) pv.request_action = pp.request_action;
-		def billItemFacts = loadBillItems( pv );
-
-		if(!billItemFacts && !pp.amtpaid ) {
-			acct.items = [];
-			acct.billitems = [];
-			return acct;
-		}
-
-		def factBuilder = new FactBuilder();
-		factBuilder.facts = billItemFacts; 
-		factBuilder.facts << new WaterAccount( acct );
-
-		if( acct.attributes ) {
-			acct.attributes.each {
-				factBuilder.facts << new WaterworksAttribute(name:it);
-			}
-		}
-
-		def req = [rulename:'waterworksbilling'];
-		req.factBuilder = factBuilder;
-		req.params = pp;
-		if(pp.include_items) req.include_items = pp.remove("include_items");
-
-		def res = ruleSvc.execute( req );
-		res.putAll( acct );
-
-		def itemMap = [:];
-		def lookupItem = { pid->
-			if( !itemMap.containsKey(pid)) {
-				itemMap.put( pid, itemAccountEm.find( [objid: pid ] ).first() );
-			}
-			return itemMap.get(pid);
-		}
-
-		res.billitems?.each {
-			if(it.billcode) it.item = lookupItem(it.billcode)?.item;
-			if( it.txntype == "credit") {
-				it.reftype = "waterworks_credit";
-			}	
-		}
-
-		//attach the item accounts also
-		if(res.items) {
-			res.items.findAll{ !it.item?.objid}.each {
-				it.item = lookupItem( it.billcode )?.item;
-			}
-			if(res.items.find{ !it.item?.objid }) 
-				throw new Exception("All items must have an item account");
-		}
-
-		return  res;
+		billEm.find([ objid: o.objid ]).update( [state:'POSTED'] );
 	}
 
 	

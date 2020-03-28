@@ -667,7 +667,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.IntegerColumnHandler(null, -1, -1)}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "month"}
+                new Object[]{"name", "monthname"}
                 , new Object[]{"caption", "Month"}
                 , new Object[]{"width", 100}
                 , new Object[]{"minWidth", 100}

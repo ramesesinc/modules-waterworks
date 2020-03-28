@@ -9,7 +9,7 @@ class WaterworksBatchBillingPersistenceInterceptor {
 	@Service("WaterworksBatchBillProcessorService")
    	def batchSvc;
 
-   	@Service("WaterworksBillProcessorService")
+   	@Service("WaterworksBillingService")
    	def billSvc;
 
 	@Service("DateService")
@@ -78,7 +78,8 @@ class WaterworksBatchBillingPersistenceInterceptor {
 			throw new Exception("No accounts processed. There must be at least one account under this subarea");
 		int i = 1;
 		items.each {
-			billSvc.create( [batchid: it.batchid, consumptionid: it.objid, counter: (i++), state: 'UNBILLED' ] )
+			def billno = it.batchid + "-" + String.format("%04d", i++);
+			billSvc.create( [batchid: it.batchid, consumptionid: it.objid, billno: billno, state: 'UNBILLED' ] )
 		};
 
 		def p = [:];
