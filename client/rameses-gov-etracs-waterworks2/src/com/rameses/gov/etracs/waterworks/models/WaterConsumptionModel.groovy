@@ -33,29 +33,55 @@ public class WaterConsumptionModel extends CrudFormModel {
     }
     
     void calc() {
-        if(entity.prevyear ) {
-           def z = [:];
-           z.acctid = entity.acctid;
-           z.prevreading = entity.prevreading;
-           z.reading = entity.reading;
-           z.meterstate = entity.meterstate;
-           def res = compSvc.compute(z);
-           //we cannot use putAll bec. entity is a datamap
-           if(res.volume) entity.volume = res.volume;
-           if(res.amount) entity.amount = res.amount;
-           binding.refresh();
-        }
+        def z = [:];
+        z.acctid = entity.acctid;
+        z.prevreading = entity.prevreading;
+        z.reading = entity.reading;
+        z.meterstate = entity.meterstate;
+        def res = compSvc.compute(z);
+        //we cannot use putAll bec. entity is a datamap
+        if(res.volume) entity.volume = res.volume;
+        if(res.amount) entity.amount = res.amount;
     }
     
     @PropertyChangeListener
     def listener = [
         "entity.reading" : { o->
-            calc();
+            //calculate the volume. do not calculate yet the amount
+            if( entity.prevreading == null ) {
+                entity.volume = 0;
+            }
+            def capacity = entity.meter.capacity.toInteger();
+            def prevreading = entity.prevreading.toInteger(); 
+            if( o >= capacity ) {
+                //this is error
+                entity.volume = -1;
+            }
+            else if( o < prevreading ) {
+                entity.volume = (o + capacity) - prevreading;
+                entity.amount = 0;
+                if( entity.posttoledger ==  1) calc();
+            }
+            else {
+                entity.volume = o - prevreading;
+                entity.amount = 0;
+                if( entity.posttoledger ==  1) calc();
+            }
+            binding.refresh("entity.(volume|amount)");
+        },
+        "entity.posttoledger" : { o->
+            if(o==1) {
+                if( entity.volume > 0 ) calc();
+            }
+            else {
+                entity.amount = 0;
+            }
+            binding.refresh("entity.amount");
         }
     ];
     
     boolean isEditAllowed() {
-        if( entity.batchid !=null) {
+        if( entity.billid !=null) {
             return false;
         }
         else if(account.state != "DRAFT") {
@@ -92,16 +118,15 @@ public class WaterConsumptionModel extends CrudFormModel {
         entity.amount = 0;
         entity.amtpaid = 0;
         entity.discount = 0;
+        entity.posttoledger = 0;
         
         //find prev reading...locate the latest entry for adding new entry
         def m = [_schemaname:entitySchemaName];
         m.findBy = [acctid: entity.acctid, meterid: entity.meterid];
-        m.where = ["batchid IS NULL"];
         m.orderBy = "year DESC, month DESC";
         def prev = queryService.findFirst(m);
         if(prev) {
             entity.prevreading = prev.reading;
-            entity.reading = prev.reading;
             entity.prevmonth = prev.month;
             entity.prevyear = prev.year;
             def ym = addYearMonth( prev.year, prev.month, 1);
@@ -110,6 +135,18 @@ public class WaterConsumptionModel extends CrudFormModel {
             entity.hold = prev.hold;
         }  
     }
+    
+    void beforeSave(mode) {
+        if( entity.prevreading!=null && entity.reading > 0 && entity.posttoledger == 1 && entity.amount == 0 ) {
+            throw new Exception("Please run calculate first");
+        }
+        else if( entity.reading >= entity.meter.capacity ) {
+            throw new Exception("Invalid reading. Reading must be less than or equal to the meter capacity")
+        }
+        else if( entity.volume < 0 )
+            throw new Exception("Invalid reading. Please ensure reading is less than or equal to meter capacity");
+    }
+    
     
     void afterSave() {
         caller.reload();
@@ -136,10 +173,9 @@ public class WaterConsumptionModel extends CrudFormModel {
         reloadEntity();
     }
     
-    
-    
-    void recalculate() {
+    void recalc() {
         calc();
+        binding.refresh("entity.(volume|amount)");
     }
     
 }

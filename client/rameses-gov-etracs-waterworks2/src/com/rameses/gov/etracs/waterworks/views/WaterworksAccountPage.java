@@ -68,9 +68,6 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         xPanel1 = new com.rameses.rcp.control.XPanel();
         schemaList2 = new com.rameses.seti2.components.SchemaList();
         jPanel1 = new javax.swing.JPanel();
-        xRadio1 = new com.rameses.rcp.control.XRadio();
-        xRadio2 = new com.rameses.rcp.control.XRadio();
-        xRadio3 = new com.rameses.rcp.control.XRadio();
         xPanel2 = new com.rameses.rcp.control.XPanel();
         schemaList1 = new com.rameses.seti2.components.SchemaList();
         jPanel8 = new javax.swing.JPanel();
@@ -82,6 +79,9 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         xFormPanel3 = new com.rameses.rcp.control.XFormPanel();
         xLabel1 = new com.rameses.rcp.control.XLabel();
         schemaList3 = new com.rameses.seti2.components.SchemaList();
+        xPanel5 = new com.rameses.rcp.control.XPanel();
+        jPanel10 = new javax.swing.JPanel();
+        schemaList4 = new com.rameses.seti2.components.SchemaList();
 
         setPreferredSize(new java.awt.Dimension(800, 580));
         setLayout(new java.awt.BorderLayout());
@@ -490,51 +490,6 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "discount"}
-                , new Object[]{"caption", "Disc"}
-                , new Object[]{"width", 100}
-                , new Object[]{"minWidth", 100}
-                , new Object[]{"maxWidth", 100}
-                , new Object[]{"required", false}
-                , new Object[]{"resizable", true}
-                , new Object[]{"nullWhenEmpty", true}
-                , new Object[]{"editable", false}
-                , new Object[]{"visible", true}
-                , new Object[]{"visibleWhen", null}
-                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
-                , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
-            }),
-            new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "amtpaid"}
-                , new Object[]{"caption", "Amt Paid"}
-                , new Object[]{"width", 100}
-                , new Object[]{"minWidth", 100}
-                , new Object[]{"maxWidth", 100}
-                , new Object[]{"required", false}
-                , new Object[]{"resizable", true}
-                , new Object[]{"nullWhenEmpty", true}
-                , new Object[]{"editable", false}
-                , new Object[]{"visible", true}
-                , new Object[]{"visibleWhen", null}
-                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
-                , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
-            }),
-            new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "balance"}
-                , new Object[]{"caption", "Balance"}
-                , new Object[]{"width", 100}
-                , new Object[]{"minWidth", 100}
-                , new Object[]{"maxWidth", 100}
-                , new Object[]{"required", false}
-                , new Object[]{"resizable", true}
-                , new Object[]{"nullWhenEmpty", true}
-                , new Object[]{"editable", false}
-                , new Object[]{"visible", true}
-                , new Object[]{"visibleWhen", null}
-                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
-                , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
-            }),
-            new com.rameses.rcp.common.Column(new Object[]{
                 new Object[]{"name", "hold"}
                 , new Object[]{"caption", "Hold"}
                 , new Object[]{"width", 100}
@@ -581,10 +536,9 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
             })
         });
+        schemaList2.setEntityName("waterworks_consumption");
         schemaList2.setFormActions("consumptionActions");
-        schemaList2.setHandlerName("consumptionList");
         schemaList2.setOrderBy("year DESC, month DESC");
-        schemaList2.setQueryName("consumptionQuery");
         schemaList2.setSchemaName("vw_waterworks_consumption");
         schemaList2.setAllowCreate(true);
         schemaList2.setAllowDelete(true);
@@ -592,55 +546,15 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
 
         jPanel1.setPreferredSize(new java.awt.Dimension(421, 40));
 
-        xRadio1.setName("consumptionViewOption"); // NOI18N
-        xRadio1.setOptionValue(0);
-        xRadio1.setText("Show All");
-        xRadio1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                xRadio1ActionPerformed(evt);
-            }
-        });
-
-        xRadio2.setName("consumptionViewOption"); // NOI18N
-        xRadio2.setOptionValue(2);
-        xRadio2.setText("Show Only Paid Items");
-        xRadio2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                xRadio2ActionPerformed(evt);
-            }
-        });
-
-        xRadio3.setName("consumptionViewOption"); // NOI18N
-        xRadio3.setOptionValue(1);
-        xRadio3.setText("Show Only Unpaid Items");
-        xRadio3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                xRadio3ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(xRadio1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(xRadio3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(xRadio2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(380, Short.MAX_VALUE))
+            .addGap(0, 922, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(xRadio1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(xRadio2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(xRadio3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 40, Short.MAX_VALUE)
         );
 
         xPanel1.add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -697,6 +611,21 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", "particulars"}
+                , new Object[]{"caption", "Particulars"}
+                , new Object[]{"width", 100}
+                , new Object[]{"minWidth", 0}
+                , new Object[]{"maxWidth", 0}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
+            }),
+            new com.rameses.rcp.common.Column(new Object[]{
                 new Object[]{"name", "amount"}
                 , new Object[]{"caption", "Amount"}
                 , new Object[]{"width", 100}
@@ -740,18 +669,48 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 , new Object[]{"visibleWhen", null}
                 , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
+            }),
+            new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", "billid"}
+                , new Object[]{"caption", "Bill Ref"}
+                , new Object[]{"width", 120}
+                , new Object[]{"minWidth", 120}
+                , new Object[]{"maxWidth", 150}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
+            }),
+            new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", "system"}
+                , new Object[]{"caption", "Auto"}
+                , new Object[]{"width", 50}
+                , new Object[]{"minWidth", 50}
+                , new Object[]{"maxWidth", 50}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.CheckBoxColumnHandler(java.lang.Integer.class, 1, 0)}
             })
         });
-        schemaList1.setFormActions("otherFeeActions");
-        schemaList1.setHandlerName("otherFeeList");
-        schemaList1.setQueryName("otherFeeQuery");
-        schemaList1.setSchemaName("waterworks_otherfee");
+        schemaList1.setFormActions("ledgerActions");
+        schemaList1.setHandlerName("ledgerList");
+        schemaList1.setQueryName("ledgerQuery");
+        schemaList1.setSchemaName("waterworks_ledger");
         schemaList1.setAllowCreate(true);
         xPanel2.add(schemaList1, java.awt.BorderLayout.CENTER);
 
         jPanel8.setPreferredSize(new java.awt.Dimension(421, 40));
 
-        xRadio4.setName("otherFeeViewOption"); // NOI18N
+        xRadio4.setName("ledgerViewOption"); // NOI18N
         xRadio4.setOptionValue(0);
         xRadio4.setText("Show All");
         xRadio4.addActionListener(new java.awt.event.ActionListener() {
@@ -760,7 +719,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
             }
         });
 
-        xRadio5.setName("otherFeeViewOption"); // NOI18N
+        xRadio5.setName("ledgerViewOption"); // NOI18N
         xRadio5.setOptionValue(2);
         xRadio5.setText("Show Only Paid Items");
         xRadio5.addActionListener(new java.awt.event.ActionListener() {
@@ -769,7 +728,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
             }
         });
 
-        xRadio6.setName("otherFeeViewOption"); // NOI18N
+        xRadio6.setName("ledgerViewOption"); // NOI18N
         xRadio6.setOptionValue(1);
         xRadio6.setText("Show Only Unpaid Items");
         xRadio6.addActionListener(new java.awt.event.ActionListener() {
@@ -804,7 +763,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
 
         xPanel2.add(jPanel8, java.awt.BorderLayout.PAGE_START);
 
-        xTabbedPane1.addTab("Other Fees", xPanel2);
+        xTabbedPane1.addTab("Ledger", xPanel2);
 
         xPanel3.setVisibleWhen("#{ mode == 'read' }");
         xPanel3.setLayout(new java.awt.BorderLayout());
@@ -914,8 +873,112 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "runbalance"}
-                , new Object[]{"caption", "Run Balance"}
+                new Object[]{"name", "remarks"}
+                , new Object[]{"caption", "Remarks"}
+                , new Object[]{"width", 100}
+                , new Object[]{"minWidth", 0}
+                , new Object[]{"maxWidth", 0}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
+            })
+        });
+        schemaList3.setCustomFilter("acctid = :objid");
+        schemaList3.setOrderBy("refdate DESC");
+        schemaList3.setQueryName("entityQry");
+        schemaList3.setSchemaName("waterworks_credit");
+        schemaList3.setAllowCreate(true);
+        xPanel3.add(schemaList3, java.awt.BorderLayout.CENTER);
+
+        xTabbedPane1.addTab("Credits", xPanel3);
+
+        xPanel5.setVisibleWhen("#{ mode == 'read' }");
+        xPanel5.setLayout(new java.awt.BorderLayout());
+
+        jPanel10.setPreferredSize(new java.awt.Dimension(421, 40));
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 922, Short.MAX_VALUE)
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+
+        xPanel5.add(jPanel10, java.awt.BorderLayout.PAGE_START);
+
+        schemaList4.setColumns(new com.rameses.rcp.common.Column[]{
+            new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", "refno"}
+                , new Object[]{"caption", "Ref No"}
+                , new Object[]{"width", 100}
+                , new Object[]{"minWidth", 100}
+                , new Object[]{"maxWidth", 150}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
+            }),
+            new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", "reftype"}
+                , new Object[]{"caption", "Ref Type"}
+                , new Object[]{"width", 100}
+                , new Object[]{"minWidth", 150}
+                , new Object[]{"maxWidth", 200}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
+            }),
+            new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", "refdate"}
+                , new Object[]{"caption", "Ref Date"}
+                , new Object[]{"width", 100}
+                , new Object[]{"minWidth", 100}
+                , new Object[]{"maxWidth", 100}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.DateColumnHandler(null, null, null)}
+            }),
+            new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", "discount"}
+                , new Object[]{"caption", "Discount"}
+                , new Object[]{"width", 100}
+                , new Object[]{"minWidth", 100}
+                , new Object[]{"maxWidth", 100}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
+            }),
+            new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", "amount"}
+                , new Object[]{"caption", "Amount"}
                 , new Object[]{"width", 100}
                 , new Object[]{"minWidth", 100}
                 , new Object[]{"maxWidth", 100}
@@ -944,29 +1007,17 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
             })
         });
-        schemaList3.setCustomFilter("acctid = :objid");
-        schemaList3.setOrderBy("refdate DESC");
-        schemaList3.setQueryName("entityQry");
-        schemaList3.setSchemaName("waterworks_credit");
-        schemaList3.setAllowCreate(true);
-        xPanel3.add(schemaList3, java.awt.BorderLayout.CENTER);
+        schemaList4.setCustomFilter("acctid = :objid");
+        schemaList4.setOrderBy("refdate DESC");
+        schemaList4.setQueryName("entityQry");
+        schemaList4.setSchemaName("waterworks_payment");
+        schemaList4.setAllowCreate(true);
+        xPanel5.add(schemaList4, java.awt.BorderLayout.CENTER);
 
-        xTabbedPane1.addTab("Credits", xPanel3);
+        xTabbedPane1.addTab("Payments", xPanel5);
 
         add(xTabbedPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void xRadio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xRadio1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_xRadio1ActionPerformed
-
-    private void xRadio2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xRadio2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_xRadio2ActionPerformed
-
-    private void xRadio3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xRadio3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_xRadio3ActionPerformed
 
     private void xRadio4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xRadio4ActionPerformed
         // TODO add your handling code here:
@@ -983,6 +1034,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.rameses.enterprise.components.AddressEditor addressEditor1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -995,6 +1047,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
     private com.rameses.seti2.components.SchemaList schemaList1;
     private com.rameses.seti2.components.SchemaList schemaList2;
     private com.rameses.seti2.components.SchemaList schemaList3;
+    private com.rameses.seti2.components.SchemaList schemaList4;
     private com.rameses.rcp.control.XButton xButton4;
     private com.rameses.rcp.control.XButton xButton5;
     private com.rameses.rcp.control.XComboBox xComboBox1;
@@ -1021,9 +1074,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XPanel xPanel2;
     private com.rameses.rcp.control.XPanel xPanel3;
     private com.rameses.rcp.control.XPanel xPanel4;
-    private com.rameses.rcp.control.XRadio xRadio1;
-    private com.rameses.rcp.control.XRadio xRadio2;
-    private com.rameses.rcp.control.XRadio xRadio3;
+    private com.rameses.rcp.control.XPanel xPanel5;
     private com.rameses.rcp.control.XRadio xRadio4;
     private com.rameses.rcp.control.XRadio xRadio5;
     private com.rameses.rcp.control.XRadio xRadio6;

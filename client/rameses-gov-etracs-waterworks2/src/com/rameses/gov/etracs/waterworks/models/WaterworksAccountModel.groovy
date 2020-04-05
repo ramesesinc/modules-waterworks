@@ -12,7 +12,6 @@ public class WaterworksAccountModel extends CrudFormModel {
     @Service("WaterworksAccountService")
     def acctSvc;
     
-    
     def dateFormatter = new java.text.SimpleDateFormat('yyyy-MM-dd'); 
     
     def meterStates = ["ACTIVE","DISCONNECTED","DEFECTIVE"];
@@ -55,13 +54,9 @@ public class WaterworksAccountModel extends CrudFormModel {
     ******************************************************************************/
     @PropertyChangeListener 
     def h = [
-        "consumptionViewOption" : {o->
-            consumptionFilter.where = consumptionFilter.options[o];
-            consumptionList.reload();
-        },
-        "otherFeeViewOption" : {o->
-            otherFeeFilter.where = otherFeeFilter.options[o];
-            otherFeeList.reload();
+        "ledgerViewOption" : {o->
+            ledgerFilter.where = ledgerFilter.options[o];
+            ledgerList.reload();
         },  
         "entity.owner": { o->
             if(!entity.acctname) entity.acctname = o.name;
@@ -73,51 +68,26 @@ public class WaterworksAccountModel extends CrudFormModel {
         }
     ];
     
-    //consumption
-    def consumptionViewOption = 1;
-    def consumptionList;
-    def consumptionFilter;
-    def getConsumptionQuery(){
-        consumptionFilter = [:];
-        consumptionFilter.options = [
-            "acctid = :acctid",
-            "acctid = :acctid AND (amount-discount-amtpaid) > 0  ",
-            "acctid = :acctid AND (amount-discount-amtpaid) = 0 AND amtpaid > 0 "
-        ];
-        consumptionFilter.acctid = entity.objid;
-        consumptionFilter.where = consumptionFilter.options[consumptionViewOption] ;
-        return consumptionFilter;
-    }
     
-    def viewConsumptionPayment() {
-        if( !consumptionList.selectedItem?.item ) throw new Exception("Please select consumption");
-        return viewPayments( consumptionList.selectedItem?.item );
-    }
-    
-    //other fee
-    def otherFeeViewOption = 1;
-    def otherFeeList;
-    def otherFeeFilter;
-    def getOtherFeeQuery(){
-        otherFeeFilter = [:];
-        otherFeeFilter.options = [
+    def ledgerViewOption = 1;
+    def ledgerList;
+    def ledgerFilter;
+    def getLedgerQuery(){
+        ledgerFilter = [:];
+        ledgerFilter.options = [
             "acctid = :acctid",
             "acctid = :acctid AND  (amount-discount-amtpaid) > 0",
             "acctid = :acctid AND (amount-discount-amtpaid) = 0 AND amtpaid > 0"
         ];
-        otherFeeFilter.acctid = entity.objid;
-        otherFeeFilter.where = otherFeeFilter.options[otherFeeViewOption] ;
-        return otherFeeFilter;
+        ledgerFilter.acctid = entity.objid;
+        ledgerFilter.where = ledgerFilter.options[ledgerViewOption] ;
+        return ledgerFilter;
     }
     
-    def viewOtherFeePayment() {
-        if( !otherFeeList.selectedItem?.item ) throw new Exception("Please select other fee");
-        return viewPayments( otherFeeList.selectedItem?.item );
-    }
-    
-    def viewPayments(def ref) {
+    def viewLedgerPayment() {
+        if( !ledgerList.selectedItem?.item ) throw new Exception("Please select other fee");
         def p = [:];
-        p.query = [refid: ref.objid];
+        p.query = [refid: ledgerList.selectedItem?.item.objid];
         return Inv.lookupOpener("waterworks_payment_item:list", p );
     }
     
@@ -143,7 +113,14 @@ public class WaterworksAccountModel extends CrudFormModel {
     }
     
     void generateBill() {
-        acctSvc.generateBill( [objid: entity.objid ] );
+        def bill = acctSvc.generateBill( [objid: entity.objid ] );
+        entity.billid = bill.objid;
+        entity.billstate = bill.state;
+        MsgBox.alert("Bill successfully generated");
+    }
+    
+    def viewStatement() {
+        MsgBox.alert("show statement");
     }
     
 }

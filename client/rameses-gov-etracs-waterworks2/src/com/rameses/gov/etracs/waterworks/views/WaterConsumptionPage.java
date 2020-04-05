@@ -35,18 +35,24 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
         xTabbedPane1 = new com.rameses.rcp.control.XTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         xFormPanel5 = new com.rameses.rcp.control.XFormPanel();
-        xIntegerField1 = new com.rameses.rcp.control.XIntegerField();
-        monthList1 = new com.rameses.enterprise.components.MonthList();
         xLabel15 = new com.rameses.rcp.control.XLabel();
         xLabel14 = new com.rameses.rcp.control.XLabel();
+        xLabel16 = new com.rameses.rcp.control.XLabel();
         xComboBox2 = new com.rameses.rcp.control.XComboBox();
+        xIntegerField1 = new com.rameses.rcp.control.XIntegerField();
+        monthList1 = new com.rameses.enterprise.components.MonthList();
         xIntegerField2 = new com.rameses.rcp.control.XIntegerField();
         xIntegerField3 = new com.rameses.rcp.control.XIntegerField();
         xIntegerField4 = new com.rameses.rcp.control.XIntegerField();
         xLabel1 = new com.rameses.rcp.control.XLabel();
+        xCheckBox1 = new com.rameses.rcp.control.XCheckBox();
+        xCheckBox2 = new com.rameses.rcp.control.XCheckBox();
+        xFormPanel1 = new com.rameses.rcp.control.XFormPanel();
         xDecimalField2 = new com.rameses.rcp.control.XDecimalField();
         xDecimalField3 = new com.rameses.rcp.control.XDecimalField();
-        xCheckBox1 = new com.rameses.rcp.control.XCheckBox();
+        xDecimalField4 = new com.rameses.rcp.control.XDecimalField();
+        xButton1 = new com.rameses.rcp.control.XButton();
+        xCheckBox3 = new com.rameses.rcp.control.XCheckBox();
 
         xTabbedPane1.setItems("sections");
 
@@ -54,22 +60,10 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
         xFormPanel5.setCaptionWidth(180);
         xFormPanel5.setPadding(new java.awt.Insets(0, 5, 20, 5));
 
-        xIntegerField1.setCaption("Year");
-        xIntegerField1.setDisableWhen("#{ mode != 'create' }");
-        xIntegerField1.setName("entity.year"); // NOI18N
-        xIntegerField1.setPreferredSize(new java.awt.Dimension(80, 20));
-        xFormPanel5.add(xIntegerField1);
-
-        monthList1.setCaption("Month");
-        monthList1.setDisableWhen("#{ mode != 'create' }");
-        monthList1.setName("entity.month"); // NOI18N
-        xFormPanel5.add(monthList1);
-
         xLabel15.setCaption("Meter Serial No");
         xLabel15.setExpression("#{ entity.meter.serialno }");
         xLabel15.setVisibleWhen("#{ entity.meterid != null }");
         xLabel15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
-        xLabel15.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xLabel15.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel5.add(xLabel15);
 
@@ -80,6 +74,13 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
         xLabel14.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel5.add(xLabel14);
 
+        xLabel16.setCaption("Meter Capacity");
+        xLabel16.setExpression("#{ entity.meter.capacity }");
+        xLabel16.setVisibleWhen("#{ entity.meterid != null }");
+        xLabel16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
+        xLabel16.setPreferredSize(new java.awt.Dimension(0, 20));
+        xFormPanel5.add(xLabel16);
+
         xComboBox2.setCaption("Meter State");
         xComboBox2.setExpression("");
         xComboBox2.setItems("meterStates");
@@ -87,6 +88,18 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
         xComboBox2.setVisibleWhen("#{ entity.meterid != null }");
         xComboBox2.setRequired(true);
         xFormPanel5.add(xComboBox2);
+
+        xIntegerField1.setCaption("Year");
+        xIntegerField1.setDisableWhen("#{ mode != 'create' }");
+        xIntegerField1.setName("entity.year"); // NOI18N
+        xIntegerField1.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xIntegerField1.setPreferredSize(new java.awt.Dimension(80, 20));
+        xFormPanel5.add(xIntegerField1);
+
+        monthList1.setCaption("Month");
+        monthList1.setDisableWhen("#{ mode != 'create' }");
+        monthList1.setName("entity.month"); // NOI18N
+        xFormPanel5.add(monthList1);
 
         xIntegerField2.setCaption("Prev. Reading");
         xIntegerField2.setDepends(new String[] {"entity.txnmode"});
@@ -113,39 +126,97 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
         xLabel1.setVisibleWhen("#{ entity.meterstate == 'ACTIVE'  && entity.prevreading !=null }");
         xFormPanel5.add(xLabel1);
 
-        xDecimalField2.setCaption("Amount");
-        xDecimalField2.setDepends(new String[] {"entity.txnmode"});
-        xDecimalField2.setName("entity.amount"); // NOI18N
-        xDecimalField2.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
-        xDecimalField2.setRequired(true);
-        xDecimalField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                xDecimalField2ActionPerformed(evt);
-            }
-        });
-        xFormPanel5.add(xDecimalField2);
-
-        xDecimalField3.setCaption("Amt Paid");
-        xDecimalField3.setName("entity.amtpaid"); // NOI18N
-        xDecimalField3.setRequired(true);
-        xDecimalField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                xDecimalField3ActionPerformed(evt);
-            }
-        });
-        xFormPanel5.add(xDecimalField3);
-
         xCheckBox1.setCaption("Hold");
+        xCheckBox1.setCheckValue(1);
         xCheckBox1.setName("entity.hold"); // NOI18N
+        xCheckBox1.setUncheckValue(0);
         xCheckBox1.setVisibleWhen("#{ entity.txnmode != 'BEGIN_BALANCE' }");
         xCheckBox1.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xCheckBox1.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        xCheckBox1.setShowCaption(false);
+        xCheckBox1.setText("Hold");
         xCheckBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 xCheckBox1ActionPerformed(evt);
             }
         });
         xFormPanel5.add(xCheckBox1);
+
+        xCheckBox2.setCaption("Post To Ledger");
+        xCheckBox2.setCheckValue(1);
+        xCheckBox2.setDepends(new String[] {"entity.reading", "entity.hold"});
+        xCheckBox2.setName("entity.posttoledger"); // NOI18N
+        xCheckBox2.setUncheckValue(0);
+        xCheckBox2.setVisibleWhen("#{ entity.reading >0 && entity.hold == 0 }");
+        xCheckBox2.setCellPadding(new java.awt.Insets(10, 0, 0, 0));
+        xCheckBox2.setShowCaption(false);
+        xCheckBox2.setText("Post To Ledger");
+        xFormPanel5.add(xCheckBox2);
+
+        xFormPanel1.setDepends(new String[] {"entity.posttoledger", "entity.reading", "entity.hold"});
+        xFormPanel1.setVisibleWhen("#{ entity.reading >0 && entity.hold == 0 && entity.posttoledger == 1 }");
+        xFormPanel1.setShowCaption(false);
+
+        xDecimalField2.setCaption("Amount");
+        xDecimalField2.setName("entity.amount"); // NOI18N
+        xDecimalField2.setCaptionWidth(100);
+        xDecimalField2.setCellPadding(new java.awt.Insets(0, 30, 0, 0));
+        xDecimalField2.setRequired(true);
+        xDecimalField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xDecimalField2ActionPerformed(evt);
+            }
+        });
+        xFormPanel1.add(xDecimalField2);
+
+        xDecimalField3.setCaption("Amt Paid");
+        xDecimalField3.setName("entity.amtpaid"); // NOI18N
+        xDecimalField3.setCaptionWidth(100);
+        xDecimalField3.setCellPadding(new java.awt.Insets(0, 30, 0, 0));
+        xDecimalField3.setRequired(true);
+        xDecimalField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xDecimalField3ActionPerformed(evt);
+            }
+        });
+        xFormPanel1.add(xDecimalField3);
+
+        xDecimalField4.setCaption("Discount");
+        xDecimalField4.setName("entity.discount"); // NOI18N
+        xDecimalField4.setCaptionWidth(100);
+        xDecimalField4.setCellPadding(new java.awt.Insets(0, 30, 0, 0));
+        xDecimalField4.setRequired(true);
+        xDecimalField4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xDecimalField4ActionPerformed(evt);
+            }
+        });
+        xFormPanel1.add(xDecimalField4);
+
+        xButton1.setCaption("");
+        xButton1.setName("recalc"); // NOI18N
+        xButton1.setCaptionWidth(120);
+        xButton1.setCellPadding(new java.awt.Insets(0, 10, 0, 0));
+        xButton1.setText("Calculate");
+        xFormPanel1.add(xButton1);
+
+        xCheckBox3.setCaption("Hold");
+        xCheckBox3.setCheckValue(1);
+        xCheckBox3.setDisableWhen("#{true}");
+        xCheckBox3.setName("entity.system"); // NOI18N
+        xCheckBox3.setUncheckValue(0);
+        xCheckBox3.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xCheckBox3.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        xCheckBox3.setShowCaption(false);
+        xCheckBox3.setText("System Generated");
+        xCheckBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xCheckBox3ActionPerformed(evt);
+            }
+        });
+        xFormPanel1.add(xCheckBox3);
+
+        xFormPanel5.add(xFormPanel1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -154,14 +225,14 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(xFormPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 28, Short.MAX_VALUE))
+                .addGap(0, 27, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(xFormPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         xTabbedPane1.addTab("General Info", jPanel1);
@@ -172,14 +243,14 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(xTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+                .addComponent(xTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(xTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+                .addComponent(xTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -196,13 +267,26 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_xDecimalField3ActionPerformed
 
+    private void xDecimalField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xDecimalField4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_xDecimalField4ActionPerformed
+
+    private void xCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xCheckBox3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_xCheckBox3ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private com.rameses.enterprise.components.MonthList monthList1;
+    private com.rameses.rcp.control.XButton xButton1;
     private com.rameses.rcp.control.XCheckBox xCheckBox1;
+    private com.rameses.rcp.control.XCheckBox xCheckBox2;
+    private com.rameses.rcp.control.XCheckBox xCheckBox3;
     private com.rameses.rcp.control.XComboBox xComboBox2;
     private com.rameses.rcp.control.XDecimalField xDecimalField2;
     private com.rameses.rcp.control.XDecimalField xDecimalField3;
+    private com.rameses.rcp.control.XDecimalField xDecimalField4;
+    private com.rameses.rcp.control.XFormPanel xFormPanel1;
     private com.rameses.rcp.control.XFormPanel xFormPanel5;
     private com.rameses.rcp.control.XIntegerField xIntegerField1;
     private com.rameses.rcp.control.XIntegerField xIntegerField2;
@@ -211,6 +295,7 @@ public class WaterConsumptionPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLabel xLabel1;
     private com.rameses.rcp.control.XLabel xLabel14;
     private com.rameses.rcp.control.XLabel xLabel15;
+    private com.rameses.rcp.control.XLabel xLabel16;
     private com.rameses.rcp.control.XTabbedPane xTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }

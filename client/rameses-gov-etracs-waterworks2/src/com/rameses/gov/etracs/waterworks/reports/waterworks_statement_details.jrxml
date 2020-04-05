@@ -123,7 +123,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[XRun Bal.]]></text>
+				<text><![CDATA[Run Bal.]]></text>
 				</staticText>
 			</band>
 		</columnHeader>

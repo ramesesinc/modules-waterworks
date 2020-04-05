@@ -31,7 +31,7 @@ public class WaterworksBatchBillingInitialModel extends CrudFormModel {
             entity.month = o.nextperiod.month;
             def sked = schedSvc.getSchedule( [year:entity.year, month:entity.month, scheduleid: o.schedulegroup.objid] );
             if(sked) {
-                entity.readingdate = sked.readingduedate;
+                entity.readingdate = sked.readingdate;
                 entity.period = sked;
             }
             binding.refresh();

@@ -1,8 +1,8 @@
 <workunit extends="com/rameses/seti2/templates/CrudForm.xml" schemaName="waterworks_billing_period">
     <invokers>
-        <invoker type="waterworks_billing_period:open" caption="Billing Schedule" action="open"/>
+        <invoker type="waterworks_billing_period:open" caption="Billing Period" action="open" target="popup"/>
     </invokers>
     <pages>
-        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksBillingSchedulePage" />
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksBillingPeriodPage" />
     </pages>
 </workunit>

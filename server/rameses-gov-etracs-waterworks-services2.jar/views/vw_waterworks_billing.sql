@@ -3,21 +3,34 @@ DROP VIEW IF EXISTS vw_waterworks_billing
 CREATE VIEW vw_waterworks_billing AS
 SELECT 
    wb.*, 
-   wc.year, wc.month,
-   bs.fromperiod, bs.toperiod, wbb.readingdate, bs.discdate, bs.duedate, 
-   ((bs.year * 12) + bs.month) as periodindexno,
 
-   wc.acctid, wc.acctno, wc.state as acctstate, wc.acctname, wc.address_text, wc.classificationid, 
-   wc.reading, wc.volume, wc.amount, wc.amtpaid, wc.rate, wc.hold,
-   wc.seqno, wc.meterid, wc.meterstate,
-   wc.prevreading, wc.prevmonth, wc.prevyear,
+   bs.fromdate, 
+   bs.todate, 
+   wbb.readingdate, 
+   bs.discdate, 
+   bs.duedate, 
 
-   wc.subareaid, 
-   wc.stuboutid,
+   a.acctno, 
+   ai.acctname, 
+   a.state AS acctstate, 
+   a.seqno,
+   ai.subareaid,
+   ai.address_text,
+   ai.classificationid,
+   ai.stuboutid,
+
+   wc.meterid, 
+   wc.meterstate,
+   wc.prevreading, 
+   wc.prevmonth, 
+   wc.prevyear,
 
    ((wb.arrears + wb.otherfees + wb.surcharge + wb.interest) - wb.credits) AS subtotal
+
 FROM waterworks_billing wb 
-INNER JOIN vw_waterworks_consumption wc ON wc.objid = wb.consumptionid 
+INNER JOIN waterworks_account a on a.objid = wb.acctid
+INNER JOIN waterworks_account_info ai ON wb.acctinfoid = ai.objid
+LEFT JOIN vw_waterworks_consumption wc ON wc.billid = wb.objid 
 LEFT JOIN waterworks_batch_billing wbb ON wbb.objid = wb.batchid 
 LEFT JOIN waterworks_billing_period bs on bs.objid = wbb.periodid 
 

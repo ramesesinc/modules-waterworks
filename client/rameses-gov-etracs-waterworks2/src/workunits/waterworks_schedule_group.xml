@@ -1,14 +1,15 @@
 <workunit extends="com/rameses/seti2/templates/CrudForm.xml" schemaName="waterworks_schedule_group">
     <invokers>
         <invoker type="waterworks_schedule_group:create" 
-                 caption="New Block Schedule" action="create" 
+                 caption="New Schedule Group" action="create" 
                  role="MASTER" target="popup"/>
          
         <invoker type="waterworks_schedule_group:open" 
-                 caption="Block Schedule" action="open" target="popup">
+                 caption="Schedule Group" action="open" target="popup">
             <action role="MASTER" /> 
             <action role="SHARED" allowEdit="false" allowCreate="false"/>             
         </invoker>
+        
     </invokers>
     <pages>
         <page template="com.rameses.gov.etracs.waterworks.views.WaterworksScheduleGroupPage"/>

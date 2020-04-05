@@ -8,39 +8,106 @@ class WaterworksCashReceiptService {
     @Service("NumberService")
     def numSvc;
 
-	@ProxyMethod 
-	public def getBilling( pp ) {
-        def param = pp.params;
+    @DataContext("vw_waterworks_billing")
+    def billEm;
 
-        def p = [:];
-        p.acctid = param.id;
-        p.include_items = true;
-        p.request_action = "cashreceipt";
+    @DataContext("waterworks_account")
+    def acctEm;
 
-        if(param.payoption) {
-            p.putAll(param.payoption);
+    @DataContext("waterworks_consumption")
+    def consEm;
+
+    @DataContext("waterworks_otherfee")
+    def otherFeeEm;
+
+    def findBill( def o ) {
+        def bill = billEm.find( [billno: o.id ] ).first();
+        if(!bill) {
+            def acct = acctEm.find( [acctno: o.id ] ).first();
+            if(!acct) throw new Exception("Bill or account not found");
+            bill = billEm.find( [acctid: acct.objid] ).where(" state IN ('PENDING', 'POSTED') ").orderBy("year DESC, month DESC").first();
+            if(!bill)
+                throw new Exception("The account does not have a billing yet. Please generate the bill first");            
         }
-        if(param.amtpaid) {
-            p.amtpaid = param.amtpaid;
-        }    
+        else {
+            //the bill must be the latest bill. You cannot pay on the previous bill
+            def latestBill = billEm.find( [acctid: bill.acctid ] ).where(" state IN ('PENDING', 'POSTED') ").orderBy("year DESC, month DESC").first();
+            if(latestBill.objid != bill.objid )
+                throw new Exception("This is not the latest bill. Please use account no. instead");            
+        }
+        if( bill.state !='POSTED') 
+            throw new Exception("Billing is not yet posted");
+        return bill;    
+    }
 
-        def res = billingSvc.getBilling(p);
+    def getBillingItems( def o ) {
+        def bill = findBill( o );
+        def param = [ acctid : bill.acctid, billid: bill.objid, include_items:true ];
+        if( o.amtpaid ) param.amtpaid = o.amtpaid;
+        def res = billingSvc.getBilling( param );
+        if(!res.billitems) 
+            throw new Exception("There are no current bills to pay. Consider deposit instead");
+        res.billid = bill.objid;  
+        res.acctid = bill.acctid;  
+        res.year = bill.year;
+        res.month = bill.month;
+        return res;    
+    }
+
+    def getDepositItems( def o ) {
+        def bill = findBill( o );
+
+        //check first if there are pending balances before testing deposit. there must be no unpaid
+
+        def test = consEm.find( [acctid: bill.acctid]).where("state ='POSTED' AND hold=0 AND (amount-amtpaid >0 )").exists();
+        if(test) throw new Exception("There are still some unpaid balances. Settle this first");
+        test = otherFeeEm.find( [acctid: bill.acctid]).where("amount-amtpaid >0").exists();
+        if(test) throw new Exception("There are still some unpaid balances. Settle this first");
+
+        def param = [ acctid : bill.acctid, billid: bill.objid, include_items:true, amtpaid: o.amtpaid ];
+        def res = billingSvc.getBilling( param );
+        if(!res.billitems )
+            throw new Exception("There are no items for this receipt. Please check rules");
+        res.billid = bill.objid;     
+        res.acctid = bill.acctid;   
+        res.year = bill.year;
+        res.month = bill.month;
+        return res;    
+    }
+
+	@ProxyMethod 
+	public def getBilling( o ) {
+        def param = o.params;
+        def txntype = param.txntype;
+
+        def pp = [:];
+        pp.id = param.id;
+        if( param.amtpaid ) pp.amtpaid = param.amtpaid;
+        if( param.payoption ) pp.payoption = param.payoption;
+
+        def res = null;        
+        if( txntype == "billing" ) {
+            res = getBillingItems( pp ); 
+        }
+        else if(txntype == "deposit") {
+            res = getDepositItems( pp );             
+        }
+        else {
+            throw new Exception("There are no current routine for " + txntype );
+        }
 
         def rct = [:];
         rct.payer = res.owner;
         rct.paidby = res.acctname + " (" + res.acctno + ")";
         rct.paidbyaddress = res.address?.text;
         rct.acctno = res.acctno;
-        rct.acctid = res.objid;
-
+        rct.acctid = res.acctid;
+        rct.billid = res.billid;
         rct.items = res.items;
-        //attach the accounts before returning to the client
-
         rct.billitems = res.billitems;
-
-
-        rct.pmttxntype = pp.txntype;
-
+        rct.pmttxntype = txntype;
+        rct.year = res.year;
+        rct.month = res.month;
         return rct;
 	}
 

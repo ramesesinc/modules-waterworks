@@ -48,7 +48,6 @@ class WaterworksBillingReportInterceptor {
 		if( bill.amount ) bill.details << [title: "CURRENT BALANCE", amount: bill.amount, group: "CURRENT"];		
 
 		result.data = bill;
-
 	}
 
 } 

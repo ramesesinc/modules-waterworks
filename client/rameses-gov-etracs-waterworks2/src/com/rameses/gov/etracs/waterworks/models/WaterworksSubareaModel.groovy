@@ -39,4 +39,12 @@ public class WaterworksSubareaModel extends CrudFormModel {
         acctListModel.refreshSelectedItem();
     }
     
+    def addBillingPeriod() {
+       def s = { o->
+           entity.nextperiod = o;
+           binding.refresh();
+       } 
+       return Inv.lookupOpener("waterworks_billing_period:lookup", [onselect:s, scheduleid: entity.schedulegroup.objid ]);
+    }
+    
 }

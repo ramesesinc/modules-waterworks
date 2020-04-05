@@ -2,11 +2,11 @@
           entitySchemaName="waterworks_consumption"  
           allowDelete="false">
     <invokers>
-        <invoker type="vw_waterworks_consumption:create" 
+        <invoker type="waterworks_consumption:create" 
                  caption="New Consumption Entry" action="create" 
                  role="MASTER" target="popup"/>
          
-        <invoker type="vw_waterworks_consumption:open" 
+        <invoker type="waterworks_consumption:open" 
                  caption="Consumption Entry" action="open" target="popup">
             <action role="MASTER" />
             <action role="SHARED" allowCreate="false" allowEdit="false" allowDelete="false" />

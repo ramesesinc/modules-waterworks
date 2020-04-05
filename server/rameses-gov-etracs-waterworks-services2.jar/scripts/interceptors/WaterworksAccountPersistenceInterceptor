@@ -92,6 +92,7 @@ class WaterworksAccountPersistenceInterceptor{
 		def bill = billEm.find( [acctid: o.objid ]).where("state IN ('PENDING', 'POSTED') ").orderBy("year DESC, month DESC").first();
 		if( bill ) {
 			o.billid = bill.objid;
+			o.billstate = bill.state;
 		}
 	}
 

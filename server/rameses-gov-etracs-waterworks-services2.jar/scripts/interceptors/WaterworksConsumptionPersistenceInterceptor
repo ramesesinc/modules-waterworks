@@ -1,54 +1,62 @@
 import com.rameses.annotations.*;
+import java.rmi.server.*;
 
 class WaterworksConsumptionPersistenceInterceptor{
 	
-	@DataContext("waterworks_consumption")
-	def wcEm; 
+	@DataContext('waterworks_ledger') 
+	def ledgerEm;
 
-	@DataContext("waterworks_account_info")
-	def acctEm; 
+	@DataContext('waterworks_itemaccount') 
+	def acctEm;
 
-	@DataContext("waterworks_meter")
-	def meterEm; 
+	@After(pattern="PersistenceService.(create|update)", eval="#{args[0]._schemaname == 'waterworks_consumption'}")
+	public void afterCreate(def evt) {
+		def o  = evt.args[0];
+		def result = evt.result;
+		if( o.posttoledger == 1 ) {
+			//find entry in ledger
+			def u = [:];
+			u.amount = o.amount;
+			u.amtpaid = o.amtpaid;
+			u.discount = o.discount;
+			def m = ledgerEm.find( [consumptionid: result.objid ]).first();
+			if( m ) {
+				ledgerEm.find([consumptionid: result.objid ] ).update( u );		
+			}
+			else {
+				m = [:];
+				m.item = acctEm.find( [objid: "WATER_SALES"]  ).first();
+				m.acctid = result.acctid;
+				m.system = 1;
+				m.consumptionid = result.objid;
+				m.year = o.year;
+				m.month = o.month;
+				m.putAll( u );						
+				ledgerEm.create( m );
+			}
 
-	@Before(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_consumption'}")
-	public void beforeCreate( evt ) { 
-		def param = evt.args[0]; 
-		param.hold = (param.hold ? param.hold : 0); 
-
-		//check if reading is greater than capacity
-		if( param.meterid ) {
-			if(!param.reading ) throw new Exception("Please specify reading"); 
-			def mtr = meterEm.find( [objid: param.meterid ] ).first();
-			if( param.reading > mtr.capacity ) 
-				throw new Exception("Meter reading must be less than capacity of " + mtr.capacity );
 		}
+	}
 
-		//check also the subarea 
-		def v = acctEm.find( [objid: param.acctinfoid] ).select("subarea.nextperiod.*").first();
-		def nextperiod = v.subarea.nextperiod;
-		if( nextperiod?.year ) {
-			int t = (nextperiod.year*12)+nextperiod.month;		
-			if( ((param.year*12)+param.month) >= t )
-				throw new Exception("Year and month entry should not be greater than the subarea next period");
+	@Before(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_consumption'  }")
+	public void beforeRemove(def evt) {
+		def o = evt.args[0];
+		def m = ledgerEm.find( [consumptionid: o.objid ]).first();
+		if( m ) {
+			ledgerEm.find( [objid: m.objid] ).delete();
 		}
-	} 
+	}
 
-	@Before(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_consumption'}")
-	public void beforeRemove( evt ) {
-		def param = evt.args[0];
-		def findBy = (param?.findBy ? param.findBy : [objid: param.objid]); 
-		def wc = wcEm.find( findBy ).first(); 
-		if ( !wc ) return; 
+	@After(pattern="PersistenceService.read", eval="#{args[0]._schemaname == 'waterworks_consumption'}")
+	public void afterRead(def evt) {
+		def result = evt.result;
+		def m = ledgerEm.find( [consumptionid: result.objid ]).first();
+		if(m) {
+			o.amount = o.amount;
+			o.amtpaid = o.amtpaid;
+			o.discount = o.discount;
+		}
+	}
 
-		if ( wc.batchid ) 
-			throw new Exception('Cannot delete consumption from batch billing'); 
-		if( wc.state == 'POSTED' )	
-			throw new Exception('Cannot delete consumption that is already posted'); 
-		if ( wc.amtpaid > 0 )
-			throw new Exception("Cannot delete consumption since payment was already made");
-	} 
-
-	
 
 }

@@ -7,9 +7,8 @@
 		<field name="txnmode" />
 		<field name="acctid" required="true"/>
 		<field name="acctinfoid" required="true"/>
-		<field name="batchid" />
+		<field name="billid" />
 		<field name="meterstate" />
-
 
 		<complex name="meter" ref="waterworks_meter" jointype="many-to-one"  required="false"
 			includefields="objid,serialno,capacity,state">
@@ -21,15 +20,11 @@
 		<field name="volume" required="true" caption="Volume"  type="integer"/>
 
 		<field name="amount" type="decimal" caption="Amount" defaultValue="0"/>
-		<field name="amtpaid" type="decimal" caption="AmtPaid" defaultValue="0"/>
-		<!--field name="credits" type="decimal" caption="Credits" defaultValue="0"/-->
-		<field name="discount" type="decimal" caption="Discount" defaultValue="0"/>
-		<field name="balance" expr="amount-amtpaid-discount" type="decimal" caption="Balance"/>
 
 		<field name="year" caption="Year"/>
 		<field name="month" caption="Month"/>		
 
 		<field name="hold" />
-
+		<field name="posttoledger" />
 	</element>
 </schema>

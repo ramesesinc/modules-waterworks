@@ -1,0 +1,18 @@
+import com.rameses.annotations.*;
+
+class WaterworksOtherFeePersistenceInterceptor{
+	
+	@DataContext("waterworks_ledger")
+	def otherFeeEm; 
+
+	@Before(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_ledger'}")
+	public void beforeRemove( evt ) {
+		def o = evt.args[0];	
+		def e = ledgerEm.find( [objid: o.objid] ).first(); 
+		if( e.billid ) 
+			throw new Exception( "This entry cannot be removed. It is already billed");
+	} 
+
+	
+
+}

@@ -426,8 +426,8 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         xLabel7.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel3.add(xLabel7);
 
-        xLabel8.setCaption("Reading Due Date");
-        xLabel8.setExpression("#{ entity.period.readingduedate }");
+        xLabel8.setCaption("Reading End Date");
+        xLabel8.setExpression("#{ entity.period.readingenddate }");
         xLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
         xLabel8.setDateFormat("yyyy-MM-dd");
         xLabel8.setPreferredSize(new java.awt.Dimension(0, 20));

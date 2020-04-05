@@ -89,7 +89,7 @@ class WaterworksMobileDownloadService {
 			it.month = bcc.month;
 			it.year = bcc.year;
 			it.discodate = bcc.disconnectiondate;
-			it.period = df.format(bcc.fromperiod) + " - " + df.format(bcc.toperiod);
+			it.period = df.format(bcc.fromdate) + " - " + df.format(bcc.todate);
 			it.info = wm.serializer.write([ 
 				barangay: (it.barangayid? it.barangayid: ''), 
 				classification: it.classificationid, 

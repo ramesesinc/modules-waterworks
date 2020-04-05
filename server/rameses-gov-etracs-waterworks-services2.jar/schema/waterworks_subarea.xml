@@ -14,9 +14,12 @@
 			<key field="schedulegroupid" target="objid" />
 		</complex>	
 			
-		<field name="nextperiod_year" />
-		<field name="nextperiod_month" />
-		<field name="nextperiod_monthname" expr="MONTH_ARRAY(nextperiod.month)" />
+		<complex name="nextperiod" ref="waterworks_billing_period" jointype="many-to-one" required="true" caption="Next Period">
+			<key field="nextperiodid" target="objid" />
+		</complex>	
+
+		<field name="barangay_objid" required="true"/>
+		<field name="barangay_name" caption="Barangay" indexed="true"/>
 	</element>
 
 </schema>

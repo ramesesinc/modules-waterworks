@@ -270,8 +270,8 @@
             </Component>
             <Component class="com.rameses.rcp.control.XLabel" name="xLabel8">
               <Properties>
-                <Property name="caption" type="java.lang.String" value="Reading Due Date"/>
-                <Property name="expression" type="java.lang.String" value="#{ entity.period.readingduedate }"/>
+                <Property name="caption" type="java.lang.String" value="Reading End Date"/>
+                <Property name="expression" type="java.lang.String" value="#{ entity.period.readingenddate }"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                     <LineBorder>

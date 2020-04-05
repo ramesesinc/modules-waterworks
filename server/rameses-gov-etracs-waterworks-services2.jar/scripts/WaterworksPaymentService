@@ -62,14 +62,16 @@ class WaterworksPaymentService {
 		pmt.refno = rct.receiptno;
 		pmt.reftype = "cashreceipt";
 		pmt.refid = rct.objid;
-		pmt.discount = pmt.items.sum( it.discount );		
 		pmt.amount = rct.amount;
 		pmt.voided = 0;
 		pmt.txnmode = rct.txnmode;
 		pmt.remarks = rct.remarks;
 		pmt.pmttxntype = rct.pmttxntype;
 		pmt.items = rct.billitems.collect{ [refid: it.refid, reftype:it.reftype, amount: it.amount, discount: it.discount, surcharge: it.surcharge, interest: it.interest, remarks: it.remarks]  };
+		pmt.discount = pmt.items.sum{ it.discount==null ? 0 : it.discount };				
 		if(rct.billid) pmt.billid = rct.billid;
+		pmt.year = rct.year;
+		pmt.month = rct.month;
 		paymentEm.create( pmt );
 	}
 

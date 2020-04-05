@@ -7,9 +7,10 @@
 		<field name="acctname" /> 
 		<field name="acctstate" /> 
 
-		<field name="batchid" />  
+		<field name="billid" />  
 		<field name="txnmode" /> 
 		<field name="state" /> 
+		<field name="posttoledger" /> 
 
 		<field name="meterid" /> 
 		<field name="meterstate" /> 
@@ -25,17 +26,13 @@
 		<field name="monthname" expr="MONTH_ARRAY(month)"/> 
 		<field name="reading" />
 		<field name="volume" /> 
-		<field name="amount" /> 
-		<field name="amtpaid" /> 
 		<field name="hold" /> 
-		<field name="discount" /> 
 
 		<field name="prevreading" /> 
 		<field name="prevyear" /> 
 		<field name="prevmonth" /> 
 
 		<field name="seqno" /> 
-		<field name="balance"/>
 
 		<field name="subareaid" />
 	</element>

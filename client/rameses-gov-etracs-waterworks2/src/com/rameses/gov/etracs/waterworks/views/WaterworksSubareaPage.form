@@ -25,7 +25,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-47,0,0,2,-42"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,32,0,0,2,-54"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -61,10 +61,10 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="xFormPanel2" min="-2" pref="657" max="-2" attributes="0"/>
-                      <EmptySpace pref="42" max="32767" attributes="0"/>
+                      <Component id="xFormPanel2" min="-2" pref="612" max="-2" attributes="0"/>
+                      <EmptySpace pref="75" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -72,8 +72,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="xFormPanel2" min="-2" pref="281" max="-2" attributes="0"/>
-                      <EmptySpace pref="132" max="32767" attributes="0"/>
+                      <Component id="xFormPanel2" min="-2" pref="361" max="-2" attributes="0"/>
+                      <EmptySpace pref="131" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -132,12 +132,12 @@
                     <Property name="required" type="boolean" value="true"/>
                   </Properties>
                 </Component>
-                <Component class="com.rameses.rcp.control.XLookupField" name="xLookupField4">
+                <Component class="com.rameses.rcp.control.XLookupField" name="xLookupField1">
                   <Properties>
-                    <Property name="caption" type="java.lang.String" value="Schedule Group"/>
-                    <Property name="expression" type="java.lang.String" value="#{ entity.schedulegroup.objid }"/>
-                    <Property name="handler" type="java.lang.String" value="waterworks_schedule_group:lookup"/>
-                    <Property name="name" type="java.lang.String" value="entity.schedulegroup" noResource="true"/>
+                    <Property name="caption" type="java.lang.String" value="Barangay"/>
+                    <Property name="expression" type="java.lang.String" value="#{ entity.barangay.name }"/>
+                    <Property name="handler" type="java.lang.String" value="barangay:lookup"/>
+                    <Property name="name" type="java.lang.String" value="entity.barangay" noResource="true"/>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[0, 20]"/>
                     </Property>
@@ -157,21 +157,89 @@
                     <Property name="showCaption" type="boolean" value="false"/>
                   </Properties>
                 </Component>
-                <Component class="com.rameses.rcp.control.XIntegerField" name="xIntegerField1">
+                <Component class="com.rameses.rcp.control.XLookupField" name="xLookupField4">
                   <Properties>
-                    <Property name="caption" type="java.lang.String" value="Year"/>
-                    <Property name="name" type="java.lang.String" value="entity.nextperiod.year" noResource="true"/>
+                    <Property name="caption" type="java.lang.String" value="Schedule Group"/>
+                    <Property name="expression" type="java.lang.String" value="#{ entity.schedulegroup.objid }"/>
+                    <Property name="handler" type="java.lang.String" value="waterworks_schedule_group:lookup"/>
+                    <Property name="name" type="java.lang.String" value="entity.schedulegroup" noResource="true"/>
+                    <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                      <Insets value="[0, 30, 0, 0]"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[80, 20]"/>
+                      <Dimension value="[0, 20]"/>
                     </Property>
                     <Property name="required" type="boolean" value="true"/>
                   </Properties>
                 </Component>
-                <Component class="com.rameses.enterprise.components.MonthList" name="monthList1">
+                <Component class="com.rameses.rcp.control.XButton" name="xButton1">
                   <Properties>
-                    <Property name="caption" type="java.lang.String" value="Month"/>
-                    <Property name="name" type="java.lang.String" value="entity.nextperiod.month" noResource="true"/>
-                    <Property name="required" type="boolean" value="true"/>
+                    <Property name="caption" type="java.lang.String" value=""/>
+                    <Property name="name" type="java.lang.String" value="addBillingPeriod" noResource="true"/>
+                    <Property name="visibleWhen" type="java.lang.String" value="#{ mode != &apos;read&apos; }"/>
+                    <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                      <Insets value="[0, 30, 0, 0]"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Add Billing Period"/>
+                  </Properties>
+                </Component>
+                <Component class="com.rameses.rcp.control.XLabel" name="xLabel7">
+                  <Properties>
+                    <Property name="caption" type="java.lang.String" value="Year/Month"/>
+                    <Property name="expression" type="java.lang.String" value="#{ entity.nextperiod.year } #{ entity.nextperiod.monthname }"/>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                        <LineBorder>
+                          <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                        </LineBorder>
+                      </Border>
+                    </Property>
+                    <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                      <Insets value="[0, 30, 0, 0]"/>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[200, 20]"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="com.rameses.rcp.control.XLabel" name="xLabel5">
+                  <Properties>
+                    <Property name="caption" type="java.lang.String" value="From Period"/>
+                    <Property name="expression" type="java.lang.String" value="#{ entity.nextperiod.fromperiod }"/>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                        <LineBorder>
+                          <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                        </LineBorder>
+                      </Border>
+                    </Property>
+                    <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                      <Insets value="[0, 30, 0, 0]"/>
+                    </Property>
+                    <Property name="dateFormat" type="java.lang.String" value="yyyy-MM-dd"/>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[200, 20]"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="com.rameses.rcp.control.XLabel" name="xLabel6">
+                  <Properties>
+                    <Property name="caption" type="java.lang.String" value="To Period"/>
+                    <Property name="expression" type="java.lang.String" value="#{ entity.nextperiod.toperiod }"/>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                        <LineBorder>
+                          <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                        </LineBorder>
+                      </Border>
+                    </Property>
+                    <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                      <Insets value="[0, 30, 0, 0]"/>
+                    </Property>
+                    <Property name="dateFormat" type="java.lang.String" value="yyyy-MM-dd"/>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[200, 20]"/>
+                    </Property>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -193,7 +261,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="705" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="693" max="32767" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -205,12 +273,12 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="419" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="498" max="32767" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="45" max="32767" attributes="0"/>
                           <Component id="schemaList2" min="-2" pref="407" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="46" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>

@@ -10,11 +10,19 @@ import com.rameses.treasury.common.models.*;
 
 class WaterCashReceiptModel  extends CommonCashReceiptModel {
     
-    def txntype = "billing";
-    def depositAmt = 0;
+    def pmttxntype = "billing";
+    BigDecimal depositAmt = 0;
     
     public String getCashReceiptServiceName() {
         return "WaterworksCashReceiptService";
+    }
+    
+    public void loadBill( def p ) {
+        query.txntype = pmttxntype;
+        if( pmttxntype =="deposit" ) {
+            p.amtpaid = depositAmt;
+        }
+        super.loadBill( p );
     }
     
 }    

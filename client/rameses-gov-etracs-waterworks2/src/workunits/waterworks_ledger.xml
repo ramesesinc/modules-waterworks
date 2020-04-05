@@ -1,0 +1,12 @@
+<workunit schemaName="waterworks_ledger">
+    <invokers>
+        <invoker type="waterworks_ledger:create"  
+                 caption="Add Ledger Entry" target="popup" action="create"/>
+        <invoker type="waterworks_ledger:open"  
+                 caption="Add Ledger Entry" target="popup" action="open"/>
+    </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksLedgerModel"/>
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksLedgerPage"/>
+    </pages>
+</workunit>

@@ -16,7 +16,7 @@ class WaterworksScheduleService {
 
 	@ProxyMethod 
 	public def getSchedule( p ) {
-		if( !p.scheduleid ) throw new Exception("schedule is required");
+		if( !p.scheduleid ) throw new Exception("scheduleid is required");
 		if( !p.year ) throw new Exception("year is required");
 		if( !p.month ) throw new Exception("month is required");
 
@@ -25,7 +25,7 @@ class WaterworksScheduleService {
 		if( !sked || recalc ) {
 			def billingPeriod = new WaterBillingPeriod( year: p.year, month : p.month );
 			def facts = [];
-			facts << new WaterBlockSchedule( id: p.scheduleid );
+			facts << new WaterScheduleGroup( id: p.scheduleid );
 			facts << billingPeriod; 
 			
 			//include holidays

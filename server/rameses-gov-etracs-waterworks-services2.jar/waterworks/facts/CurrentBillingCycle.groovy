@@ -16,8 +16,8 @@ public class CurrentBillingCycle  {
 	Date duedate;
 	Date disconnectiondate;	
 	Date billdate;
-	Date fromperiod;
-	Date toperiod;
+	Date fromdate;
+	Date todate;
 	Date readingdate;
 
 }

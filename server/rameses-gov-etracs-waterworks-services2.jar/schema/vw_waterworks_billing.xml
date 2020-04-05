@@ -4,38 +4,30 @@
 		<field name="batchid" /> 
 		<field name="acctid" /> 
 		<field name="billno" searchable="true"/> 
-		<field name="consumptionid" /> 
-		<field name="state" /> 
-		<field name="surcharge" type="decimal"/> 
-		<field name="interest" type="decimal"/> 
-		<field name="otherfees" type="decimal"/> 
-		<field name="credits" type="decimal"/> 
-		<field name="arrears" type="decimal"/> 
-		<field name="otherfeearrears" type="decimal" />
-		<field name="adjpayment" type="decimal"/>
-		<field name="averageconsumption" /> 
-		<field name="billed" /> 
-		<field name="unpaidmonths" /> 
-		<field name="refbillno" /> 
-		<field name="printed" /> 
+		<field name="refbillno" searchable="true"/> 
+
 		<field name="acctno" searchable="true"/> 
 		<field name="acctname" searchable="true"/> 
+
+
+		<field name="year" /> 	
+		<field name="month" /> 	
+		<field name="monthname" expr="MONTH_ARRAY(month)" /> 	
+
+		<field name="state" /> 
+		<field name="balanceforward" type="decimal"/> 
+		<field name="printed" /> 
 		<field name="acctstate" /> 
 		<field name="address_text" /> 
 		<field name="classificationid" /> 
 
-		<field name="prevmonth" /> 
-		<field name="prevyear" /> 		
 		<field name="prevreading" type="integer"/> 
 		<field name="reading" type="integer"/> 
 		<field name="volume" type="integer"/> 
 		<field name="amount" type="decimal"/> 
-		<field name="amtpaid" type="decimal"/> 
-		<field name="rate" type="decimal"/> 
 		<field name="hold" /> 
 		<field name="subtotal" type="decimal"/> 
 		<field name="seqno" /> 
-		<field name="periodindexno" /> 
 
 		<complex name="stubout" ref="waterworks_stubout" jointype="many-to-one" required="false">
 			<key field="stuboutid" target="objid"/> 
@@ -51,18 +43,17 @@
 		</complex>
 		<field name="meterstate" />
 
+		<!-- date when the bill was prepared -->
+		<field name="billdate" /> 
+
 		<field name="readingdate" />
 		<field name="discdate" /> 
 		<field name="duedate" /> 
-		<field name="fromperiod" /> 
-		<field name="toperiod" /> 
+		<field name="fromdate" /> 
+		<field name="todate" /> 
 
 		<field name="remarks" /> 	
 
-		<field name="year" /> 	
-		<field name="month" /> 	
-		<field name="monthname" expr="MONTH_ARRAY(month)" /> 	
-		<field name="errcode" type="integer"/>	
 
 	</element>
 </schema>

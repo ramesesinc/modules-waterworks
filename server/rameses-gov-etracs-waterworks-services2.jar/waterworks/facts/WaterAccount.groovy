@@ -11,6 +11,7 @@ public class WaterAccount {
     int units = 1;
     String state;
     boolean metered;
+    boolean hasarrears;
 
 	public WaterAccount( def acct ) {
 		this.classification = acct.classificationid;

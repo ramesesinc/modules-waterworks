@@ -1,0 +1,77 @@
+import com.rameses.annotations.*;
+import treasury.facts.*;
+import java.text.*;
+
+class WaterworksLedgerReportInterceptor {
+	
+	@Service("WaterworksScheduleService")
+	def skedSvc;
+
+	@DataContext("vw_waterworks_billing")
+	def billingEm;
+
+	@DataContext("waterworks_account")
+	def acctEm;
+
+	@DataContext("waterworks_payment")
+	def pmtEm;
+
+	@DataContext("waterworks_ledger")
+	def ledgerEm;
+
+	@After(pattern="FormReportService.getData", eval="#{ args[0].reportid == 'waterworks_ledger' }")
+	public void getStatementReport( def evt ) {
+		def t = evt.args[0];
+		def result = evt.result;
+
+		throw new Exception("txnid is " + t.txnid);
+
+		//get the acctid
+		def acct = acctEm.find( [objid: t.txnid ]).first();
+		if(!acct) throw new Exception("account not found");
+
+		//find the latest billing if year and month not specified
+
+		def bill = billingEm.find( [acctid: acct.objid ] ).where("state IN ('BILLED', 'POSTED') ").orderBy("year DESC, month DESC").first();
+		if(!bill) throw new Exception("billing not found. Please generate at least one billing");
+
+		bill.balanceforward = bill.arrears + bill.otherfeearrears - bill.credits;
+
+		def sked =  skedSvc.getSchedule( [scheduleid: bill.subarea.schedulegroupid, year: bill.year, month: bill.month ] );
+
+		def details = [];
+		def items = ledgerEm.find( [billid: bill.objid ] ).orderBy("itm.sortorder").list();
+		items.each {
+			def itm = [:];
+			itm.txndate = bill.billdate;
+			itm.particulars = itm.item.title + " " + (itm.particulars==null?'': "(" + itm.particulars +")" );
+			itm.dr = it.amount;
+			itm.cr = 0;
+			details << itm;
+		}
+
+		//we also get the payment
+		def pmts = pmtEm.find( [billid: bill.objid] ).where(" reftype = 'cashreceipt' ").orderBy("refdate").list();
+		pmts.each {
+			def pmt = [:];
+			pmt.txndate = it.refdate;
+			pmt.particulars = "Payment Ref No " + it.refno;
+			pmt.dr = 0;
+			if( it.discount > 0 ) pmt.dr = Math.abs(it.discount);
+			pmt.cr = Math.abs(it.amount);
+			details << pmt;
+		}
+		bill.details = details;
+		//calc the run balance:
+		def runbal = 0;
+		bill.details.each {
+			runbal = runbal + it.dr - it.cr;
+			it.runbalance = runbal;
+		}
+
+		bill.barcode = bill.billno;
+		bill.amount = runbal;
+		result.data = bill;
+	}
+
+} 

@@ -68,18 +68,5 @@ class WaterworksAccountService {
         acctEm.find( [ objid: acct.objid ]).update( [state: "DRAFT"] );
     }
 
-    @ProxyMethod
-    public void generateBill( def o ) {
-        //get the latest consumption year and month
-        def cons = consEm.find( [acctid: o.objid ] ).where("state = 'POSTED'").orderBy("year DESC, month DESC").first(); 
-        if( !cons) throw new Exception("There must be at least one consumption");
-        if( cons.acctstate !='ACTIVE') throw new Exception("account state must be active");
-
-        def billno = "WB-" + cons.acctno;
-        def bill  = billSvc.create( [consumptionid: cons.objid, billno: billno, state: 'PENDING' ] );
-       
-        //process the bill
-        billSvc.process( [objid:bill.objid ] );
-    }
 
 }

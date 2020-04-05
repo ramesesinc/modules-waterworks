@@ -8,6 +8,7 @@
 		<field name="seqno" type="integer" defaultvalue="0"/>
 		<field name="remarks" />
 		<field name="applicationid" required="false"/>
+		<field name="latestbillid" />
 	</element>
 
 </schema>

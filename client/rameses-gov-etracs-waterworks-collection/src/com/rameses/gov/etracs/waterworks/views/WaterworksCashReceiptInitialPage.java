@@ -34,81 +34,58 @@ public class WaterworksCashReceiptInitialPage extends javax.swing.JPanel {
     private void initComponents() {
 
         xFormPanel1 = new com.rameses.rcp.control.XFormPanel();
+        xLabel1 = new com.rameses.rcp.control.XLabel();
         xRadio1 = new com.rameses.rcp.control.XRadio();
-        xTextField3 = new com.rameses.rcp.control.XTextField();
         xRadio2 = new com.rameses.rcp.control.XRadio();
+        xRadio3 = new com.rameses.rcp.control.XRadio();
         xTextField2 = new com.rameses.rcp.control.XTextField();
         xDecimalField1 = new com.rameses.rcp.control.XDecimalField();
-        xRadio3 = new com.rameses.rcp.control.XRadio();
-        xTextField1 = new com.rameses.rcp.control.XTextField();
 
-        xRadio1.setName("txntype"); // NOI18N
+        xLabel1.setExpression("Select a Txn type to pay");
+        xLabel1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        xLabel1.setShowCaption(false);
+        xFormPanel1.add(xLabel1);
+
+        xRadio1.setName("pmttxntype"); // NOI18N
         xRadio1.setOptionValue("billing");
+        xRadio1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         xRadio1.setShowCaption(false);
         xRadio1.setText("Regular Billing");
         xFormPanel1.add(xRadio1);
 
-        xTextField3.setCaption("Acct No / Billing No");
-        xTextField3.setDepends(new String[] {"txntype"});
-        xTextField3.setName("txnid"); // NOI18N
-        xTextField3.setVisibleWhen("#{ txntype == 'billing' }");
-        xTextField3.setCaptionFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        xTextField3.setCaptionWidth(160);
-        xTextField3.setCellPadding(new java.awt.Insets(0, 30, 0, 0));
-        xTextField3.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        xTextField3.setPreferredSize(new java.awt.Dimension(0, 30));
-        xTextField3.setRequired(true);
-        xFormPanel1.add(xTextField3);
-
-        xRadio2.setName("txntype"); // NOI18N
+        xRadio2.setName("pmttxntype"); // NOI18N
         xRadio2.setOptionValue("deposit");
-        xRadio2.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xRadio2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         xRadio2.setShowCaption(false);
         xRadio2.setText("Deposit");
         xFormPanel1.add(xRadio2);
 
-        xTextField2.setCaption("Acct No");
-        xTextField2.setDepends(new String[] {"txntype"});
-        xTextField2.setName("txnid"); // NOI18N
-        xTextField2.setVisibleWhen("#{ txntype == 'deposit' }");
-        xTextField2.setCaptionFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        xTextField2.setCaptionWidth(160);
-        xTextField2.setCellPadding(new java.awt.Insets(0, 30, 0, 0));
-        xTextField2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        xTextField2.setPreferredSize(new java.awt.Dimension(0, 30));
-        xTextField2.setRequired(true);
-        xFormPanel1.add(xTextField2);
-
-        xDecimalField1.setCaption("Amount to Deposit");
-        xDecimalField1.setDepends(new String[] {"txntype"});
-        xDecimalField1.setName("depositAmt"); // NOI18N
-        xDecimalField1.setVisibleWhen("#{ txntype == 'deposit' }");
-        xDecimalField1.setCaptionFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        xDecimalField1.setCaptionWidth(160);
-        xDecimalField1.setCellPadding(new java.awt.Insets(0, 30, 0, 0));
-        xDecimalField1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        xDecimalField1.setPreferredSize(new java.awt.Dimension(160, 30));
-        xDecimalField1.setRequired(true);
-        xFormPanel1.add(xDecimalField1);
-
-        xRadio3.setName("txntype"); // NOI18N
+        xRadio3.setName("pmttxntype"); // NOI18N
         xRadio3.setOptionValue("newapplication");
-        xRadio3.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xRadio3.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         xRadio3.setShowCaption(false);
         xRadio3.setText("New Application");
         xFormPanel1.add(xRadio3);
 
-        xTextField1.setCaption("App No");
-        xTextField1.setDepends(new String[] {"txntype"});
-        xTextField1.setName("txnid"); // NOI18N
-        xTextField1.setVisibleWhen("#{ txntype == 'newapplication' }");
-        xTextField1.setCaptionFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        xTextField1.setCaptionWidth(120);
-        xTextField1.setCellPadding(new java.awt.Insets(0, 30, 0, 0));
-        xTextField1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        xTextField1.setPreferredSize(new java.awt.Dimension(0, 30));
-        xTextField1.setRequired(true);
-        xFormPanel1.add(xTextField1);
+        xTextField2.setCaption("Ref No");
+        xTextField2.setName("txnid"); // NOI18N
+        xTextField2.setCaptionFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        xTextField2.setCaptionWidth(150);
+        xTextField2.setCellPadding(new java.awt.Insets(30, 0, 0, 0));
+        xTextField2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        xTextField2.setPreferredSize(new java.awt.Dimension(250, 30));
+        xTextField2.setRequired(true);
+        xFormPanel1.add(xTextField2);
+
+        xDecimalField1.setCaption("Amt to deposit");
+        xDecimalField1.setDepends(new String[] {"pmttxntype"});
+        xDecimalField1.setName("depositAmt"); // NOI18N
+        xDecimalField1.setVisibleWhen("#{ pmttxntype == 'deposit' }");
+        xDecimalField1.setCaptionFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        xDecimalField1.setCaptionWidth(150);
+        xDecimalField1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        xDecimalField1.setRequired(true);
+        xFormPanel1.add(xDecimalField1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -123,8 +100,8 @@ public class WaterworksCashReceiptInitialPage extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addComponent(xFormPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(145, Short.MAX_VALUE))
+                .addComponent(xFormPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(211, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -132,11 +109,10 @@ public class WaterworksCashReceiptInitialPage extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.rameses.rcp.control.XDecimalField xDecimalField1;
     private com.rameses.rcp.control.XFormPanel xFormPanel1;
+    private com.rameses.rcp.control.XLabel xLabel1;
     private com.rameses.rcp.control.XRadio xRadio1;
     private com.rameses.rcp.control.XRadio xRadio2;
     private com.rameses.rcp.control.XRadio xRadio3;
-    private com.rameses.rcp.control.XTextField xTextField1;
     private com.rameses.rcp.control.XTextField xTextField2;
-    private com.rameses.rcp.control.XTextField xTextField3;
     // End of variables declaration//GEN-END:variables
 }

@@ -20,19 +20,20 @@ class WaterworksBillingService {
 	@Service("WaterworksBillingRuleService")
 	def billingSvc;
 
+	@Service("WaterworksCreditPaymentService")
+	def creditSvc;
+
+	@Service("DateService")
+	def dateSvc;
+
 	@DataContext('waterworks_billing')
 	def billEm; 
 
 	@DataContext('vw_waterworks_billing')
 	def vwBillEm; 
 
-
 	@DataContext('waterworks_account')
 	def acctEm;
-
-
-	@Service("WaterworksCreditPaymentService")
-	def creditSvc;
 
 	@DataContext('waterworks_otherfee')
 	def otherFeeEm;
@@ -49,8 +50,8 @@ class WaterworksBillingService {
 	public def create(def p) {
 		def wb = [:];
 		wb.state = p.state;
+		wb.acctid = acctid;
 		wb.batchid = p.batchid;
-		wb.consumptionid = p.consumptionid;
 		wb.billno = p.billno;			
 		wb.objid = wb.billno;
 		wb.discount = 0;
@@ -67,6 +68,21 @@ class WaterworksBillingService {
 		billEm.create( wb );	
 		return wb;
 	}
+
+	/******************************************************
+	* This is used for manually generating a bill.  
+	* This can be done even  
+	*******************************************************/ 
+	@ProxyMethod
+	public void generateFirstBill( def o ) {
+		if(!o.acctid) throw new Exception("Please specify acctid parameter");
+
+
+		if( !o.year )
+
+		def bill = billEm.find( [acctid: o.acctid ] ).first();
+		if( bill ) throw new Exception("A bill already exists for this account ");
+	}
 	
 
 	@ProxyMethod
@@ -78,6 +94,7 @@ class WaterworksBillingService {
 		otherFeeEm.find( [acctid: bill.acctid] ).where( "year =:yr AND month = :mon", [yr: bill.year, mon: bill.month ] ).update( [billid: bill.objid ] );
 
 		def u = [:];
+		u.billdate = dateSvc.getServerDate();
 		u.billed = 1;
 		u.arrears = 0;
 		u.surcharge = 0;
@@ -89,23 +106,35 @@ class WaterworksBillingService {
 		u.otherfees = otherFeeEm.find( [billid: bill.objid ] ).select( "c:{SUM(amount)}").val();
 		if(u.otherfees==null) u.otherfees = 0;
 
-		def pp = [ acctid : bill.acctid, billid: bill.objid ];
-		//we need to get only the previous month otherwise it will include the latest reading included in the bill
-		def ym = ((bill.year * 12) + bill.month)-1;
-		pp.year = (int)(ym/12);
-		pp.month = (int)(ym%12);
+		def pp = [ acctid : bill.acctid, billid: bill.objid, year: bill.year, month: bill.month ];
 
 		def b = billingSvc.getBilling( pp ); 
 		if( b?.billitems) {
-			def arrears = b.billitems.findAll{ it.reftype == 'waterworks_consumption' }.sum{ it.amount  };
-			def surcharge = b.billitems.findAll{it.surcharge}?.sum{ it.surcharge };
-			def interest = b.billitems.findAll{it.interest}?.sum{ it.interest };
-			def otherFees = b.billitems.findAll{ it.reftype == 'waterworks_otherfee' }?.sum{ it.amount };
 
-			if( arrears ) u.arrears = arrears;
+			//get first all total penalties before removing the current entry if any.
+			def surcharge = b.billitems.findAll{it.surcharge}?.sum{ it.surcharge };
 			if( surcharge ) u.surcharge = surcharge;
+
+			def interest = b.billitems.findAll{it.interest}?.sum{ it.interest };
 			if( interest ) u.interest = interest;
-			if( otherFees ) u.otherfeearrears = otherFees;
+
+			//remove the current item if any 
+			def current = b.billitems.find{ it.reftype == "waterworks_consumption" && it.year==bill.year && it.month==bill.month };
+			if( current ) {
+				b.billitems.remove( current );
+			}
+			def arrears = b.billitems.findAll{ it.reftype == 'waterworks_consumption' }.sum{ it.amount  };
+			if( arrears ) u.arrears = arrears;
+
+			def currFees = b.billitems.findAll{ it.reftype == "waterworks_otherfee" && it.year==bill.year && it.month==bill.month };
+			if(currFees ) {
+				u.otherfees = currFees.sum{ it.amount }; 
+				b.billitems.removeAll( currFees );
+			}
+			def otherFeeArrears = b.billitems.findAll{ it.reftype == 'waterworks_otherfee' }?.sum{ it.amount };
+			if( otherFeeArrears ) {
+				u.otherfeearrears = otherFeeArrears;
+			}			
 		}
 
 		//if there is no meter, run the computeSvc to get the volume and compute the consumption amount.
@@ -119,9 +148,16 @@ class WaterworksBillingService {
 
 	@ProxyMethod
 	public def approve( def o ) {
-		def creditAmt = creditEm.find( [acctid: o.acctid] ).select("c:{SUM(dr-cr)}").val();
+		if( !o.objid ) throw new Exception("bill objid is required");
+		def bill = vwBillEm.find( [objid: o.objid] ).first();
+		if(!bill) throw new Exception("bill does not exit");
+		if(bill.state == 'POSTED') throw new Exception("This bill is already posted");
+
+		def creditAmt = creditEm.find( [acctid: bill.acctid] ).select("c:{SUM(dr-cr)}").val();
 		if(creditAmt > 0 ) {
-			creditSvc.postPayment( [acctid: o.acctid, billid: o.billid, amtpaid: creditAmt ] );
+			bill.amtpaid = creditAmt;
+			bill.billid = bill.objid;
+			creditSvc.postPayment( bill );
 		}
 		billEm.find([ objid: o.objid ]).update( [state:'POSTED'] );
 	}

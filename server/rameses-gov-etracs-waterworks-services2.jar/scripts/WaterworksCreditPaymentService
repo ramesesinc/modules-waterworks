@@ -24,6 +24,9 @@ class WaterworksCreditPaymentService {
 	@Service("WaterworksBillingRuleService")
 	def billRuleSvc;
 
+	@Service("DateService")
+	def dateSvc;
+
 	@ProxyMethod
 	public def postPayment( def b ) {
 		if(!b.acctid) throw new Exception("acctid is required in WaterworksCreditPaymentService.postPayment");
@@ -31,10 +34,15 @@ class WaterworksCreditPaymentService {
 		if(!b.amtpaid) throw new Exception("amtpaid or credit amount to apply is required in WaterworksCreditPaymentService.postPayment");
 
 		//run the billing to apply payment
-		def res = billRuleSvc.execute( b );
-
+		def res = billRuleSvc.getBilling( b );
 		//post to the ledgers. discount should only be applied once
 		def billitems = res.billitems;
+
+		//check first if amount and the amtpaid match
+		def amtapplied =  billitems.sum{ it.total };
+		if( b.amtpaid != amtapplied )
+			throw new Exception("amtpaid must equal total amount applied to its billing. amtpaid: "+b.amtpaid + " amtapplied:"+amtapplied);
+
 		def items = [];
 		billitems.each {
 			if(it.discount == null) it.discount = 0;
@@ -59,7 +67,7 @@ class WaterworksCreditPaymentService {
 		c.refno = b.billno;
 		c.reftype = "billing";
 		c.dr = 0;		
-		c.cr = items.sum{ it.amount };
+		c.cr = items.sum{ it.total };
 		creditEm.create( c );
 
 		//insert into waterworks_payment so we can log and allow it to be voided
@@ -70,13 +78,16 @@ class WaterworksCreditPaymentService {
 		pmt.refno = b.billno;
 		pmt.reftype = "billing";
 		pmt.refid = b.objid;
-		pmt.amount = b.amount;
+		pmt.amount = items.sum{ it.total };
 		pmt.voided = 0;
-		pmt.txnmode = rct.txnmode;
-		pmt.remarks = rct.remarks;
+		pmt.txnmode = "ONLINE";
+		pmt.remarks = "creditpayment";
+		pmt.pmttxntype = "creditpayment";
 		pmt.items = items;
-		if(rct.billid) pmt.billid = rct.billid;
-		pmt.discount = pmt.items.sum( it.discount );
+		pmt.year = b.year;
+		pmt.month = b.month;
+		pmt.billid = b.billid;
+		pmt.discount = items.sum{ (it.discount==null)? 0 : it.discount };
 		paymentEm.create( pmt );
 	}
 

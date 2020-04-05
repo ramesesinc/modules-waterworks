@@ -1,0 +1,37 @@
+import com.rameses.annotations.*;
+import treasury.facts.*;
+import java.text.*;
+
+class WaterworksAccountLedgerReportInterceptor {
+	
+	@DataContext("vw_waterworks_account")
+	def acctEm;
+
+	@DataContext("waterworks_credit")
+	def creditEm;
+
+	@Service("WaterworksBillingRuleService")
+	def billSvc;
+
+	@After(pattern="FormReportService.getData", eval="#{ args[0].reportid == 'waterworks_account_ledger' }")
+	public void getBillingReport( def evt ) {
+		def t = evt.args[0];
+		def result = evt.result;
+
+		def acct = acctEm.find( [objid: t.txnid ] ).first();
+
+		def res = billSvc.getBilling( [acctid: acct.objid ] );
+		acct.items = res.billitems; 
+		acct.barcode = acct.acctno;
+
+		def creditAmt = creditEm.find( [acctid: acct.objid ] ).select("c:{SUM(dr-cr)}").val();
+		if( creditAmt ) {
+			acct.items << [ item: [title: "Credits"], total: (creditAmt * -1)   ];
+		}
+
+		acct.amount = acct.items.sum{ it.total } ;
+
+		result.data = acct;
+	}
+
+} 

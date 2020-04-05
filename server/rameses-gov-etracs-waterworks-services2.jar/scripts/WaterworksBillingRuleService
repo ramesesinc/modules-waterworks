@@ -41,6 +41,9 @@ class WaterworksBillingRuleService {
 	@Service("WaterworksScheduleService")
 	def schedSvc;
 
+	@DataContext("waterworks_billing")
+	def billEm;
+
 	def loadBillItems( o ) {
 
 		def facts = [];
@@ -52,20 +55,22 @@ class WaterworksBillingRuleService {
 		} 
 		def wheres = []; 
 		wheres.addAll( arr ); 
-		wheres << " state = :state "; 
+		wheres << " state = :state AND hold=0 "; 
 		wheres << " (amount - amtpaid - discount) > 0 ";
 
 		def select = "hold,year,month,volume,amount:{amount-amtpaid-discount},";
 		select += "principal:{amount},amtpaid,refid:{objid},reftype:{'waterworks_consumption'}";
 		def conList = wcEm.find([acctid: o.acctid]).select(select).where(wheres.join(" AND "), wp).orderBy("year,month").list();
 
+		def yearMonthList = [];
+		def addYearMonth = { o->
+			if( !yearMonthList.find{ it.year==o.year && it.month==o.month } ) {
+				yearMonthList << [year:it.year, month:it.month];		
+			}
+		}
+
 		conList.each {
-			def sked = schedSvc.getSchedule( [ scheduleid: o.scheduleid, year:it.year, month: it.month ] );
-			facts << new WaterBillingPeriod( sked );
-			if( it.hold ) {
-				it.amount = 0;
-				it.amtpaid = 0;
-			}	
+			addYearMonth( it ); 
 			facts << new WaterBillItem(it);
 		}
 
@@ -77,7 +82,13 @@ class WaterworksBillingRuleService {
 		conList = wotherEm.find([acctid: o.acctid]).select(select).where(wheres.join(" AND "), wp).orderBy("year,month").list();
 
 		conList.each {
+			addYearMonth( it );
 			facts << new MonthBillItem(it);
+		}
+
+		yearMonthList?.each {
+			def sked = schedSvc.getSchedule( [ scheduleid: o.scheduleid, year:it.year, month: it.month ] );
+			facts << new WaterBillingPeriod( sked );			
 		}
 
 		return facts;
@@ -104,6 +115,13 @@ class WaterworksBillingRuleService {
 		def factBuilder = new FactBuilder();
 		factBuilder.facts = billItemFacts; 
 		factBuilder.facts << new WaterAccount( acct );
+
+		//check if acct has arrears. This is to determine if we need to discount or not
+		if( pp.billid ) {
+			def bill = billEm.find( [objid: pp.billid ]).first();
+			if(!bill) throw new Exception("Error in WaterworksBillingRuleService.getBilling. billid was specified but bill does not exist");
+			factBuilder.facts << new WaterBilling( bill );
+		}
 
 		if( acct.attributes ) {
 			acct.attributes.each {

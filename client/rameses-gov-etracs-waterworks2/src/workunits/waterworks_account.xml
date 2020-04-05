@@ -29,8 +29,8 @@
         visibleWhen="#{ entity.state == 'ACTIVE' &amp;&amp; mode=='read' }" />          
         
         <!-- subitem actions -->
-        <invoker type="consumptionActions" action="viewConsumptionPayment" caption="View Payments" /> 
-        <invoker type="otherFeeActions" action="viewOtherFeePayment" caption="View Payments" />
+        <invoker type="ledgerActions" action="viewLedgerPayment" caption="View Payments" />
+        <invoker type="ledgerActions" action="viewStatement" caption="View Statement" />
     </invokers>
     
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksAccountModel" />    
