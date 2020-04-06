@@ -1,4 +1,7 @@
-<workunit extends="com/rameses/seti2/templates/CrudForm.xml" schemaName="waterworks_billing_period">
+<workunit 
+    extends="com/rameses/seti2/templates/CrudForm.xml" 
+    schemaName="waterworks_billing_period"
+    allowCreate="false">
     <invokers>
         <invoker type="waterworks_billing_period:open" caption="Billing Period" action="open" target="popup"/>
     </invokers>

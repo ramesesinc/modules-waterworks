@@ -8,7 +8,7 @@
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillingPeriodLookupModel" />
     <pages>
-        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksBillingPeriodLookupPage" />
+        <page  template="com.rameses.gov.etracs.waterworks.views.WaterworksBillingPeriodLookupPage" />
     </pages>
 
 </workunit>

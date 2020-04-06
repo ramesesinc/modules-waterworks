@@ -2,11 +2,18 @@
     <!-- used by rules -->
     <invokers>
         <invoker type="waterworks_subarea:create" caption="Add Subarea" action="create" target="popup"/>
-        <invoker type="waterworks_subarea:open" caption="View Subarea" action="open" target="popup" />   
+        <invoker type="waterworks_subarea:open" caption="View Subarea" 
+                 action="open" target="popup" 
+                 formTitle="Sub Area: #{entity.code}"
+                />   
         
         
         <!-- form actions -->
         <invoker type="acctActions" caption="Change Seqno" action="changeSeqno" />
+        <invoker type="formActions" caption="Add Billing Period" 
+                 action="addBillingPeriod" 
+                 visibleWhen="#{ mode == 'read' &amp;&amp; entity.nextperiod?.objid == null }"/>
+        
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksSubareaModel" />
     <pages>

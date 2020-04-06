@@ -56,12 +56,14 @@ public class WaterworksBillingPeriodPage extends javax.swing.JPanel {
         xLabel2.setExpression("#{ entity.fromdate }");
         xLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
         xLabel2.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xLabel2.setDateFormat("yyyy-MM-dd");
         xLabel2.setPreferredSize(new java.awt.Dimension(120, 20));
         xFormPanel2.add(xLabel2);
 
         xLabel3.setCaption("To Period");
         xLabel3.setExpression("#{ entity.todate }");
         xLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
+        xLabel3.setDateFormat("yyyy-MM-dd");
         xLabel3.setPreferredSize(new java.awt.Dimension(120, 20));
         xFormPanel2.add(xLabel3);
 

@@ -7,7 +7,7 @@ To better understand the system, it is important first to know how it handles th
 - 1. Through the New Connection application 
 - 2. Capture Account (for existing records)
 
-Once created, the accounts are associated to __Sub Areas__. These are groupings that share the same billing cycle and schedule. Some LGUs might term this as zones and some as sectors. Anyway, a more general term is used in the system so as not to create bias with existing terminologies. This grouping is important because most of the time, with some exception, bill preparation will be done in batches. The Sub Areas will be associated with a pre-defined schedule, i.e. the billing period, the reading dates, due dates, etc. This is updated to the next period after processing a batch billing.  
+Once created, the accounts are associated to __Sub Areas__. These are groupings that share the same billing cycle and schedule. This grouping is important because most of the time, with some exception, bill preparation will be done in batches. The Sub Areas will be associated with a pre-defined schedule, i.e. the billing period, the reading dates, due dates, etc. This is updated to the next period after processing a batch billing.  
 
 Water sales and payment transactions are recorded in __Bills__. Bills are prepared per account per month and has a duration or expiry date. Once expired, succeeding payments will be referenced to the next open bill. There will only be one open bill at a time for an account.   
 

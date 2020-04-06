@@ -10,7 +10,10 @@
             <action role="SHARED" allowEdit="false" allowCreate="false"/>             
         </invoker>
         
+        <invoker type="periodActions" caption="Add Billing Period"  action="addPeriod" />
+        
     </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksScheduleGroupModel" />
     <pages>
         <page template="com.rameses.gov.etracs.waterworks.views.WaterworksScheduleGroupPage"/>
     </pages>

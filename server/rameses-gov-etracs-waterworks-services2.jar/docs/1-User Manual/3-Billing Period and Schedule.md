@@ -4,6 +4,7 @@
 }
 .table1 td {
 	vertical-align: top;
+	font-size:12px;
 }
 </style>
 
@@ -19,9 +20,9 @@ __Billing Period__
 |fromdate      |The start date of the period  | 	
 |todate        |The end date of the period   |  	 
 |readingdate   |The date when reading shoud start  |             
-|readingenddate|The reading should be completed and uploaded before this date |             
+|readingenddate|The reading should be completed and uploaded before this date. This data is optional. |             
 |billdate      |The billing date for the period |
-|billingenddate   |The billing should be completed before this date and the bills must have already been sent to the customers |
+|billingenddate   |The billing should be completed before this date and the bills must have already been sent to the customers. This data is optional. |
 |discdate      |If payment made before this date a discount will be provided if applicable |
 |duedate       |Non-payment after this date will trigger penalties if applicable |
 |billexpirydate|Payments after this date will be invalid. Instead the payments will be posted to the next bill |  
@@ -45,7 +46,7 @@ Add 15 days from period to date for the due date.
 
 ```
 
-Before we start defining the rules we need to create first the schedule groups. Because some LGU have so many customer accounts, it is natural to divide this into  groups with different schedules to manage it better. Usually the group name corresponds with the start date for a group. For example, group 1 might start at first day of the month, group 5 might start at the fifth day of the month and so on. 
+Before we start defining the rules we need to create first the schedule groups. Because some enterprises have so many customer accounts, it is natural to divide this into  groups with different schedules to manage it better. Usually the group name corresponds with the start date for a group. For example, group 1 might start at first day of the month, group 5 might start at the fifth day of the month and so on. 
 
 To perform the succeeding sections, you need the ff. roles:
 
@@ -154,7 +155,21 @@ Deploy the rule and close. If there are no errors, we are now ready to test the 
 ### Testing the rules ###
 To test the rules, we need to go back to the schedule group. Go to __Master > Waterworks > Billing Schedule Groups__ and search the billing schedule group, in this case S1. Once you have seen that on the list, select the item by pointing the mouse and double click. Alternatively, you can select the item press Ctrl-O to open or click on the `Open` button from the list toolbar. Once open, you will be able to see the Billing Period Tab.
 
+![alt text][skedrule9] 
 
+Click on the `Add Period` button. A popup will display prompting you for a year and month. Click OK to finish. 
+
+![alt text][skedrule10] 
+
+The result will be displayed on the Billing Period list. 
+
+![alt text][skedrule11] 
+
+If you want to edit the values, select the item on the list and double click to open or click the `Open` folder button. This should display the billing period information. Click the `Edit` button to make the fields editable. Then once finished click `Save`. 
+
+![alt text][skedrule12]
+
+You do not have to specify the billing period dates. The system will automatically fill them as the need arises during billing if it does not yet exist. However, if you already created one on purpose, the system will not override it. This schedule group will be referenced by the sub area. 
 
 [skedlist]: ./images/groupskedlist.png
 [skedform]: ./images/groupskedform.png
@@ -167,5 +182,8 @@ To test the rules, we need to go back to the schedule group. Go to __Master > Wa
 [skedrule6]: ./images/skedrule6.png
 [skedrule7]: ./images/skedrule7.png
 [skedrule8]: ./images/skedrule8.png
-
+[skedrule9]: ./images/skedrule9.png
+[skedrule10]: ./images/skedrule10.png
+[skedrule11]: ./images/skedrule11.png
+[skedrule12]: ./images/skedrule12.png
 

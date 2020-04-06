@@ -222,10 +222,11 @@ public class WaterworksScheduleGroupPage extends javax.swing.JPanel {
             })
         });
         schemaList2.setCustomFilter("scheduleid = :objid");
+        schemaList2.setFormActions("periodActions");
+        schemaList2.setHandler("periodList");
         schemaList2.setOrderBy("year DESC, month DESC");
         schemaList2.setQueryName("entity");
         schemaList2.setSchemaName("waterworks_billing_period");
-        schemaList2.setAllowCreate(true);
         schemaList2.setAllowDelete(true);
         xPanel1.add(schemaList2, java.awt.BorderLayout.CENTER);
 

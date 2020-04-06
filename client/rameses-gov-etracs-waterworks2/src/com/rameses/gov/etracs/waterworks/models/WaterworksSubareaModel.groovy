@@ -14,7 +14,7 @@ public class WaterworksSubareaModel extends CrudFormModel {
     boolean hasParent = true;
     def selectedAccount;
     def acctListModel;
-    
+
     void afterCreate() {
         if( caller instanceof CrudFormModel ) {
             parent = caller.entity;
@@ -41,10 +41,15 @@ public class WaterworksSubareaModel extends CrudFormModel {
     
     def addBillingPeriod() {
        def s = { o->
+           def m = [_schemaname: schemaName];
+           m.objid = entity.objid;
+           m.nextperiod = o;
+           persistenceService.update( m );
            entity.nextperiod = o;
            binding.refresh();
        } 
        return Inv.lookupOpener("waterworks_billing_period:lookup", [onselect:s, scheduleid: entity.schedulegroup.objid ]);
     }
+    
     
 }

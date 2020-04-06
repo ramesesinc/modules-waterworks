@@ -2,7 +2,9 @@
     <!-- used by rules -->
     <invokers>
         <invoker type="waterworks_area:create" caption="Add Area" action="create" target="popup"/>
-        <invoker type="waterworks_area:open" caption="View Area" action="open" target="popup"/>        
+        <invoker type="waterworks_area:open" 
+            formTitle="Area: #{entity.code}"
+            caption="View Area" action="open" target="popup"/>        
     </invokers>
     <pages>
         <page template="com.rameses.gov.etracs.waterworks.views.WaterworksAreaPage" />

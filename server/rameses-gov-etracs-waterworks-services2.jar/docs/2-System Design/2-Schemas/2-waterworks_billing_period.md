@@ -9,7 +9,7 @@
 	vertical-align: top;
 }
 .table1 {
-	font-size: 10px;
+	font-size: 12px;
 }
 </style>
 

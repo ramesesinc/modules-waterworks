@@ -9,12 +9,11 @@
 			<key field="areaid" target="objid" />
 		</complex>	
 
-		<field name="schedulegroupid" caption="Schedule Group"/>
 		<complex name="schedulegroup" ref="waterworks_schedule_group" jointype="many-to-one" required="true">
 			<key field="schedulegroupid" target="objid" />
 		</complex>	
 			
-		<complex name="nextperiod" ref="waterworks_billing_period" jointype="many-to-one" required="true" caption="Next Period">
+		<complex name="nextperiod" ref="waterworks_billing_period" jointype="many-to-one" required="false" caption="Next Period">
 			<key field="nextperiodid" target="objid" />
 		</complex>	
 

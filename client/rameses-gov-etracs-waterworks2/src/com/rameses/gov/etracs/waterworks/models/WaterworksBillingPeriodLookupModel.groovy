@@ -24,7 +24,6 @@ public class WaterworksBillingPeriodLookupModel  {
     def onselect;
 
     void create() {
-        scheduleid = "caller is " + caller.entity.objid;
         onselect = { o->
             caller.reload();
         }

@@ -1,8 +1,8 @@
-<workunit extends="com/rameses/seti2/templates/CrudList.xml" schemaName="waterworks_subarea">
+<workunit extends="com/rameses/seti2/templates/CrudNodeList.xml" schemaName="waterworks_subarea">
     <!-- used by rules -->
     <invokers>
         <invoker folderid="/explorer/master/waterworks" 
-            cols="code,description,schedulegroupid,area.code,nextperiod.year,nextperiod.month"
-                 caption="Waterworks Sub Areas" role="MASTER" action="init" index="-9"/>
+            cols="code,description,schedulegroupid,area.code,nextperiod.year,nextperiod.monthname"
+                 caption="Sub Areas" role="MASTER" action="init" index="-9"/>
     </invokers>
 </workunit>

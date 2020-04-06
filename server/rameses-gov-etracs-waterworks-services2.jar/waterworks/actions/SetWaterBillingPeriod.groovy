@@ -19,7 +19,7 @@ public class SetWaterBillingPeriod implements RuleActionHandler {
 		if(params.billingenddate!=null) billPeriod.billingenddate = params.billingenddate.eval();
 		if(params.discdate!=null) billPeriod.discdate = params.discdate.eval();
 		if(params.duedate!=null) billPeriod.duedate = params.duedate.eval();
-		if(params.billexpirydate!=null) billPeriod.billexpirydate = params.duedate.eval();
+		if(params.billexpirydate!=null) billPeriod.billexpirydate = params.billexpirydate.eval();
 
 	}
 }
