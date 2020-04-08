@@ -1,8 +1,8 @@
 <workunit extends="com/rameses/seti2/templates/CrudForm.xml" 
         allowCreate="false" allowDelete="false" allowEdit="false"
-          schemaName="vw_waterworks_billing" entitySchemaName="waterworks_billing">
+          schemaName="vw_waterworks_bill" entitySchemaName="waterworks_bill">
     <invokers>
-        <invoker type="vw_waterworks_billing:open" caption="Bill Info" action="open" target="popup"/>
+        <invoker type="vw_waterworks_bill:open" caption="Waterworks Bill Info" action="open" target="popup"/>
         <!-- ACTIONS -->
         <invoker type="formActions" caption="View Account" action="viewAccount" />   
 
@@ -19,8 +19,8 @@
             
         
     </invokers>
-    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillingModel" />
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillModel" />
     <pages>
-        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksBillingPage" />
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksBillPage" />
     </pages>
 </workunit>

@@ -6,11 +6,6 @@
 		<!-- WATERSALES,SURCHARGE,INTEREST,OTHERFEE,ADJ-->
 		<field name="itemtype" />
 		<field name="system" />
-
-		<field name="item_objid" />
-		<field name="item_code" caption="Acct Code"/>		
-		<field name="item_title" caption="Acct Title"/>
-		<field name="item_fund_objid" caption="Fund Code"/>		
 		<field name="sortorder" type="integer"/>		
 	</element>
 </schema>

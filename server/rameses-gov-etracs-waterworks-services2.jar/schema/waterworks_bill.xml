@@ -1,0 +1,22 @@
+<schema>
+	<element tablename="waterworks_bill">
+		<field name="objid" primary="true"  prefix="WBILL"/>
+		<field name="state" />
+		<field name="batchid"/>
+		<field name="billno" required="true"/>
+		<field name="refbillno" />
+		<field name="billdate" type="date"/>
+		<field name="balanceforward" type="decimal" caption="Balance Forward"/>
+		<field name="acctid" required="true"/>
+		<field name="acctinfoid" required="true"/>
+		<field name="periodid" />
+		<field name="expirydate" />
+		<field name="validitydate" />
+		<field name="preparedby_objid" />
+		<field name="preparedby_name" />
+		<field name="billed"/>	
+		<field name="printed"/>
+		<field name="remarks"/>
+	</element>
+</schema>
+	

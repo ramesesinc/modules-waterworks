@@ -12,7 +12,7 @@ import com.rameses.util.*;
 /****************************************************************************************
 * This is for individual bills
 *****************************************************************************************/
-class WaterworksBillingService {
+class WaterworksBillService {
 	
 	@Service("WaterworksComputationService")
 	def computeSvc;
@@ -26,10 +26,10 @@ class WaterworksBillingService {
 	@Service("DateService")
 	def dateSvc;
 
-	@DataContext('waterworks_billing')
+	@DataContext('waterworks_bill')
 	def billEm; 
 
-	@DataContext('vw_waterworks_billing')
+	@DataContext('vw_waterworks_bill')
 	def vwBillEm; 
 
 	@DataContext('waterworks_account')

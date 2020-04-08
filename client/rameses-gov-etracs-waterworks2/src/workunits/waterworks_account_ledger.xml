@@ -3,8 +3,8 @@
         <invoker type="vw_waterworks_account:form:formActions" caption="View Ledger" index="-10" 
                 reportId="waterworks_account_ledger"
                 reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_account_ledger.jasper" 
-                visibleWhen="#{mode=='read'}"
-                 txnid="#{entity.objid}"
+                visibleWhen="#{ entity.state == 'ACTIVE' }"
+                 txnid="#{entity.objid }"
                  target="popup"
                 action="preview"/>
     </invokers>

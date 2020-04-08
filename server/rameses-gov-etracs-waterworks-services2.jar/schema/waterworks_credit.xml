@@ -4,6 +4,8 @@
 
 		<!-- link to ledger account -->
 		<field name="acctid" />
+		<field name="year" />		
+		<field name="month" />		
 
 		<field name="dr" required="true" type="decimal" caption="Dr"/>
 		<field name="cr" required="true" type="decimal" caption="Cr"/>

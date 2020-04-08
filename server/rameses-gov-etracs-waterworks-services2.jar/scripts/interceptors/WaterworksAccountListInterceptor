@@ -7,9 +7,10 @@ class WaterworksAccountListInterceptor{
 		def result = evt.result;
 		result << [ title: 'Active (Metered)', id:'active'];
 		result << [ title: 'Active (Unmetered)', id:'unmetered'];
-		result << [ title: 'Defective', id:'defective'];
 		result << [ title: 'Disconnected', id:'disconnected'];
 		result << [ title: 'Draft', id:'draft'];
+		result << [ title: 'Defective', id:'defective'];		
+		result << [ title: 'Closed', id:'closed'];				
 	}
 
 	@Before(pattern="QueryService.getList", eval="#{args[0]._schemaname == 'vw_waterworks_account'}")
@@ -27,20 +28,25 @@ class WaterworksAccountListInterceptor{
 				break; 
 
 			case 'active':
-				str = "meterstate = 'ACTIVE' AND NOT(meterid IS NULL) AND NOT(state='DRAFT') ";
+				str = "state = 'ACTIVE' AND NOT(meterid IS NULL)";
 				break;
 
 			case 'unmetered': 	
-				str = "meterid IS NULL AND NOT(state='DRAFT')";
+				str = "state = 'ACTIVE' AND meterid IS NULL";
 				break;
 
 			case 'defective':
-				str = "meterstate = 'DEFECTIVE'  AND NOT(state='DRAFT')";
+				str = "state='ACTIVE' AND meterstate = 'DEFECTIVE'";
 				break;
 
 			case 'disconnected':
-				str = "meterstate = 'DISCONNECTED'  AND NOT(state='DRAFT')";
+				str = "state = 'DISCONNECTED'";
 				break;
+
+			case 'closed':
+				str = "state = 'CLOSED' ";
+				break;
+
 		}
 
 		//add to first position of where

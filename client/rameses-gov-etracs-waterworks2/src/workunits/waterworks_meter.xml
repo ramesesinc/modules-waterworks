@@ -18,8 +18,8 @@
         
         <invoker type="waterworks_account:edit" caption="View Waterworks Meter" action="initView" target="popup" />
     </invokers>
-    <code class="com.rameses.gov.etracs.waterworks.models.MeterModel"/>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksMeterModel"/>
     <pages>
-        <page template="com.rameses.gov.etracs.waterworks.views.MeterPage"/>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksMeterPage"/>
     </pages>
 </workunit>

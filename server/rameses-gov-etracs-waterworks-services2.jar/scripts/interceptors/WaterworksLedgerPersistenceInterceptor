@@ -1,9 +1,9 @@
 import com.rameses.annotations.*;
 
-class WaterworksOtherFeePersistenceInterceptor{
+class WaterworksLedgerPersistenceInterceptor{
 	
 	@DataContext("waterworks_ledger")
-	def otherFeeEm; 
+	def ledgerEm; 
 
 	@Before(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_ledger'}")
 	public void beforeRemove( evt ) {

@@ -1,4 +1,4 @@
-<workunit extends="com/rameses/seti2/templates/CrudList.xml" 
+<workunit extends="com/rameses/seti2/templates/CrudNodeList.xml" 
           schemaName="waterworks_meter" allowCreate="true" allowOpen="true" allowDelete="false"
           cols="serialno,brand,sizeid,capacity,account.name,account.acctname,status">
     <invokers>

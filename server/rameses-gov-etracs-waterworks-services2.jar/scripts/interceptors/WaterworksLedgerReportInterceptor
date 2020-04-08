@@ -7,7 +7,7 @@ class WaterworksLedgerReportInterceptor {
 	@Service("WaterworksScheduleService")
 	def skedSvc;
 
-	@DataContext("vw_waterworks_billing")
+	@DataContext("vw_waterworks_bill")
 	def billingEm;
 
 	@DataContext("waterworks_account")

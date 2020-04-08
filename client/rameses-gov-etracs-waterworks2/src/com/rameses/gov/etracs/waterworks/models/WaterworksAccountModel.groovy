@@ -21,6 +21,7 @@ public class WaterworksAccountModel extends CrudFormModel {
         entity.attributes = [];
         entity.units = 1;
         entity.meter = [:];
+        entity.state = "DRAFT";
     }
     
     void afterOpen() {
@@ -28,7 +29,10 @@ public class WaterworksAccountModel extends CrudFormModel {
     }
     
     boolean isEditAllowed() {
-        return (entity.state == "DRAFT" && mode!="edit");
+        if( entity.state != "DRAFT" ) {
+            return false;
+        }
+        return super.isEditAllowed();
     }
     
     //***************************************************************************
@@ -68,7 +72,21 @@ public class WaterworksAccountModel extends CrudFormModel {
         }
     ];
     
+    def getLookupStubout() {
+        if( !entity.subarea?.objid ) throw new Exception("Please select group first");
+        def p = [:];
+        p.put("query.subareaid", entity.subarea.objid);
+        return Inv.lookupOpener("waterworks_stubout:lookup", p );
+    }
     
+    def getEntityQry() {
+        return [objid: entity.objid];
+    }
+
+    /************************************************************************
+    * RELATED TO LEDGER
+    *************************************************************************/
+    def ledgerItem;
     def ledgerViewOption = 1;
     def ledgerList;
     def ledgerFilter;
@@ -84,22 +102,18 @@ public class WaterworksAccountModel extends CrudFormModel {
         return ledgerFilter;
     }
     
+    def addLedgerEntry() {
+        def s = { o->
+            ledgerList.reload();
+        }
+        return Inv.lookupOpener("waterworks_ledger:create", [onSaveHandler:s] );
+    }
+    
     def viewLedgerPayment() {
-        if( !ledgerList.selectedItem?.item ) throw new Exception("Please select other fee");
+        if( !ledgerList.selectedItem?.item ) throw new Exception("Please select ledger item");
         def p = [:];
         p.query = [refid: ledgerList.selectedItem?.item.objid];
         return Inv.lookupOpener("waterworks_payment_item:list", p );
-    }
-    
-    def getLookupStubout() {
-        if( !entity.subarea?.objid ) throw new Exception("Please select group first");
-        def p = [:];
-        p.put("query.subareaid", entity.subarea.objid);
-        return Inv.lookupOpener("waterworks_stubout:lookup", p );
-    }
-    
-    def getEntityQry() {
-        return [objid: entity.objid];
     }
     
     void approve() {
@@ -113,7 +127,7 @@ public class WaterworksAccountModel extends CrudFormModel {
     }
     
     void generateBill() {
-        def bill = acctSvc.generateBill( [objid: entity.objid ] );
+        def bill = acctSvc.generateBill( [acctid: entity.objid ] );
         entity.billid = bill.objid;
         entity.billstate = bill.state;
         MsgBox.alert("Bill successfully generated");

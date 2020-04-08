@@ -1,5 +1,5 @@
 <schema>
-	<element tablename="vw_waterworks_billing">
+	<element tablename="vw_waterworks_bill">
 		<field name="objid" primary="true"/> 
 		<field name="batchid" /> 
 		<field name="acctid" /> 
@@ -45,6 +45,7 @@
 
 		<!-- date when the bill was prepared -->
 		<field name="billdate" /> 
+		<field name="validitydate" /> 
 
 		<field name="readingdate" />
 		<field name="discdate" /> 

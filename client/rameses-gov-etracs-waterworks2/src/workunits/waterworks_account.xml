@@ -2,7 +2,7 @@
           allowCreate="false" allowEdit="true">
 
     <invokers>
-        <invoker folderid="/menucategory/waterworks/account" caption="Add Customer Account (Capture)" 
+        <invoker folderid="/menucategory/waterworks/account" caption="Capture Customer Account" 
                  action="create" role="MASTER" index="4"/>
         
         <!-- create or open -->
@@ -21,16 +21,13 @@
                  role="APPROVER"
                  visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; mode=='read' }" /> 
                  
-        <invoker type="formActions" action="generateBill" caption="Generate Statement" 
-                 visibleWhen="#{ entity.billid ==null &amp;&amp; mode=='read' }" /> 
-
-        <invoker type="formActions" action="deactivate" caption="Deactivate"
-        role="ADMIN"
-        visibleWhen="#{ entity.state == 'ACTIVE' &amp;&amp; mode=='read' }" />          
+        <invoker type="formActions" action="generateBill" caption="Generate Bill" 
+                 visibleWhen="#{ entity.currentbillid ==null }" /> 
         
         <!-- subitem actions -->
-        <invoker type="ledgerActions" action="viewLedgerPayment" caption="View Payments" />
-        <invoker type="ledgerActions" action="viewStatement" caption="View Statement" />
+        <invoker type="ledgerActions" action="addLedgerEntry" caption="Add Entry" visibleWhen="#{entity.state=='DRAFT'}"/>
+        <invoker type="ledgerActions" action="viewLedgerPayment" caption="View Payment Details" />
+               
     </invokers>
     
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksAccountModel" />    

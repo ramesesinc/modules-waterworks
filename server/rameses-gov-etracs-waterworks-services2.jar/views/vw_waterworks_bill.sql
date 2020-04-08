@@ -1,6 +1,6 @@
-DROP VIEW IF EXISTS vw_waterworks_billing
+DROP VIEW IF EXISTS vw_waterworks_bill
 ;
-CREATE VIEW vw_waterworks_billing AS
+CREATE VIEW vw_waterworks_bill AS
 SELECT 
    wb.*, 
 
@@ -23,11 +23,9 @@ SELECT
    wc.meterstate,
    wc.prevreading, 
    wc.prevmonth, 
-   wc.prevyear,
-
-   ((wb.arrears + wb.otherfees + wb.surcharge + wb.interest) - wb.credits) AS subtotal
-
-FROM waterworks_billing wb 
+   wc.prevyear
+   
+FROM waterworks_bill wb 
 INNER JOIN waterworks_account a on a.objid = wb.acctid
 INNER JOIN waterworks_account_info ai ON wb.acctinfoid = ai.objid
 LEFT JOIN vw_waterworks_consumption wc ON wc.billid = wb.objid 

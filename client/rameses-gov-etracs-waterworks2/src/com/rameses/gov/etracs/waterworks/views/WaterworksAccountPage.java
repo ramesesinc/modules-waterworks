@@ -37,7 +37,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         xFormPanel1 = new com.rameses.rcp.control.XFormPanel();
         xLabel3 = new com.rameses.rcp.control.XLabel();
-        xTextField1 = new com.rameses.rcp.control.XTextField();
+        xTextField3 = new com.rameses.rcp.control.XTextField();
         xLookupField1 = new com.rameses.rcp.control.XLookupField();
         xTextField2 = new com.rameses.rcp.control.XTextField();
         addressEditor1 = new com.rameses.enterprise.components.AddressEditor();
@@ -57,6 +57,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         xLookupField4 = new com.rameses.rcp.control.XLookupField();
         xLookupField5 = new com.rameses.rcp.control.XLookupField();
         xIntegerField2 = new com.rameses.rcp.control.XIntegerField();
+        xLabel5 = new com.rameses.rcp.control.XLabel();
         jPanel5 = new javax.swing.JPanel();
         xFormPanel5 = new com.rameses.rcp.control.XFormPanel();
         xLookupField3 = new com.rameses.rcp.control.XLookupField();
@@ -70,10 +71,12 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         xPanel2 = new com.rameses.rcp.control.XPanel();
         schemaList1 = new com.rameses.seti2.components.SchemaList();
+        jPanel6 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         xRadio4 = new com.rameses.rcp.control.XRadio();
         xRadio5 = new com.rameses.rcp.control.XRadio();
         xRadio6 = new com.rameses.rcp.control.XRadio();
+        xActionBar1 = new com.rameses.rcp.control.XActionBar();
         xPanel3 = new com.rameses.rcp.control.XPanel();
         jPanel9 = new javax.swing.JPanel();
         xFormPanel3 = new com.rameses.rcp.control.XFormPanel();
@@ -82,6 +85,8 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         xPanel5 = new com.rameses.rcp.control.XPanel();
         jPanel10 = new javax.swing.JPanel();
         schemaList4 = new com.rameses.seti2.components.SchemaList();
+        xPanel6 = new com.rameses.rcp.control.XPanel();
+        jPanel11 = new javax.swing.JPanel();
 
         setPreferredSize(new java.awt.Dimension(800, 580));
         setLayout(new java.awt.BorderLayout());
@@ -98,17 +103,15 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
 
         xLabel3.setCaption("Account Status");
         xLabel3.setExpression("#{ entity.state }");
-        xLabel3.setVisibleWhen("#{ mode != 'create' }");
         xLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
         xLabel3.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         xLabel3.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel1.add(xLabel3);
 
-        xTextField1.setCaption("Account No.");
-        xTextField1.setName("entity.acctno"); // NOI18N
-        xTextField1.setPreferredSize(new java.awt.Dimension(0, 20));
-        xTextField1.setRequired(true);
-        xFormPanel1.add(xTextField1);
+        xTextField3.setCaption("Acct No");
+        xTextField3.setName("entity.acctno"); // NOI18N
+        xTextField3.setPreferredSize(new java.awt.Dimension(0, 20));
+        xFormPanel1.add(xTextField3);
 
         xLookupField1.setCaption("Owner Name");
         xLookupField1.setExpression("#{entity.owner.name}");
@@ -209,7 +212,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(xFormPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(xFormPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -218,7 +221,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         jPanel4.setBorder(xTitledBorder2);
 
         xFormPanel2.setCaptionVAlignment(com.rameses.rcp.constant.UIConstants.CENTER);
-        xFormPanel2.setCaptionWidth(100);
+        xFormPanel2.setCaptionWidth(120);
         xFormPanel2.setPadding(new java.awt.Insets(0, 5, 0, 5));
 
         xLookupField4.setCaption("Sub Area");
@@ -241,6 +244,16 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         xIntegerField2.setName("entity.seqno"); // NOI18N
         xIntegerField2.setRequired(true);
         xFormPanel2.add(xIntegerField2);
+
+        xLabel5.setCaption("Next Bill Period");
+        xLabel5.setDepends(new String[] {"entity.subarea"});
+        xLabel5.setExpression("#{ entity.subarea.nextperiod.year } #{ entity.subarea.nextperiod.monthname }");
+        xLabel5.setVisibleWhen("#{ entity.subarea.nextperiod?.objid != null }");
+        xLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
+        xLabel5.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xLabel5.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        xLabel5.setPreferredSize(new java.awt.Dimension(0, 20));
+        xFormPanel2.add(xLabel5);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -332,7 +345,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(xFormPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -352,15 +365,13 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(67, 67, 67))))
+                        .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         xTabbedPane1.addTab("  General Information   ", jPanel2);
@@ -550,7 +561,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 922, Short.MAX_VALUE)
+            .addGap(0, 934, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -701,14 +712,17 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.CheckBoxColumnHandler(java.lang.Integer.class, 1, 0)}
             })
         });
-        schemaList1.setFormActions("ledgerActions");
         schemaList1.setHandlerName("ledgerList");
+        schemaList1.setName("ledgerItem"); // NOI18N
         schemaList1.setQueryName("ledgerQuery");
         schemaList1.setSchemaName("waterworks_ledger");
-        schemaList1.setAllowCreate(true);
+        schemaList1.setAllowDelete(true);
         xPanel2.add(schemaList1, java.awt.BorderLayout.CENTER);
 
-        jPanel8.setPreferredSize(new java.awt.Dimension(421, 40));
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        jPanel8.setPreferredSize(new java.awt.Dimension(421, 30));
+        jPanel8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         xRadio4.setName("ledgerViewOption"); // NOI18N
         xRadio4.setOptionValue(0);
@@ -718,6 +732,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 xRadio4ActionPerformed(evt);
             }
         });
+        jPanel8.add(xRadio4);
 
         xRadio5.setName("ledgerViewOption"); // NOI18N
         xRadio5.setOptionValue(2);
@@ -727,6 +742,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 xRadio5ActionPerformed(evt);
             }
         });
+        jPanel8.add(xRadio5);
 
         xRadio6.setName("ledgerViewOption"); // NOI18N
         xRadio6.setOptionValue(1);
@@ -736,32 +752,15 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 xRadio6ActionPerformed(evt);
             }
         });
+        jPanel8.add(xRadio6);
 
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(xRadio4, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(xRadio6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(xRadio5, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(380, Short.MAX_VALUE))
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(xRadio4, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(xRadio5, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(xRadio6, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(11, Short.MAX_VALUE))
-        );
+        jPanel6.add(jPanel8, java.awt.BorderLayout.CENTER);
 
-        xPanel2.add(jPanel8, java.awt.BorderLayout.PAGE_START);
+        xActionBar1.setFormName("formName");
+        xActionBar1.setName("ledgerActions"); // NOI18N
+        jPanel6.add(xActionBar1, java.awt.BorderLayout.PAGE_START);
+
+        xPanel2.add(jPanel6, java.awt.BorderLayout.PAGE_START);
 
         xTabbedPane1.addTab("Ledger", xPanel2);
 
@@ -783,8 +782,8 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(xFormPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(626, Short.MAX_VALUE))
+                .addComponent(xFormPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(517, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -906,7 +905,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 922, Short.MAX_VALUE)
+            .addGap(0, 934, Short.MAX_VALUE)
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1011,10 +1010,29 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         schemaList4.setOrderBy("refdate DESC");
         schemaList4.setQueryName("entityQry");
         schemaList4.setSchemaName("waterworks_payment");
-        schemaList4.setAllowCreate(true);
         xPanel5.add(schemaList4, java.awt.BorderLayout.CENTER);
 
         xTabbedPane1.addTab("Payments", xPanel5);
+
+        xPanel6.setVisibleWhen("#{ mode == 'read' }");
+        xPanel6.setLayout(new java.awt.BorderLayout());
+
+        jPanel11.setPreferredSize(new java.awt.Dimension(421, 40));
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 934, Short.MAX_VALUE)
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+
+        xPanel6.add(jPanel11, java.awt.BorderLayout.PAGE_START);
+
+        xTabbedPane1.addTab("Billings", xPanel6);
 
         add(xTabbedPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -1035,10 +1053,12 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
     private com.rameses.enterprise.components.AddressEditor addressEditor1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
@@ -1048,6 +1068,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
     private com.rameses.seti2.components.SchemaList schemaList2;
     private com.rameses.seti2.components.SchemaList schemaList3;
     private com.rameses.seti2.components.SchemaList schemaList4;
+    private com.rameses.rcp.control.XActionBar xActionBar1;
     private com.rameses.rcp.control.XButton xButton4;
     private com.rameses.rcp.control.XButton xButton5;
     private com.rameses.rcp.control.XComboBox xComboBox1;
@@ -1065,6 +1086,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLabel xLabel21;
     private com.rameses.rcp.control.XLabel xLabel3;
     private com.rameses.rcp.control.XLabel xLabel4;
+    private com.rameses.rcp.control.XLabel xLabel5;
     private com.rameses.rcp.control.XList xList1;
     private com.rameses.rcp.control.XLookupField xLookupField1;
     private com.rameses.rcp.control.XLookupField xLookupField3;
@@ -1075,12 +1097,13 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XPanel xPanel3;
     private com.rameses.rcp.control.XPanel xPanel4;
     private com.rameses.rcp.control.XPanel xPanel5;
+    private com.rameses.rcp.control.XPanel xPanel6;
     private com.rameses.rcp.control.XRadio xRadio4;
     private com.rameses.rcp.control.XRadio xRadio5;
     private com.rameses.rcp.control.XRadio xRadio6;
     private com.rameses.rcp.control.XTabbedPane xTabbedPane1;
     private com.rameses.rcp.control.XTextArea xTextArea2;
-    private com.rameses.rcp.control.XTextField xTextField1;
     private com.rameses.rcp.control.XTextField xTextField2;
+    private com.rameses.rcp.control.XTextField xTextField3;
     // End of variables declaration//GEN-END:variables
 }

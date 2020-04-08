@@ -1,0 +1,16 @@
+<workunit schemaName="waterworks_application">
+
+    <invokers>
+        <invoker folderid="/menucategory/waterworks/account" caption="New Connection"
+                formId="waterworks_application:new"
+                 action="create" index="5" apptype="NEW"/>
+    </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksApplicationInitialModel" />    
+
+    <pages>
+        <page name="initial" template="com.rameses.gov.etracs.waterworks.views.WaterworksApplicationInitialPage"/>
+        <page name="search" template="com.rameses.gov.etracs.waterworks.views.WaterworksApplicationSearchPage"/>
+        <page name="entry" template="com.rameses.gov.etracs.waterworks.views.WaterworksApplicationEntryPage"/>
+    </pages>    
+    
+</workunit>

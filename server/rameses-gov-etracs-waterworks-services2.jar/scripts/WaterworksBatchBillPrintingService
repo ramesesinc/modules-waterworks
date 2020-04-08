@@ -13,10 +13,10 @@ class WaterworksBatchBillPrintingService {
 	@Service
 	def self;
 
-	@DataContext('waterworks_billing')
+	@DataContext('waterworks_bill')
 	def billEm; 
 
-	@DataContext('vw_waterworks_billing')
+	@DataContext('vw_waterworks_bill')
 	def vwbillEm; 
 
 	@ProxyMethod

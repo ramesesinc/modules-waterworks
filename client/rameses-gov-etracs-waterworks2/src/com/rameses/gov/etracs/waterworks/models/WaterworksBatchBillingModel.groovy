@@ -18,7 +18,7 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
    @Service("WaterworksBatchBillProcessorService")
    def batchSvc;
    
-   @Service("WaterworksBillingService")
+   @Service("WaterworksBillService")
    def billSvc;
    
    def billDispatcher = ManagedObjects.instance.create(BillDispatcherReceipt.class);

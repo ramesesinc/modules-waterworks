@@ -1,9 +1,9 @@
 <workunit extends="com/rameses/seti2/templates/CrudList.xml" 
+    allowDelete="false" allowCreate="false" allowEdit="false" allowOpen="false"
           schemaName="waterworks_classification">
     <invokers>
         <invoker folderid="/explorer/master/waterworks" 
                  caption="Classification" action="init">
-            <action role="MASTER" /> 
             <action role="SHARED" allowCreate="false" allowDelete="false" /> 
         </invoker>            
     </invokers>

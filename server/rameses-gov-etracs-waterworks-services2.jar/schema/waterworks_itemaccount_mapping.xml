@@ -1,0 +1,12 @@
+<schema>
+	<element tablename="waterworks_itemaccount_mapping">
+		<field name="objid" primary="true" visible="true" hidden="false"  searchable="true"/>
+		<field name="itemacctid" />
+
+		<field name="item_objid" />
+		<field name="item_code" caption="Acct Code"/>		
+		<field name="item_title" caption="Acct Title"/>
+		<field name="item_fund_objid" caption="Fund Code"/>		
+		<field name="item_fund_title" caption="Fund Code"/>		
+	</element>
+</schema>

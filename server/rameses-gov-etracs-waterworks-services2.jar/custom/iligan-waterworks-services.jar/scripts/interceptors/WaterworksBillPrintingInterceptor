@@ -5,7 +5,7 @@ class WaterworksBillPrintingInterceptor{
 	@Service("TemplateService")
 	def template;
 
-    @DataContext('vw_waterworks_billing') 
+    @DataContext('vw_waterworks_bill') 
     def bill_db;
 
     @DataContext('vw_waterworks_consumption') 

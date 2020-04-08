@@ -18,8 +18,11 @@ class WaterworksAccountService {
     @DataContext('vw_waterworks_consumption') 
     def consEm; 
 
-    @Service("WaterworksBillingService")
+    @Service("WaterworksBillService")
     def billSvc;
+
+    @Service("WaterworksScheduleService")
+    def skedSvc;
 
 	@ProxyMethod 
 	public def approve( def o ) {
@@ -66,6 +69,26 @@ class WaterworksAccountService {
         def acct = vwAcctEm.find( [objid: o.acctid ]).first();
         if(acct.state=='DRAFT') throw new Exception("account already in DRAFT state");
         acctEm.find( [ objid: acct.objid ]).update( [state: "DRAFT"] );
+    }
+
+    //we will generate the year and month automatically
+    @ProxyMethod 
+    public def generateBill( def o ) {
+        def acctid = o.acctid;
+        def acct = vwAcctEm.find( [objid: acctid ]).first();
+        if(!acct) throw new Exception("Account not found");
+        def nextperiod = acct.subarea.nextperiod;
+        if( !nextperiod?.objid )
+            throw new Exception("Next period must be provided in the subarea" );
+        def ym = ((nextperiod.year*12)+nextperiod.month)-1;
+        int year = (int)(ym / 12);
+        int mon = (int)(ym % 12);
+        if( mon == 0 ) {
+            year = year - 1;
+            mon = 12;
+        }
+        def period = skedSvc.getSchedule( [year: year, month: mon, scheduleid:  acct.subarea.schedulegroup?.objid] );
+        throw new Exception(  "xx " + acct.objid + " ->" + acct.acctinfoid + "->" + period.objid  );
     }
 
 

@@ -1,7 +1,7 @@
 import com.rameses.annotations.*;
 
 /**
-* This service is called from the WaterworksBillingService process method.
+* This service is called from the WaterworksBillService process method.
 * It checks if there is a balance in the waterworks_credit table.
 * If there is a balance, it attempts to post/pay the amount to the ledgers
 * creates a waterworks_payment entry of type billingcredit, and adds

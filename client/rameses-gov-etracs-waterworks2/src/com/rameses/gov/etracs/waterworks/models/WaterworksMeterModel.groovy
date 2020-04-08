@@ -7,14 +7,14 @@ import com.rameses.osiris2.common.*;
 import com.rameses.seti2.models.*;
 import com.rameses.util.*;
 
-public class MeterModel extends CrudFormModel {
+public class WaterworksMeterModel extends CrudFormModel {
     
     def meterStates = ["ACTIVE","DISCONNECTED","DEFECTIVE"];
     
-    def edit() {
-        return showDropdownMenu("edit");
+    void afterCreate() {
+        entity.state = 'ACTIVE';
     }
-   
+    
     void openFormAccount() {
         entity = caller.entity.meter;
         super.open();

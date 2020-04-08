@@ -22,6 +22,7 @@ public class WaterworksLedgerModel extends CrudFormModel {
         def parent = caller.entity;
         entity.acctid = parent.objid;
         entity.system = 0;
+        entity.billed = 0;
     }
     
 }

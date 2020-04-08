@@ -49,7 +49,7 @@ public class WaterworksLedgerPage extends javax.swing.JPanel {
         xFormPanel2.setCaptionVAlignment(com.rameses.rcp.constant.UIConstants.CENTER);
         xFormPanel2.setCaptionWidth(100);
 
-        xLookupField1.setCaption("Account");
+        xLookupField1.setCaption("Item");
         xLookupField1.setExpression("#{item.title}");
         xLookupField1.setHandler("waterworks_itemaccount:lookup");
         xLookupField1.setName("entity.item"); // NOI18N

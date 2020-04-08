@@ -1,17 +1,6 @@
 <workunit schemaName="waterworks_application">
 
     <invokers>
-        <invoker folderid="/menucategory/waterworks/txn" caption="New Connection"
-                formId="waterworks_application:new"
-                 action="create" index="1" apptype="NEW"/>
-        
-        <invoker folderid="/menucategory/waterworks/txn" caption="Disconnection" 
-            formId="waterworks_application:disconnection"
-                 action="create" index="2" apptype="DISCONNECTION"/>
-
-        <invoker folderid="/menucategory/waterworks/txn" caption="Reconnection" 
-            formId="waterworks_application:reconnection"
-                 action="create" index="3" apptype="RECONNECTION"/>
                  
         <invoker folderid="/menucategory/waterworks/txn" caption="Change Meter" 
                 formId="waterworks_application:change_meter"

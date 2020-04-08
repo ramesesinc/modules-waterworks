@@ -7,9 +7,9 @@ import com.rameses.osiris2.common.*;
 import com.rameses.seti2.models.*;
 import java.text.*;
 
-public class WaterworksBillingModel extends CrudFormModel {
+public class WaterworksBillModel extends CrudFormModel {
     
-    @Service("WaterworksBillingService")
+    @Service("WaterworksBillService")
     def billProcessor;
     
     @Service("WaterworksComputationService")

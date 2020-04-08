@@ -9,7 +9,7 @@ class WaterworksBatchBillingPersistenceInterceptor {
 	@Service("WaterworksBatchBillProcessorService")
    	def batchSvc;
 
-   	@Service("WaterworksBillingService")
+   	@Service("WaterworksBillService")
    	def billSvc;
 
 	@Service("DateService")

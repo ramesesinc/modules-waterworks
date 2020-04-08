@@ -12,12 +12,12 @@ import com.rameses.seti2.views.CrudFormPage;
  * @author Dino
  */
 @Template(CrudFormPage.class)
-public class MeterPage extends javax.swing.JPanel {
+public class WaterworksMeterPage extends javax.swing.JPanel {
 
     /**
      * Creates new form MeterPage
      */
-    public MeterPage() {
+    public WaterworksMeterPage() {
         initComponents();
     }
 
@@ -44,7 +44,7 @@ public class MeterPage extends javax.swing.JPanel {
         lOVList1 = new com.rameses.enterprise.components.LOVList();
         xComboBox1 = new com.rameses.rcp.control.XComboBox();
         lOVList2 = new com.rameses.enterprise.components.LOVList();
-        xComboBox2 = new com.rameses.rcp.control.XComboBox();
+        xIntegerField1 = new com.rameses.rcp.control.XIntegerField();
 
         setPreferredSize(new java.awt.Dimension(773, 589));
 
@@ -143,13 +143,9 @@ public class MeterPage extends javax.swing.JPanel {
         lOVList2.setRequired(true);
         xFormPanel1.add(lOVList2);
 
-        xComboBox2.setCaption("Meter Status");
-        xComboBox2.setDisableWhen("#{ mode=='read' || entity.currentacctid != null }");
-        xComboBox2.setExpression("");
-        xComboBox2.setItems("meterStates");
-        xComboBox2.setName("entity.state"); // NOI18N
-        xComboBox2.setRequired(true);
-        xFormPanel1.add(xComboBox2);
+        xIntegerField1.setCaption("Reading");
+        xIntegerField1.setName("entity.reading"); // NOI18N
+        xFormPanel1.add(xIntegerField1);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -218,9 +214,9 @@ public class MeterPage extends javax.swing.JPanel {
     private com.rameses.enterprise.components.LOVList lOVList1;
     private com.rameses.enterprise.components.LOVList lOVList2;
     private com.rameses.rcp.control.XComboBox xComboBox1;
-    private com.rameses.rcp.control.XComboBox xComboBox2;
     private com.rameses.rcp.control.XFormPanel xFormPanel1;
     private com.rameses.rcp.control.XFormPanel xFormPanel2;
+    private com.rameses.rcp.control.XIntegerField xIntegerField1;
     private com.rameses.rcp.control.XLabel xLabel1;
     private com.rameses.rcp.control.XLabel xLabel2;
     private com.rameses.rcp.control.XLabel xLabel3;

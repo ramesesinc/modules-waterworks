@@ -3,8 +3,11 @@ import java.rmi.server.*;
 
 class WaterworksAccountPersistenceInterceptor{
 	
-	@Service("SequenceService")
-	def seqSvc;
+    @Service("ControlnoGeneratorService")
+    def controlNoSvc;
+
+   	@Service('Var')
+	def var;	
 
 	@Service("DateService")
 	def dateSvc;
@@ -21,16 +24,18 @@ class WaterworksAccountPersistenceInterceptor{
 	@DataContext('waterworks_account_attribute') 
 	def attributeEm;
 
-	@DataContext('vw_waterworks_billing') 
+	@DataContext('waterworks_bill') 
 	def billEm;
+
 
 	@Before(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_account'}")
 	public void beforeCreate(def evt) {
 		def o  = evt.args[0];
 		o.objid = "WACCT" + new UID();
         if( !o.acctno ) {
-        	def prefix = "WACC" + dateSvc.getServerYear();
-        	o.acctno = prefix  + seqSvc.getNextFormattedSeriesA( prefix, 5 );
+        	def pattern = var.waterworks_acctno_format;
+        	if(!pattern) throw new Exception("Please specify pattern in sys_variable - waterworks_account_no_format" );
+			o.acctno = controlNoSvc.getNextNo( pattern );
         }  
         o.state = 'DRAFT';
         def info = [:];
@@ -88,11 +93,10 @@ class WaterworksAccountPersistenceInterceptor{
 		o.totalcredits = 0;
 		if(amt!=null)	o.totalcredits = amt;
 
-		//load the latest bill
-		def bill = billEm.find( [acctid: o.objid ]).where("state IN ('PENDING', 'POSTED') ").orderBy("year DESC, month DESC").first();
-		if( bill ) {
-			o.billid = bill.objid;
-			o.billstate = bill.state;
+		//load current active bill if any;
+		def bill = billEm.find( [acctid: o.objid ] ).where("state = 'OPEN' ").first();
+		if(bill) {
+			o.currentbillid = bill.objid;
 		}
 	}
 

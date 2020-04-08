@@ -1,9 +1,9 @@
 <schema>
 	<element tablename="vw_waterworks_account">
 		<field name="objid" primary="true"  prefix="WACC"/>
-		<field name="state"  visible="false" defaultValue="ACTIVE"/>
+		<field name="state"  visible="false" />
 		<field name="dtstarted" required="false" indexed="true" type="date" caption="Date Started"/>
-		<field name="acctno" required="true" indexed="true" caption="Acct No" searchable="true"/>
+		<field name="acctno" indexed="true" caption="Acct No" searchable="true"/>
 		<field name="acctname" required="true" indexed="true" caption="Acct Name" searchable="true"/>
 		<field name="acctinfoid" />
 
@@ -30,7 +30,8 @@
 			<key field="stuboutid" target="objid"/> 
 		</complex>
 		
-		<complex name="subarea" ref="waterworks_subarea" jointype="many-to-one" required="true">
+		<complex name="subarea" ref="waterworks_subarea" jointype="many-to-one" required="true"
+			includefields="objid,code,description,schedulegroup.objid,nextperiod.*,area.objid,area.code">
 			<key field="subareaid" target="objid"/> 
 		</complex>
 
@@ -39,7 +40,6 @@
 			<key field="meterid" target="objid"/>
 		</complex>
 		
-		<field name="classificationid" required="true"/>
 		<complex name="classification" ref="waterworks_classification" jointype="many-to-one" required="true">
 			<key field="classificationid" target="objid"/>
 		</complex>	

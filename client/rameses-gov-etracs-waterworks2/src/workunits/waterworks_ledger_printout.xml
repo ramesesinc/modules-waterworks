@@ -8,6 +8,7 @@
                  index="51"
                  reportId="waterworks_statement" 
                  reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_ledger.jasper"
+                 visibleWhen="#{ entity.state == 'ACTIVE' }"
                  txnid="#{entity.objid}"/>
     </invokers> 
 </workunit>

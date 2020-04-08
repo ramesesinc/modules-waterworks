@@ -9,7 +9,7 @@
       <w>180</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>waterworks_billing</panel_attributes>
+    <panel_attributes>waterworks_bill</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -569,26 +569,15 @@ currentbillid</panel_attributes>
     <additional_attributes>70;30;70;150</additional_attributes>
   </element>
   <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>720</x>
-      <y>680</y>
-      <w>200</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>waterworks_billing_period</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>580</x>
-      <y>620</y>
-      <w>160</w>
-      <h>100</h>
+      <x>610</x>
+      <y>70</y>
+      <w>410</w>
+      <h>620</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 nextperiodid</panel_attributes>
-    <additional_attributes>140;80;30;30</additional_attributes>
+    <additional_attributes>200;30;390;30;390;600;80;600;80;570;30;570</additional_attributes>
   </element>
 </diagram>

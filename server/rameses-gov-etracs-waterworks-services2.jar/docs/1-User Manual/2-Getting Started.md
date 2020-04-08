@@ -23,8 +23,8 @@ To implement the billing and collection process it is necessary to first set up 
 The steps are summarized as follows:
 - 1. Set up the billing period schedule
 - 2. Define areas, subareas and stubouts
-- 3. Set up consumption computation rules. 
-- 4. Capture Account, meter info 
+- 3. Manage Meter
+- 4. Capture Account 
 - 5. Setup the item accounts
 - 6. Building the Ledgers, beginning balances
 - 7. Create a single bill
