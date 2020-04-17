@@ -7,15 +7,28 @@ import com.rameses.osiris2.common.*;
 import com.rameses.seti2.models.*;
 import java.text.*;
 
-public class WaterworksBillModel extends CrudFormModel {
+public class WaterworksBillModel {
+    
+    @Caller
+    def caller;
     
     @Service("WaterworksBillService")
-    def billProcessor;
+    def billSvc;
     
-    @Service("WaterworksComputationService")
-    def compSvc;
+    def mode;
     
+    def entity;
     String errmsg;
+    
+    //this is called from account
+    def createInitial() {
+        def acctid = caller.entity.objid;
+        entity = billSvc.getInfoForInitialBill( [acctid: acctid ] );
+        mode = "initial";
+        return mode;
+    }
+    
+    /*
     
     void afterInit() {
         if( entity.acctstate == "DRAFT") {
@@ -54,34 +67,11 @@ public class WaterworksBillModel extends CrudFormModel {
         if(bill) entity.putAll( bill );
         binding.refresh();
     }
-    
-    void recalc() {
-        def z = [:];
-        z.acctid = entity.acctid;
-        z.consumptionid = entity.consumptionid;
-        z.prevreading = entity.prevreading;
-        z.reading = entity.reading;
-        z.meterstate = entity.meterstate;
-        def res = compSvc.compute(z);
-        //we cannot use putAll bec. entity is a datamap
-        if(res.volume) entity.volume = res.volume;
-        if(res.amount) entity.amount = res.amount;
-        binding.refresh();
-        MsgBox.alert("recalc");
-    }
-    
-    def editReading() {
-        def h = { o->
-            entity.reading = o;
-            recalc();
-        }
-        def d = [value: entity.reading];
-        return Inv.lookupOpener("decimal:prompt", [data:d, handler: h]);
-    }
-    
+
     def printBill() {
         
         MsgBox.alert("print Bill");
     }
+    */
     
 }

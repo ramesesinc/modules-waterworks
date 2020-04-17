@@ -1,0 +1,24 @@
+<workunit>
+    <invokers>
+        <invoker type="waterworks_payment:capture" 
+            caption="Add Payment" action="init" index="100" target="popup" 
+            formTitle="Capture Payment"/>
+        
+        <!-- form buttons -->    
+        <invoker type="formActions" 
+            caption="Close" action="_close" index="0" immediate="true"/>
+        <invoker type="formActions" 
+            caption="Next" action="loadItems" visibleWhen="#{ mode == 'initial' }"/>
+
+        <!-- -->
+        <invoker type="formActions" 
+            caption="Fetch All Items" action="fetchAll" visibleWhen="#{ mode == 'view' }"/>
+        <invoker type="formActions" 
+            caption="Run Rules" action="runRules" visibleWhen="#{ mode == 'view' }"/>
+        
+    </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksPaymentModel"/>
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksPaymentPage"/>
+    </pages>
+</workunit>

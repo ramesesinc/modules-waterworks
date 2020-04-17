@@ -11,12 +11,11 @@ public class WaterAccount {
     int units = 1;
     String state;
     boolean metered;
-    boolean hasarrears;
 
 	public WaterAccount( def acct ) {
 		this.classification = acct.classificationid;
-		this.barangay = acct.stuboutnode?.barangay?.objid;
-		if ( !this.barangay ) this.barangay = acct.address?.barangay?.objid;
+		this.barangay = acct.address?.barangay?.objid;
+		if ( !this.barangay ) this.barangay = acct.subarea?.barangay?.objid;
 		if( acct.units ) this.units = acct.units; 
 		this.state = acct.state;
 		if( !acct.meter?.objid ) {

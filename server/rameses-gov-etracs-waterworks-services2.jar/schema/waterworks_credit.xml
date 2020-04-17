@@ -3,6 +3,7 @@
 		<field name="objid" primary="true" prefix="WCRED"/>
 
 		<!-- link to ledger account -->
+		<field name="billid" />
 		<field name="acctid" />
 		<field name="year" />		
 		<field name="month" />		

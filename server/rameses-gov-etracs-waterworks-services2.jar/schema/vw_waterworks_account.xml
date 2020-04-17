@@ -31,7 +31,7 @@
 		</complex>
 		
 		<complex name="subarea" ref="waterworks_subarea" jointype="many-to-one" required="true"
-			includefields="objid,code,description,schedulegroup.objid,nextperiod.*,area.objid,area.code">
+			includefields="objid,code,description,schedulegroup.objid,period.*,area.objid,area.code">
 			<key field="subareaid" target="objid"/> 
 		</complex>
 
@@ -43,6 +43,10 @@
 		<complex name="classification" ref="waterworks_classification" jointype="many-to-one" required="true">
 			<key field="classificationid" target="objid"/>
 		</complex>	
+
+		<complex name="bill" ref="waterworks_bill" jointype="many-to-one" required="false" includefields="objid,billno,state">
+			<key field="billid" target="objid"/> 
+		</complex>
 
 		<!-- Dates -->
 

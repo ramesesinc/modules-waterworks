@@ -23,12 +23,12 @@ public class WaterworksBatchBillingInitialModel extends CrudFormModel {
 
    def getLookupSubarea() {
        def h = { o->
-            if( o.nextperiod?.year == null ) throw new Exception("Please specify next period year in subarea");
-            if( o.nextperiod?.month == null ) throw new Exception("Please specify next period month in subarea");
+            if( o.period?.year == null ) throw new Exception("Please specify next period year in subarea");
+            if( o.period?.month == null ) throw new Exception("Please specify next period month in subarea");
             if( o.schedulegroup?.objid == null ) throw new Exception("Please specify schedule group in subarea");
             entity.subarea = o;
-            entity.year = o.nextperiod.year;
-            entity.month = o.nextperiod.month;
+            entity.year = o.period.year;
+            entity.month = o.period.month;
             def sked = schedSvc.getSchedule( [year:entity.year, month:entity.month, scheduleid: o.schedulegroup.objid] );
             if(sked) {
                 entity.readingdate = sked.readingdate;

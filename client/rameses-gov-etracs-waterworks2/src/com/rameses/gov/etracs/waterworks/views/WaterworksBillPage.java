@@ -345,7 +345,7 @@ public class WaterworksBillPage extends javax.swing.JPanel {
         });
         schemaList2.setCustomFilter("billid = :billid");
         schemaList2.setQueryName("entity");
-        schemaList2.setSchemaName("waterworks_ledger");
+        schemaList2.setSchemaName("waterworks_billitem");
         schemaList2.setAllowOpen(false);
         schemaList2.setAutoResize(false);
         com.rameses.rcp.control.border.XTitledBorder xTitledBorder4 = new com.rameses.rcp.control.border.XTitledBorder();

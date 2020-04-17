@@ -24,7 +24,7 @@ public class WaterworksSubareaModel extends CrudFormModel {
         else {
             hasParent = false;
         }
-        entity.nextperiod = [:];
+        entity.period = [:];
     } 
     
     void changeSeqno() {
@@ -43,9 +43,9 @@ public class WaterworksSubareaModel extends CrudFormModel {
        def s = { o->
            def m = [_schemaname: schemaName];
            m.objid = entity.objid;
-           m.nextperiod = o;
+           m.period = o;
            persistenceService.update( m );
-           entity.nextperiod = o;
+           entity.period = o;
            binding.refresh();
        } 
        return Inv.lookupOpener("waterworks_billing_period:lookup", [onselect:s, scheduleid: entity.schedulegroup.objid ]);

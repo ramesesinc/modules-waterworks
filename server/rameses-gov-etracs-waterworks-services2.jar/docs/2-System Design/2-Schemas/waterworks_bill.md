@@ -33,7 +33,7 @@ __waterworks_bill__
 | refbillno |string  |N        |Filled up during batch billing. During printing, specify the first number of the bill then the system will increment the number everytime it is printed. |  
 | billdate  |datetime |Y       |Date bill was created|  
 | state     |string |Y        | DRAFT = state is still in draft mode. The bill is not yet active.<br>OPEN=Bill is active. Ledger items or payments can be added.<br>CLOSED=bill is closed. No transactions can be made with this bill. Succeeding transactions will be made on the next bill |
-| periodid  |string  |Y        |link to waterworks_billing_period. Copied from batch if processed through batch. If manually prepared uses the subarea.nextperiod of the account |
+| periodid  |string  |Y        |link to waterworks_billing_period. Copied from batch if processed through batch. If manually prepared uses the subarea.period of the account |
 | acctid    |string  |Y        |link to waterworks_account.  |
 | acctinfoid |string  |Y        |link to the latest waterworks_account_info, in this case the waterworks_account.acctinofid|
 | expirydate|date    |Y        | bill expirydate. a day before next billdate. After this date, ledger items or payments cannot be added to the bill anymore. See Note 2|

@@ -93,11 +93,6 @@ class WaterworksAccountPersistenceInterceptor{
 		o.totalcredits = 0;
 		if(amt!=null)	o.totalcredits = amt;
 
-		//load current active bill if any;
-		def bill = billEm.find( [acctid: o.objid ] ).where("state = 'OPEN' ").first();
-		if(bill) {
-			o.currentbillid = bill.objid;
-		}
 	}
 
 

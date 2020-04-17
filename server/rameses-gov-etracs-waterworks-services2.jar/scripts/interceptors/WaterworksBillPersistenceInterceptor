@@ -1,0 +1,114 @@
+import com.rameses.annotations.*;
+import java.rmi.server.*;
+
+class WaterworksBillPersistenceInterceptor{
+	
+    @Service("ControlnoGeneratorService")
+    def controlNoSvc;
+
+   	@Service('Var')
+	def var;	
+
+	@Service("DateService")
+	def dateSvc;
+
+	@Service("WaterworksScheduleService")
+	def skedSvc;
+
+	@DataContext("waterworks_account")
+	def acctEm;
+
+	@DataContext("vw_waterworks_account")
+	def vwAcctEm;
+
+	@DataContext("waterworks_credit")
+	def creditEm;
+
+	@DataContext("waterworks_billitem")
+	def billItemEm;
+
+	@DataContext("waterworks_consumption")
+	def consumptionEm;
+
+	@Before(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_bill'}")
+	public void beforeCreate(def evt) {
+		def o  = evt.args[0];
+		if(!o.acctid) throw new Exception("acctid is required");
+
+		if(!o.billno) {
+			def pattern = var.waterworks_billno_format;
+			if(!pattern) throw new Exception("Please specify waterworks_billno_format in sys_var");
+			o.billno = controlNoSvc.getNextNo(pattern);
+		};
+
+		//find schedule group
+		def acct = vwAcctEm.find( [objid: o.acctid ] ).first();
+
+		o.acctinfoid = acct.acctinfoid;
+		o.period = skedSvc.getSchedule( [scheduleid: acct.subarea.schedulegroupid, year: o.year, month: o.month ]  );
+		o.periodid = o.period.objid;
+		o.billed = 0;
+		o.printed = 0;
+		o.billdate = o.period.billdate;
+		o.expirydate = o.period.billexpirydate;
+		o.state = "DRAFT";
+		o.step = 1;
+		if(o.balanceforward <= 0 ) o.step = 2;
+	}
+
+	@After(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_bill'}")
+	public void afterCreate(def evt) {
+		def o  = evt.args[0];
+		def result = evt.result;
+
+		if( o.balanceforward < 0 ) {
+			def m = [:];
+			m.billid = result.objid;
+			m.acctid = result.acctid;
+			m.year = result.period.year;
+			m.month = result.period.month - 1;
+			if( m.month <= 0 ) {
+				m.year = m.year - 1;
+				m.month = 12;
+			}
+			m.dr = Math.abs( o.balanceforward );
+			m.cr = 0;
+			m.remarks = "BEGIN BALANCE";
+			m.refno = result.billno;
+			m.refid = result.objid;
+			m.reftype = "waterworks_bill";
+			m.refdate = result.period.fromdate;
+			creditEm.create( m );
+		}
+		//update the account's active bill
+		acctEm.find( [objid: result.acctid ] ).update([ billid: result.objid ]);
+	}
+
+	@Before(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_bill'}")
+	public void beforeRemove(def evt) {
+		def o  = evt.args[0];
+		//update first remove
+		acctEm.find([billid: o.objid]).update([billid:"{NULL}"]);
+		billItemEm.find([billid: o.objid] ).delete();
+		consumptionEm.find( [billid:o.objid]).delete();
+		creditEm.find([billid: o.objid]).delete();
+	}
+
+	@After(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_bill'}")
+	public void afterRemove(def evt) {
+		def o  = evt.result;
+	}
+
+	@After(pattern="PersistenceService.read", eval="#{args[0]._schemaname == 'vw_waterworks_bill'}")
+	public void afterRead(def evt) {
+		def o  = evt.result;
+
+		//check if there are still credits unapplied. Applicable to all bills initial or not
+		o.totalcredits = creditEm.find([acctid: o.acctid]).select("c:{SUM(dr-cr)}").val();
+		o.totalunpaiditems = billItemEm.find([acctid: o.acctid]).select("c:{SUM(amount-amtpaid-discount)}").where("amount-amtpaid-discount AND ((year*12)+month) <= :ym", [ym: (o.period.year*12)+o.period.month] ).val();
+		if(o.totalcredits == null ) o.totalcredits = 0;
+		if(o.totalunpaiditems == null ) o.totalunpaiditems = 0;
+	} 
+
+
+}

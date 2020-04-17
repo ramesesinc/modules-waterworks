@@ -46,8 +46,8 @@
 	<field name="meter.serialno" class="java.lang.String"/>
 	<field name="meter.size.title" class="java.lang.String"/>
 	<field name="period.duedate" class="java.util.Date"/>
-	<field name="period.fromperiod" class="java.util.Date"/>
-	<field name="period.toperiod" class="java.util.Date"/>
+	<field name="period.fromdate" class="java.util.Date"/>
+	<field name="period.todate" class="java.util.Date"/>
 	<field name="nextduedate" class="java.util.Date"/>
 	<field name="lastreading" class="java.lang.Integer"/>
 	<field name="consumption" class="java.lang.Object"/>
@@ -736,7 +736,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{period.fromperiod}]]></textFieldExpression>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{period.fromdate}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -775,7 +775,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[$F{period.toperiod}]]></textFieldExpression>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{period.todate}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement

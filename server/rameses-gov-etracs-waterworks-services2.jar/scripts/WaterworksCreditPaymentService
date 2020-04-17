@@ -47,12 +47,8 @@ class WaterworksCreditPaymentService {
 		billitems.each {
 			if(it.discount == null) it.discount = 0;
 			if(it.amount == null ) it.amount = 0;
-			if(it.reftype == 'waterworks_consumption') {
+			if(it.reftype == 'waterworks_billitem') {
 				consEm.find( [objid: it.refid ]  ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ] , [amt: it.amount]  );
-				items << it;
-			}
-			else if( it.reftype == 'waterworks_otherfee') {
-				otherFeeEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ], [amt: it.amount] );
 				items << it;
 			}
 		}
@@ -102,11 +98,8 @@ class WaterworksCreditPaymentService {
 		if(!pmt.items) throw new Exception("payment items not found!");
 
 		pmt.items.each {
-			if(it.reftype == "waterworks_consumption") {
+			if(it.reftype == "waterworks_billitem") {
 				consEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid - :amt}", discount: 0 ], [amt: it.amount] );
-			}
-			else if(it.reftype == "waterworks_otherfee"  ) {
-				otherFeeEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid - :amt}", discount: 0 ], [amt: it.amount] );
 			}
 		}
 		//really delete the payment since this will not matter anymore

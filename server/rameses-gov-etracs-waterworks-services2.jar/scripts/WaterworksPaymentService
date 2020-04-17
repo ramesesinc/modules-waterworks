@@ -2,20 +2,30 @@ import com.rameses.annotations.*;
 
 class WaterworksPaymentService {
 
+
+	@Service("DateService")
+	def dateSvc;
+
+	@Service("WaterworksBillingRuleService")
+	def ruleSvc;
+
+
 	@DataContext("waterworks_payment")
 	def paymentEm;
 
-	@DataContext("waterworks_consumption")
-	def consEm;
-
-	@DataContext("waterworks_otherfee")
-	def otherFeeEm;
+	@DataContext("waterworks_billitem")
+	def billItemEm;
 
 	@DataContext("waterworks_credit")
 	def creditEm;
 
-	@Service("DateService")
-	def dateSvc;
+	
+
+	@DataContext("vw_waterworks_account")
+	def vwAcctEm;
+
+	@DataContext("vw_waterworks_bill")
+	def vwBillEm;
 
 	@ProxyMethod 
 	public def postPayment( param ) {
@@ -28,11 +38,8 @@ class WaterworksPaymentService {
 		billitems.each {
 			if(it.discount == null) it.discount = 0;
 			if(it.amount == null ) it.amount = 0;
-			if(it.reftype == 'waterworks_consumption') {
-				consEm.find( [objid: it.refid ]  ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ] , [amt: it.amount]  );
-			}
-			else if( it.reftype == 'waterworks_otherfee') {
-				otherFeeEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ], [amt: it.amount] );
+			if(it.reftype == 'waterworks_billitem') {
+				billItemEm.find( [objid: it.refid ]  ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ] , [amt: it.amount]  );
 			}
 			else if( it.reftype == 'waterworks_credit' ) {
 				//this is for overpayments and deposits
@@ -84,11 +91,8 @@ class WaterworksPaymentService {
 		if(!pmt.items) throw new Exception("payment items not found!");
 
 		pmt.items.each {
-			if(it.reftype == "waterworks_consumption") {
-				consEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid - :amt}", discount: 0 ], [amt: it.amount] );
-			}
-			else if(it.reftype == "waterworks_otherfee"  ) {
-				otherFeeEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid - :amt}", discount: 0 ], [amt: it.amount] );
+			if(it.reftype == "waterworks_billitem") {
+				billItemEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid - :amt}", discount: 0 ], [amt: it.amount] );
 			}
 			else if( it.reftype == "waterworks_credit" ) {
 				//remove tax credit from ledger
@@ -96,6 +100,22 @@ class WaterworksPaymentService {
 			}
 		}
 		paymentEm.find( [objid: pmt.objid] ).update( [voided: 1 ] );
+	}
+
+
+	//called by capture payment in client
+	@ProxyMethod
+	public def getPaymentItems( def o ) {
+		if(!o.acctid) throw new Exception("acctid is required in  WaterworksPaymentService.getPaymentItems");
+		def pp = [:];
+		pp.account = vwAcctEm.find( [objid: o.acctid ]).first();
+		if(o.billid) o.billid = pp.account.billid;
+
+		if(!o.billid) throw new Exception("billid is required in WaterworksPaymentService.getPaymentItems");
+		pp.bill = vwBillEm.find( [objid: o.billid ]).first();
+
+		pp.amtpaid = o.amtpaid;
+		ruleSvc.getPaymentItems( pp );
 	}
 
 

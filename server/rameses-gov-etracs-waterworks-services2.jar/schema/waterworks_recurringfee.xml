@@ -1,0 +1,28 @@
+<schema>
+	<element tablename="waterworks_recurringfee">
+		<field name="objid" primary="true"  prefix="WRFEE"/>
+		<field name="acctid" />
+
+		<complex name="item" ref="waterworks_itemaccount" jointype="many-to-one" required="true">
+			<key field="itemid" target="objid" />
+		</complex>	
+
+		<field name="type" required="true" lov="WATERWORKS_RECURRINGFEE_TYPE"/>
+
+		<field name="startyear" required="true"/>
+		<field name="startmonth" required="true"/>
+		<field name="amount" required="true" type="decimal"/>
+		<field name="amtpaid" required="true" type="decimal"/>
+		<field name="refid" />
+		<field name="reftype" />
+		<field name="state" />
+		<field name="installmentamount" />
+		<field name="term" type="integer"/>
+		<field name="particulars" />
+
+		<field name="balance" expr="amount-amtpaid" type="decimal"/>
+		<field name="system" type="integer"/>
+
+	</element>
+
+</schema>

@@ -102,18 +102,21 @@ public class WaterworksAccountModel extends CrudFormModel {
         return ledgerFilter;
     }
     
-    def addLedgerEntry() {
-        def s = { o->
-            ledgerList.reload();
-        }
-        return Inv.lookupOpener("waterworks_ledger:create", [onSaveHandler:s] );
-    }
-    
     def viewLedgerPayment() {
         if( !ledgerList.selectedItem?.item ) throw new Exception("Please select ledger item");
         def p = [:];
         p.query = [refid: ledgerList.selectedItem?.item.objid];
         return Inv.lookupOpener("waterworks_payment_item:list", p );
+    }
+    /************************************************************************
+    * RELATED TO LEDGER
+    *************************************************************************/
+    def consumptionList;
+    def addConsumptionEntry() {
+        def s = { o->
+            consumptionList.reload();
+        }
+        return Inv.lookupOpener("waterworks_consumption:create", [onSaveHandler:s] );
     }
     
     void approve() {
@@ -124,13 +127,6 @@ public class WaterworksAccountModel extends CrudFormModel {
     
     void deactivate() {
         acctSvc.deactivate( [acctid: entity.objid ] );
-    }
-    
-    void generateBill() {
-        def bill = acctSvc.generateBill( [acctid: entity.objid ] );
-        entity.billid = bill.objid;
-        entity.billstate = bill.state;
-        MsgBox.alert("Bill successfully generated");
     }
     
     def viewStatement() {

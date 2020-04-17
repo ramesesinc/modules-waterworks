@@ -25,7 +25,7 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 
-	<field name="title" class="java.lang.String"/>
+	<field name="particulars" class="java.lang.String"/>
 	<field name="amount" class="java.lang.Double"/>
 	<field name="group" class="java.lang.String"/>
 
@@ -87,7 +87,7 @@
 					<textElement verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{title}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{particulars}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

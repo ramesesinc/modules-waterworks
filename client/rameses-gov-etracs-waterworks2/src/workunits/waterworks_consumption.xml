@@ -16,9 +16,9 @@
                  visibleWhen="#{ entity.acctstate == 'DRAFT' &amp;&amp; mode != 'read'  }"/> 
     </invokers>
 
-    <code class="com.rameses.gov.etracs.waterworks.models.WaterConsumptionModel"/>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksConsumptionModel"/>
 
     <pages>
-        <page template="com.rameses.gov.etracs.waterworks.views.WaterConsumptionPage"/>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksConsumptionPage"/>
     </pages>
 </workunit>

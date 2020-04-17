@@ -1,60 +1,64 @@
 <schema>
 	<element tablename="vw_waterworks_bill">
 		<field name="objid" primary="true"/> 
+		<field name="billno" searchable="true"/> 
+		<field name="billrefno" searchable="true"/> 
+		<field name="state" /> 
+
 		<field name="batchid" /> 
 		<field name="acctid" /> 
-		<field name="billno" searchable="true"/> 
-		<field name="refbillno" searchable="true"/> 
+		<field name="acctinfoid" /> 
+		<field name="acctid" /> 
+
+		<field name="billdate" type="date" /> 
+		<!-- date when the bill was prepared -->
+		<field name="validitydate" /> 
+		<field name="expirydate" /> 
 
 		<field name="acctno" searchable="true"/> 
 		<field name="acctname" searchable="true"/> 
-
-
-		<field name="year" /> 	
-		<field name="month" /> 	
-		<field name="monthname" expr="MONTH_ARRAY(month)" /> 	
-
-		<field name="state" /> 
-		<field name="balanceforward" type="decimal"/> 
-		<field name="printed" /> 
 		<field name="acctstate" /> 
 		<field name="address_text" /> 
 		<field name="classificationid" /> 
-
-		<field name="prevreading" type="integer"/> 
-		<field name="reading" type="integer"/> 
-		<field name="volume" type="integer"/> 
-		<field name="amount" type="decimal"/> 
-		<field name="hold" /> 
-		<field name="subtotal" type="decimal"/> 
 		<field name="seqno" /> 
+
+		<field name="balanceforward" type="decimal"/> 
 
 		<complex name="stubout" ref="waterworks_stubout" jointype="many-to-one" required="false">
 			<key field="stuboutid" target="objid"/> 
 		</complex>
 		
-		<complex name="subarea" ref="waterworks_subarea" jointype="many-to-one" required="true">
-			<key field="subareaid" target="objid"/> 
-		</complex>
-
 		<complex name="meter" ref="waterworks_meter" jointype="many-to-one"  required="false" 
-			includefields="objid,serialno,brand,capacity,size.*,state">
+			includefields="objid,serialno,brand,capacity,size.*">
 			<key field="meterid" target="objid"/>
 		</complex>
 		<field name="meterstate" />
 
-		<!-- date when the bill was prepared -->
-		<field name="billdate" /> 
-		<field name="validitydate" /> 
+		<field name="period_year" type="integer"/>
+		<field name="period_month" type="integer"/>
+		<field name="period_fromdate" type="date"/>
+		<field name="period_todate" type="date"/>
+		<field name="period_readingdate" type="date"/>
+		<field name="period_readingenddate" type="date"/>
+		<field name="period_billdate" type="date"/>
+		<field name="period_billingenddate" type="date"/>
+		<field name="period_discdate" type="date"/>
+		<field name="period_duedate" type="date"/>
+		<field name="period_billexpirydate" type="date"/>
+		<field name="period_monthname" expr="MONTH_ARRAY(period.month)" />
 
-		<field name="readingdate" />
-		<field name="discdate" /> 
-		<field name="duedate" /> 
-		<field name="fromdate" /> 
-		<field name="todate" /> 
+		<complex name="consumption" ref="vw_waterworks_bill_consumption" jointype="many-to-one" required="false">
+			<key field="objid" target="billid"/> 
+		</complex>
 
 		<field name="remarks" /> 	
+		<field name="createdby_objid" /> 	
+		<field name="createdby_name" /> 	
 
+		<field name="printed" type="integer"/> 
+		<field name="billed"  type="integer"/> 
+		<field name="initial"  type="integer"/> 
+		<field name="step" type="integer"/> 
 
 	</element>
 </schema>

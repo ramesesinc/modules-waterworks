@@ -4,26 +4,48 @@ import java.util.*;
 import com.rameses.util.*;
 import treasury.facts.*;
 
-public class WaterBillItem extends MonthBillItem {
+public class WaterBillItem extends BillItem {
 
-	Date discdate;
-	int volume = 0;
-	int hold = 0;
+	def monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+
+	def objid;
+	def parentrefid;
 
 	public WaterBillItem(def o) {
 		super(o);
-		if(o.volume) volume = o.volume;
-		if(o.discdate) discdate = o.discdate;
-		if(o.hold ) hold = o.hold;
+		if(o.objid) this.objid = o.objid;
 	}
 
 	public WaterBillItem() {}
 
 	public def toMap() { 
 		def m = super.toMap(); 
-		m.hold = hold;
-		m.discdate = discdate;
-		m.volume = volume;
+		if(objid) m.objid = objid;
+		if(parentrefid) m.parentrefid = parentrefid;
+		m.monthname = getMonthname();
 		return m;
 	}	
+
+	public int hashCode() {
+		def buff = new StringBuilder();
+		buff.append( yearMonth );
+		buff.append( "-" + billcode );
+		if( parentrefid ) {
+			buff.append( "-" + parentrefid );
+		}
+		return buff.toString().hashCode();
+	}
+
+	public int getPaypriority() {
+		return (yearMonth +""+ ( 1000 + sortorder )).toInteger();
+	}
+
+	public String getMonthname() { 
+		def idx = month-1; 
+		if ( idx >= 0 && idx < monthNames.size() ) {
+			return monthNames[ idx ]; 
+		}
+		return null; 
+    }
+
 }	

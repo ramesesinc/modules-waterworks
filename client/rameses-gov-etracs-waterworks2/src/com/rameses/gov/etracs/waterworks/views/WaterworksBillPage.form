@@ -594,7 +594,7 @@
                 </Property>
                 <Property name="customFilter" type="java.lang.String" value="billid = :billid"/>
                 <Property name="queryName" type="java.lang.String" value="entity"/>
-                <Property name="schemaName" type="java.lang.String" value="waterworks_ledger"/>
+                <Property name="schemaName" type="java.lang.String" value="waterworks_billitem"/>
                 <Property name="allowOpen" type="boolean" value="false"/>
                 <Property name="autoResize" type="boolean" value="false"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">

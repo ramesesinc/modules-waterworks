@@ -1,0 +1,15 @@
+<workunit extends="com/rameses/seti2/templates/CrudForm.xml" schemaName="waterworks_recurringfee">
+    <invokers>
+    	 <invoker type="waterworks_recurringfee:create" 
+            caption="Add Recurring Fee" action="create" target="popup" 
+            formTitle="Bill Recurring Fee"/>
+
+    	 <invoker type="waterworks_recurringfee:open" 
+            caption="Recurring Fee" action="open" target="popup" 
+            formTitle="Bill Recurring Fee"/>
+    </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksRecurringFeeModel" />
+    <pages>
+    	<page template="com.rameses.gov.etracs.waterworks.views.WaterworksRecurringFeePage" />
+    </pages>	
+</workunit>

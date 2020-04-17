@@ -1,37 +1,24 @@
 <workunit extends="com/rameses/seti2/templates/FormReport.xml">
     <invokers>
         <invoker type="vw_waterworks_bill:form:formActions" 
-                 caption="View Billing" 
-                 target="popup" 
+                 caption="View Bill" 
+                 target="self" 
                  action="preview"
                  index="50"
-                 reportId="waterworks_billing" 
+                 reportId="waterworks_bill" 
                  reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_billing.jasper"
-                 txnid="#{entity.objid}"
-                 visibleWhen="#{true}"/>
+                 txnid="#{entity.objid}" 
+                 visibleWhen="#{ mode.matches('view') }"/>
         
         <invoker type="vw_waterworks_bill:form:formActions" 
                  caption="View Statement" 
-                 target="popup" 
+                 target="self" 
                  action="preview"
                  index="51"
-                 reportId="waterworks_statement" 
+                 reportId="waterworks_bill" 
                  reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_statement.jasper"
-                 txnid="#{entity.objid}"
-                 visibleWhen="#{true}"/>
+                 txnid="#{ entity.objid }" 
+                 visibleWhen="#{ mode.matches('view') }"/>
         
-        <invoker type="vw_waterworks_account:form:formActions" 
-                 caption="View Statement" 
-                 target="popup" 
-                 action="preview"
-                 index="51"
-                 reportId="waterworks_statement" 
-                 reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_statement.jasper"
-                 txnid="#{entity.billid}"
-                 visibleWhen="#{entity.currentbillid!=null}"/>
-        
-        <invoker type="formActions" action="approve" caption="Approve" 
-                    visibleWhen="#{ caller.entity.billstate == 'PENDING' }"/>
     </invokers> 
-    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksStatementModel" />
 </workunit>

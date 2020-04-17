@@ -44,6 +44,7 @@ public class WaterworksSubareaPage extends javax.swing.JPanel {
         xLabel7 = new com.rameses.rcp.control.XLabel();
         xLabel5 = new com.rameses.rcp.control.XLabel();
         xLabel6 = new com.rameses.rcp.control.XLabel();
+        xLabel8 = new com.rameses.rcp.control.XLabel();
         xPanel1 = new com.rameses.rcp.control.XPanel();
         schemaList2 = new com.rameses.seti2.components.SchemaList();
         xPanel2 = new com.rameses.rcp.control.XPanel();
@@ -114,21 +115,21 @@ public class WaterworksSubareaPage extends javax.swing.JPanel {
         xFormPanel2.add(xLookupField4);
 
         xLabel2.setCaption("");
-        xLabel2.setExpression("Next Billing Period ");
         xLabel2.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xLabel2.setPreferredSize(new java.awt.Dimension(0, 20));
         xLabel2.setShowCaption(false);
+        xLabel2.setText("Billing Period ");
         xFormPanel2.add(xLabel2);
 
         xLabel7.setCaption("Year/Month");
-        xLabel7.setExpression("#{ entity.nextperiod.year } #{ entity.nextperiod.monthname }");
+        xLabel7.setExpression("#{ entity.period.year } #{ entity.period.monthname }");
         xLabel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
         xLabel7.setCellPadding(new java.awt.Insets(0, 30, 0, 0));
         xLabel7.setPreferredSize(new java.awt.Dimension(200, 20));
         xFormPanel2.add(xLabel7);
 
         xLabel5.setCaption("From Period");
-        xLabel5.setExpression("#{ entity.nextperiod.fromdate }");
+        xLabel5.setExpression("#{ entity.period.fromdate }");
         xLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
         xLabel5.setCellPadding(new java.awt.Insets(0, 30, 0, 0));
         xLabel5.setDateFormat("yyyy-MM-dd");
@@ -136,12 +137,20 @@ public class WaterworksSubareaPage extends javax.swing.JPanel {
         xFormPanel2.add(xLabel5);
 
         xLabel6.setCaption("To Period");
-        xLabel6.setExpression("#{ entity.nextperiod.todate }");
+        xLabel6.setExpression("#{ entity.period.todate }");
         xLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
         xLabel6.setCellPadding(new java.awt.Insets(0, 30, 0, 0));
         xLabel6.setDateFormat("yyyy-MM-dd");
         xLabel6.setPreferredSize(new java.awt.Dimension(200, 20));
         xFormPanel2.add(xLabel6);
+
+        xLabel8.setCaption("Expiry Date");
+        xLabel8.setExpression("#{ entity.period.billexpirydate }");
+        xLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
+        xLabel8.setCellPadding(new java.awt.Insets(20, 30, 0, 0));
+        xLabel8.setDateFormat("yyyy-MM-dd");
+        xLabel8.setPreferredSize(new java.awt.Dimension(200, 20));
+        xFormPanel2.add(xLabel8);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -331,6 +340,7 @@ public class WaterworksSubareaPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLabel xLabel5;
     private com.rameses.rcp.control.XLabel xLabel6;
     private com.rameses.rcp.control.XLabel xLabel7;
+    private com.rameses.rcp.control.XLabel xLabel8;
     private com.rameses.rcp.control.XLookupField xLookupField1;
     private com.rameses.rcp.control.XLookupField xLookupField2;
     private com.rameses.rcp.control.XLookupField xLookupField3;

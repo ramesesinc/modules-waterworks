@@ -6,7 +6,7 @@
                 orderBy="code"
                 allowOpen="#{true}"
                 cols="code,description,schedulegroupid,schedulegroup.objid,schedulegroup.description"
-                hiddenCols="nextperiod.*"
+                hiddenCols="period.*"
                 caption="Lookup Sub Area" action="init"/>
     </invokers>
 </workunit>

@@ -3,8 +3,8 @@
 @DataContext("waterworks_bill")
 def billEm;
 
-@DataContext("waterworks_ledger")
-def ledgerEm;
+@DataContext("waterworks_billitem")
+def billItemEm;
 
 @DataContext("waterworks_account_attribute")
 def attributeEm;
@@ -19,9 +19,9 @@ public def execute(def o ) {
 
 	def sel = "objid,item.*,amount:{amount-amtpaid-discount},state:{1}"
 	def ym = (bill.year*12)+bill.month;
-	def previtems = ledgerEm.find( [acctid: bill.acctid]).select(sel).where( "((year*12)+month) < :yrmon AND (amount-amtpaid-discount>0)", [yrmon: ym] ).list();
+	def previtems = billItemEm.find( [acctid: bill.acctid]).select(sel).where( "((year*12)+month) < :yrmon AND (amount-amtpaid-discount>0)", [yrmon: ym] ).list();
 
-	def billitems = ledgerEm.find( [billid: bill.objid]).select(sel).list();
+	def billitems = billItemEm.find( [billid: bill.objid]).select(sel).list();
 	(previtems + billitems).each {
 		facts << new WaterBillItem(it);
 	}
@@ -36,14 +36,14 @@ public def execute(def o ) {
 
 	def items = facts.findAll{ it instanceof WaterBillItem && it.state == 0 };
 	items.each {
-		//insert into waterworks_ledger
+		//insert into waterworks_billitem
 		def m = [:];
 		m.billid = bill.objid;
 		m.itemid = it.itemid;
 		m.amount = it.amount;
 		m.amtpaid = 0;
 		m.discount = 0;
-		ledgerEm.create( m );
+		billItemEm.create( m );
 	}
 
 }

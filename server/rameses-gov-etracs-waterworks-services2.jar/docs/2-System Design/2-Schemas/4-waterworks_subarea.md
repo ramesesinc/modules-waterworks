@@ -24,17 +24,11 @@ __waterworks_subarea__
 |description   | string | Yes |  |
 |areaid   | string | Yes | link to waterworks_area |
 |schedulegroupid   | string | Yes | link to waterworks_schedule_group |
-|nextperiodid   | string | Yes |  link to waterworks_billing_period |
+|periodid   | string | Yes |  link to waterworks_billing_period. represents the current period |
 |barangay_objid   | string | Yes |  |
 |barangay_name   | string | Yes |   |
 
 </div>
-
-To ensure that the schedule id specified from sub area is the nextperiod, we create the ff. link: 
-
-|waterworks_subarea	| waterworks_billing_period |
-|:----              |:----                      |
-|nextperiodid       | objid                     |
-|schedulegroupid    | scheduleid                |    
+ 
 
 

@@ -1,0 +1,76 @@
+import com.rameses.annotations.*;
+import treasury.facts.*;
+import java.text.*;
+
+class WaterworksBillStatementReportInterceptor {
+	
+	@DataContext("vw_waterworks_bill")
+	def billEm;
+
+	@DataContext("waterworks_billitem")
+	def billItemEm;
+
+	@DataContext("waterworks_payment")
+	def pmtEm;
+
+	@After(pattern="FormReportService.getData", eval="#{ args[0].reportid == 'waterworks_bill' }")
+	public void getStatementReport( def evt ) {
+		def t = evt.args[0];
+		def result = evt.result;
+
+		def bill = billEm.find( [objid: t.txnid] ).first();
+
+		def details = [];
+		def bal = [ txndate:null, particulars: "Balance Forward" ];
+		if( bill.balanceforward < 0 ) {
+			bal.dr = 0;
+			bal.cr = Math.abs( bill.balanceforward );
+		}
+		else {
+			bal.dr =bill.balanceforward;			
+			bal.cr = 0;			
+		};
+		bal.txndate = bill.period.todate;
+		bal.group = "Previous";
+		details <<  bal;
+
+		//include billitems 
+		def billItems = billItemEm.find( [billid: bill.objid, year: bill.period.year, month: bill.period.month ] ).list();
+		billItems.each {
+			def m = [:];
+			m.particulars = it.item.title;
+			if( it.particulars  ) m.particulars += "("+it.particulars+")";
+			m.txndate = it.txndate;
+			if(!m.txndate) m.txndate = bill.period.billdate;
+			m.dr = it.amount;
+			m.cr = 0;
+			m.group = "Current";
+			details << m;
+		}
+
+		//do not include non cash receipt payments
+		def pmtItems = pmtEm.find( [billid: bill.objid ] ).where("voided = 0 AND reftype = 'cashreceipt' ").list();
+		pmtItems.each {
+			def m = [:];
+			m.txndate = it.refdate;
+			m.particulars = "Payment Ref No" + it.refno;
+			if( it.discount > 0 ) m.dr = Math.abs(it.discount)*-1;
+			m.cr = it.amount;
+			m.group = "Current";			
+		}
+
+		details = details.sort{ it.txndate };
+		def runbal = 0;
+		details.each {
+			runbal = runbal + it.dr - it.cr;
+			it.runbalance = runbal; 
+			it.amount = it.dr - it.cr;
+		}
+
+		bill.barcode = bill.billno;
+		bill.amount = runbal;
+		bill.details = details;
+		result.data = bill;
+	}
+
+} 

@@ -1,168 +1,132 @@
 import com.rameses.annotations.*;
-import com.rameses.functions.*;
-import java.rmi.server.UID;
 import com.rameses.util.*;
+import waterworks.facts.*;
 import treasury.utils.*;
 import treasury.facts.*;
-import waterworks.facts.*;
-import com.rameses.annotations.*;
-import com.rameses.util.*;
-
-
-/****************************************************************************************
-* Applicable for billing one item only.
-* This is called on the ff. instances:
-*   1. Batch billing - to get the arrears or overpayments if any
-*   2. Cash Receipt - to display the receipts
-*   3.  
-*****************************************************************************************/
 
 class WaterworksBillingRuleService {
-	
-	@DataContext('vw_waterworks_account')
-	def acctEm; 
-
-
-	@DataContext("vw_waterworks_consumption")
-	def wcEm;
-
-	@DataContext("waterworks_credit")
-	def wcCreditEm;
-
-	@DataContext("waterworks_otherfee")
-	def wotherEm;
-
-	@DataContext("waterworks_itemaccount")
-	def itemAccountEm;
 
 	@Service("BillingRuleService")
 	def ruleSvc;	
 
-	@Service("WaterworksScheduleService")
-	def schedSvc;
+	@DataContext("vw_waterworks_account")
+	def vwAcctEm;
 
-	@DataContext("waterworks_billing")
-	def billEm;
+	@DataContext("waterworks_billitem")
+	def billItemEm;
 
-	def loadBillItems( o ) {
+ 	@DataContext("waterworks_itemaccount")
+	def itemAcctEm;
+
+	private def buildFacts( def o, def billitems ) {
+		def acct = o.account;
+		def bill = o.bill;
 
 		def facts = [];
-		def arr = [];
-		def wp = [ state:'POSTED' ];
-		if ( o.year!=null && o.month!=null ) { 
-			arr << "((year * 12)+month) <= :yearmonth";
-			wp.yearmonth = (o.year * 12)+o.month;
-		} 
-		def wheres = []; 
-		wheres.addAll( arr ); 
-		wheres << " state = :state AND hold=0 "; 
-		wheres << " (amount - amtpaid - discount) > 0 ";
-
-		def select = "hold,year,month,volume,amount:{amount-amtpaid-discount},";
-		select += "principal:{amount},amtpaid,refid:{objid},reftype:{'waterworks_consumption'}";
-		def conList = wcEm.find([acctid: o.acctid]).select(select).where(wheres.join(" AND "), wp).orderBy("year,month").list();
-
-		def yearMonthList = [];
-		def addYearMonth = { o->
-			if( !yearMonthList.find{ it.year==o.year && it.month==o.month } ) {
-				yearMonthList << [year:it.year, month:it.month];		
+		facts << new WaterAccount( acct );
+		facts << new WaterBill( bill );
+		acct.attributes.each {
+			facts << new WaterworksAttribute( name: it );
+		}
+		billitems.each {
+			def wbi = new WaterBillItem();
+			wbi.objid = it.objid;
+			wbi.refid = it.objid;
+			wbi.year = it.year;
+			wbi.month = it.month;
+			wbi.billcode = it.item.objid;
+			wbi.sortorder = it.item.sortorder;
+			wbi.amount = it.amount - it.amtpaid - it.discount;
+			//this was a workaround. If parentrefid equals acct.objid then make it null;
+			if( it.parentrefid != acct.objid ) {
+				wbi.parentrefid = it.parentrefid;
 			}
+			wbi.principal = it.amount;
+			facts << wbi;	
 		}
+		def factBuilder = new FactBuilder();
+		factBuilder.facts = facts;
+		return factBuilder;
+	}
 
-		conList.each {
-			addYearMonth( it ); 
-			facts << new WaterBillItem(it);
+
+	@ProxyMethod
+	public def getBillItems( def o ) {
+		def acct = o.account;
+		def bill = o.bill;
+		def ym = (bill.period.year*12)+bill.period.month;
+
+		//these are called to calculate the surcharge. Include only items that have balances
+		def pastItems = billItemEm.find( [acctid: acct.objid ] ).where("(amount-amtpaid-discount) > 0 AND ((year*12)+month) < :yearmonth", [yearmonth: ym]).list();
+
+		//for current include all items for the bill whether paid or unpaid. This must be included so we can determine if we need to charge or not. avoid duplicates.
+		def currItems = billItemEm.find( [billid:bill.objid] ).list();
+
+		def fb = buildFacts( o, (pastItems + currItems) );
+		def req = [rulename:'waterworksbilling'];
+		req.factBuilder = fb;
+		req.params = [objid:bill.objid];
+
+		ruleSvc.execute(req);
+		def items = [];
+		fb.facts.findAll{ it instanceof WaterBillItem }.each {
+			items << it.toMap();
 		}
-
-		//select for other fees
-		wheres = []; 
-		wheres.addAll( arr );  
-		wheres << "(amount - amtpaid - discount) > 0"; 
-		select = "year,month,item.*,billcode:{item.objid},amount:{amount-amtpaid-discount},amtpaid,principal:{amount},refid:{objid},reftype:{'waterworks_otherfee'}";
-		conList = wotherEm.find([acctid: o.acctid]).select(select).where(wheres.join(" AND "), wp).orderBy("year,month").list();
-
-		conList.each {
-			addYearMonth( it );
-			facts << new MonthBillItem(it);
-		}
-
-		yearMonthList?.each {
-			def sked = schedSvc.getSchedule( [ scheduleid: o.scheduleid, year:it.year, month: it.month ] );
-			facts << new WaterBillingPeriod( sked );			
-		}
-
-		return facts;
+		def res = [:];
+		res.billitems = items;
+		return res;	
 	}
 
 	@ProxyMethod
-	public def getBilling( pp ) {
-		if( !pp.acctid  ) throw new Exception("acctid is required in WaterworksBillingRuleService.getBilling");
-		def acct = acctEm.find([ objid: pp.acctid ]).first();
-		if(!acct) throw new Exception("Account not found");
+	public def getPaymentItems( def o ) {
+		def acct = o.account;
+		def bill = o.bill;
+		def amtpaid = o.amtpaid;
+		def ym = (bill.period.year*12)+bill.period.month;
 
-		def scheduleid = acct.subarea.schedulegroupid;
+		def bitems = billItemEm.find( [acctid: acct.objid ] ).where("(amount-amtpaid-discount) > 0 AND ((year*12)+month) <= :yearmonth", [yearmonth: ym]).list();		
+		def fb = buildFacts( o, bitems );
 
-		def pv = [year: pp.year, month: pp.month, acctid: acct.objid, scheduleid: scheduleid ];
-		if( pp.request_action ) pv.request_action = pp.request_action;
-		def billItemFacts = loadBillItems( pv );
+		def req = [rulename:'waterworkspayment'];
+		req.factBuilder = fb;
+		req.params = [amtpaid :  (o.amtpaid==null)? o : o.amtpaid ];
+		if(o.include_items) req.include_items = o.include_items;
 
-		if(!billItemFacts && !pp.amtpaid ) {
-			acct.items = [];
-			acct.billitems = [];
-			return acct;
+		ruleSvc.execute(req);
+
+		def items = [];
+		fb.facts.findAll{ it instanceof WaterBillItem }.each {
+			def m = it.toMap();
+			m.item = itemAcctEm.find( [objid: m.billcode ] ).first();
+			m.reftype = "waterworks_billitem";
+			items << m;
 		}
 
-		def factBuilder = new FactBuilder();
-		factBuilder.facts = billItemFacts; 
-		factBuilder.facts << new WaterAccount( acct );
+		throw new Exception("find tomorrow the credit bill item");
+		fb.facts.find{ it instanceof CreditBillItem }.each {
 
-		//check if acct has arrears. This is to determine if we need to discount or not
-		if( pp.billid ) {
-			def bill = billEm.find( [objid: pp.billid ]).first();
-			if(!bill) throw new Exception("Error in WaterworksBillingRuleService.getBilling. billid was specified but bill does not exist");
-			factBuilder.facts << new WaterBilling( bill );
 		}
 
-		if( acct.attributes ) {
-			acct.attributes.each {
-				factBuilder.facts << new WaterworksAttribute(name:it);
+		def cashitems = [];
+		if(o.include_items == true ) {
+			def grps = items.groupBy{ it.item.item };
+			grps.each { k,v->
+				def itm = [:];
+				itm.item = k;
+				itm.amount = v.sum{it.amount};
+				
+				def m1 = v.min{ it.yearmonth };
+				def m2 = v.max{ it.yearmonth };
+				itm.remarks = m1.monthname + " " + m1.year + " to " + m2.monthname + " " + m2.year; 
+				cashreceiptitems << itm;
 			}
 		}
-
-		def req = [rulename:'waterworksbilling'];
-		req.factBuilder = factBuilder;
-		req.params = pp;
-		if(pp.include_items) req.include_items = pp.remove("include_items");
-
-		def res = ruleSvc.execute( req );
-		res.putAll( acct );
-
-		def itemMap = [:];
-		def lookupItem = { pid->
-			if( !itemMap.containsKey(pid)) {
-				itemMap.put( pid, itemAccountEm.find( [objid: pid ] ).first() );
-			}
-			return itemMap.get(pid);
-		}
-
-		res.billitems?.each {
-			if(it.billcode) it.item = lookupItem(it.billcode)?.item;
-			if( it.txntype == "credit") {
-				it.reftype = "waterworks_credit";
-			}	
-		}
-
-		//attach the item accounts also
-		if(res.items) {
-			res.items.findAll{ !it.item?.objid}.each {
-				it.item = lookupItem( it.billcode )?.item;
-			}
-			if(res.items.find{ !it.item?.objid }) 
-				throw new Exception("All items must have an item account");
-		}
-
-		return  res;
+		def res = [:];
+		res.billitems = items;
+		res.items = cashitems;
+		res.amount = cashitems.sum{ a.amount };
+		return res;
 	}
 
-	
-} 
+
+}

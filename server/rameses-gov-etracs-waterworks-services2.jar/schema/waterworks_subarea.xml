@@ -13,8 +13,8 @@
 			<key field="schedulegroupid" target="objid" />
 		</complex>	
 			
-		<complex name="nextperiod" ref="waterworks_billing_period" jointype="many-to-one" required="false" caption="Next Period">
-			<key field="nextperiodid" target="objid" />
+		<complex name="period" ref="waterworks_billing_period" jointype="many-to-one" required="false" caption="Next Period">
+			<key field="periodid" target="objid" />
 		</complex>	
 
 		<field name="barangay_objid" required="true"/>

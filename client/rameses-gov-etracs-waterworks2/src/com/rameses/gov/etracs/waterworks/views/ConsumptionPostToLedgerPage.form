@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="xFormPanel1" min="-2" max="-2" attributes="0"/>
+                  <Component id="xCheckBox2" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="136" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+              <Component id="xCheckBox2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="xFormPanel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="99" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="com.rameses.rcp.control.XCheckBox" name="xCheckBox2">
+      <Properties>
+        <Property name="caption" type="java.lang.String" value="Post To Ledger"/>
+        <Property name="checkValue" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="1" type="code"/>
+        </Property>
+        <Property name="depends" type="[Ljava.lang.String;" editor="org.netbeans.beaninfo.editors.StringArrayEditor">
+          <StringArray count="2">
+            <StringItem index="0" value="entity.reading"/>
+            <StringItem index="1" value="entity.hold"/>
+          </StringArray>
+        </Property>
+        <Property name="name" type="java.lang.String" value="entity.posttoledger" noResource="true"/>
+        <Property name="uncheckValue" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="0" type="code"/>
+        </Property>
+        <Property name="visibleWhen" type="java.lang.String" value="#{ entity.reading &gt;0 &amp;&amp; entity.hold == 0 }"/>
+        <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+          <Insets value="[10, 0, 0, 0]"/>
+        </Property>
+        <Property name="showCaption" type="boolean" value="false"/>
+        <Property name="text" type="java.lang.String" value="Post To Ledger"/>
+      </Properties>
+    </Component>
+    <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel1">
+      <Properties>
+        <Property name="depends" type="[Ljava.lang.String;" editor="org.netbeans.beaninfo.editors.StringArrayEditor">
+          <StringArray count="3">
+            <StringItem index="0" value="entity.posttoledger"/>
+            <StringItem index="1" value="entity.reading"/>
+            <StringItem index="2" value="entity.hold"/>
+          </StringArray>
+        </Property>
+        <Property name="visibleWhen" type="java.lang.String" value="#{ entity.reading &gt;0 &amp;&amp; entity.hold == 0 &amp;&amp; entity.posttoledger == 1 }"/>
+        <Property name="showCaption" type="boolean" value="false"/>
+      </Properties>
+      <SubComponents>
+        <Component class="com.rameses.rcp.control.XDecimalField" name="xDecimalField2">
+          <Properties>
+            <Property name="caption" type="java.lang.String" value="Amount"/>
+            <Property name="name" type="java.lang.String" value="entity.amount" noResource="true"/>
+            <Property name="captionWidth" type="int" value="100"/>
+            <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+              <Insets value="[0, 30, 0, 0]"/>
+            </Property>
+            <Property name="required" type="boolean" value="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="xDecimalField2ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="com.rameses.rcp.control.XDecimalField" name="xDecimalField3">
+          <Properties>
+            <Property name="caption" type="java.lang.String" value="Amt Paid"/>
+            <Property name="name" type="java.lang.String" value="entity.amtpaid" noResource="true"/>
+            <Property name="captionWidth" type="int" value="100"/>
+            <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+              <Insets value="[0, 30, 0, 0]"/>
+            </Property>
+            <Property name="required" type="boolean" value="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="xDecimalField3ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="com.rameses.rcp.control.XDecimalField" name="xDecimalField4">
+          <Properties>
+            <Property name="caption" type="java.lang.String" value="Discount"/>
+            <Property name="name" type="java.lang.String" value="entity.discount" noResource="true"/>
+            <Property name="captionWidth" type="int" value="100"/>
+            <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+              <Insets value="[0, 30, 0, 0]"/>
+            </Property>
+            <Property name="required" type="boolean" value="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="xDecimalField4ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="com.rameses.rcp.control.XButton" name="xButton1">
+          <Properties>
+            <Property name="caption" type="java.lang.String" value=""/>
+            <Property name="name" type="java.lang.String" value="recalc" noResource="true"/>
+            <Property name="captionWidth" type="int" value="120"/>
+            <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+              <Insets value="[0, 10, 0, 0]"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Calculate"/>
+          </Properties>
+        </Component>
+        <Component class="com.rameses.rcp.control.XCheckBox" name="xCheckBox3">
+          <Properties>
+            <Property name="caption" type="java.lang.String" value="Hold"/>
+            <Property name="checkValue" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="1" type="code"/>
+            </Property>
+            <Property name="disableWhen" type="java.lang.String" value="#{true}"/>
+            <Property name="name" type="java.lang.String" value="entity.system" noResource="true"/>
+            <Property name="uncheckValue" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="0" type="code"/>
+            </Property>
+            <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+              <Insets value="[20, 0, 0, 0]"/>
+            </Property>
+            <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+              <Insets value="[0, 0, 0, 0]"/>
+            </Property>
+            <Property name="showCaption" type="boolean" value="false"/>
+            <Property name="text" type="java.lang.String" value="System Generated"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="xCheckBox3ActionPerformed"/>
+          </Events>
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

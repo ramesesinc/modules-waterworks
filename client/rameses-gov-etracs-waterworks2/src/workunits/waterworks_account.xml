@@ -21,11 +21,9 @@
                  role="APPROVER"
                  visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; mode=='read' }" /> 
                  
-        <invoker type="formActions" action="generateBill" caption="Generate Bill" 
-                 visibleWhen="#{ entity.currentbillid ==null }" /> 
-        
+       
         <!-- subitem actions -->
-        <invoker type="ledgerActions" action="addLedgerEntry" caption="Add Entry" visibleWhen="#{entity.state=='DRAFT'}"/>
+        <invoker type="consumptionActions" action="addConsumptionEntry" caption="Add Consumption Entry" visibleWhen="#{entity.state=='DRAFT'}"/>
         <invoker type="ledgerActions" action="viewLedgerPayment" caption="View Payment Details" />
                
     </invokers>

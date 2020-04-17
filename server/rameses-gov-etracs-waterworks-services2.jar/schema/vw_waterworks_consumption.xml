@@ -1,19 +1,9 @@
 <schema>
 	<element tablename="vw_waterworks_consumption">
 		<field name="objid" primary="true"/> 
-		<field name="acctid" />
-		<field name="acctinfoid" />
-		<field name="acctno" /> 
-		<field name="acctname" /> 
-		<field name="acctstate" /> 
-
 		<field name="billid" />  
 		<field name="txnmode" /> 
 		<field name="state" /> 
-		<field name="posttoledger" /> 
-
-		<field name="meterid" /> 
-		<field name="meterstate" /> 
 
  		<complex name="meter" ref="waterworks_meter" jointype="many-to-one"  required="false"
 			includefields="objid,serialno,capacity,state">
@@ -26,15 +16,17 @@
 		<field name="monthname" expr="MONTH_ARRAY(month)"/> 
 		<field name="reading" />
 		<field name="volume" /> 
+		<field name="amount" /> 		
 		<field name="hold" /> 
 
-		<field name="prevreading" /> 
-		<field name="prevyear" /> 
-		<field name="prevmonth" /> 
+		<field name="prev_reading" /> 
+		<field name="prev_year" /> 
+		<field name="prev_month" /> 
 
-		<field name="seqno" /> 
-
-		<field name="subareaid" />
+		
+		<field name="readingdate"  type="date"/>
+		<field name="reader_objid"/>
+		<field name="reader_name"/>
 	</element>
 </schema>
 

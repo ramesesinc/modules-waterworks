@@ -67,21 +67,13 @@ class WaterworksComputationService  {
 			facts << new WaterMeter( meter );            
         }
 
-		facts << new WaterConsumption( o );
+        def wc = new WaterConsumption( o );
+		facts << wc;
 		ruleSvc.execute( "waterworkscomputation", facts, null, null );
 
-		def res = [:]
-		facts.each { 
-			if( it instanceof WaterConsumption ) {
-				res.amount = it.amount;
-				res.volume = it.volume;
-			}
-		}
-		//if there is consumption id then update it. 
-		if(o.consumptionid) {
-			res.reading = o.reading; 
-			consEm.find( [objid: o.consumptionid ] ).update( res );
-		}
+		def res = [:];
+		res.amount = wc.amount;
+		res.volume = wc.volume;
 
 		return res;
 	}

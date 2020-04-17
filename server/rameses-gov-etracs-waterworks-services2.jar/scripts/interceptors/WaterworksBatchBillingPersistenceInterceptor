@@ -66,7 +66,7 @@ class WaterworksBatchBillingPersistenceInterceptor {
 			ny = ny - 1;
 		};
 
-		subareaEm.find( [objid: o.subarea.objid] ).update( [nextperiod : [year:ny, month:nm]  ] );
+		subareaEm.find( [objid: o.subarea.objid] ).update( [period : [year:ny, month:nm]  ] );
 
 		//build the consumptions first. this already contains previous values like reading and hold
 		batchEm.buildConsumptions( m );

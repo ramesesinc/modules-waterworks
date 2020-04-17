@@ -2,7 +2,7 @@
     <!-- used by rules -->
     <invokers>
         <invoker folderid="/explorer/master/waterworks" 
-            cols="code,description,schedulegroupid,area.code,nextperiod.year,nextperiod.monthname"
+            cols="code,description,schedulegroupid,area.code,period.year,period.monthname"
                  caption="Sub Areas" role="MASTER" action="init" index="-9"/>
     </invokers>
 </workunit>

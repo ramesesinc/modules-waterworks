@@ -3,54 +3,26 @@ import java.rmi.server.*;
 
 class WaterworksConsumptionPersistenceInterceptor{
 	
-	@DataContext('waterworks_ledger') 
-	def ledgerEm;
+	@DataContext('waterworks_billitem') 
+	def billItemEm;
 
 	@DataContext('waterworks_itemaccount') 
 	def acctEm;
 
-	@After(pattern="PersistenceService.(create|update)", eval="#{args[0]._schemaname == 'waterworks_consumption'}")
-	public void afterCreate(def evt) {
-		def o  = evt.args[0];
-		def result = evt.result;
-		if( o.posttoledger == 1 ) {
-			//find entry in ledger
-			def u = [:];
-			u.amount = o.amount;
-			u.amtpaid = o.amtpaid;
-			u.discount = o.discount;
-			def m = ledgerEm.find( [consumptionid: result.objid ]).first();
-			if( m ) {
-				ledgerEm.find([consumptionid: result.objid ] ).update( u );		
-			}
-			else {
-				m = [:];
-				m.item = acctEm.find( [objid: "WATER_SALES"]  ).first();
-				m.acctid = result.acctid;
-				m.system = 1;
-				m.consumptionid = result.objid;
-				m.year = o.year;
-				m.month = o.month;
-				m.putAll( u );						
-				ledgerEm.create( m );
-			}
-
-		}
-	}
-
 	@Before(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_consumption'  }")
 	public void beforeRemove(def evt) {
 		def o = evt.args[0];
-		def m = ledgerEm.find( [consumptionid: o.objid ]).first();
+		if( o.billed == 1) throw new Exception("Cannot remove this entry because this is already billed");
+		def m = billItemEm.find( [consumptionid: o.objid ]).first();
 		if( m ) {
-			ledgerEm.find( [objid: m.objid] ).delete();
+			billItemEm.find( [objid: m.objid] ).delete();
 		}
 	}
 
 	@After(pattern="PersistenceService.read", eval="#{args[0]._schemaname == 'waterworks_consumption'}")
 	public void afterRead(def evt) {
 		def result = evt.result;
-		def m = ledgerEm.find( [consumptionid: result.objid ]).first();
+		def m = billItemEm.find( [consumptionid: result.objid ]).first();
 		if(m) {
 			o.amount = o.amount;
 			o.amtpaid = o.amtpaid;

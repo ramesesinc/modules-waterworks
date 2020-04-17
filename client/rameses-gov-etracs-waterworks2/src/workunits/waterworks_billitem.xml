@@ -1,0 +1,12 @@
+<workunit schemaName="waterworks_billitem">
+    <invokers>
+        <invoker type="waterworks_billitem:create"  
+                 caption="Add Bill Item" target="popup" action="create"/>
+        <invoker type="waterworks_billitem:open"  
+                 caption="Add Bill Item" target="popup" action="open"/>
+    </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillItemModel"/>
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksBillItemPage"/>
+    </pages>
+</workunit>

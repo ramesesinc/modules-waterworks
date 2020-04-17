@@ -1,0 +1,225 @@
+import com.rameses.annotations.*;
+import com.rameses.functions.*;
+import java.rmi.server.UID;
+import com.rameses.util.*;
+import treasury.utils.*;
+import treasury.facts.*;
+import waterworks.facts.*;
+import com.rameses.annotations.*;
+import com.rameses.util.*;
+
+/***
+This is the process of building a single bill. This can be called 
+from the batch billing or from individual
+billstates:
+   DRAFT
+   OPEN
+   CLOSED
+**/
+
+class WaterworksBillService {
+	
+	@DataContext("vw_waterworks_account")
+	def acctEm;
+
+	@DataContext("waterworks_bill")
+	def billEm;
+
+
+	@DataContext("waterworks_ledger")
+	def ledgerEm;
+
+	@DataContext("waterworks_credit")
+	def creditEm;
+
+	@DataContext("waterworks_payment")
+	def pmtEm;
+
+	//@Service("WaterworksBillingRuleService")
+	def billingRuleSvc;
+
+	@Service("DateService")
+	def dateSvc;
+
+	@Service("ControlnoGeneratorService")
+    def controlNoSvc;
+
+    @Service('Var')
+	def var;
+
+	@Service("WaterworksScheduleService")
+	def skedSvc;
+
+
+	@Env
+	def env;
+
+	@ProxyMethod
+	public def getPrevBalance( def newBill ) {
+		def acctid = newBill.acctid;
+		def ym = (newBill.year*12)+newBill.month;
+        def amt = ledgerEm.find([acctid: acctid]).where("((year*12)+month) < :yearmonth AND ((amount-amtpaid-discount)>0)", [yearmonth: ym ]).select( "c:{SUM(amount-amtpaid-discount)}" ).val();
+        if(amt==null) amt = 0;
+        def credits = creditEm.find([acctid: acctid]).where("((year*12)+month) < :yearmonth", [yearmonth: ym ]).select( "c:{SUM(dr-cr)}" ).val();
+		if(credits==null) credits = 0;        
+		return amt - credits;
+	}
+
+	@ProxyMethod
+	public def getInfoForInitialBill(def o) {
+		if(!o.acctid) throw new Exception("acctid is required in getInfoForInitialBill");	
+		def acct = acctEm.find( [objid:o.acctid] ).first();	
+        if(!acct) throw new Exception("Account not found");
+        def period = acct.subarea.period;
+        if( !period?.objid )
+            throw new Exception("Billing Period must be provided in the subarea" );
+
+        int year = period.year;
+        int mon = period.month;
+        def bill = [:];
+        bill.period = skedSvc.getSchedule( [year: year, month: mon, scheduleid:  acct.subarea.schedulegroup?.objid] );
+        bill.balanceforward = getPrevBalance( [acctid: acct.objid, year:year, month: mon ] );
+		
+		bill.details = [];
+		bill.details << [particulars: "Balance Forward", amount: bill.balanceforward ];
+
+		//load ledger items
+		ledgerEm.find([acctid: acct.objid] ).where( "((year*12)+month) = :yearmonth ", [yearmonth: ym] ).list().each {
+			def m = [particulars: it.item.title, amount: it.amount ];
+			if( it.particulars ) m.particulars = m.particulars + " (" + it.particulars + ")";
+			bill.details << m;
+		};
+		bill.payments = pmtEm.find( [acctid: acct.objid] ).where( "((year*12)+month) = :yearmonth AND voided=0", [yearmonth: ym] ).list().each {
+			bill.details << [ particulars: it.reftype + " Payment " + it.refno + " " + it.refdate, amount: (it.amount * -1) ]		
+		}        
+		bill.amount = bill.details.sum{ it.amount };
+
+		def dt = dateSvc.getBasicServerDate();
+		if( dt.before(bill.period.duedate) ) {
+			bill.validitydate = bill.period.duedate;		
+		}
+		else {
+			bill.validitydate = bill.period.billexpirydate;
+		}
+		return bill;
+	}
+
+
+
+	@ProxyMethod
+	public def closeBill( def bill ) {
+		if( bill.lastprocessdate < bill.expirydate ) {
+			updateBillLedger( bill, bill.expirydate );	
+		}	
+	}
+
+	@ProxyMethod
+	public def updateBill(def bill, def todate){
+		//update first all billitems with same year and month to its bill year and month
+		ledgerEm.find( [acctid: bill.acctid]).where("billid IS NULL AND year=:yr AND month=:mon", [yr: bill.year, mon: bill.month]).update( [billid: bill.objid ]);
+
+		//execute the rules here
+		def billitems = billingRuleSvc.execute( bill );	
+		billitems.each {
+			if( it.objid == null && it.year == bill.year && it.month == bill.month ) {
+				it.billid = bill.objid;
+				ledgerEm.create( it );
+			}	
+		};
+		if(todate==null) todate = dateSvc.getBasicServerDate();
+		if( todate == bill.expirydate ) {
+			billEm.find( [objid: bill.objid ] ).update( [lastprocessdate: bill.expirydate, state: 'CLOSED' ]);		
+		}
+		else {
+			billEm.find( [objid: bill.objid ] ).update( [lastprocessdate: todate ]);		
+		}
+	}
+
+	@ProxyMethod
+	public def getBalanceForward(def oldBill ) {
+		def billid = oldBill.objid;	
+		def acctid = oldBill.acctid;
+		def prevYr = oldBill.period.year;
+		def prevMonth = oldBill.period.month;
+		def prevBalForward = oldBill.balanceforward;
+
+		def ym = (prevYear*12)+prevMonth;
+
+		def result = [:];
+		//this will return the a map that consists of the amount and the checksum amount of the bill and remarks if amount and checksum is correct
+		//calculate the normal amt first
+		def a =	ledgerEm.find([acctid: acctid]).select("total:{SUM(amount-amtpaid-discount)}").where("amount-amtpaid-discount AND ((year*12)+month)<= :yrmon", [yrmon: ym] ).val();
+		if(a==null) a = 0;
+		def b =	creditEm.find([acctid: acctid]).select("total:{SUM(dr-cr)}").where("amount-amtpaid-discount  AND ((year*12)+month)<= :yrmon", [yrmon: ym] ).val();
+		if(b==null) b = 0;
+
+		result.balanceforward = a - b;
+
+		//calculate the checksum; theoretically this should be equal with bal forward
+		def c = ledgerEm.find( [billid: billid] ).select("total:{SUM(amount)}").val();
+		if(c==null) c = 0;
+		def d = pmtEm.find( [billid: billid ] ).select("total:{SUM(amount)}").val();
+		result.checksum = prevBalForward + c - d;
+		if( result.balanceforward == result.checksum ) {
+			result.status = "OK";
+		}
+		else 
+			result.status = "Err: amount does not balance : "+result.balanceforward + " checksum:"+result.checksum;
+		return result;
+	}
+
+
+	@ProxyMethod
+	public def create( def o ) {
+		if(!o.acctid) throw new Exception("acctid is required in WaterworksBillService.create");
+		if(!o.period) throw new Exception("period is required in WaterworksBillService.create");
+		if(!o.acctinfoid) throw new Exception("acctinfoid is required in WaterworksBillService.create");
+
+		//optional
+		//o.state
+		//o.billno
+		//o.billdate
+		//o.remarks
+		//o.preparedby
+
+		//find the latest bill of the account
+		def bill = billEm.find( [acctid: o.acctid ] ).orderBy("year DESC, month DESC").where("state = 'OPEN' ").first();
+		closeBill(bill);		
+
+		def bal = getBalanceForward( bill );
+		if( bal.status != 'OK' ) {
+			throw new Exception(bal.status);
+		}
+
+		//after closing the bill create the new bill
+		def m = [:];
+		m.balanceforward = bal.balanceforward;
+		m.state = o.state;
+		if(!m.state) m.state = "OPEN";
+		m.acctid = o.acctid;
+		m.acctinfoid = o.acctinfoid;
+		m.period = o.period;		
+		m.batchid = o.batchid;
+		m.expirydate = o.period.billexpirydate;
+		m.billdate = o.billdate;
+		if(!m.billdate) m.billdate = o.period.billdate;
+		m.billno = o.billno;
+		if(!m.billno) {
+			def pattern = var.waterworks_billno_format;
+			if(!pattern) throw new Exception("Please specify waterworks_billno_format in sys_var");
+			m.billno = controlNoSvc.getNextNo(pattern);
+		}
+		m.remarks = o.remarks;
+		m.preparedby = o.preparedby;
+		if( !m.preparedby ) {
+			m.preparedby = [objid:env.USERID, name: env.FULLNAME];
+		}
+		m = billEm.create( m );
+		updateBill( m );
+		return bill;
+	}
+
+
+
+	
+} 

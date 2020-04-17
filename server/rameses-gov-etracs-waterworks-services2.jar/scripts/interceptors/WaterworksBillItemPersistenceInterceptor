@@ -1,0 +1,29 @@
+import com.rameses.annotations.*;
+import java.rmi.server.UID;
+
+class WaterworksBillItemPersistenceInterceptor{
+	
+	@DataContext("waterworks_billitem")
+	def billItemEm; 
+
+	/**
+	* we have to determine if this is current. If not current then 
+	* we have to update the balance forward. whether we create, update or delete
+	*/
+	@Before(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_billitem'}")
+	public void beforeCreate( evt ) {
+		def o = evt.args[0];	
+		if(o.parentrefid == null ) {
+			o.parentrefid = o.acctid;	
+		}
+	} 
+
+	@Before(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_billitem'}")
+	public void beforeRemove( evt ) {
+		def o = evt.args[0];	
+		def e = billItemEm.find( [objid: o.objid] ).first(); 
+		if( e.billed > 0  ) 
+			throw new Exception( "This entry cannot be removed. It is already billed");
+	} 
+
+}

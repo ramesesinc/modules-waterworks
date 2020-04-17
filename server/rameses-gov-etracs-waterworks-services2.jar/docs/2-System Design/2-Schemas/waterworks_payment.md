@@ -10,11 +10,7 @@ Short Notes:
 Fields
 | Field    |Type	|Required | Description| 	
 |---	   |:---	|:--	  |:----| 
-| objid    |String	|Y        |The primary key										|
+| objid    |String	|Yes      |The primary key|
+| reftype  |String	|Yes      |Values: cashreceipt,credit,promissory|
 
-
-Fields
-| Field    |Type	| Description   										| 	
-|---	   |:---	|:------------------------------------------------------| 
-| objid    |String	|The primary key										|
 
