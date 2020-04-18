@@ -15,10 +15,13 @@ class WaterworksBillingRuleService {
 	@DataContext("waterworks_billitem")
 	def billItemEm;
 
+	@DataContext("waterworks_recurringfee")
+	def recurFeeEm;
+
  	@DataContext("waterworks_itemaccount")
 	def itemAcctEm;
 
-	private def buildFacts( def o, def billitems ) {
+	private def buildFacts( def o, def billitems, def recurItems) {
 		def acct = o.account;
 		def bill = o.bill;
 
@@ -44,6 +47,11 @@ class WaterworksBillingRuleService {
 			wbi.principal = it.amount;
 			facts << wbi;	
 		}
+		if(recurItems) {
+			recurItems.each {
+				facts << new WaterBillRecurringFee( it );
+			}
+		}
 		def factBuilder = new FactBuilder();
 		factBuilder.facts = facts;
 		return factBuilder;
@@ -62,7 +70,9 @@ class WaterworksBillingRuleService {
 		//for current include all items for the bill whether paid or unpaid. This must be included so we can determine if we need to charge or not. avoid duplicates.
 		def currItems = billItemEm.find( [billid:bill.objid] ).list();
 
-		def fb = buildFacts( o, (pastItems + currItems) );
+		def recurItems = recurFeeEm.find( [acctid: acct.objid] ).where("state='ACTIVE' AND (amount-amtbilled) > 0").list();
+
+		def fb = buildFacts( o, (pastItems + currItems), recurItems );
 		def req = [rulename:'waterworksbilling'];
 		req.factBuilder = fb;
 		req.params = [objid:bill.objid];
@@ -85,7 +95,7 @@ class WaterworksBillingRuleService {
 		def ym = (bill.period.year*12)+bill.period.month;
 
 		def bitems = billItemEm.find( [acctid: acct.objid ] ).where("(amount-amtpaid-discount) > 0 AND ((year*12)+month) <= :yearmonth", [yearmonth: ym]).list();		
-		def fb = buildFacts( o, bitems );
+		def fb = buildFacts( o, bitems, null );
 
 		def req = [rulename:'waterworkspayment'];
 		req.factBuilder = fb;

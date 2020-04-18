@@ -67,13 +67,13 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
         xButton15 = new com.rameses.rcp.control.XButton();
         pnlCurrentItem = new com.rameses.rcp.control.XPanel();
         jPanel2 = new javax.swing.JPanel();
+        xDataTable3 = new com.rameses.rcp.control.XDataTable();
         jPanel6 = new javax.swing.JPanel();
         xButton1 = new com.rameses.rcp.control.XButton();
         xButton2 = new com.rameses.rcp.control.XButton();
         xButton3 = new com.rameses.rcp.control.XButton();
         xButton9 = new com.rameses.rcp.control.XButton();
         xButton10 = new com.rameses.rcp.control.XButton();
-        xDataTable3 = new com.rameses.rcp.control.XDataTable();
         pnlPayment = new com.rameses.rcp.control.XPanel();
         xDataTable4 = new com.rameses.rcp.control.XDataTable();
         xLabel23 = new com.rameses.rcp.control.XLabel();
@@ -487,28 +487,7 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
         jPanel4.add(pnlConsumption, "card7");
 
         pnlCurrentItem.setVisibleWhen("#{ entity.step == 3 }");
-
-        jPanel6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        xButton1.setName("addItem"); // NOI18N
-        xButton1.setText("Add Item");
-        jPanel6.add(xButton1);
-
-        xButton2.setName("openItem"); // NOI18N
-        xButton2.setText("Open Item");
-        jPanel6.add(xButton2);
-
-        xButton3.setName("removeItem"); // NOI18N
-        xButton3.setText("Remove Item");
-        jPanel6.add(xButton3);
-
-        xButton9.setName("runOtherFeeRules"); // NOI18N
-        xButton9.setText("Run Other Fee Rules");
-        jPanel6.add(xButton9);
-
-        xButton10.setName("runSurchargeRules"); // NOI18N
-        xButton10.setText("Run Surcharge Rules");
-        jPanel6.add(xButton10);
+        pnlCurrentItem.setLayout(new java.awt.BorderLayout());
 
         xDataTable3.setHandler("listHandler");
         xDataTable3.setItems("");
@@ -519,8 +498,8 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
                 new Object[]{"name", "item.objid"}
                 , new Object[]{"caption", "Item Code"}
                 , new Object[]{"width", 100}
-                , new Object[]{"minWidth", 100}
-                , new Object[]{"maxWidth", 100}
+                , new Object[]{"minWidth", 120}
+                , new Object[]{"maxWidth", 0}
                 , new Object[]{"required", false}
                 , new Object[]{"resizable", true}
                 , new Object[]{"nullWhenEmpty", true}
@@ -534,8 +513,8 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
                 new Object[]{"name", "item.title"}
                 , new Object[]{"caption", "Title"}
                 , new Object[]{"width", 150}
-                , new Object[]{"minWidth", 150}
-                , new Object[]{"maxWidth", 200}
+                , new Object[]{"minWidth", 200}
+                , new Object[]{"maxWidth", 0}
                 , new Object[]{"required", false}
                 , new Object[]{"resizable", true}
                 , new Object[]{"nullWhenEmpty", true}
@@ -612,38 +591,43 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(xDataTable3, javax.swing.GroupLayout.DEFAULT_SIZE, 894, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(xDataTable3, javax.swing.GroupLayout.PREFERRED_SIZE, 894, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(xDataTable3, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(153, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout pnlCurrentItemLayout = new javax.swing.GroupLayout(pnlCurrentItem);
-        pnlCurrentItem.setLayout(pnlCurrentItemLayout);
-        pnlCurrentItemLayout.setHorizontalGroup(
-            pnlCurrentItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCurrentItemLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pnlCurrentItemLayout.setVerticalGroup(
-            pnlCurrentItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCurrentItemLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        pnlCurrentItem.add(jPanel2, java.awt.BorderLayout.CENTER);
+
+        jPanel6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        xButton1.setName("addItem"); // NOI18N
+        xButton1.setText("Add Item");
+        jPanel6.add(xButton1);
+
+        xButton2.setName("openItem"); // NOI18N
+        xButton2.setText("Open Item");
+        jPanel6.add(xButton2);
+
+        xButton3.setName("removeItem"); // NOI18N
+        xButton3.setText("Remove Item");
+        jPanel6.add(xButton3);
+
+        xButton9.setName("updateBillFees"); // NOI18N
+        xButton9.setText("Run Billing Fees");
+        jPanel6.add(xButton9);
+
+        xButton10.setName("addConsumptionBill"); // NOI18N
+        xButton10.setText("Add Consumption Bill");
+        jPanel6.add(xButton10);
+
+        pnlCurrentItem.add(jPanel6, java.awt.BorderLayout.PAGE_START);
 
         jPanel4.add(pnlCurrentItem, "card8");
 

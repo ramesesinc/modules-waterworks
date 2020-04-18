@@ -10,6 +10,7 @@ public class WaterBillItem extends BillItem {
 
 	def objid;
 	def parentrefid;
+	def recurringfeeid;
 
 	public WaterBillItem(def o) {
 		super(o);
@@ -23,6 +24,7 @@ public class WaterBillItem extends BillItem {
 		if(objid) m.objid = objid;
 		if(parentrefid) m.parentrefid = parentrefid;
 		m.monthname = getMonthname();
+		if( recurringfeeid ) m.recurringfeeid = recurringfeeid;
 		return m;
 	}	
 

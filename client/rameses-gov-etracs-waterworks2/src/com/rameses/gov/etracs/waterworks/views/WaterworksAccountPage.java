@@ -1040,7 +1040,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 new Object[]{"name", "item.objid"}
                 , new Object[]{"caption", "Item Code"}
                 , new Object[]{"width", 100}
-                , new Object[]{"minWidth", 100}
+                , new Object[]{"minWidth", 120}
                 , new Object[]{"maxWidth", 150}
                 , new Object[]{"required", false}
                 , new Object[]{"resizable", true}
@@ -1097,8 +1097,8 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "amtpaid"}
-                , new Object[]{"caption", "Amt Paid"}
+                new Object[]{"name", "amtbilled"}
+                , new Object[]{"caption", "Amt Billed"}
                 , new Object[]{"width", 100}
                 , new Object[]{"minWidth", 100}
                 , new Object[]{"maxWidth", 100}
@@ -1140,8 +1140,24 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 , new Object[]{"visibleWhen", null}
                 , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
+            }),
+            new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", "state"}
+                , new Object[]{"caption", "Status"}
+                , new Object[]{"width", 80}
+                , new Object[]{"minWidth", 80}
+                , new Object[]{"maxWidth", 80}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
             })
         });
+        schemaList2.setCustomFilter("acctid = :objid");
         schemaList2.setQueryName("entityQry");
         schemaList2.setSchemaName("waterworks_recurringfee");
         schemaList2.setVisibleWhen("");

@@ -7,24 +7,22 @@ import treasury.facts.*;
 import com.rameses.osiris3.common.*;
 import waterworks.facts.*;
 
-//this is not applicable for surcharge and penalties.
-public class AddWaterBillItem implements RuleActionHandler {
+
+public class AddRecurringWaterBillItem implements RuleActionHandler {
 
 	public void execute(def params, def drools) {
 		if(!params.year) throw new Exception("Error AddWaterBillItem year is required");
 		if(!params.month) throw new Exception("Error AddWaterBillItem month is required");
-		if(!params.billcode) throw new Exception("Error AddWaterBillItem billcode is required");
+		if(!params.refitem) throw new Exception("Error AddWaterBillItem refitem is required");
+		if(!params.amount) throw new Exception("Error AddWaterBillItem amount is required");
 
 		def year = params.year;
 		def month = params.month;
-		def billcode = params.billcode.key;
-		def parentref = null;
+		def refitem = params.refitem;
+		def billcode = refitem.billcode;
 
-		double amt = 0;
-		def _amt = params.amount.eval();
-		if(_amt instanceof Number) {
-			amt = _amt.doubleValue();
-		}
+		//we already compute so that users will not decide how to do this.
+		def amt = params.amount.eval();
 		amt = NumberUtil.round(amt).doubleValue();	
 
 		def ct = RuleExecutionContext.getCurrentContext();
@@ -36,19 +34,13 @@ public class AddWaterBillItem implements RuleActionHandler {
 			bi.amount = amt;
 			bi.year = year;
 			bi.month = month;
+			bi.recurringfeeid = refitem.objid;
 			facts << bi;
 		}
 
 		def billitems = facts.findAll{ it instanceof WaterBillItem };
-		if( parentref == null ) {
-			if( !billitems.find{ it.year == year && it.month == month && it.billcode == billcode }  ) {
-				addItem();
-			}
-		}
-		else {
-			if( !billitems.find{ it.year == year && it.month == month && it.billcode == billcode && it.parentrefid == parentref.objid }  ) {
-				addItem();
-			}
+		if( !billitems.find{ it.year == year && it.month == month && it.billcode == billcode }  ) {
+			addItem();
 		}
 
 	}

@@ -6,6 +6,9 @@ class WaterworksBillItemPersistenceInterceptor{
 	@DataContext("waterworks_billitem")
 	def billItemEm; 
 
+	@DataContext("waterworks_recurringfee")
+	def recurFeeEm; 
+
 	/**
 	* we have to determine if this is current. If not current then 
 	* we have to update the balance forward. whether we create, update or delete
@@ -24,6 +27,17 @@ class WaterworksBillItemPersistenceInterceptor{
 		def e = billItemEm.find( [objid: o.objid] ).first(); 
 		if( e.billed > 0  ) 
 			throw new Exception( "This entry cannot be removed. It is already billed");
+
+		//if there is recurring fee, let it ride in the parameters so it can be evaluated efficiently	
+		if( e.recurringfeeid ) o.recurid = e.recurringfeeid;	
 	} 
+
+	@After(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_billitem' && args[0].recurid!=null }")
+	public void afterRemove( evt ) {
+		def o = evt.args[0];	
+		recurFeeEm.updateSingleAmtBilled( [billitemid: o.objid, recurringfeeid: o.recurid ] );
+	} 
+
+
 
 }

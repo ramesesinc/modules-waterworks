@@ -1,0 +1,26 @@
+import com.rameses.annotations.*;
+import java.rmi.server.*;
+import com.rameses.util.*;
+import com.rameses.functions.*;
+import java.text.*;
+
+class WaterworksMobileSupporService {
+
+	@ProxyMethod
+	public def getBatch( def o ) {
+		//returns batch
+	}
+
+	@ProxyMethod
+	public def getBatchItems( def o ) {
+		//returns batch
+	}
+
+	@ProxyMethod
+	public def uploadBatchItems( def o ) {
+		//returns batch
+	}
+
+
+
+}

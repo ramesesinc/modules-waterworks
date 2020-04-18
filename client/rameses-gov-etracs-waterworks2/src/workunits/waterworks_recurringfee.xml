@@ -7,6 +7,11 @@
     	 <invoker type="waterworks_recurringfee:open" 
             caption="Recurring Fee" action="open" target="popup" 
             formTitle="Bill Recurring Fee"/>
+
+         <invoker type="formActions" 
+            caption="Activate" action="activate"
+            visibleWhen="#{entity.state == 'DRAFT'}"/>
+
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksRecurringFeeModel" />
     <pages>

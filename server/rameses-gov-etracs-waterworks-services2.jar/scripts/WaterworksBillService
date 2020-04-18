@@ -41,6 +41,12 @@ class WaterworksBillService {
 	@DataContext("waterworks_credit")
 	def creditEm;
 
+	@DataContext("waterworks_recurringfee")
+	def recurFeeEm;
+
+	@DataContext("waterworks_consumption")
+	def consumptionEm;
+
 	def getNextValidityDate(def period, def txndate ) {
 		if(!txndate) txndate = dateSvc.getBasicServerDate();
 		if( txndate.before( period.billdate ) ) {
@@ -142,13 +148,41 @@ class WaterworksBillService {
 	}
 
 	@ProxyMethod
-	public void updateOtherFees( def o ) {
-		if(! o.objid ) throw new Exception("objid of bill is required in WaterworksBillService.updateOtherFees");
+	public def addConsumptionBill(def o) {
+		if(! o.objid ) throw new Exception("objid of bill is required in WaterworksBillService.addConsumptionBill");	
+		def cons = consumptionEm.find( [billid: o.objid ] ).first(); 
+		if(!cons) throw new Exception("There is no consumption made yet for this bill");
+		if(!cons.amount) throw new Exception("There is no amount computed yet for this consumption. Run calculate first in consumption");
+		if(cons.hold == 1) throw new Exception("This consumption is on hold. Please check consumption first");
+
+		def bill = vwBillEm.find( [objid: o.objid] ).first();
+		def m = [:];
+		m.acctid = bill.acctid;
+		m.billid = bill.objid;
+		m.item = [objid: "WATER_SALES"];
+		m.amount = cons.amount;
+		m.amtpaid = 0;
+		m.discount = 0;
+		m.year = bill.period.year;
+		m.month = bill.period.month;
+		m.txndate = bill.period.billdate;	
+		m.system = 1;
+		m.billed = 0;
+		m.parentrefid = bill.objid;
+		billItemEm.create( m );
+	}
+
+
+	@ProxyMethod
+	public void updateBillFees( def o ) {
+		if(! o.objid ) throw new Exception("objid of bill is required in WaterworksBillService.updateBillFees");
 		def bill = vwBillEm.find( [objid: o.objid] ).first();
 
 		def pp = [:];
 		pp.account = vwAcctEm.find( [objid: bill.acctid ]).first();
 		pp.bill = bill;
+
+		//throw new Exception("txndate is " + o.txndate );
 
 		def res = ruleSvc.getBillItems( pp );
 		//add item
@@ -169,8 +203,14 @@ class WaterworksBillService {
 			if(it.parentrefid == null ) {
 				m.parentrefid = bill.objid;
 			};
+			if( it.recurringfeeid ) {
+				m.recurringfeeid = it.recurringfeeid;
+			}
 			billItemEm.create( m );
 		}
+
+		//also update amount billed for all waterworks_recurring. We will include billid so it will not update other recurring fees not included in bill
+		recurFeeEm.updateAmtBilled( [acctid: bill.acctid, billid: bill.objid ] );
 	}
 
 

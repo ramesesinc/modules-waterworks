@@ -41,6 +41,7 @@ public class WaterworksRecurringFeePage extends javax.swing.JPanel {
         xDecimalField4 = new com.rameses.rcp.control.XDecimalField();
         xIntegerField2 = new com.rameses.rcp.control.XIntegerField();
         monthList1 = new com.rameses.enterprise.components.MonthList();
+        xDecimalField5 = new com.rameses.rcp.control.XDecimalField();
         xIntegerField1 = new com.rameses.rcp.control.XIntegerField();
         xDecimalField2 = new com.rameses.rcp.control.XDecimalField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -73,23 +74,37 @@ public class WaterworksRecurringFeePage extends javax.swing.JPanel {
         xDecimalField1.setName("entity.amount"); // NOI18N
         xFormPanel1.add(xDecimalField1);
 
-        xDecimalField3.setCaption("Amt Paid");
-        xDecimalField3.setName("entity.amtpaid"); // NOI18N
+        xDecimalField3.setCaption("Amt Billed");
+        xDecimalField3.setDisableWhen("#{ true }");
+        xDecimalField3.setEditable(false);
+        xDecimalField3.setName("entity.amtbilled"); // NOI18N
+        xDecimalField3.setBackground(new java.awt.Color(204, 204, 204));
+        xDecimalField3.setEnabled(false);
         xFormPanel1.add(xDecimalField3);
 
         xDecimalField4.setCaption("Balance");
         xDecimalField4.setDisableWhen("#{ true }");
+        xDecimalField4.setEditable(false);
         xDecimalField4.setName("entity.balance"); // NOI18N
+        xDecimalField4.setBackground(new java.awt.Color(204, 204, 204));
+        xDecimalField4.setEnabled(false);
         xFormPanel1.add(xDecimalField4);
 
-        xIntegerField2.setCaption("Start Year");
+        xIntegerField2.setCaption("Start on Bill Year");
         xIntegerField2.setName("entity.startyear"); // NOI18N
         xIntegerField2.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xFormPanel1.add(xIntegerField2);
 
-        monthList1.setCaption("Start Month");
+        monthList1.setCaption("Start on Bill Month");
         monthList1.setName("entity.startmonth"); // NOI18N
         xFormPanel1.add(monthList1);
+
+        xDecimalField5.setCaption("Principal");
+        xDecimalField5.setDepends(new String[] {"entity.type"});
+        xDecimalField5.setName("entity.principal"); // NOI18N
+        xDecimalField5.setVisibleWhen("#{ entity.type == 'installment' }");
+        xDecimalField5.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xFormPanel1.add(xDecimalField5);
 
         xIntegerField1.setCaption("Term");
         xIntegerField1.setDepends(new String[] {"entity.type"});
@@ -100,7 +115,6 @@ public class WaterworksRecurringFeePage extends javax.swing.JPanel {
         xDecimalField2.setCaption("Installment Amount");
         xDecimalField2.setDepends(new String[] {"entity.type"});
         xDecimalField2.setName("entity.installmentamount"); // NOI18N
-        xDecimalField2.setText("entity.installmentamount");
         xDecimalField2.setVisibleWhen("#{ entity.type == 'installment' }");
         xFormPanel1.add(xDecimalField2);
 
@@ -230,6 +244,7 @@ public class WaterworksRecurringFeePage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XDecimalField xDecimalField2;
     private com.rameses.rcp.control.XDecimalField xDecimalField3;
     private com.rameses.rcp.control.XDecimalField xDecimalField4;
+    private com.rameses.rcp.control.XDecimalField xDecimalField5;
     private com.rameses.rcp.control.XFormPanel xFormPanel1;
     private com.rameses.rcp.control.XIntegerField xIntegerField1;
     private com.rameses.rcp.control.XIntegerField xIntegerField2;

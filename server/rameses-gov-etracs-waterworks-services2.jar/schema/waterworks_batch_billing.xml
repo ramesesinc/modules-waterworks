@@ -19,10 +19,6 @@
 		<field name="reader_name" caption="Reader" required="true"/>
 		<field name="readingdate" caption="ReadingDate"/>
 
-		<field name="year" caption="Year"/>
-		<field name="month" />
-		<field name="monthname"  expr="MONTH_ARRAY( month )" caption="Month" />
-
 		<complex name="period" ref="waterworks_billing_period" jointype="many-to-one" required="true">
 			<key field="periodid" target="objid"/>
 		</complex>

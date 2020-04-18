@@ -15,38 +15,55 @@ public class WaterworksRecurringFeeModel extends CrudFormModel {
 
     void afterCreate() {
         entity.amount = 0;
-        entity.amtpaid = 0;
+        entity.amtbilled = 0;
         entity.balance = 0;
+        entity.principal = 0;
         entity.term = 0;
+        entity.acctid = caller.entity.objid;
+        entity.state = "DRAFT";
+    }
+
+     boolean isEditAllowed() {
+        if( entity.state != "DRAFT" ) {
+            return false;
+        }
+        return super.isEditAllowed();
     }
 
     def getEntityQry() {
         return [objid: entity.objid];
     }
 
-    void calcInstallmentAmt(term) {
-    	if( !term ) return;
-    	entity.installmentamount = Math.round( ((entity.amount-entity.amtpaid) * 100)/ term  )/100;
-    }
-
+    
     @PropertyChangeListener
     def listener = [
     	"entity.type" : { o->
     		if(o != "installment") {
     			entity.term = 0;
-    			entity.installmentamount = 0;    				
+    			entity.installmentamount = 0;   
+                entity.principal = entity.amount; 				
     		}		
     	},
-    	"entity.term" : { term->
-    		calcInstallmentAmt(term);
+    	"entity.(principal|term)" : { o->
+    		if(!entity.term ) return;
+            if(!entity.principal) return;
+            entity.installmentamount = Math.round( (entity.principal * 100)/ entity.term  )/100;
     		binding.refresh("entity.installmentamount");
     	},
-    	"entity.(amount|amtpaid)" : { amt ->
-    		entity.balance = entity.amount - entity.amtpaid;
-    		calcInstallmentAmt(entity.term);
-    		binding.refresh("entity.(installmentamount|balance)");
+    	"entity.(amount|amtbilled)" : { amt ->
+    		entity.balance = entity.amount - entity.amtbilled;
+    		binding.refresh("entity.balance");
     	}   	
-    ]
+    ];
+
+    void activate() {
+        if(!MsgBox.confirm("You are about to activate this item. Updates cannot be made once activated. Proceed?")) return;
+        def m = [_schemaname: schemaName];
+        m.findBy = [objid: entity.objid ];
+        m.state = "ACTIVE";
+        persistenceService.update( m );
+        entity.state = "ACTIVE";   
+    }
 
 
 }

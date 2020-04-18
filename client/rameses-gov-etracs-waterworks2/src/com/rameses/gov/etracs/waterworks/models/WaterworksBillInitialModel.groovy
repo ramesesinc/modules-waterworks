@@ -266,15 +266,23 @@ public class WaterworksBillInitialModel extends CrudFormModel {
     }
 
     //rules for calculating other fees
-    void runOtherFeeRules() {
-        billSvc.updateOtherFees( [objid: entity.objid ]);
+    void updateBillFees() {
+        def dtxn = null;
+        def h = { o->
+            dtxn = o;
+        }
+        Modal.show( "date:prompt", [title: "Enter Txn Date", handler: h ] );
+        if(!dtxn) return;
+        billSvc.updateBillFees( [objid: entity.objid, txndate: dtxn ]);
         updateItemList();
     }
     
-    void runSurchargeRules() {
-        MsgBox.alert("fire other fee rules")            
+    void addConsumptionBill() {
+        if( !MsgBox.confirm("Please make sure that there are no entries yet with item WATER_SALES. Proceed?")) return;
+        billSvc.addConsumptionBill( [objid: entity.objid ]);
+        updateItemList();
     }
-    
+
     /****
      * Payments
      * ****/
