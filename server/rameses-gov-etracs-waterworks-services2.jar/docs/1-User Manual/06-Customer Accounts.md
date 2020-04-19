@@ -96,9 +96,13 @@ It also shows buttons on the form the `Approve` and `Generate Bill` Button. The 
 
 
 ## Approving an Account ##
-Transactions can only be carried for accounts that are __active__. A customer account can be activated by clicking on the `Approve` button. Once approved, the account will be ready for transactions and information of the account cannot be edited anymore. To approve an account the first bill must be generated. Further changes must be through transactions and this is discussed in the *Change Request* section. 
+Transactions can only be carried for accounts that are __active__. A customer account can be activated by clicking on the `Approve` button. Once approved, the account will be ready for transactions and information of the account cannot be edited anymore. 
 
-Before approving an account you must build the ledger and generate an initial billing. This is discussed to the next section.  
+If this is an entirely new account that has not been billed yet, you do not need to create the initial bill. However take note of the Group Bill and Period because that will be the bill period when creating this bill. Click on Approve and a message will ask you to confirm. 
+
+To approve an account the first bill must be generated. Further changes must be through transactions and this is discussed in the *Change Request* section. 
+
+Before approving an account you must generate an initial billing. This is discussed to the next section.  
 
 
 [homelink]: ./images/custacct/homelink.png

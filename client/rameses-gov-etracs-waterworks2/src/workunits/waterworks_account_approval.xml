@@ -1,0 +1,15 @@
+<workunit>
+
+    <invokers>
+        <invoker type="vw_waterworks_account:form:formActions" caption="Approve Account"
+            role="APPROVER" target="popup" 
+            visibleWhen="#{ entity.state =='DRAFT' &amp;&amp; mode=='read' }"/>
+    </invokers>
+    
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksAccountApprovalModel" />    
+
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksAccountApprovalPage"/>
+    </pages>    
+    
+</workunit>

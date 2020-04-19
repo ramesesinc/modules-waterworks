@@ -51,12 +51,12 @@ billid</panel_attributes>
     <coordinates>
       <x>90</x>
       <y>130</y>
-      <w>280</w>
+      <w>260</w>
       <h>240</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 billid</panel_attributes>
-    <additional_attributes>260;30;120;110;30;220</additional_attributes>
+    <additional_attributes>240;30;110;100;30;220</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
@@ -623,7 +623,7 @@ acctid</panel_attributes>
       <w>180</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>waterworks_promissory</panel_attributes>
+    <panel_attributes>waterworks_compromise</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -634,7 +634,7 @@ acctid</panel_attributes>
       <w>210</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>waterworks_promissory_item</panel_attributes>
+    <panel_attributes>waterworks_compromise_item</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -684,5 +684,17 @@ acctid</panel_attributes>
     <panel_attributes>lt=&lt;.
 refid</panel_attributes>
     <additional_attributes>160;70;160;50;30;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>120</x>
+      <y>130</y>
+      <w>240</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+consumptionid</panel_attributes>
+    <additional_attributes>220;30;30;220</additional_attributes>
   </element>
 </diagram>

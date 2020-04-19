@@ -24,6 +24,9 @@ class WaterworksBillPersistenceInterceptor{
 	@DataContext("waterworks_credit")
 	def creditEm;
 
+	@DataContext("waterworks_bill")
+	def billEm;
+
 	@DataContext("waterworks_billitem")
 	def billItemEm;
 
@@ -35,14 +38,19 @@ class WaterworksBillPersistenceInterceptor{
 		def o  = evt.args[0];
 		if(!o.acctid) throw new Exception("acctid is required");
 
+		def acct = vwAcctEm.find( [objid: o.acctid ] ).first();
+
+		//check first the bill year and month should not be greater than the group billing period
+		if( !acct.subarea.period?.year ) throw new Exception("Please assign first billing period in subarea");
+		def ym1 = (acct.subarea.period.year *12 ) + acct.subarea.period.month;
+		def ym2 = (o.year*12)+o.month;
+		if(ym2 > ym1) throw new Exception("Bill year and month must not be greater than the subarea billing period");
+
 		if(!o.billno) {
 			def pattern = var.waterworks_billno_format;
 			if(!pattern) throw new Exception("Please specify waterworks_billno_format in sys_var");
 			o.billno = controlNoSvc.getNextNo(pattern);
 		};
-
-		//find schedule group
-		def acct = vwAcctEm.find( [objid: o.acctid ] ).first();
 
 		o.acctinfoid = acct.acctinfoid;
 		o.period = skedSvc.getSchedule( [scheduleid: acct.subarea.schedulegroupid, year: o.year, month: o.month ]  );
@@ -89,14 +97,9 @@ class WaterworksBillPersistenceInterceptor{
 		def o  = evt.args[0];
 		//update first remove
 		acctEm.find([billid: o.objid]).update([billid:"{NULL}"]);
-		billItemEm.find([billid: o.objid] ).delete();
-		consumptionEm.find( [billid:o.objid]).delete();
+		billEm.find( [objid: o.objid] ).update( [consumptionid: "{NULL}"]);
+		consumptionEm.find( [billid: o.objid]).delete();
 		creditEm.find([billid: o.objid]).delete();
-	}
-
-	@After(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_bill'}")
-	public void afterRemove(def evt) {
-		def o  = evt.result;
 	}
 
 	@After(pattern="PersistenceService.read", eval="#{args[0]._schemaname == 'vw_waterworks_bill'}")

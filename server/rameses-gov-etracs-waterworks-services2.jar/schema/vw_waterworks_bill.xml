@@ -48,7 +48,7 @@
 		<field name="period_monthname" expr="MONTH_ARRAY(period.month)" />
 
 		<complex name="consumption" ref="vw_waterworks_bill_consumption" jointype="many-to-one" required="false">
-			<key field="objid" target="billid"/> 
+			<key field="consumptionid" target="objid"/> 
 		</complex>
 
 		<field name="remarks" /> 	

@@ -9,9 +9,6 @@ import java.text.*;
 
 public class WaterworksAccountModel extends CrudFormModel {
     
-    @Service("WaterworksAccountService")
-    def acctSvc;
-    
     def dateFormatter = new java.text.SimpleDateFormat('yyyy-MM-dd'); 
     
     def meterStates = ["ACTIVE","DISCONNECTED","DEFECTIVE"];
@@ -108,29 +105,6 @@ public class WaterworksAccountModel extends CrudFormModel {
         p.query = [refid: ledgerList.selectedItem?.item.objid];
         return Inv.lookupOpener("waterworks_payment_item:list", p );
     }
-    /************************************************************************
-    * RELATED TO LEDGER
-    *************************************************************************/
-    def consumptionList;
-    def addConsumptionEntry() {
-        def s = { o->
-            consumptionList.reload();
-        }
-        return Inv.lookupOpener("waterworks_consumption:create", [onSaveHandler:s] );
-    }
-    
-    void approve() {
-        if(!MsgBox.confirm("You are about to approve this account. The data cannot be edited anymore. Proceed?")) return;
-        acctSvc.approve( [acctid: entity.objid ] );
-        MsgBox.alert("Account successfully approved");
-    }
-    
-    void deactivate() {
-        acctSvc.deactivate( [acctid: entity.objid ] );
-    }
-    
-    def viewStatement() {
-        MsgBox.alert("show statement");
-    }
+
     
 }

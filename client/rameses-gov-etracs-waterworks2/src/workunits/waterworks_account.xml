@@ -17,13 +17,8 @@
             <action role="SHARED" allowEdit="false" allowCreate="false"/> 
         </invoker>     
         
-        <invoker type="formActions" action="approve" caption="Approve" 
-                 role="APPROVER"
-                 visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; mode=='read' }" /> 
-                 
-       
         <!-- subitem actions -->
-        <invoker type="consumptionActions" action="addConsumptionEntry" caption="Add Consumption Entry" visibleWhen="#{entity.state=='DRAFT'}"/>
+        
         <invoker type="ledgerActions" action="viewLedgerPayment" caption="View Payment Details" />
                
     </invokers>

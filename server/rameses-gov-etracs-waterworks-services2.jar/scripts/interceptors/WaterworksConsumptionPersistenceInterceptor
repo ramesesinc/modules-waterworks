@@ -2,33 +2,50 @@ import com.rameses.annotations.*;
 import java.rmi.server.*;
 
 class WaterworksConsumptionPersistenceInterceptor{
-	
-	@DataContext('waterworks_billitem') 
-	def billItemEm;
 
-	@DataContext('waterworks_itemaccount') 
-	def acctEm;
+	@DataContext('waterworks_consumption') 
+	def consumptionEm;
 
-	@Before(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_consumption'  }")
+	@DataContext('vw_waterworks_bill') 
+	def vwBillEm;
+
+	@DataContext('waterworks_bill') 
+	def billEm;
+
+	@Before(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_consumption' }")
+	public void beforeCreate(def evt) {
+		def o = evt.args[0];
+		//create consumption. get the activebill and let it ride in the parameter
+		if( o.billid ) {
+			def activeBill = vwBillEm.find( [objid: o.billid] ).where( "period.year =:y AND period.month = :m", [y:o.year, m:o.month] ).first();
+			o.activebill = activeBill;
+		}
+	}
+
+	@After(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_consumption' && args[0].activebill!=null }")
+	public void afterCreate(def evt) {
+		def o = evt.args[0];
+		def res = evt.result;
+		billEm.find( [objid: o.activebill.objid ] ).update( [consumptionid: res.objid ] );
+	}
+
+	@Before(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_consumption' && args[0].objid!=null }")
 	public void beforeRemove(def evt) {
 		def o = evt.args[0];
-		if( o.billed == 1) throw new Exception("Cannot remove this entry because this is already billed");
-		def m = billItemEm.find( [consumptionid: o.objid ]).first();
-		if( m ) {
-			billItemEm.find( [objid: m.objid] ).delete();
+
+		//check first if the consumption has a billid
+		def c = consumptionEm.find( [objid: o.objid ] ).first();
+		if( c.billed == 1) throw new Exception("Cannot remove this entry because this is already billed");
+
+		/***
+		* If a consumption has a billid, you cant delete it unless it is inside the bill
+		* the o.billid is a flag sent in the initial bill when deleting
+		****/
+		if( c.billid ) {
+			if( !o.activebillid ) throw new Exception("This consumption cannot be deleted outside the bill");   
 		}
 	}
 
-	@After(pattern="PersistenceService.read", eval="#{args[0]._schemaname == 'waterworks_consumption'}")
-	public void afterRead(def evt) {
-		def result = evt.result;
-		def m = billItemEm.find( [consumptionid: result.objid ]).first();
-		if(m) {
-			o.amount = o.amount;
-			o.amtpaid = o.amtpaid;
-			o.discount = o.discount;
-		}
-	}
 
 
 }

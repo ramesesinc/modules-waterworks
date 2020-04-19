@@ -1,0 +1,37 @@
+import com.rameses.annotations.*;
+
+
+/*************************************
+* this is for approving accounts
+**************************************/
+class WaterworksAccountService {
+
+    @DataContext('vw_waterworks_account') 
+    def vwAcctEm; 
+
+    @DataContext('waterworks_account') 
+    def acctEm; 
+
+    @Service("WaterworksBillService")
+    def billSvc;
+
+
+	@ProxyMethod 
+	public def approve( def o ) {
+        if(!o.acctid) throw new Exception("acctid is required in WaterworksAccountService.approve")
+        def acct = vwAcctEm.find( [objid: o.acctid ]).first();
+        if(acct.state!='DRAFT') throw new Exception("account must be in DRAFT state");
+        acctEm.find( [ objid: acct.objid ]).update( [state: "ACTIVE"] );
+	}
+
+    @ProxyMethod 
+    public def deactivate( def o ) {
+        if(!o.acctid) throw new Exception("acctid is required in WaterworksAccountService.deactivate")
+        def acct = vwAcctEm.find( [objid: o.acctid ]).first();
+        if(acct.state=='DRAFT') throw new Exception("account already in DRAFT state");
+        acctEm.find( [ objid: acct.objid ]).update( [state: "DRAFT"] );
+    }
+
+
+
+}

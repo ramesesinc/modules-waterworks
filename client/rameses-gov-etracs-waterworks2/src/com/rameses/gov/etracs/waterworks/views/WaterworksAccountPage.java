@@ -441,7 +441,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "prevreading"}
+                new Object[]{"name", "prev.reading"}
                 , new Object[]{"caption", "Prev.Read"}
                 , new Object[]{"width", 80}
                 , new Object[]{"minWidth", 80}
@@ -551,6 +551,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         schemaList5.setHandlerName("consumptionList");
         schemaList5.setOrderBy("year DESC, month DESC");
         schemaList5.setSchemaName("vw_waterworks_consumption");
+        schemaList5.setAllowDelete(true);
         schemaList5.setAllowOpen(false);
         xPanel6.add(schemaList5, java.awt.BorderLayout.CENTER);
 

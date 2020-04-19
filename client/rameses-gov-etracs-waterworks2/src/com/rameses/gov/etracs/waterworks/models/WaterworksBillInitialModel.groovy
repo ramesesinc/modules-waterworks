@@ -168,6 +168,8 @@ public class WaterworksBillInitialModel extends CrudFormModel {
         if(selectedConsumption.prevreading) throw new Exception("Cannot remove because there is previous reading");
         def m = [_schemaname: "waterworks_consumption"];
         m.objid = selectedConsumption.objid;
+        //this is added so we know this is deleted from the bill.
+        m.activebillid = entity.objid;
         persistenceService.removeEntity(m);
         updateConsumptionList();
     }
@@ -199,7 +201,7 @@ public class WaterworksBillInitialModel extends CrudFormModel {
         return Inv.lookupOpener("waterworks_consumption:open", p);
     }
     
-     /*********************************************
+    /*********************************************
     * Handling for current and previous items
     **********************************************/
     def itemList;
@@ -261,6 +263,9 @@ public class WaterworksBillInitialModel extends CrudFormModel {
         if(!selectedItem) throw new Exception("Please select item");
         def m = [_schemaname: "waterworks_billitem"];
         m.objid = selectedItem.objid;
+
+        //this is added so we know this is deleted from the bill.
+        m.billid = entity.objid;
         persistenceService.removeEntity(m);
         updateItemList();
     }

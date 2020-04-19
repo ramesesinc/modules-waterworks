@@ -27,6 +27,7 @@ public class WaterworksConsumptionModel extends CrudFormModel {
         entity.txnmode = "CAPTURE";
         if( bill ) {
             //check if current prev year must equal
+            entity.billid = bill.objid;
             entity.meter = bill.meter;
             entity.acctid = bill.acctid;
             if(current) {

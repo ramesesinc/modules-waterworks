@@ -1,7 +1,11 @@
 import com.rameses.annotations.*;
 import java.rmi.server.*;
 
-class WaterworksPromissoryService {
+/*****
+* 
+*
+*****/
+class WaterworksCompromiseService {
 	
 	@DataContext("waterworks_promissory")
 	def promissoryEm;

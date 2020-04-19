@@ -23,5 +23,6 @@
 		<field name="printed"  type="integer"/>
 
 		<field name="step"/>
+		<field name="consumptionid"/>
 	</element>
 </schema>
