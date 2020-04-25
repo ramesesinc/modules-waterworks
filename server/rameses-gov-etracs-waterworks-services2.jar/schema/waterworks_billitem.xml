@@ -9,9 +9,6 @@
 			<key field="itemid" target="objid" />
 		</complex>	
 
-		<!-- this is applicable to surcharge and interest that requires linking to its parent account -->
-		<field name="parentrefid" />
-
 		<field name="billid" />
 		<field name="particulars" />
 

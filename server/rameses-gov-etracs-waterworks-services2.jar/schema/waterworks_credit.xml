@@ -3,19 +3,15 @@
 		<field name="objid" primary="true" prefix="WCRED"/>
 
 		<!-- link to ledger account -->
-		<field name="billid" />
 		<field name="acctid" />
-		<field name="year" />		
-		<field name="month" />		
 
 		<field name="dr" required="true" type="decimal" caption="Dr"/>
 		<field name="cr" required="true" type="decimal" caption="Cr"/>
 		<field name="remarks" caption="Remarks"/>
 
-		<!-- link to either cashreceipt (overpayment and payment application) or billing (posting)-->
-		<field name="refno" />
-		<field name="refid" />		
-		<field name="reftype" />
-		<field name="refdate" type="date"/>
+		<complex name="paymentref" ref="waterworks_payment" jointype="many-to-one" required="false">
+			<key field="paymentrefid" target="objid" />
+		</complex>
+				
 	</element>
 </schema>

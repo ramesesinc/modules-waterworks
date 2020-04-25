@@ -19,8 +19,14 @@ public class WaterworksBillInitialModel extends CrudFormModel {
 
     @Service("WaterworksBillService")
     def billSvc;
+
+    @Service("WaterworksBillStatementService")
+    def statementSvc;
+
+    @Service("WaterworksPaymentService")
+    def pmtSvc;
     
-    def viewmode;
+    def viewmode = 'edit';
 
     def titles = [
         "Step 1. Setup Begin Balance",
@@ -33,6 +39,10 @@ public class WaterworksBillInitialModel extends CrudFormModel {
     String getSubtitle() {
         String period =  " -"+entity.period.monthname + " " +entity.period.year; 
         return titles[ entity.step - 1 ] + period;
+    }
+
+    int getYearMonth() {
+        return (entity.period.year *12)+entity.period.month;
     }
     
     void afterCreate() {
@@ -47,6 +57,7 @@ public class WaterworksBillInitialModel extends CrudFormModel {
         entity.initial = 1;
         entity.balanceforward = 0;
         entity.step = 0;
+        viewmode = 'initial';
     }
     
     void afterSave() {
@@ -60,13 +71,15 @@ public class WaterworksBillInitialModel extends CrudFormModel {
             throw new Exception("billid is not specified in account");
         entity = [objid: caller.entity.bill.objid ];
         open();
+        viewmode = 'edit';
         refreshView();
     }
     
     void refreshView() {
-        if(entity.step == 1) updateItemList();
-        else if(entity.step == 2) updateConsumptionList();
-        else if(entity.step == 3) updateItemList();
+        if(entity.step == 1) buildItemList();
+        else if(entity.step == 2) buildConsumptionList();
+        else if(entity.step == 3) buildItemList();
+        else if( entity.step == 4 ) updatePmtList();
     }
 
     public void updateStep( int s) {
@@ -78,13 +91,17 @@ public class WaterworksBillInitialModel extends CrudFormModel {
         entity.step = newstep;
     }
 
+    void viewSummary() {
+        buildDetails();
+        viewmode = "summary";
+    }
+
+    void viewEdit() {
+        viewmode = "edit";
+    }
+
     //submit will have different views depending on the viewmode
     void moveNextStep() {
-        if( entity.step == 1 ) {
-            if( entity.balanceforward != entity.balanceforwardcheck )  {
-                throw new Exception("Balance forward and total unpaid balance must equal ");
-            }
-        }
         updateStep(1);        
         refreshView();
     }
@@ -97,9 +114,15 @@ public class WaterworksBillInitialModel extends CrudFormModel {
     def cancelBill() {
         if(!MsgBox.confirm("This will cancel this bill. All data related to this bill will be lost. Proceed?")) return null;
         persistenceService.removeEntity( [_schemaname: "waterworks_bill", objid: entity.objid ] );
-        caller.entity.bill = entity;
+        caller.entity.bill = null;
         caller.reloadEntity();
         return "_close";
+    }
+
+    void updateTotals() {
+        def r = billSvc.getBillTotals( [objid: entity.objid ] );
+        entity.putAll( r );
+        binding.refresh();
     }
 
     /*********************************************
@@ -112,21 +135,43 @@ public class WaterworksBillInitialModel extends CrudFormModel {
         }
     ] as BasicListModel;
     
-    void updateDetails() {
-        def b = billSvc.getBillDetails([objid: entity.objid]);
-        entity.totalamount = b.totalamount;
+    void buildDetails() {
+        def b = statementSvc.getBillDetails([objid: entity.objid]);
         detailList = b.details;
         detailListHandler.reload();
     }
-    
-    private int getYearMonth() {
-        return (entity.period.year *12)+entity.period.month;
+
+    /*********************************************
+    * Adding credits
+    **********************************************/
+    public def addCredit() {
+        def h = { o->
+            def pmt = [_schemaname:"waterworks_payment"];
+            pmt.reftype = "beginbalance";
+            pmt.acctid = entity.acctid;
+            pmt.refno = entity.billno;
+            pmt.refdate = entity.period.fromdate;
+            pmt.amount = o;
+            persistenceService.create( pmt );
+            updateTotals();            
+            buildItemList();
+        }
+        return Inv.lookupOpener("decimal:prompt", [handler: h, title: "Enter beginning balance" ]);        
     }
-    
+
+    public void removeCredit() {
+        if(!MsgBox.confirm("You are about to remove the credit payment")) return;
+        def pmt = [_schemaname:"waterworks_payment"];
+        pmt.acctid = entity.acctid;
+        pmt.reftype = "beginbalance";
+        persistenceService.removeEntity( pmt );
+        updateTotals();        
+        buildItemList();
+    }
+
     /*********************************************
     * Consumptions List
     **********************************************/
-    def selectedConsumption;
     def consumptionList;
     def consumptionListHandler = [
         fetchList: { o->
@@ -134,71 +179,21 @@ public class WaterworksBillInitialModel extends CrudFormModel {
         }
     ] as BasicListModel;
     
-    void updateConsumptionList() {
+    void buildConsumptionList() {
         def m = [_schemaname: "waterworks_consumption"];
-        m.findBy = [acctid: entity.acctid];
-        m.where = ["((year*12)+month) < :yrmon AND meter.objid = :meterid", [yrmon: yearMonth, meterid: entity.meter?.objid]];
-        m.orderBy = "year DESC, month DESC"; 
+        m.findBy = [billid: entity.objid];
+        m.orderBy = "year, month"; 
         consumptionList = queryService.getList(m);
         consumptionListHandler.reload();
     }
-    def addPrevConsumption() {
-        def p = [:];
-        p.onSaveHandler = { o->
-            updateConsumptionList();
+   
+    def buildConsumption() {
+        def pp = [bill: entity, meter: entity.meter];
+        pp.defaultItems = consumptionList;
+        pp.handler = {
+            buildConsumptionList();
         }
-        if( consumptionList?.size() > 0 ) {
-            p.prev = consumptionList[0]; 
-        }
-        p.bill = entity;
-        return Inv.lookupOpener("waterworks_consumption:create", p);
-    }
-    def openPrevConsumption() {
-        if(!selectedConsumption) throw new Exception("Please select a consumption first");
-        def p = [:];
-        p.onSaveHandler = { o->
-            updateConsumptionList();
-        }
-        p.entity = selectedConsumption; 
-        p.bill = entity;
-        return Inv.lookupOpener("waterworks_consumption:open", p);
-    }
-    def removePrevConsumption() {
-        if(!selectedConsumption) throw new Exception("Please select a consumption first");
-        if(selectedConsumption.prevreading) throw new Exception("Cannot remove because there is previous reading");
-        def m = [_schemaname: "waterworks_consumption"];
-        m.objid = selectedConsumption.objid;
-        //this is added so we know this is deleted from the bill.
-        m.activebillid = entity.objid;
-        persistenceService.removeEntity(m);
-        updateConsumptionList();
-    }
-    def addCurrentConsumption() {
-        if(!consumptionList) throw new Exception("Please add a previous reading");
-        def prevReading = consumptionList[0];
-        def p = [:];
-        p.onSaveHandler = { o->
-            entity.consumption = o;
-            binding.refresh();
-        }
-        p.prev = prevReading; 
-        p.bill = entity;
-        p.current = true;
-        return Inv.lookupOpener("waterworks_consumption:create", p);
-    }
-    def editCurrentConsumption() {
-        if(!entity.consumption?.objid) throw new Exception("Please add consumption");
-        def p = [:];
-        p.onSaveHandler = { o->
-            entity.consumption = o;
-            binding.refresh("entity.consumption.*");
-        }
-        def prevReading = consumptionList[0];
-        p.prev = prevReading; 
-        p.bill = entity;
-        p.current = true;
-        p.entity = entity.consumption;
-        return Inv.lookupOpener("waterworks_consumption:open", p);
+        return Inv.lookupOpener( "waterworks_consumption_builder", pp );
     }
     
     /*********************************************
@@ -212,27 +207,28 @@ public class WaterworksBillInitialModel extends CrudFormModel {
         }
     ] as BasicListModel;
     
-    void updateItemList() {
-        def m = [_schemaname: "waterworks_billitem"];
+    void buildItemList() {
         if( entity.step ==1 ) {
-            m.findBy = [acctid: entity.acctid];
-            m.where = ["((year*12)+month) < :yrmon", [ yrmon: yearMonth ] ];
-            m.orderBy = "year DESC, month DESC";
+            itemList = [];            
+            if(entity.balanceforward < 0 ) {
+                itemList << [particulars: "Forward Credits", amount: entity.balanceforward ];
+            }
+            else {
+                def m = [_schemaname: "waterworks_billitem"];            
+                m.findBy = [acctid: entity.acctid];
+                m.where = ["((year*12)+month) < :yrmon", [ yrmon: yearMonth ] ];
+                m.orderBy = "year DESC, month DESC";
+                itemList = queryService.getList( m );
+                itemList.each {
+                    it.particulars = it.item.objid + " " + it.item.title;
+                }
+            }
         }
         else {
+            def m = [_schemaname: "waterworks_billitem"];
             m.findBy = [billid: entity.objid ];
             m.orderBy = "item.sortorder";
-        }
-        itemList = queryService.getList( m );  
-        def total = itemList.sum{ it.amount };
-        if(total==null) total = 0;
-        if( entity.step ==  1 ) {
-            entity.balanceforwardcheck = total;
-            binding?.refresh("entity.balanceforwardcheck");
-        }
-        else {
-            //entity.totalunpaiditems = (total + entity.balanceforwardcheck);
-            //binding.refresh("entity.totalunapiditems");            
+            itemList = queryService.getList( m );
         }
         listHandler.reload();
     }
@@ -240,7 +236,8 @@ public class WaterworksBillInitialModel extends CrudFormModel {
     def addItem() {
         def p = [:];
         p.onSaveHandler = { o->
-            updateItemList();
+            updateTotals();                        
+            buildItemList();
         }
         if(entity.step!=1) p.current = true;
         p.bill = entity;
@@ -251,7 +248,8 @@ public class WaterworksBillInitialModel extends CrudFormModel {
         if(!selectedItem) throw new Exception("Please select item");
         def p = [:];
         p.onSaveHandler = { o->
-            updateItemList();
+            updateTotals();
+            buildItemList();
         }
         if( entity.step!=1) p.current = true;
         p.bill = entity;
@@ -266,8 +264,12 @@ public class WaterworksBillInitialModel extends CrudFormModel {
 
         //this is added so we know this is deleted from the bill.
         m.billid = entity.objid;
+
+        //add this as a flag for the removeEntity interceptor
+        m.activebillid = entity.objid;
         persistenceService.removeEntity(m);
-        updateItemList();
+        updateTotals();         
+        buildItemList();
     }
 
     //rules for calculating other fees
@@ -279,40 +281,73 @@ public class WaterworksBillInitialModel extends CrudFormModel {
         Modal.show( "date:prompt", [title: "Enter Txn Date", handler: h ] );
         if(!dtxn) return;
         billSvc.updateBillFees( [objid: entity.objid, txndate: dtxn ]);
-        updateItemList();
+        updateTotals();        
+        buildItemList();
     }
     
     void addConsumptionBill() {
         if( !MsgBox.confirm("Please make sure that there are no entries yet with item WATER_SALES. Proceed?")) return;
         billSvc.addConsumptionBill( [objid: entity.objid ]);
-        updateItemList();
+        updateTotals();                
+        buildItemList();
     }
 
-    /****
+    /***************
      * Payments
-     * ****/
-    def selectedPayment;
+     * *************/
+    void applyCredits() {
+         //if both credits and unpaid are greater than zero apply payment until one of it becomes zero
+        if( entity.totalcredits == 0 || entity.totalunpaid == 0 ) 
+            throw new Exception("credits cannot be applied");
+        billSvc.applyCredits( [objid: entity.objid] );
+        updateTotals();            
+        updatePmtList();
+    }
+
     def addPayment() {
-        if(entity.totalunpaiditems > 0 && entity.totalcredits > 0 ) {
+        if( entity.totalcredits > 0 && entity.totalunpaid > 0 ) {
             throw new Exception("Please apply first all unapplied credits before proceeding")
         }
         def s  = { o->
-            pmtListHandler.reload();
+            updateTotals();            
+            updatePmtList();
         }
-        return Inv.lookupOpener("waterworks_payment:capture", [saveHandler:s])
-    }
-    def cancelPayment() {
-        if(!selectedPayment) throw new Exception("Please select a payment item first");
-        MsgBox.alert("cancel payment " + selectedPayment);
+        return Inv.lookupOpener("waterworks_payment:capture", [saveHandler:s, reftype: "cashreceipt"])
     }
     
+    def cancelPayment() {
+        if(!selectedPayment) throw new Exception("Please select a payment item first");
+        if(selectedPayment.reftype == "credit") {
+        } 
+        if(!MsgBox.confirm("You are about to cancel this payment. Proceed?")) return;
+        pmtSvc.cancelPayment([refid: selectedPayment.objid ]);
+        updateTotals();
+        updatePmtList();
+    }
+
+    def selectedPayment;
+    def pmtList;
+    void updatePmtList() {
+        def m = [_schemaname: "waterworks_payment"];
+        m.findBy = [billid: entity.objid];
+        pmtList = queryService.getList(m);
+        pmtListHandler.reload();
+    }
+
     def pmtListHandler = [
         fetchList: { o->
-            if( entity.objid == null ) return [];
-            def m = [_schemaname: "waterworks_payment"];
-            m.findBy = [billid: entity.objid];
-            return queryService.getList(m);
+            return pmtList;
         }
     ] as BasicListModel;
-   
+
+    def approve() {
+        if(!MsgBox.confirm("You are about to approve this bill. This will also active the account. Continue?")) return;
+        billSvc.approve( [objid: entity.objid ]);
+        entity.state ='POSTED';
+        caller.entity.state = 'ACTIVE';
+        caller.entity.billd = entity;
+        caller.reloadEntity();
+        return "_close";
+    }
+
 }

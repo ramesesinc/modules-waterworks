@@ -1,0 +1,90 @@
+import com.rameses.annotations.*;
+
+class WaterworksBillStatementService {
+
+	@DataContext("vw_waterworks_bill")
+	def vwBillEm;
+
+	@DataContext("waterworks_billitem")
+	def billItemEm;
+
+	@DataContext("waterworks_payment")
+	def pmtEm;
+
+
+	@ProxyMethod
+	public def getBillDetails( def o ) {
+		if(! o.objid ) throw new Exception("objid of bill is required in WaterworksBillService.getBillDetails");		
+		def bill = vwBillEm.find( [objid: o.objid] ).first();
+
+		def details = [];
+		def bal = [ particulars: "Balance Forward" ];
+		if( bill.balanceforward < 0 ) {
+			bal.dr = 0;
+			bal.cr = Math.abs( bill.balanceforward );
+		}
+		else {
+			bal.dr =bill.balanceforward;			
+			bal.cr = 0;			
+		};
+		bal.txndate = bill.period.todate;
+		bal.group = "Previous";
+		details <<  bal;
+
+		//include billitems 
+		def billItems = billItemEm.find( [billid: bill.objid, year: bill.period.year, month: bill.period.month ] ).orderBy("item.sortorder ASC").list();
+		billItems.each {
+			def m = [:];
+			m.particulars = it.item.title;
+			if( it.particulars  ) m.particulars += "("+it.particulars+")";
+			m.txndate = it.txndate;
+			if(!m.txndate) m.txndate = bill.period.billdate;
+			m.dr = it.amount;
+			m.cr = 0;
+			m.group = "Current";
+			details << m;
+		}
+
+		details = details.sort{ it.txndate };
+
+		//do not include non cash receipt payments
+		def pmtItems = pmtEm.find( [billid: bill.objid ] ).where("voided = 0 ").list();
+		pmtItems.each {
+			if(it.reftype == "cashreceipt") {
+				def m = [:];
+				m.txndate = it.refdate;
+				m.particulars = "Payment Ref No : " + it.refno;
+				m.dr = 0;
+				m.cr = it.amount;
+				m.group = "Current";
+				details << m;			
+			}
+			if( it.discount > 0 ) {
+				def m = [:];
+				m.txndate = it.refdate;
+				m.particulars = "Discount " + it.refno;
+				m.dr = 0;
+				m.cr = it.discount;
+				m.group = "Current";
+				details << m;
+			}
+		}
+
+		def runbal = 0;
+		details.each {
+			runbal = runbal + it.dr - it.cr;
+			it.runbalance = runbal; 
+			it.amount = it.dr - it.cr;
+		}
+
+		def b = [:];
+		b.details = details;
+		b.totalamount = details.sum{ it.amount };
+		return b;
+	}
+
+
+
+
+
+}

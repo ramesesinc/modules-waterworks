@@ -28,22 +28,24 @@ class WaterworksBillingRuleService {
 		def facts = [];
 		facts << new WaterAccount( acct );
 		facts << new WaterBill( bill );
+
+		if( o.txndate ) {
+			facts << new TransactionDate( o.txndate );
+		}
+
 		acct.attributes.each {
 			facts << new WaterworksAttribute( name: it );
 		}
 		billitems.each {
 			def wbi = new WaterBillItem();
 			wbi.objid = it.objid;
+			//refid is used in payments
 			wbi.refid = it.objid;
 			wbi.year = it.year;
 			wbi.month = it.month;
 			wbi.billcode = it.item.objid;
 			wbi.sortorder = it.item.sortorder;
 			wbi.amount = it.amount - it.amtpaid - it.discount;
-			//this was a workaround. If parentrefid equals acct.objid then make it null;
-			if( it.parentrefid != acct.objid ) {
-				wbi.parentrefid = it.parentrefid;
-			}
 			wbi.principal = it.amount;
 			facts << wbi;	
 		}
@@ -99,7 +101,7 @@ class WaterworksBillingRuleService {
 
 		def req = [rulename:'waterworkspayment'];
 		req.factBuilder = fb;
-		req.params = [amtpaid :  (o.amtpaid==null)? o : o.amtpaid ];
+		req.params = [amtpaid : (o.amtpaid==null)? 0 : o.amtpaid ];
 		if(o.include_items) req.include_items = o.include_items;
 
 		ruleSvc.execute(req);
@@ -112,9 +114,15 @@ class WaterworksBillingRuleService {
 			items << m;
 		}
 
-		throw new Exception("find tomorrow the credit bill item");
-		fb.facts.find{ it instanceof CreditBillItem }.each {
-
+		def credit = fb.facts.find{ it instanceof CreditBillItem };
+		if(credit) {
+			def m = [:];
+			m.item = itemAcctEm.find( [objid:  credit.billcode ] ).first(); 
+			m.reftype = "waterworks_credit";
+			m.amount = credit.amount;
+			m.discount = 0;
+			m.total = credit.amount;
+			items << m;
 		}
 
 		def cashitems = [];
@@ -134,7 +142,7 @@ class WaterworksBillingRuleService {
 		def res = [:];
 		res.billitems = items;
 		res.items = cashitems;
-		res.amount = cashitems.sum{ a.amount };
+		res.amount = items.sum{ it.amount };
 		return res;
 	}
 

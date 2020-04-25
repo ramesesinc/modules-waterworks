@@ -1,0 +1,9 @@
+<workunit extends="com/rameses/seti2/templates/CrudLookup.xml" 
+          schemaName="waterworks_itemaccount_mapping">
+    <invokers>
+        <invoker type="waterworks_revenueitem:lookup" 
+                 caption="Lookup Item Account" 
+                 action="init" target="popup"
+                 cols="objid,code,title,fund.objid"/>
+    </invokers>    
+</workunit>

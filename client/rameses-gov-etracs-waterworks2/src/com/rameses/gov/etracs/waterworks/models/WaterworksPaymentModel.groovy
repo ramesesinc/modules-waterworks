@@ -16,25 +16,36 @@ class WaterworksPaymentModel extends PageFlowController  {
     @Service("WaterworksPaymentService")
     def pmtSvc;
     
-    def refTypes = ["cashreceipt", "credit"];
     def entity;
     def mode;
     def selectedItem;
-    
+
+    def reftype;  //must be passed from the outside
+    def refno;
+    def amtpaid;
+    def saveHandler;
+    def amtapplied = 0;
+
     void init() {
+        if(reftype == null) throw new Exception("Reftype is required");
         entity = [:];
         def bill = caller.entity;
         entity.year = bill.period.year;
         entity.month = bill.period.month;
         entity.billid = bill.objid;
         entity.acctid = bill.acctid;
+        entity.reftype = reftype;
+        entity.refno = refno;
+        if( amtpaid !=null ) entity.amount = amtpaid;
         mode = "initial";
     }
     
     void loadItems() {
         mode = "view";
-        def b = pmtSvc.getPaymentItems( [acctid: entity.acctid, amtpaid: entity.amount, billid: entity.billid ] );
+        def pp = [acctid: entity.acctid, amtpaid: entity.amount, billid: entity.billid, txndate: entity.refdate, paymentreftype: entity.reftype ];
+        def b = pmtSvc.getBillPaymentItems( pp );
         entity.billitems = b.billitems;
+        entity.amount = b.amount;
         itemHandler.reload();
     }
     
@@ -46,5 +57,13 @@ class WaterworksPaymentModel extends PageFlowController  {
             println " col:" + colName + "val:" + v;
         }        
     ] as EditorListModel;
+
+    public def postPayment() {
+        if(!MsgBox.confirm("You are about this payment. Proceed?")) return null;
+        pmtSvc.postPayment( entity );
+        if(saveHandler) saveHandler();
+        return "_close";
+    }
+
     
 }

@@ -7,7 +7,8 @@ import treasury.facts.*;
 import com.rameses.osiris3.common.*;
 import waterworks.facts.*;
 
-//this is not applicable for surcharge and penalties.
+//This can be also used for penalties and surcharge
+//For penalties and surcharge the year and month should be the ref. bill year and month
 public class AddWaterBillItem implements RuleActionHandler {
 
 	public void execute(def params, def drools) {
@@ -18,7 +19,6 @@ public class AddWaterBillItem implements RuleActionHandler {
 		def year = params.year;
 		def month = params.month;
 		def billcode = params.billcode.key;
-		def parentref = null;
 
 		double amt = 0;
 		def _amt = params.amount.eval();
@@ -30,25 +30,14 @@ public class AddWaterBillItem implements RuleActionHandler {
 		def ct = RuleExecutionContext.getCurrentContext();
 		def facts = ct.facts;
 
-		def addItem = { 
+		def billitems = facts.findAll{ it instanceof WaterBillItem };
+		if( !billitems.find{ it.year == year && it.month == month && it.billcode == billcode }  ) {
 			def bi = new WaterBillItem();
 			bi.billcode = billcode;
 			bi.amount = amt;
 			bi.year = year;
 			bi.month = month;
 			facts << bi;
-		}
-
-		def billitems = facts.findAll{ it instanceof WaterBillItem };
-		if( parentref == null ) {
-			if( !billitems.find{ it.year == year && it.month == month && it.billcode == billcode }  ) {
-				addItem();
-			}
-		}
-		else {
-			if( !billitems.find{ it.year == year && it.month == month && it.billcode == billcode && it.parentrefid == parentref.objid }  ) {
-				addItem();
-			}
 		}
 
 	}

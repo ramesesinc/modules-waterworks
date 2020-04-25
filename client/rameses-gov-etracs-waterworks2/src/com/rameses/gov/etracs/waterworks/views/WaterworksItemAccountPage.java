@@ -70,7 +70,7 @@ public class WaterworksItemAccountPage extends javax.swing.JPanel {
 
         schemaList1.setColumns(new com.rameses.rcp.common.Column[]{
             new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "item.code"}
+                new Object[]{"name", "code"}
                 , new Object[]{"caption", "Acct Code"}
                 , new Object[]{"width", 100}
                 , new Object[]{"minWidth", 100}
@@ -85,7 +85,7 @@ public class WaterworksItemAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "item.title"}
+                new Object[]{"name", "title"}
                 , new Object[]{"caption", "Acct Title"}
                 , new Object[]{"width", 0}
                 , new Object[]{"minWidth", 0}
@@ -100,7 +100,7 @@ public class WaterworksItemAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "item.fund.title"}
+                new Object[]{"name", "fund.title"}
                 , new Object[]{"caption", "Fund Title"}
                 , new Object[]{"width", 100}
                 , new Object[]{"minWidth", 100}
@@ -115,7 +115,7 @@ public class WaterworksItemAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
             })
         });
-        schemaList1.setCustomFilter("itemacctid = :objid");
+        schemaList1.setCustomFilter("parentid = :objid");
         schemaList1.setHandler("");
         schemaList1.setHandlerName("listHandler");
         schemaList1.setName("selectedItem"); // NOI18N

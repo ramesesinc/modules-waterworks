@@ -91,8 +91,8 @@ public class WaterworksAccountModel extends CrudFormModel {
         ledgerFilter = [:];
         ledgerFilter.options = [
             "acctid = :acctid",
-            "acctid = :acctid AND  (amount-discount-amtpaid) > 0",
-            "acctid = :acctid AND (amount-discount-amtpaid) = 0 AND amtpaid > 0"
+            "acctid = :acctid AND  (amount-amtpaid-discount) > 0",
+            "acctid = :acctid AND (amount-amtpaid-discount) = 0 AND amtpaid > 0"
         ];
         ledgerFilter.acctid = entity.objid;
         ledgerFilter.where = ledgerFilter.options[ledgerViewOption] ;

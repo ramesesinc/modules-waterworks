@@ -15,15 +15,27 @@
         
         <!-- this hooks to formActions-->
         <invoker type="formActions" caption="Close" action="_close" immediate="true" />
+
         <invoker type="formActions" caption="Cancel Bill" 
-                 action="cancelBill" immediate="true" visibleWhen="#{ entity.step != 0 }" /> 
+                 action="cancelBill" immediate="true" 
+                 visibleWhen="#{  entity.step != 0 &amp;&amp; viewmode == 'edit' }" /> 
+
         <invoker type="formActions" caption="Submit" action="save" 
                  visibleWhen="#{ entity.step == 0 }" />
+
+        <invoker type="formActions" caption="View Summary" action="viewSummary" 
+                 visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'edit' }" />
+
+        <invoker type="formActions" caption="Back to Edit" action="viewEdit" 
+                 visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'summary' }" />         
         
         <invoker type="viewActions" caption="Back" action="moveBackStep" 
-                 visibleWhen="#{ entity.step &gt; 1 }" />
+                 visibleWhen="#{ entity.step &gt; 1 &amp;&amp; viewmode == 'edit'}" />
         <invoker type="viewActions" caption="Next" action="moveNextStep" 
-                 visibleWhen="#{ entity.step != 0 }" />
+                 visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'edit' &amp;&amp; entity.step &lt; 4}" />
+
+        <invoker type="formActions" caption="Approve" action="approve" 
+                 visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'edit' }" />
 
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillInitialModel" />

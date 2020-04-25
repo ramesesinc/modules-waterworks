@@ -19,7 +19,16 @@ public class WaterworksConsumptionModel extends CrudFormModel {
     def prev;                 //the previous entry
     boolean current = false;  //flag to indicate if current
     
+    def yrs;
+    def months;
+
+    //we should dropdown the year to assure that it will not lampas.
+    void afterInit() {
+        MsgBox.alert( "init" );        
+    }
+
     void afterCreate() {
+        MsgBox.alert("after create");
         entity.state = "OPEN";
         entity.reading = 0;
         entity.volume = 0;
@@ -60,9 +69,19 @@ public class WaterworksConsumptionModel extends CrudFormModel {
     }
     
     void afterOpen() {
+        MsgBox.alert("after open");
         if( entity.prev?.objid ) prev = entity.prev;
     }
     
+    void loadPrev() {
+        int yearMonth = ((entity.year*12) + entity.month) - 1;
+        def m = [:];
+        m.findBy = [acctid: entity.acctid];
+        m.where = ["((year*12)+month) = :yrmon AND meter.objid = :meterid", [yrmon: yearMonth, meterid: entity.meter?.objid]];
+        prev = queryService.findFirst( m );
+        entity.prev = prev;
+    }
+
     @PropertyChangeListener
     def listener = [
         "entity.reading" : { o->
@@ -88,7 +107,11 @@ public class WaterworksConsumptionModel extends CrudFormModel {
                 }
             }
             binding.refresh("entity.(volume|amount)");
-        }
+        },
+        "entity.(year|month)" : { o->
+            loadPrev();
+            binding.refresh();
+        },
     ];
     
     void calc() {

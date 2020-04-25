@@ -13,11 +13,7 @@
 
 		<field name="discount" type="decimal" required="true" caption="Discount"/>
 
-		<!-- place where the payment is made -->
-		<field name="year" required="true" type="integer" caption="Year"/>
-		<field name="month" required="true" type="integer" caption="Month"/>
-
-		<complex name="items" ref="waterworks_payment_item" jointype="one-to-many">
+		<complex name="items" ref="waterworks_payment_item" jointype="one-to-many" required="false">
 			<key field="objid" target="parentid"/>
 		</complex>	
 		<field name="remarks" />
@@ -25,8 +21,11 @@
 		<!-- this is to mark the billid being paid. optional applicable only to billing and deposit transactions -->
 		<field name="billid" />
 
+		<!-- link to application if applicable -->		
+		<field name="appid" />
+
 		<!-- refer to cash receipt initial payment -->
 		<field name="pmttxntype"/>
-
+		<field name="txndate"/>
 	</element>
 </schema>

@@ -9,7 +9,6 @@ public class WaterBillItem extends BillItem {
 	def monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 
 	def objid;
-	def parentrefid;
 	def recurringfeeid;
 
 	public WaterBillItem(def o) {
@@ -22,7 +21,12 @@ public class WaterBillItem extends BillItem {
 	public def toMap() { 
 		def m = super.toMap(); 
 		if(objid) m.objid = objid;
-		if(parentrefid) m.parentrefid = parentrefid;
+		//we have to fix this. if discount is negative it should be positive
+		if( m.discount == null ) m.discount = 0;
+		m.discount = Math.abs( m.discount );
+		if(m.discount>0) {
+			m.amount = m.amount - m.discount;	
+		}
 		m.monthname = getMonthname();
 		if( recurringfeeid ) m.recurringfeeid = recurringfeeid;
 		return m;
@@ -32,9 +36,6 @@ public class WaterBillItem extends BillItem {
 		def buff = new StringBuilder();
 		buff.append( yearMonth );
 		buff.append( "-" + billcode );
-		if( parentrefid ) {
-			buff.append( "-" + parentrefid );
-		}
 		return buff.toString().hashCode();
 	}
 

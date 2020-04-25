@@ -15,6 +15,9 @@
             caption="Fetch All Items" action="fetchAll" visibleWhen="#{ mode == 'view' }"/>
         <invoker type="formActions" 
             caption="Run Rules" action="runRules" visibleWhen="#{ mode == 'view' }"/>
+
+        <invoker type="formActions" 
+            caption="Post Payment" action="postPayment" visibleWhen="#{ mode == 'view' }"/>
         
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksPaymentModel"/>

@@ -61,8 +61,8 @@ billid</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>640</x>
-      <y>210</y>
+      <x>700</x>
+      <y>130</y>
       <w>180</w>
       <h>30</h>
     </coordinates>
@@ -73,13 +73,13 @@ billid</panel_attributes>
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>470</x>
-      <y>120</y>
-      <w>190</w>
-      <h>120</h>
+      <y>100</y>
+      <w>250</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 billid</panel_attributes>
-    <additional_attributes>30;30;170;100</additional_attributes>
+    <additional_attributes>30;50;230;40</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
@@ -106,14 +106,14 @@ billid</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>300</x>
+      <x>330</x>
       <y>130</y>
       <w>98</w>
       <h>170</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 acctid</panel_attributes>
-    <additional_attributes>50;150;60;30</additional_attributes>
+    <additional_attributes>50;150;50;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -141,14 +141,14 @@ acctid</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>60</x>
+      <x>70</x>
       <y>350</y>
-      <w>320</w>
-      <h>110</h>
+      <w>160</w>
+      <h>210</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
-acctinfoid</panel_attributes>
-    <additional_attributes>300;80;70;90;70;30</additional_attributes>
+meterid</panel_attributes>
+    <additional_attributes>140;190;60;90;60;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -165,7 +165,7 @@ acctinfoid</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>700</x>
+      <x>730</x>
       <y>280</y>
       <w>210</w>
       <h>30</h>
@@ -176,14 +176,14 @@ acctinfoid</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>690</x>
-      <y>210</y>
+      <x>730</x>
+      <y>130</y>
       <w>114</w>
-      <h>90</h>
+      <h>170</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 parentid</panel_attributes>
-    <additional_attributes>60;30;60;70</additional_attributes>
+    <additional_attributes>80;30;50;150</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -196,18 +196,6 @@ parentid</panel_attributes>
     <panel_attributes>lt=&lt;.
 refid</panel_attributes>
     <additional_attributes>60;140;50;80;100;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>730</x>
-      <y>410</y>
-      <w>172</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-parentrefid</panel_attributes>
-    <additional_attributes>60;30;120;30;110;70;40;70;30;40</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -339,14 +327,14 @@ areaid</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>200</x>
+      <x>210</x>
       <y>160</y>
-      <w>160</w>
+      <w>158</w>
       <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 acctid</panel_attributes>
-    <additional_attributes>140;120;30;30</additional_attributes>
+    <additional_attributes>110;120;110;70;30;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
@@ -559,14 +547,14 @@ itemacctid</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>350</x>
+      <x>370</x>
       <y>130</y>
-      <w>130</w>
+      <w>90</w>
       <h>170</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-currentbillid</panel_attributes>
-    <additional_attributes>70;30;70;150</additional_attributes>
+billid</panel_attributes>
+    <additional_attributes>50;30;50;150</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -588,7 +576,7 @@ periodid</panel_attributes>
       <w>180</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>waterworks_recurringee</panel_attributes>
+    <panel_attributes>waterworks_recurringfee</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -696,5 +684,40 @@ refid</panel_attributes>
     <panel_attributes>lt=.&gt;
 consumptionid</panel_attributes>
     <additional_attributes>220;30;30;220</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>570</x>
+      <y>210</y>
+      <w>180</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>waterworks_credit</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>400</x>
+      <y>190</y>
+      <w>190</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+acctid</panel_attributes>
+    <additional_attributes>30;90;50;50;170;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>640</x>
+      <y>130</y>
+      <w>146</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+paymentrefid</panel_attributes>
+    <additional_attributes>100;30;50;80</additional_attributes>
   </element>
 </diagram>

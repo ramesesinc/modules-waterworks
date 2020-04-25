@@ -22,6 +22,10 @@
 		<field name="classificationid" /> 
 		<field name="seqno" /> 
 
+		<field name="subarea_code" /> 
+		<field name="subarea_barangay_name" /> 
+		<field name="area_code" /> 
+
 		<field name="balanceforward" type="decimal"/> 
 
 		<complex name="stubout" ref="waterworks_stubout" jointype="many-to-one" required="false">

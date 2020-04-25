@@ -10,7 +10,7 @@ WHERE wf.acctid = $P{acctid}
 AND wf.type IN ('once', 'installment') 
 
 
-[updateSingleAmtBilled]
+[updateAmtBilledByBillItem]
 UPDATE waterworks_recurringfee wf
 SET wf.amtbilled = IFNULL( (  
 	SELECT SUM( bi.amount ) 

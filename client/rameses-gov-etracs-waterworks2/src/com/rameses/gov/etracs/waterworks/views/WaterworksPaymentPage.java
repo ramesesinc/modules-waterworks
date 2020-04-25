@@ -33,8 +33,8 @@ public class WaterworksPaymentPage extends javax.swing.JPanel {
 
         xPanel1 = new com.rameses.rcp.control.XPanel();
         xFormPanel3 = new com.rameses.rcp.control.XFormPanel();
+        xLabel6 = new com.rameses.rcp.control.XLabel();
         xTextField2 = new com.rameses.rcp.control.XTextField();
-        xComboBox2 = new com.rameses.rcp.control.XComboBox();
         xDateField1 = new com.rameses.rcp.control.XDateField();
         xDecimalField2 = new com.rameses.rcp.control.XDecimalField();
         xTextField3 = new com.rameses.rcp.control.XTextField();
@@ -54,18 +54,15 @@ public class WaterworksPaymentPage extends javax.swing.JPanel {
         xFormPanel3.setCaptionVAlignment(com.rameses.rcp.constant.UIConstants.CENTER);
         xFormPanel3.setCaptionWidth(120);
 
+        xLabel6.setCaption("Ref Type");
+        xLabel6.setExpression("#{ entity.reftype }");
+        xFormPanel3.add(xLabel6);
+
         xTextField2.setCaption("Ref No");
         xTextField2.setName("entity.refno"); // NOI18N
         xTextField2.setPreferredSize(new java.awt.Dimension(150, 20));
         xTextField2.setRequired(true);
         xFormPanel3.add(xTextField2);
-
-        xComboBox2.setCaption("Ref Type");
-        xComboBox2.setItems("refTypes");
-        xComboBox2.setName("entity.reftype"); // NOI18N
-        xComboBox2.setPreferredSize(new java.awt.Dimension(150, 20));
-        xComboBox2.setRequired(true);
-        xFormPanel3.add(xComboBox2);
 
         xDateField1.setCaption("Ref Date");
         xDateField1.setName("entity.refdate"); // NOI18N
@@ -75,6 +72,7 @@ public class WaterworksPaymentPage extends javax.swing.JPanel {
         xFormPanel3.add(xDateField1);
 
         xDecimalField2.setCaption("Amount Paid");
+        xDecimalField2.setDisableWhen("#{ amtpaid != null }");
         xDecimalField2.setName("entity.amount"); // NOI18N
         xDecimalField2.setPreferredSize(new java.awt.Dimension(150, 20));
         xDecimalField2.setRequired(true);
@@ -93,7 +91,7 @@ public class WaterworksPaymentPage extends javax.swing.JPanel {
             .addGroup(xPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(xFormPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(452, Short.MAX_VALUE))
+                .addContainerGap(422, Short.MAX_VALUE))
         );
         xPanel1Layout.setVerticalGroup(
             xPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,7 +214,7 @@ public class WaterworksPaymentPage extends javax.swing.JPanel {
                 , new Object[]{"caption", "Title"}
                 , new Object[]{"width", 150}
                 , new Object[]{"minWidth", 150}
-                , new Object[]{"maxWidth", 200}
+                , new Object[]{"maxWidth", 0}
                 , new Object[]{"required", false}
                 , new Object[]{"resizable", true}
                 , new Object[]{"nullWhenEmpty", true}
@@ -227,23 +225,8 @@ public class WaterworksPaymentPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "principal"}
-                , new Object[]{"caption", "Amount"}
-                , new Object[]{"width", 100}
-                , new Object[]{"minWidth", 100}
-                , new Object[]{"maxWidth", 100}
-                , new Object[]{"required", false}
-                , new Object[]{"resizable", true}
-                , new Object[]{"nullWhenEmpty", true}
-                , new Object[]{"editable", false}
-                , new Object[]{"visible", true}
-                , new Object[]{"visibleWhen", null}
-                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
-                , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
-            }),
-            new com.rameses.rcp.common.Column(new Object[]{
                 new Object[]{"name", "amount"}
-                , new Object[]{"caption", "Amt Paid"}
+                , new Object[]{"caption", "Amount"}
                 , new Object[]{"width", 100}
                 , new Object[]{"minWidth", 100}
                 , new Object[]{"maxWidth", 100}
@@ -296,7 +279,6 @@ public class WaterworksPaymentPage extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.rameses.rcp.control.XComboBox xComboBox2;
     private com.rameses.rcp.control.XDataTable xDataTable3;
     private com.rameses.rcp.control.XDateField xDateField1;
     private com.rameses.rcp.control.XDecimalField xDecimalField2;
@@ -307,6 +289,7 @@ public class WaterworksPaymentPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLabel xLabel3;
     private com.rameses.rcp.control.XLabel xLabel4;
     private com.rameses.rcp.control.XLabel xLabel5;
+    private com.rameses.rcp.control.XLabel xLabel6;
     private com.rameses.rcp.control.XPanel xPanel1;
     private com.rameses.rcp.control.XPanel xPanel2;
     private com.rameses.rcp.control.XTextField xTextField2;

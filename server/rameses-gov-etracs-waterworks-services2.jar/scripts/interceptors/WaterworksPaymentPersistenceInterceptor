@@ -1,0 +1,50 @@
+import com.rameses.annotations.*;
+import java.rmi.server.UID;
+
+class WaterworksPaymentPersistenceInterceptor{
+	
+	@DataContext("waterworks_billitem")
+	def billItemEm; 
+
+	@DataContext("waterworks_credit")
+	def creditEm; 
+
+	@DataContext("waterworks_payment")
+	def paymentEm; 
+
+	@Before(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_payment' && args[0].reftype == 'beginbalance'}")
+	public void beforeCreate( evt ) {
+		def e = evt.args[0];	
+		e.txnmode = "CAPTURE";
+		e.voided = 0;
+		e.discount = 0;
+	} 
+
+	@After(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_payment' && args[0].reftype == 'beginbalance'}")
+	public void afterCreatePayment( evt ) {
+		def pmt = evt.result;
+		def m = [:];
+		m.acctid = pmt.acctid;
+		m.paymentref = [objid: pmt.objid ];
+		m.dr = pmt.amount;
+		m.cr = 0;
+		creditEm.create( m );
+		billItemEm.updateInitialBillBalanceForward([acctid: pmt.acctid ]);
+	} 
+
+	@Before(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_payment' && args[0].reftype == 'beginbalance' }")
+	public void beforeRemovePayment( evt ) {
+		def o = evt.args[0];
+		//find objid of payment
+		def pmt = paymentEm.find( [acctid: o.acctid, reftype: 'beginbalance'] ).select("objid").first(); 
+		o.objid = pmt.objid;
+		creditEm.find([paymentrefid: pmt.objid]).delete();
+	} 
+
+	@After(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_payment' && args[0].reftype == 'beginbalance' }")
+	public void afterRemovePayment( evt ) {
+		def o = evt.args[0] 
+		billItemEm.updateInitialBillBalanceForward([acctid: o.acctid ]);
+	} 
+
+}

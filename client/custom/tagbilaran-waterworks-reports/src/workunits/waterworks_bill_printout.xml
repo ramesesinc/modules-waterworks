@@ -1,0 +1,23 @@
+<workunit extends="com/rameses/seti2/templates/FormReport.xml">
+    <invokers>
+        <invoker type="vw_waterworks_bill:form:formActions" 
+                 caption="View Print for Batch" 
+                 target="self" 
+                 action="preview"
+                 index="100"
+                 reportId="waterworks_bill" 
+                 reportName="tagbilaran/waterworks/reports/tagbilaran_water_batch_billing.jasper"
+                 txnid="#{entity.objid}" 
+                 visibleWhen="#{ entity.initial == 1 &amp;&amp; viewmode == 'summary' }"/>
+
+        <invoker type="vw_waterworks_bill:form:formActions" 
+                 caption="View Batch Bill" 
+                 target="self" 
+                 action="preview"
+                 index="100"
+                 reportId="waterworks_bill" 
+                 reportName="tagbilaran/waterworks/reports/tagbilaran_water_batch_billing.jasper"
+                 txnid="#{entity.objid}" 
+                 visibleWhen="#{ mode.matches('view') }"/>
+    </invokers> 
+</workunit>

@@ -1,0 +1,19 @@
+<workunit>
+
+    <invokers>
+        <invoker type="waterworks_consumption_builder" caption="Build Consumptions"  action="init" target="popup"/>
+
+        <invoker type="formActions" action="_close" caption="Close" />        
+        <invoker type="formActions" action="moveBack" caption="Back" visibleWhen="#{step &gt; 0}"/>        
+
+        <invoker type="formActions" action="moveNext" caption="Next" visibleWhen="#{ step &lt; 2}"/>
+        <invoker type="formActions" action="saveItems" caption="Submit" visibleWhen="#{step ==2 }"/>       
+    </invokers>
+    
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksConsumptionBuilderModel" />    
+
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksConsumptionBuilderPage"/>
+    </pages>    
+    
+</workunit>

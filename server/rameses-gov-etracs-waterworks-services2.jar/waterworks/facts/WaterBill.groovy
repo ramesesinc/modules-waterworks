@@ -17,6 +17,8 @@ public class WaterBill {
 
 	Date validitydate;
 
+	boolean discountallowed = true;
+
 	public WaterBill(){;}
 
 	public WaterBill(def bill){
@@ -32,6 +34,9 @@ public class WaterBill {
 			if( period.billexpirydate) this.expirydate = period.billexpirydate ;
 		}
 		this.balanceforward = bill.balanceforward;
+		if( bill.discountallowed !=null ) {
+			this.discountallowed = bill.discountallowed;
+		}		
 	}
 
 }

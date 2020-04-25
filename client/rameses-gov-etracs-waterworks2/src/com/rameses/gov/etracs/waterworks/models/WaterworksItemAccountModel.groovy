@@ -15,8 +15,8 @@ public class WaterworksItemAccountModel extends CrudFormModel {
     def addMapping() {
         def h = { o->
             def m = [_schemaname: "waterworks_itemaccount_mapping"];
-            m.itemacctid = entity.objid;
-            m.item = o;
+            m.parentid = entity.objid;
+            m.putAll(o);
             persistenceService.create(m);
             listHandler.reload();
         }

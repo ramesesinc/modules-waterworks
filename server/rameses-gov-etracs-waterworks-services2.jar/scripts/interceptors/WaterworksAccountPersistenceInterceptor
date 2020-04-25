@@ -92,7 +92,6 @@ class WaterworksAccountPersistenceInterceptor{
 		def amt = creditEm.find( [acctid: o.objid ]).select("amount:{SUM(dr-cr)}").val();
 		o.totalcredits = 0;
 		if(amt!=null)	o.totalcredits = amt;
-
 	}
 
 

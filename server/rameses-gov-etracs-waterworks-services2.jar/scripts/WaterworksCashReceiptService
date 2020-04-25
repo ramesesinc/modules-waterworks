@@ -2,49 +2,48 @@ import com.rameses.annotations.*;
 
 class WaterworksCashReceiptService {
 
-    @Service('WaterworksBillingRuleService') 
-    def billingSvc; 
+    @Service('WaterworksPaymentService') 
+    def pmtSvc; 
 
     @Service("NumberService")
     def numSvc;
 
-    @DataContext("vw_waterworks_billing")
-    def billEm;
+    @Service("DateService")
+    def dateSvc;
+
+    @DataContext("vw_waterworks_bill")
+    def vwBillEm;
 
     @DataContext("waterworks_account")
     def acctEm;
 
-    @DataContext("waterworks_consumption")
-    def consEm;
-
-    @DataContext("waterworks_otherfee")
-    def otherFeeEm;
-
     def findBill( def o ) {
-        def bill = billEm.find( [billno: o.id ] ).first();
+        def bill = vwBillEm.find( [billno: o.id ] ).first();
+        def acct = null;
         if(!bill) {
-            def acct = acctEm.find( [acctno: o.id ] ).first();
-            if(!acct) throw new Exception("Bill or account not found");
-            bill = billEm.find( [acctid: acct.objid] ).where(" state IN ('PENDING', 'POSTED') ").orderBy("year DESC, month DESC").first();
-            if(!bill)
-                throw new Exception("The account does not have a billing yet. Please generate the bill first");            
+            acct = acctEm.find( [acctno: o.id ] ).first();
         }
         else {
-            //the bill must be the latest bill. You cannot pay on the previous bill
-            def latestBill = billEm.find( [acctid: bill.acctid ] ).where(" state IN ('PENDING', 'POSTED') ").orderBy("year DESC, month DESC").first();
-            if(latestBill.objid != bill.objid )
-                throw new Exception("This is not the latest bill. Please use account no. instead");            
+            acct = acctEm.find([objid:bill.acctid]).first();
         }
-        if( bill.state !='POSTED') 
-            throw new Exception("Billing is not yet posted");
+        if(!acct) throw new Exception("Bill or account not found");
+        if( acct.state != "ACTIVE" ) throw new Exception("Account is not yet active");
+        if(!acct.billid) throw new Exception("Account does not yet have an active bill");
+
+        //replace bill with the active bill
+        bill = vwBillEm.find( [objid: acct.billid] ).first();
+        if(bill.state != "POSTED") throw new Exception("Bill is not yet posted. Please contact admin");
+
+        //update bill if transaction date is not yet updated. If bill is expired. Must create a new bill.
         return bill;    
     }
 
     def getBillingItems( def o ) {
         def bill = findBill( o );
+
         def param = [ acctid : bill.acctid, billid: bill.objid, include_items:true ];
         if( o.amtpaid ) param.amtpaid = o.amtpaid;
-        def res = billingSvc.getBilling( param );
+        def res = pmtSvc.getBillPaymentItems( param );
         if(!res.billitems) 
             throw new Exception("There are no current bills to pay. Consider deposit instead");
         res.billid = bill.objid;  
@@ -59,13 +58,8 @@ class WaterworksCashReceiptService {
 
         //check first if there are pending balances before testing deposit. there must be no unpaid
 
-        def test = consEm.find( [acctid: bill.acctid]).where("state ='POSTED' AND hold=0 AND (amount-amtpaid >0 )").exists();
-        if(test) throw new Exception("There are still some unpaid balances. Settle this first");
-        test = otherFeeEm.find( [acctid: bill.acctid]).where("amount-amtpaid >0").exists();
-        if(test) throw new Exception("There are still some unpaid balances. Settle this first");
-
         def param = [ acctid : bill.acctid, billid: bill.objid, include_items:true, amtpaid: o.amtpaid ];
-        def res = billingSvc.getBilling( param );
+        def res = pmtSvc.getBillPaymentItems( param );
         if(!res.billitems )
             throw new Exception("There are no items for this receipt. Please check rules");
         res.billid = bill.objid;     
@@ -78,7 +72,10 @@ class WaterworksCashReceiptService {
 	@ProxyMethod 
 	public def getBilling( o ) {
         def param = o.params;
+
         def txntype = param.txntype;
+        def txndate = param.billdate;
+        if(!txndate) txndate = dateSvc.getBasicServerDate();
 
         def pp = [:];
         pp.id = param.id;

@@ -19,7 +19,6 @@ class WaterworksPaymentService {
 	@DataContext("waterworks_credit")
 	def creditEm;
 
-	
 
 	@DataContext("vw_waterworks_account")
 	def vwAcctEm;
@@ -27,95 +26,159 @@ class WaterworksPaymentService {
 	@DataContext("vw_waterworks_bill")
 	def vwBillEm;
 
-	@ProxyMethod 
-	public def postPayment( param ) {
-		def rct = param;
-		if(!rct.billitems) throw new Exception("Please include billitems");
-		if(!rct.acctid ) throw new Exception("acctid is required");
+	def savePayment( pmt ) {
+		//refno,refdate,refid,reftype,pmttxntype,amount
+		if(!pmt.items) throw new Exception("payment items is required");
+		def cr = pmt.items.find{ it.reftype == "waterworks_credit" };
 
-		//post to the ledgers. discount should only be applied once
-		def billitems = rct.billitems;
-		billitems.each {
+		pmt.items = pmt.items.findAll{ it.reftype == "waterworks_billitem" };
+		pmt.voided = 0;
+		pmt.txndate = dateSvc.getServerDate();
+
+		if( !pmt.txnmode ) pmt.txnmode = "CAPTURE";
+		pmt.discount = pmt.items.sum{ it.discount==null ? 0 : it.discount };
+		if(pmt.discount == null) pmt.discount = 0;
+		pmt.items.findAll{ it.discount == null }.each {
+			it.discount = 0;
+		}
+		pmt = paymentEm.create( pmt );
+
+		pmt.items.each {
 			if(it.discount == null) it.discount = 0;
 			if(it.amount == null ) it.amount = 0;
-			if(it.reftype == 'waterworks_billitem') {
-				billItemEm.find( [objid: it.refid ]  ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ] , [amt: it.amount]  );
-			}
-			else if( it.reftype == 'waterworks_credit' ) {
-				//this is for overpayments and deposits
-				def c = [:];
-				c.acctid = rct.acctid;
-				c.refid = rct.objid;
-				c.refdate = rct.receiptdate;
-				c.refno = rct.receiptno;
-				c.reftype = "cashreceipt";
-				c.dr = it.amount;
-				c.cr = 0;
-				c = creditEm.create( c );
-
-				//this is for reference when voiding
-				it.refid = c.objid;
-			}
-			else {
-				throw new Exception("Waterworks post payment error! there must be a reftype in billitems");
-			}
+			billItemEm.find( [objid: it.refid ]  ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ] , [amt: it.amount]  );
 		}
 
-		//post only at the last so the credit refid can be applied.
+		//this is for overpayments and deposits. log into the credit.
+		if(cr!=null) {
+			def c = [:];
+			c.paymentref = [objid:pmt.objid];
+			c.acctid = pmt.acctid;
+			c.dr = cr.amount;
+			c.cr = 0;
+			creditEm.create( c );
+		}
+		return pmt;
+	}
+
+
+	//posts the items and packages 
+	private void postCredit( def o ) {
+		//do not include waterworks_credit
+		def bitems = o.billitems.findAll{ it.reftype == "waterworks_billitem" };
 		def pmt = [:];
-		pmt.txndate = dateSvc.getServerDate();;
+		pmt.reftype = "credit";
+		pmt.refno = o.refno;
+		pmt.refdate = o.refdate;
+		pmt.refid = o.refdate;
+		pmt.billid = o.billid;
+		pmt.acctid = o.acctid;
+		pmt.amount = bitems.sum{it.total};
+		pmt.items = bitems;
+		pmt = savePayment( pmt );
+		//record also in the cr side
+
+		def cr = [:];
+		cr.paymentref = [objid:pmt.objid];
+		cr.acctid = pmt.acctid;
+		cr.dr = 0;
+		cr.cr = pmt.amount;
+		creditEm.create( cr );
+	}
+
+	private void postCashReceipt( def rct ) {
+		def pmt = [:];
 		pmt.acctid = rct.acctid;
+		if(rct.billid) pmt.billid = rct.billid;		
 		pmt.refdate = rct.receiptdate;
+		if(!pmt.refdate) pmt.refdate = rct.refdate;
 		pmt.refno = rct.receiptno;
+		if( !pmt.refno) pmt.refno = rct.refno;
+
 		pmt.reftype = "cashreceipt";
 		pmt.refid = rct.objid;
 		pmt.amount = rct.amount;
 		pmt.voided = 0;
 		pmt.txnmode = rct.txnmode;
+		if(!pmt.txnmode ) pmt.txnmode = "CAPTURE";
 		pmt.remarks = rct.remarks;
 		pmt.pmttxntype = rct.pmttxntype;
-		pmt.items = rct.billitems.collect{ [refid: it.refid, reftype:it.reftype, amount: it.amount, discount: it.discount, surcharge: it.surcharge, interest: it.interest, remarks: it.remarks]  };
+		pmt.items = rct.billitems.collect{ 
+			[refid: it.refid, reftype:it.reftype, amount: it.amount, discount: it.discount, surcharge: it.surcharge, interest: it.interest, remarks: it.remarks]  
+		};
 		pmt.discount = pmt.items.sum{ it.discount==null ? 0 : it.discount };				
-		if(rct.billid) pmt.billid = rct.billid;
-		pmt.year = rct.year;
-		pmt.month = rct.month;
-		paymentEm.create( pmt );
+		savePayment( pmt );
+	}	
+
+	@ProxyMethod 
+	public def postPayment( def param ) {
+		if( param.reftype == "credit" ) postCredit( param );
+		else if( param.reftype == "cashreceipt" ) postCashReceipt( param );
 	}
 
 	@ProxyMethod 
 	public def voidPayment( param ) {
+		def refid = param.receipt?.objid;
+		if( refid == null) refid = param.refid;
+
 		//check first if we can still void the transaction
-		def pmt = paymentEm.find( [refid: param.receipt.objid  ]).first(1);
+		def pmt = paymentEm.find( [objid: refid  ]).first(1);
+
 		if(!pmt) throw new Exception("payment not found");
-
-		if(!pmt.items) throw new Exception("payment items not found!");
-
-		pmt.items.each {
+		pmt.items?.each {
 			if(it.reftype == "waterworks_billitem") {
 				billItemEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid - :amt}", discount: 0 ], [amt: it.amount] );
 			}
-			else if( it.reftype == "waterworks_credit" ) {
-				//remove tax credit from ledger
-				creditEm.find( [objid: it.refid] ).delete();
-			}
 		}
+		//automatically delete all related credits
+		creditEm.find( [paymentrefid: pmt.objid ] ).delete();
 		paymentEm.find( [objid: pmt.objid] ).update( [voided: 1 ] );
 	}
 
+	@ProxyMethod 
+	public def cancelPayment( param ) {
+		voidPayment( param );
+		paymentEm.find( [objid: param.refid] ).delete();
+	}
 
-	//called by capture payment in client
 	@ProxyMethod
-	public def getPaymentItems( def o ) {
+	public def getBillPaymentItems( def o ) {
+		if(!o.paymentreftype) throw new Exception("Please specify paymentreftype in getBillPaymentItems");	
 		if(!o.acctid) throw new Exception("acctid is required in  WaterworksPaymentService.getPaymentItems");
+
 		def pp = [:];
+		pp.txndate = o.txndate;
+		if(pp.txndate ==null) pp.txndate = dateSvc.getBasicServerDate();
+		pp.txndate = dateSvc.parse("yyyy-MM-dd", pp.txndate );
+
 		pp.account = vwAcctEm.find( [objid: o.acctid ]).first();
 		if(o.billid) o.billid = pp.account.billid;
 
 		if(!o.billid) throw new Exception("billid is required in WaterworksPaymentService.getPaymentItems");
 		pp.bill = vwBillEm.find( [objid: o.billid ]).first();
 
-		pp.amtpaid = o.amtpaid;
-		ruleSvc.getPaymentItems( pp );
+		//if there is amtpaid specified, check if txndate is less than discdate.
+		//if true, there is possibility of discount. we need to run the rules two times. 
+		//First run the rules without amount. If amtpaid is equal or greater than 
+		//sum of billitems amount, then run again using the amtpaid, i.e. we apply discount.
+		//If amtpaid is less, then we set the bill discount allowed to false
+		//Then run rules again using amtpaid. By editing discdate, we will not fire the discount
+		if( o.amtpaid && pp.bill.period.discdate!=null &&  pp.bill.period.discdate.after(pp.txndate) ) {
+			def res = ruleSvc.getPaymentItems( pp );
+			if(o.amtpaid < res.amount) {
+				pp.bill.discountallowed = false;
+			}
+			pp.amtpaid = o.amtpaid;
+		}
+
+		def res = ruleSvc.getPaymentItems( pp );
+
+		//if payment type is credit do not include waterworks_credit only the billitems
+		if( o.paymentreftype == "credit") {
+			res.billitems = res.billitems.findAll{ it.reftype == "waterworks_billitem" };
+			res.amount = res.billitems.sum{ it.amount };   
+		}
+		return res;
 	}
 
 
