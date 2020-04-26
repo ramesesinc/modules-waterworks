@@ -178,7 +178,7 @@ public class WaterworksBillInitialModel extends CrudFormModel {
             return consumptionList;
         }
     ] as BasicListModel;
-    
+
     void buildConsumptionList() {
         def m = [_schemaname: "waterworks_consumption"];
         m.findBy = [billid: entity.objid];
@@ -227,6 +227,7 @@ public class WaterworksBillInitialModel extends CrudFormModel {
         else {
             def m = [_schemaname: "waterworks_billitem"];
             m.findBy = [billid: entity.objid ];
+            m.where = ["((year*12)+month) = :yrmon", [ yrmon: yearMonth ] ];
             m.orderBy = "item.sortorder";
             itemList = queryService.getList( m );
         }
@@ -235,7 +236,8 @@ public class WaterworksBillInitialModel extends CrudFormModel {
 
     def addItem() {
         def p = [:];
-        p.onSaveHandler = { o->
+        p.saveHandler = { o->
+            billSvc.addBillItem( o );
             updateTotals();                        
             buildItemList();
         }
@@ -247,8 +249,9 @@ public class WaterworksBillInitialModel extends CrudFormModel {
     def openItem() {
         if(!selectedItem) throw new Exception("Please select item");
         def p = [:];
-        p.onSaveHandler = { o->
-            updateTotals();
+        p.saveHandler = { o->
+            billSvc.updateBillItem( o );
+            updateTotals();   
             buildItemList();
         }
         if( entity.step!=1) p.current = true;
@@ -259,15 +262,7 @@ public class WaterworksBillInitialModel extends CrudFormModel {
 
     void removeItem() {
         if(!selectedItem) throw new Exception("Please select item");
-        def m = [_schemaname: "waterworks_billitem"];
-        m.objid = selectedItem.objid;
-
-        //this is added so we know this is deleted from the bill.
-        m.billid = entity.objid;
-
-        //add this as a flag for the removeEntity interceptor
-        m.activebillid = entity.objid;
-        persistenceService.removeEntity(m);
+        billSvc.removeBillItem( [objid: selectedItem.objid ] );
         updateTotals();         
         buildItemList();
     }
@@ -281,7 +276,7 @@ public class WaterworksBillInitialModel extends CrudFormModel {
         Modal.show( "date:prompt", [title: "Enter Txn Date", handler: h ] );
         if(!dtxn) return;
         billSvc.updateBillFees( [objid: entity.objid, txndate: dtxn ]);
-        updateTotals();        
+        updateTotals(); 
         buildItemList();
     }
     
@@ -299,7 +294,7 @@ public class WaterworksBillInitialModel extends CrudFormModel {
          //if both credits and unpaid are greater than zero apply payment until one of it becomes zero
         if( entity.totalcredits == 0 || entity.totalunpaid == 0 ) 
             throw new Exception("credits cannot be applied");
-        billSvc.applyCredits( [objid: entity.objid] );
+        pmtSvc.applyCredits( [billid: entity.objid] );
         updateTotals();            
         updatePmtList();
     }

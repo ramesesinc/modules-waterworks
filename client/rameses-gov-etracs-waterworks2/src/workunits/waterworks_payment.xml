@@ -10,11 +10,13 @@
         <invoker type="formActions" 
             caption="Next" action="loadItems" visibleWhen="#{ mode == 'initial' }"/>
 
-        <!-- -->
-        <invoker type="formActions" 
-            caption="Fetch All Items" action="fetchAll" visibleWhen="#{ mode == 'view' }"/>
+        <!-- 
         <invoker type="formActions" 
             caption="Run Rules" action="runRules" visibleWhen="#{ mode == 'view' }"/>
+        -->
+
+        <invoker type="formActions" 
+            caption="View Receipt" action="viewReceipt" visibleWhen="#{ mode == 'view' }"/>
 
         <invoker type="formActions" 
             caption="Post Payment" action="postPayment" visibleWhen="#{ mode == 'view' }"/>

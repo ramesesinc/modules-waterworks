@@ -71,6 +71,13 @@ class WaterworksBillPersistenceInterceptor{
 		o.expirydate = o.period.billexpirydate;
 		o.state = "DRAFT";
 		o.step = 1;
+		o.totalcredits = 0;
+		o.totalprevunpaid = 0;
+		o.totalbillunpaid = 0;
+		o.billamount = 0;
+		o.totalsurcharge = 0;
+		o.totalpayment = 0;
+		o.totaldiscount = 0;
 	}
 
 	@After(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_bill'}")
@@ -78,8 +85,6 @@ class WaterworksBillPersistenceInterceptor{
 		def o  = evt.args[0];
 		def result = evt.result;
 		acctEm.find( [objid: result.acctid ] ).update([ billid: result.objid ]);
-		//update billitem if any
-		billItemEm.updateInitialBillBalanceForward([acctid: result.acctid]);
 	}
 
 	//The only bill that can be deleted will be the initial bill
@@ -94,14 +99,5 @@ class WaterworksBillPersistenceInterceptor{
 		billEm.find( [objid: o.objid] ).update( [consumptionid: "{NULL}"]);
 		consumptionEm.find( [billid: o.objid]).delete();
 	}
-
-	@After(pattern="PersistenceService.read", eval="#{args[0]._schemaname == 'vw_waterworks_bill'}")
-	public void afterRead(def evt) {
-		def bill  = evt.result;
-		//check if there are still credits unapplied. Applicable to all bills initial or not
-		def tot = 	billSvc.getBillTotals( [bill: bill] );
-		bill.putAll( tot );
-	} 
-
 
 }

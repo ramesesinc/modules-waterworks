@@ -2,23 +2,12 @@ import com.rameses.annotations.*;
 
 class WaterworksBillService {
 
-	@Service("ControlnoGeneratorService")
-    def controlNoSvc;
-
-    @Service('Var')
-	def var;
-
-	@Service("WaterworksScheduleService")
-	def skedSvc;
 
     @Service('DateService')
 	def dateSvc;
 
 	@Service("WaterworksBillingRuleService")
 	def ruleSvc;
-
-	@Service("WaterworksPaymentService")
-	def pmtSvc;
 
 	@DataContext("vw_waterworks_account")
 	def vwAcctEm;
@@ -37,6 +26,10 @@ class WaterworksBillService {
 
 	@DataContext("waterworks_payment")
 	def pmtEm;
+
+	@DataContext("waterworks_payment_item")
+	def pmtItemEm; 
+
 
 	@DataContext("waterworks_credit")
 	def creditEm;
@@ -63,10 +56,10 @@ class WaterworksBillService {
 		}
 	}
 
-	//utilities for this bill
+	//utilities for this bill. updateBalanceForward should only be called once, before payments or credits are applied.
 	@ProxyMethod
 	public def updateBalanceForward(  def b ) {
-		if(! b.objid ) throw new Exception("objid of bill is required in WaterworksBillService.supdateBalanceForward");		
+		if(! b.objid ) throw new Exception("objid of bill is required in WaterworksBillService.updateBalanceForward");		
 		def bill = vwBillEm.find( [objid: b.objid ]).first();		
 		def p = [ ym: (bill.period.year*12)+bill.period.month ];
 		//calculate balance forward
@@ -77,15 +70,54 @@ class WaterworksBillService {
 		return tot;		
 	}
 
+	//this is for adding single items to the bill. This is used only during initial bill
+	@ProxyMethod
+	public def addBillItem( def o ) {
+		billItemEm.create( o );
+		//check if this billitem is part of this bill. If not update initial balance forward. Update the totals also
+		billItemEm.updateInitialBillBalanceForward([acctid: o.acctid]);
+		updateBillTotals([objid: o.billid ]); 
+	}
+
+	@ProxyMethod
+	public def updateBillItem( def o ) {
+		billItemEm.update( o );
+		billItemEm.updateInitialBillBalanceForward([acctid: o.acctid]);
+		updateBillTotals([objid: o.billid ]); 		
+	}
+
+	@ProxyMethod
+	public def removeBillItem( def o ) {
+		def billItem = billItemEm.find( [objid: o.objid] ).first(); 
+		if( billItem.billed > 0  ) 
+			throw new Exception( "This entry cannot be removed. It is already billed");
+
+		def b = pmtItemEm.find([refid: o.objid]).exists();
+		if( b == true ) {
+			throw new Exception("Cannot delete item because it already has payment reference");
+		}
+
+		billItemEm.find( [objid: billItem.objid] ).delete();
+		if(billItem.recurid !=null) {
+			recurFeeEm.updateAmtBilledByBillItem( [billitemid: billItem.objid, recurringfeeid: billItem.recurid ] );		
+		}
+
+		billItemEm.updateInitialBillBalanceForward([acctid: billItem.acctid]);
+		updateBillTotals( [objid: billItem.billid] );
+	}
+
+
 	@ProxyMethod
 	public def addConsumptionBill(def o) {
-		if(! o.objid ) throw new Exception("objid of bill is required in WaterworksBillService.addConsumptionBill");	
-		def cons = consumptionEm.find( [billid: o.objid ] ).first(); 
-		if(!cons) throw new Exception("There is no consumption made yet for this bill");
-		if(!cons.amount) throw new Exception("There is no amount computed yet for this consumption. Run calculate first in consumption");
-		if(cons.hold == 1) throw new Exception("This consumption is on hold. Please check consumption first");
+		if(! o.objid ) throw new Exception("objid of bill is required in WaterworksBillService.addConsumptionBill");
 
 		def bill = vwBillEm.find( [objid: o.objid] ).first();
+		if( !bill.consumptionid ) throw new Exception("There is no consumption for this bill");		
+
+		def cons = consumptionEm.find( [objid: bill.consumptionid ] ).first(); 
+		if(cons.hold == 1) throw new Exception("This consumption is on hold. Please check consumption first");
+		if(!cons.amount) throw new Exception("There is no amount computed yet for this consumption. Run calculate first in consumption");
+
 		def m = [:];
 		m.acctid = bill.acctid;
 		m.billid = bill.objid;
@@ -99,11 +131,12 @@ class WaterworksBillService {
 		m.system = 1;
 		m.billed = 0;
 		billItemEm.create( m );
+		updateBillTotals( [bill: bill ]);
 	}
 
 	@ProxyMethod
 	public void updateBillFees( def o ) {
-		if(! o.objid ) throw new Exception("objid of bill is required in WaterworksBillService.updateBillFees");
+		if(!o.objid ) throw new Exception("objid or bill is required in WaterworksBillService.updateBillFees");
 		def bill = vwBillEm.find( [objid: o.objid] ).first();
 
 		def pp = [:];
@@ -133,61 +166,31 @@ class WaterworksBillService {
 
 		//also update amount billed for all waterworks_recurring. We will include billid so it will not update other recurring fees not included in bill
 		recurFeeEm.updateAmtBilled( [acctid: bill.acctid, billid: bill.objid ] );
+		updateBillTotals( [bill: bill ]);
 	}
 
-	//this will automatically apply credits to open items of the previous and current bill. If return value is null, the credit was not applied. 
-	//if successful, the new totals will be returned
-	@ProxyMethod
-	public void applyCredits( def o ) {
-		if(! o.objid ) throw new Exception("objid of bill is required in WaterworksBillService.updateBillFees");
-		
-		def bill = vwBillEm.find( [objid: o.objid] ).first();
-		def creditAmt = creditEm.find([acctid: bill.acctid]).select("c:{SUM(dr-cr)}").val();
-		if(!creditAmt) return;
-
-		//check if there are reminaing open items
-		def amtdue = billItemEm.find( [acctid: bill.acctid] ).select("c:{SUM(amount-amtpaid-discount)}").where( "(amount-amtpaid-discount)>0" ).val();
-		if( !amtdue ) return;
-
-		def txndate = bill.billdate;
-		if(!txndate) txndate = bill.period.billdate;
-		if(!txndate) txndate = dateSvc.getBasicServerDate();
-
-		def pp = [acctid: bill.acctid, amtpaid: creditAmt, billid: bill.objid, txndate:txndate, paymentreftype: "credit" ];
-		def b = pmtSvc.getBillPaymentItems( pp );
-
-		def cr = [:];
-		cr.reftype = "credit";
-		cr.refno = bill.billno;
-		cr.refdate = txndate;		
-		cr.acctid = bill.acctid;
-		cr.billid = bill.objid;		
-		cr.refno = bill.billno;
-        cr.billitems = b.billitems;
-        cr.amount = b.amount;
-        pmtSvc.postPayment( cr );
-	} 
+	
 
 	@ProxyMethod
-	public def getBillTotals( def o ) {
-		if(!o.bill && !o.objid ) throw new Exception("objid of bill is required in WaterworksBillService.getBalances");
+	public def updateBillTotals( def o ) {
+		if(!o.bill && !o.objid ) throw new Exception("objid or bill is required in WaterworksBillService.updateBillTotals");
 
 		def bill = o.bill;
 		if( !bill ) {
 			bill =  vwBillEm.find( [objid: o.objid] ).first();
 		}
-		int ym1 = (bill.period.year*12)+bill.period.month;
+		int ym = (bill.period.year*12)+bill.period.month;
 
 		def v = [:];
 		v.totalcredits = creditEm.find([acctid: bill.acctid]).select("c:{SUM(dr-cr)}").val();
 		if(v.totalcredits == null ) v.totalcredits = 0;
 
-		//total unpaid for previous
-		v.totalprevunpaid = billItemEm.find([acctid: bill.acctid]).select("c:{SUM(amount-amtpaid-discount)}").where("(year*12)+month < :ym", [ym:ym1]).val(); 
+		//total unpaid for previous do not include 
+		v.totalprevunpaid = billItemEm.find([acctid: bill.acctid]).select("c:{SUM(amount-amtpaid)}").where("(year*12)+month < :ym", [ym:ym, billid: bill.objid]).val(); 
 		if(v.totalprevunpaid == null) v.totalprevunpaid = 0;
 
 		//total unpaid amount for this bill
-		v.totalbillunpaid = billItemEm.find([billid: bill.objid]).select("c:{SUM(amount-amtpaid-discount)}").val(); 
+		v.totalbillunpaid = billItemEm.find([billid: bill.objid]).select("c:{SUM(amount-amtpaid)}").where("(year*12)+month = :ym", [ym: ym]).val(); 
 		if(v.totalbillunpaid == null) v.totalbillunpaid = 0;
 
 		v.totalunpaid = v.totalprevunpaid + v.totalbillunpaid;
@@ -195,19 +198,32 @@ class WaterworksBillService {
 		//calculate also the total amt of sales and charges for this bill
 		v.balanceforward = bill.balanceforward;
 
-		v.billamount = billItemEm.find([billid: bill.objid]).select("c:{SUM(amount)}").val();
+		v.billamount = billItemEm.find([billid: bill.objid]).select("c:{SUM(amount)}").where(" ((year*12)+month) = :ym  AND (item.itemtype IS NULL OR  item.itemtype NOT IN ('SURCHARGE')) ", [ym:ym]).val();
 		if( v.billamount == null ) v.billamount = 0;
 
+		v.totalsurcharge = billItemEm.find([billid: bill.objid]).select("c:{SUM(amount)}").where("((year*12)+month) = :ym AND item.itemtype IN ('SURCHARGE')", [ym:ym]).val();
+		if( v.totalsurcharge == null ) v.totalsurcharge = 0;
+
 		//get total payments
-		v.totalpayment = pmtEm.find([billid: bill.objid ]).where("reftype = 'cashreceipt' ").select("c:{SUM(amount)}").val();
+		v.totalpayment = pmtEm.find([billid: bill.objid ]).where("reftype = 'cashreceipt' AND voided=0").select("c:{SUM(amount)}").val();
 		if(v.totalpayment == null) v.totalpayment = 0;
 
-		v.totaldiscount = pmtEm.find([billid: bill.objid ]).select("c:{SUM(discount)}").val();
+		v.totaldiscount = pmtEm.find([billid: bill.objid ]).select("c:{SUM(discount)}").where("voided = 0").val();
 		if( v.totaldiscount == null ) v.totaldiscount = 0;
+		v.totaldiscount = Math.abs( v.totaldiscount );
 
-		v.totalamtdue = v.balanceforward + v.billamount - v.totalpayment - v.totaldiscount;
+		v.totalamtdue = v.balanceforward + v.billamount + v.totalsurcharge - v.totalpayment - v.totaldiscount;
+
+		billEm.find( [objid: bill.objid ]).update( v );
 
 		return v;
+	}
+
+	@ProxyMethod
+	public def getBillTotals( def o ) {
+		if(!o.objid ) throw new Exception("objid of bill is required in WaterworksBillService.getBillTotals");
+		def flds = "balanceforward,totalcredits,totalprevunpaid,totalbillunpaid,billamount,totalsurcharge,totalpayment,totaldiscount,totalunpaid,totalamtdue";
+		return vwBillEm.find( [objid: o.objid] ).select(flds).first();
 	}
 
 	@ProxyMethod
@@ -224,6 +240,9 @@ class WaterworksBillService {
 			acctEm.find( [objid: bill.acctid ]).update( [state:"ACTIVE"] ); 
 		}
 	}
+
+
+
 
 
 }

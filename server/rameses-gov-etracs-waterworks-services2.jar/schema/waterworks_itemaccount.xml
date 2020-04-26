@@ -3,7 +3,7 @@
 		<field name="objid" primary="true" visible="true" hidden="false"  searchable="true"/>
 		<field name="title"  searchable="true"/>
 
-		<!-- WATERSALES,SURCHARGE,INTEREST,OTHERFEE,ADJ-->
+		<!-- WATER,SURCHARGE,INTEREST,OTHERFEE,ADJ-->
 		<field name="itemtype" />
 		<field name="system" />
 		<field name="sortorder" type="integer"/>		

@@ -596,7 +596,6 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         schemaList5.setHandlerName("consumptionList");
         schemaList5.setOrderBy("year DESC, month DESC");
         schemaList5.setSchemaName("vw_waterworks_consumption");
-        schemaList5.setAllowDelete(true);
         schemaList5.setAllowOpen(false);
         xPanel6.add(schemaList5, java.awt.BorderLayout.CENTER);
 
@@ -765,7 +764,6 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         schemaList1.setOrderBy("year DESC, month DESC");
         schemaList1.setQueryName("ledgerQuery");
         schemaList1.setSchemaName("waterworks_billitem");
-        schemaList1.setAllowDelete(true);
         schemaList1.setAllowOpen(false);
         xPanel2.add(schemaList1, java.awt.BorderLayout.CENTER);
 

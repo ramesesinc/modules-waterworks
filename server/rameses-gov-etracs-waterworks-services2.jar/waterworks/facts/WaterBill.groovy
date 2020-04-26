@@ -8,6 +8,8 @@ public class WaterBill {
 	int month;
 	double balanceforward;
 
+	double totalunpaid = 0;
+
 	Date fromdate;
 	Date todate;
 	Date billdate;
@@ -16,8 +18,6 @@ public class WaterBill {
 	Date expirydate;
 
 	Date validitydate;
-
-	boolean discountallowed = true;
 
 	public WaterBill(){;}
 
@@ -34,9 +34,13 @@ public class WaterBill {
 			if( period.billexpirydate) this.expirydate = period.billexpirydate ;
 		}
 		this.balanceforward = bill.balanceforward;
-		if( bill.discountallowed !=null ) {
-			this.discountallowed = bill.discountallowed;
-		}		
+		if(bill.totalunpaid !=null) {
+			totalunpaid = bill.totalunpaid;
+		}
+	}
+
+	public int getYearmonth() {
+		return (year*12)+month;
 	}
 
 }

@@ -63,6 +63,16 @@
             <Property name="captionWidth" type="int" value="100"/>
           </Properties>
           <SubComponents>
+            <Component class="com.rameses.rcp.control.XComboBox" name="xComboBox1">
+              <Properties>
+                <Property name="caption" type="java.lang.String" value="Year Month"/>
+                <Property name="expression" type="java.lang.String" value=" #{item.monthname }  #{ item.year }"/>
+                <Property name="items" type="java.lang.String" value="yearMonths"/>
+                <Property name="name" type="java.lang.String" value="yearMonth" noResource="true"/>
+                <Property name="visibleWhen" type="java.lang.String" value="#{ current == false }"/>
+                <Property name="required" type="boolean" value="true"/>
+              </Properties>
+            </Component>
             <Component class="com.rameses.rcp.control.XLookupField" name="xLookupField1">
               <Properties>
                 <Property name="caption" type="java.lang.String" value="Item"/>
@@ -73,22 +83,6 @@
                   <Dimension value="[0, 20]"/>
                 </Property>
                 <Property name="required" type="boolean" value="true"/>
-              </Properties>
-            </Component>
-            <Component class="com.rameses.rcp.control.XIntegerField" name="xIntegerField1">
-              <Properties>
-                <Property name="caption" type="java.lang.String" value="Year"/>
-                <Property name="name" type="java.lang.String" value="entity.year" noResource="true"/>
-                <Property name="visibleWhen" type="java.lang.String" value="#{ current == false }"/>
-                <Property name="required" type="boolean" value="true"/>
-              </Properties>
-            </Component>
-            <Component class="com.rameses.enterprise.components.MonthList" name="monthList1">
-              <Properties>
-                <Property name="caption" type="java.lang.String" value="Month"/>
-                <Property name="name" type="java.lang.String" value="entity.month" noResource="true"/>
-                <Property name="required" type="boolean" value="true"/>
-                <Property name="visibleWhen" type="java.lang.String" value="#{ current == false }"/>
               </Properties>
             </Component>
             <Component class="com.rameses.rcp.control.XDecimalField" name="xDecimalField2">

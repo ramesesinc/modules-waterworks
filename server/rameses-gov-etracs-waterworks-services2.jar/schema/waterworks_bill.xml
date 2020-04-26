@@ -24,5 +24,14 @@
 
 		<field name="step"/>
 		<field name="consumptionid"/>
+
+		<field name="totalcredits" type="decimal" />
+		<field name="totalprevunpaid" type="decimal" />
+		<field name="totalbillunpaid" type="decimal" />
+		<field name="billamount" type="decimal" />
+		<field name="totalsurcharge" type="decimal" />
+		<field name="totalpayment" type="decimal" />
+		<field name="totaldiscount" type="decimal" />
+
 	</element>
 </schema>

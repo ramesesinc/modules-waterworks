@@ -81,6 +81,7 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
         xFormPanel1 = new com.rameses.rcp.control.XFormPanel();
         xLabel30 = new com.rameses.rcp.control.XLabel();
         xLabel32 = new com.rameses.rcp.control.XLabel();
+        xLabel40 = new com.rameses.rcp.control.XLabel();
         xFormPanel2 = new com.rameses.rcp.control.XFormPanel();
         xLabel29 = new com.rameses.rcp.control.XLabel();
         xLabel31 = new com.rameses.rcp.control.XLabel();
@@ -469,16 +470,23 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
         xLabel32.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel1.add(xLabel32);
 
-        xFormPanel2.setCaptionWidth(100);
+        xLabel40.setCaption("Total Surcharge");
+        xLabel40.setExpression("#{ entity.totalsurcharge } ");
+        xLabel40.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        xLabel40.setNumberFormat("#,##0.00;(0.00)");
+        xLabel40.setPreferredSize(new java.awt.Dimension(0, 20));
+        xFormPanel1.add(xLabel40);
 
-        xLabel29.setCaption("Total Credits");
+        xFormPanel2.setCaptionWidth(140);
+
+        xLabel29.setCaption("Unapplied Credits");
         xLabel29.setExpression("#{ entity.totalcredits } ");
         xLabel29.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         xLabel29.setNumberFormat("#,##0.00;(0.00)");
         xLabel29.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel2.add(xLabel29);
 
-        xLabel31.setCaption("Total Unpaid");
+        xLabel31.setCaption("Unpaid Amt");
         xLabel31.setExpression("#{ entity.totalunpaid } ");
         xLabel31.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         xLabel31.setNumberFormat("#,##0.00;(0.00)");
@@ -529,8 +537,10 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
             .addGroup(pnlFootLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlFootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(xFormPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(xFormPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlFootLayout.createSequentialGroup()
+                        .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(xFormPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(pnlFootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlFootLayout.createSequentialGroup()
@@ -1216,6 +1226,7 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLabel xLabel38;
     private com.rameses.rcp.control.XLabel xLabel39;
     private com.rameses.rcp.control.XLabel xLabel4;
+    private com.rameses.rcp.control.XLabel xLabel40;
     private com.rameses.rcp.control.XLabel xLabel41;
     private com.rameses.rcp.control.XLabel xLabel42;
     private com.rameses.rcp.control.XLabel xLabel43;

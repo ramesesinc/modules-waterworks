@@ -21,6 +21,9 @@ class WaterworksBillingRuleService {
  	@DataContext("waterworks_itemaccount")
 	def itemAcctEm;
 
+	@DataContext("waterworks_itemaccount_mapping")
+	def acctMapEm;
+
 	private def buildFacts( def o, def billitems, def recurItems) {
 		def acct = o.account;
 		def bill = o.bill;
@@ -45,7 +48,7 @@ class WaterworksBillingRuleService {
 			wbi.month = it.month;
 			wbi.billcode = it.item.objid;
 			wbi.sortorder = it.item.sortorder;
-			wbi.amount = it.amount - it.amtpaid - it.discount;
+			wbi.amount = it.amount - it.amtpaid;
 			wbi.principal = it.amount;
 			facts << wbi;	
 		}
@@ -67,7 +70,7 @@ class WaterworksBillingRuleService {
 		def ym = (bill.period.year*12)+bill.period.month;
 
 		//these are called to calculate the surcharge. Include only items that have balances
-		def pastItems = billItemEm.find( [acctid: acct.objid ] ).where("(amount-amtpaid-discount) > 0 AND ((year*12)+month) < :yearmonth", [yearmonth: ym]).list();
+		def pastItems = billItemEm.find( [acctid: acct.objid ] ).where("(amount-amtpaid) > 0 AND ((year*12)+month) < :yearmonth", [yearmonth: ym]).list();
 
 		//for current include all items for the bill whether paid or unpaid. This must be included so we can determine if we need to charge or not. avoid duplicates.
 		def currItems = billItemEm.find( [billid:bill.objid] ).list();
@@ -96,7 +99,7 @@ class WaterworksBillingRuleService {
 		def amtpaid = o.amtpaid;
 		def ym = (bill.period.year*12)+bill.period.month;
 
-		def bitems = billItemEm.find( [acctid: acct.objid ] ).where("(amount-amtpaid-discount) > 0 AND ((year*12)+month) <= :yearmonth", [yearmonth: ym]).list();		
+		def bitems = billItemEm.find( [acctid: acct.objid ] ).where("(amount-amtpaid) > 0 AND ((year*12)+month) <= :yearmonth", [yearmonth: ym]).list();		
 		def fb = buildFacts( o, bitems, null );
 
 		def req = [rulename:'waterworkspayment'];
@@ -109,7 +112,18 @@ class WaterworksBillingRuleService {
 		def items = [];
 		fb.facts.findAll{ it instanceof WaterBillItem }.each {
 			def m = it.toMap();
+			def account = m.item;		
 			m.item = itemAcctEm.find( [objid: m.billcode ] ).first();
+
+			//if account was not mapped. map to the first account found in acctmapping
+			if( !account ) {
+				m.account = acctMapEm.find( [parentid: m.billcode] ).first();
+			}
+			else {
+				m.account = acctMapEm.find( [objid: account.objid ] ).first();
+			}
+			if( !m.account ) 
+				throw new Exception("Please include a mapping for " + m.billcode );
 			m.reftype = "waterworks_billitem";
 			items << m;
 		}
@@ -117,32 +131,41 @@ class WaterworksBillingRuleService {
 		def credit = fb.facts.find{ it instanceof CreditBillItem };
 		if(credit) {
 			def m = [:];
+			def account = m.item;	
 			m.item = itemAcctEm.find( [objid:  credit.billcode ] ).first(); 
 			m.reftype = "waterworks_credit";
 			m.amount = credit.amount;
 			m.discount = 0;
 			m.total = credit.amount;
+
+			if( !account ) {
+				m.account = acctMapEm.find( [parentid: credit.billcode] ).first();
+			}
+			else {
+				m.account = acctMapEm.find( [objid: account.objid ] ).first();
+			}
+			if( !m.account ) 
+				throw new Exception("Please include a mapping for " + m.billcode );
+
 			items << m;
 		}
 
 		def cashitems = [];
-		if(o.include_items == true ) {
-			def grps = items.groupBy{ it.item.item };
-			grps.each { k,v->
-				def itm = [:];
-				itm.item = k;
-				itm.amount = v.sum{it.amount};
-				
-				def m1 = v.min{ it.yearmonth };
-				def m2 = v.max{ it.yearmonth };
-				itm.remarks = m1.monthname + " " + m1.year + " to " + m2.monthname + " " + m2.year; 
-				cashreceiptitems << itm;
-			}
+		def grps = items.groupBy{ it.account };
+		grps.each { k,v->
+			def itm = [:];
+			itm.item = k;
+			itm.amount = v.sum{it.amount};
+			//def m1 = v.min{ it.yearmonth };
+			//def m2 = v.max{ it.yearmonth };
+			//itm.remarks = m1.monthname + " " + m1.year + " to " + m2.monthname + " " + m2.year; 
+			cashitems << itm;
 		}
+
 		def res = [:];
 		res.billitems = items;
 		res.items = cashitems;
-		res.amount = items.sum{ it.amount };
+		res.amount = items.sum{ it.amount - Math.abs(it.discount) };
 		return res;
 	}
 

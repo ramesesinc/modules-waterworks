@@ -23,10 +23,6 @@ public class WaterBillItem extends BillItem {
 		if(objid) m.objid = objid;
 		//we have to fix this. if discount is negative it should be positive
 		if( m.discount == null ) m.discount = 0;
-		m.discount = Math.abs( m.discount );
-		if(m.discount>0) {
-			m.amount = m.amount - m.discount;	
-		}
 		m.monthname = getMonthname();
 		if( recurringfeeid ) m.recurringfeeid = recurringfeeid;
 		return m;
@@ -49,6 +45,11 @@ public class WaterBillItem extends BillItem {
 			return monthNames[ idx ]; 
 		}
 		return null; 
+    }
+
+    //this is a workaround
+    public int getYearmonth() {
+    	return (year*12)+month;
     }
 
 }	

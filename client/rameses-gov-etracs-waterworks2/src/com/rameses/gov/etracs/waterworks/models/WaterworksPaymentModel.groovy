@@ -46,6 +46,7 @@ class WaterworksPaymentModel extends PageFlowController  {
         def b = pmtSvc.getBillPaymentItems( pp );
         entity.billitems = b.billitems;
         entity.amount = b.amount;
+        entity.items = b.items;
         itemHandler.reload();
     }
     
@@ -64,6 +65,11 @@ class WaterworksPaymentModel extends PageFlowController  {
         if(saveHandler) saveHandler();
         return "_close";
     }
+
+    public def viewReceipt() {
+        return Inv.lookupOpener( "cashreceipt_preview", [entity: entity ] );
+    }
+
 
     
 }
