@@ -51,6 +51,7 @@ class WaterworksBillStatementReportInterceptor {
 			bill.history << m;
 		}
 		bill.history = bill.history.sort{ it.monthindex };
+
 		result.data = bill;
 	}
 

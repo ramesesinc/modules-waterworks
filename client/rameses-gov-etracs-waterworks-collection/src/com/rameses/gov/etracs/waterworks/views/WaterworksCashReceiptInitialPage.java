@@ -36,10 +36,8 @@ public class WaterworksCashReceiptInitialPage extends javax.swing.JPanel {
         xFormPanel1 = new com.rameses.rcp.control.XFormPanel();
         xLabel1 = new com.rameses.rcp.control.XLabel();
         xRadio1 = new com.rameses.rcp.control.XRadio();
-        xRadio2 = new com.rameses.rcp.control.XRadio();
         xRadio3 = new com.rameses.rcp.control.XRadio();
         xTextField2 = new com.rameses.rcp.control.XTextField();
-        xDecimalField1 = new com.rameses.rcp.control.XDecimalField();
 
         xLabel1.setExpression("Select a Txn type to pay");
         xLabel1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
@@ -52,13 +50,6 @@ public class WaterworksCashReceiptInitialPage extends javax.swing.JPanel {
         xRadio1.setShowCaption(false);
         xRadio1.setText("Regular Billing");
         xFormPanel1.add(xRadio1);
-
-        xRadio2.setName("pmttxntype"); // NOI18N
-        xRadio2.setOptionValue("deposit");
-        xRadio2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        xRadio2.setShowCaption(false);
-        xRadio2.setText("Deposit");
-        xFormPanel1.add(xRadio2);
 
         xRadio3.setName("pmttxntype"); // NOI18N
         xRadio3.setOptionValue("newapplication");
@@ -76,16 +67,6 @@ public class WaterworksCashReceiptInitialPage extends javax.swing.JPanel {
         xTextField2.setPreferredSize(new java.awt.Dimension(250, 30));
         xTextField2.setRequired(true);
         xFormPanel1.add(xTextField2);
-
-        xDecimalField1.setCaption("Amt to deposit");
-        xDecimalField1.setDepends(new String[] {"pmttxntype"});
-        xDecimalField1.setName("depositAmt"); // NOI18N
-        xDecimalField1.setVisibleWhen("#{ pmttxntype == 'deposit' }");
-        xDecimalField1.setCaptionFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        xDecimalField1.setCaptionWidth(150);
-        xDecimalField1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        xDecimalField1.setRequired(true);
-        xFormPanel1.add(xDecimalField1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -107,11 +88,9 @@ public class WaterworksCashReceiptInitialPage extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.rameses.rcp.control.XDecimalField xDecimalField1;
     private com.rameses.rcp.control.XFormPanel xFormPanel1;
     private com.rameses.rcp.control.XLabel xLabel1;
     private com.rameses.rcp.control.XRadio xRadio1;
-    private com.rameses.rcp.control.XRadio xRadio2;
     private com.rameses.rcp.control.XRadio xRadio3;
     private com.rameses.rcp.control.XTextField xTextField2;
     // End of variables declaration//GEN-END:variables

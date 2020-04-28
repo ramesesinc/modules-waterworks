@@ -105,66 +105,78 @@ class WaterworksBillingRuleService {
 		def req = [rulename:'waterworkspayment'];
 		req.factBuilder = fb;
 		req.params = [amtpaid : (o.amtpaid==null)? 0 : o.amtpaid ];
-		if(o.include_items) req.include_items = o.include_items;
 
 		ruleSvc.execute(req);
 
 		def items = [];
 		fb.facts.findAll{ it instanceof WaterBillItem }.each {
 			def m = it.toMap();
-			def account = m.item;		
+			m.account = m.remove("item");
 			m.item = itemAcctEm.find( [objid: m.billcode ] ).first();
-
-			//if account was not mapped. map to the first account found in acctmapping
-			if( !account ) {
-				m.account = acctMapEm.find( [parentid: m.billcode] ).first();
-			}
-			else {
-				m.account = acctMapEm.find( [objid: account.objid ] ).first();
-			}
-			if( !m.account ) 
-				throw new Exception("Please include a mapping for " + m.billcode );
 			m.reftype = "waterworks_billitem";
 			items << m;
 		}
 
-		def credit = fb.facts.find{ it instanceof CreditBillItem };
-		if(credit) {
-			def m = [:];
-			def account = m.item;	
-			m.item = itemAcctEm.find( [objid:  credit.billcode ] ).first(); 
-			m.reftype = "waterworks_credit";
-			m.amount = credit.amount;
-			m.discount = 0;
-			m.total = credit.amount;
-
-			if( !account ) {
-				m.account = acctMapEm.find( [parentid: credit.billcode] ).first();
+		//check if we need to include credits
+		if( o.include_credits == null  ) o.include_credits = true;
+		if( o.include_credits == true ) {
+			def credit = fb.facts.find{ it instanceof CreditBillItem };
+			if(credit) {
+				def m = [:];
+				m.account = m.remove("item");
+				m.item = itemAcctEm.find( [objid:  credit.billcode ] ).first(); 
+				m.reftype = "waterworks_credit";
+				m.amount = credit.amount;
+				m.discount = 0;
+				m.total = credit.amount;
+				items << m;
 			}
-			else {
-				m.account = acctMapEm.find( [objid: account.objid ] ).first();
+		} 
+
+		def rctItems = [];
+		if( o.include_items == null ) o.include_items = true;
+		if(o.include_items == true ) {
+			def findAcct = { itm->
+				def vacct = null;
+				if( !itm.account ) {
+					vacct = acctMapEm.find( [parentid: itm.item.objid] ).first();
+				}
+				else {
+					vacct = acctMapEm.find( [objid: itm.account.objid ] ).first();
+				}
+				if( !vacct ) 
+					throw new Exception("Please include a mapping for " + itm.item.objid );
+				return vacct;
 			}
-			if( !m.account ) 
-				throw new Exception("Please include a mapping for " + m.billcode );
 
-			items << m;
-		}
+			items.each {
+				it.account = findAcct( it );
+			}
+			def grps = items.groupBy{ it.account };
+			grps.each { k,v->
+				def itm = [:];
+				itm.item = k;
+				itm.amount = v.sum{it.amount};
+				//def m1 = v.min{ it.yearmonth };
+				//def m2 = v.max{ it.yearmonth };
+				//itm.remarks = m1.monthname + " " + m1.year + " to " + m2.monthname + " " + m2.year; 
+				rctItems << itm;
+			}
+			fb.facts.findAll{ it instanceof DiscountItem }.each {
+				def m = it.toMap();
+				m.account =  m.remove("item");
+				m.item = [objid: m.billcode ]; 
 
-		def cashitems = [];
-		def grps = items.groupBy{ it.account };
-		grps.each { k,v->
-			def itm = [:];
-			itm.item = k;
-			itm.amount = v.sum{it.amount};
-			//def m1 = v.min{ it.yearmonth };
-			//def m2 = v.max{ it.yearmonth };
-			//itm.remarks = m1.monthname + " " + m1.year + " to " + m2.monthname + " " + m2.year; 
-			cashitems << itm;
+				def d = [:];
+				d.amount = m.amount;
+				d.item = findAcct( m );
+				rctItems << d; 
+			}
 		}
 
 		def res = [:];
 		res.billitems = items;
-		res.items = cashitems;
+		res.items = rctItems;
 		res.amount = items.sum{ it.amount - Math.abs(it.discount) };
 		return res;
 	}

@@ -1,25 +1,39 @@
-<workunit>
+<workunit schemaName="vw_waterworks_bill" entitySchemaName="waterworks_bill"
+        allowCreate="false" allowEdit="false" allowDelete="false">
     <invokers>
         
         <invoker type="vw_waterworks_account:form:formActions" 
-                 caption="Generate Bill" 
-                 visibleWhen="#{ entity.state=='ACTIVE'  &amp;&amp; mode=='read' &amp;&amp; entity.bill?.objid==null   }"
-                 action="generateBill" target="popup"/>    
-
-        <invoker type="vw_waterworks_account:form:formActions" 
                  caption="View Current Bill" 
-                 visibleWhen="#{ mode=='read' &amp;&amp; entity.bill?.objid!=null &amp;&amp; entity.bill?.initial==0   }"
-                 action="open" target="popup"/>
+                 visibleWhen="#{ mode=='read' &amp;&amp; entity.bill?.objid!=null &amp;&amp; entity.bill?.state != 'DRAFT'  }" 
+                 target="popup"
+                 index="200"
+                 action="openBillFromAccount" /> 
 
-        <!-- ACTIONS -->
-        <!--
-        <invoker type="formActions" caption="Rebill" action="rebill" visibleWhen="#{entity.state == 'UNBILLED'}" />  
-        <invoker type="formActions" caption="Recalc" action="recalc" />  
-        <invoker type="formActions" caption="Edit Reading" action="editReading" />
-        <invoker type="formActions" caption="Edit Volume" action="editVolume" />
-        <invoker type="formActions" caption="View Account" action="viewAccount" visibleWhen="#{mode != 'initial' }"/>                
-        <invoker type="formActions" caption="View History" action="viewHistory" visibleWhen="#{mode != 'initial' }"/>  
-        -->
+
+        <invoker type="vw_waterworks_account:form:billActions" 
+                 caption="Generate Next Bill" 
+                 visibleWhen="#{ mode=='read' &amp;&amp; entity.bill?.objid!=null &amp;&amp; entity.bill?.state != 'DRAFT'  }" 
+                 target="popup"
+                 index="200"
+                 action="createFromAccount" /> 
+
+        <invoker type="vw_waterworks_bill:open" 
+                 caption="View Bill" 
+                 target="popup"
+                 action="open" />          
+
+        <!-- this hooks to formActions-->
+        <invoker type="formActions" caption="Close" action="_close" immediate="true" />
+
+
+        <!-- BILL ACTIONS -->
+        <invoker type="billActions" caption="Apply Credits" action="applyCredits" 
+            visibleWhen="#{entity.totalcredits &gt; 0 &amp;&amp; entity.totalunpaid &gt; 0 }"
+            immediate="true" />
+
+        <invoker type="billActions" caption="Edit Reading" action="editReading" 
+            visibleWhen="#{ readingPosted == false }"
+            immediate="true" />
         
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillModel" />

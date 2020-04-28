@@ -8,7 +8,7 @@
                  reportId="waterworks_bill" 
                  reportName="tagbilaran/waterworks/reports/tagbilaran_water_batch_billing.jasper"
                  txnid="#{entity.objid}" 
-                 visibleWhen="#{ entity.initial == 1 &amp;&amp; viewmode == 'summary' }"/>
+                 visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; viewmode == 'summary' }"/>
 
         <invoker type="vw_waterworks_bill:form:formActions" 
                  caption="View Batch Bill" 
@@ -18,6 +18,6 @@
                  reportId="waterworks_bill" 
                  reportName="tagbilaran/waterworks/reports/tagbilaran_water_batch_billing.jasper"
                  txnid="#{entity.objid}" 
-                 visibleWhen="#{ mode.matches('view') }"/>
+                 visibleWhen="#{ entity.state != 'DRAFT' }"/>
     </invokers> 
 </workunit>

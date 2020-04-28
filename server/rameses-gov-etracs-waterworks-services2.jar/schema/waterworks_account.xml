@@ -9,6 +9,9 @@
 		<field name="remarks" />
 		<field name="applicationid" required="false"/>
 		<field name="billid" />
+
+		<field name="lng" />
+		<field name="lat" />
 	</element>
 
 </schema>

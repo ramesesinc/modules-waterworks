@@ -4,6 +4,7 @@
 		<field name="billno" searchable="true"/> 
 		<field name="billrefno" searchable="true"/> 
 		<field name="state" /> 
+		<field name="txnmode" /> 
 
 		<field name="batchid" /> 
 		<field name="acctid" /> 

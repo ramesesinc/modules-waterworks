@@ -44,7 +44,7 @@
 			<key field="classificationid" target="objid"/>
 		</complex>	
 
-		<complex name="bill" ref="waterworks_bill" jointype="many-to-one" required="false" includefields="objid,billno,state,initial">
+		<complex name="bill" ref="vw_waterworks_bill" jointype="many-to-one" required="false" includefields="objid,billno,state,initial,txnmode,totalunpaid,totalcredits,totalamtdue,period.year,period.month">
 			<key field="billid" target="objid"/> 
 		</complex>
 

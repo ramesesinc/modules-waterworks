@@ -8,7 +8,7 @@
                  reportId="waterworks_bill" 
                  reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_billing.jasper"
                  txnid="#{entity.objid}" 
-                 visibleWhen="#{ entity.initial == 1 &amp;&amp; viewmode == 'summary' }"/>
+                 visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; viewmode == 'summary' }"/>
 
         <invoker type="vw_waterworks_bill:form:formActions" 
                  caption="View Statement" 
@@ -18,19 +18,19 @@
                  reportId="waterworks_bill" 
                  reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_statement.jasper"
                  txnid="#{ entity.objid }" 
-                 visibleWhen="#{ entity.initial == 1 &amp;&amp; viewmode == 'summary' }"/>
+                 visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; viewmode == 'summary' }"/>
 
-
+        <!-- bill from view bill -->         
         <invoker type="vw_waterworks_bill:form:formActions" 
-                 caption="View Bill" 
+                 caption="Print Initial Bill" 
                  target="self" 
                  action="preview"
                  index="50"
                  reportId="waterworks_bill" 
                  reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_billing.jasper"
                  txnid="#{entity.objid}" 
-                 visibleWhen="#{ mode.matches('view') }"/>
-        
+                 visibleWhen="#{ entity.state != 'DRAFT' }"/>
+
         <invoker type="vw_waterworks_bill:form:formActions" 
                  caption="View Statement" 
                  target="self" 
@@ -39,7 +39,7 @@
                  reportId="waterworks_bill" 
                  reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_statement.jasper"
                  txnid="#{ entity.objid }" 
-                 visibleWhen="#{ mode.matches('view') }"/>
-        
+                 visibleWhen="#{ entity.state != 'DRAFT' }"/>
+
     </invokers> 
 </workunit>

@@ -11,6 +11,9 @@
 
 		<field name="barangay_objid" />
 		<field name="barangay_name" />
+
+		<field name="lng" />
+		<field name="lat" />
 	</element>
 
 </schema>

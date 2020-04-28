@@ -15,7 +15,7 @@ import java.text.*;
 * 4 = apply credits and payments 
 * 5 = final view
 **/
-public class WaterworksBillInitialModel extends CrudFormModel {
+public class WaterworksBillCaptureModel extends CrudFormModel {
 
     @Service("WaterworksBillService")
     def billSvc;
@@ -71,7 +71,12 @@ public class WaterworksBillInitialModel extends CrudFormModel {
             throw new Exception("billid is not specified in account");
         entity = [objid: caller.entity.bill.objid ];
         open();
-        viewmode = 'edit';
+        if( entity.state != 'DRAFT' ) {
+            viewSummary();
+        }
+        else {
+            viewmode = 'edit';
+        }
         refreshView();
     }
     
@@ -113,7 +118,7 @@ public class WaterworksBillInitialModel extends CrudFormModel {
 
     def cancelBill() {
         if(!MsgBox.confirm("This will cancel this bill. All data related to this bill will be lost. Proceed?")) return null;
-        persistenceService.removeEntity( [_schemaname: "waterworks_bill", objid: entity.objid ] );
+        billSvc.cancelBill( [objid: entity.objid]);
         caller.entity.bill = null;
         caller.reloadEntity();
         return "_close";
@@ -146,13 +151,13 @@ public class WaterworksBillInitialModel extends CrudFormModel {
     **********************************************/
     public def addCredit() {
         def h = { o->
-            def pmt = [_schemaname:"waterworks_payment"];
-            pmt.reftype = "beginbalance";
+            def pmt = [:];
+            pmt.billid = entity.objid;
             pmt.acctid = entity.acctid;
             pmt.refno = entity.billno;
             pmt.refdate = entity.period.fromdate;
             pmt.amount = o;
-            persistenceService.create( pmt );
+            billSvc.addBeginCredit( pmt );
             updateTotals();            
             buildItemList();
         }
@@ -161,10 +166,7 @@ public class WaterworksBillInitialModel extends CrudFormModel {
 
     public void removeCredit() {
         if(!MsgBox.confirm("You are about to remove the credit payment")) return;
-        def pmt = [_schemaname:"waterworks_payment"];
-        pmt.acctid = entity.acctid;
-        pmt.reftype = "beginbalance";
-        persistenceService.removeEntity( pmt );
+        billSvc.removeBeginCredit( [billid: entity.objid ] );
         updateTotals();        
         buildItemList();
     }
@@ -269,17 +271,17 @@ public class WaterworksBillInitialModel extends CrudFormModel {
 
     //rules for calculating other fees
     void updateBillFees() {
-        def dtxn = null;
-        def h = { o->
-            dtxn = o;
-        }
-        Modal.show( "date:prompt", [title: "Enter Txn Date", handler: h ] );
-        if(!dtxn) return;
-        billSvc.updateBillFees( [objid: entity.objid, txndate: dtxn ]);
+        billSvc.updateBillFees( [objid: entity.objid ]);
         updateTotals(); 
         buildItemList();
     }
     
+    void updatePenaltyFees() {
+        billSvc.updatePenaltyFees( [objid: entity.objid ]);
+        updateTotals(); 
+        buildItemList();
+    }    
+
     void addConsumptionBill() {
         if( !MsgBox.confirm("Please make sure that there are no entries yet with item WATER_SALES. Proceed?")) return;
         billSvc.addConsumptionBill( [objid: entity.objid ]);
@@ -325,6 +327,7 @@ public class WaterworksBillInitialModel extends CrudFormModel {
     void updatePmtList() {
         def m = [_schemaname: "waterworks_payment"];
         m.findBy = [billid: entity.objid];
+        m.where = [" NOT(reftype = 'beginbalance') "];
         pmtList = queryService.getList(m);
         pmtListHandler.reload();
     }

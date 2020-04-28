@@ -13,12 +13,12 @@ import com.rameses.rcp.ui.annotations.Template;
  * @author elmonazareno
  */
 @Template(FormPage.class)
-public class WaterworksBillInitialPage extends javax.swing.JPanel {
+public class WaterworksBillCapturePage extends javax.swing.JPanel {
 
     /**
      * Creates new form WaterworksBillInitialPage
      */
-    public WaterworksBillInitialPage() {
+    public WaterworksBillCapturePage() {
         initComponents();
     }
 
@@ -111,6 +111,7 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
         xButton3 = new com.rameses.rcp.control.XButton();
         xButton10 = new com.rameses.rcp.control.XButton();
         xButton9 = new com.rameses.rcp.control.XButton();
+        xButton12 = new com.rameses.rcp.control.XButton();
         xDataTable3 = new com.rameses.rcp.control.XDataTable();
         pnlPayment = new com.rameses.rcp.control.XPanel();
         jPanel14 = new javax.swing.JPanel();
@@ -239,7 +240,7 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
                 , new Object[]{"visible", true}
                 , new Object[]{"visibleWhen", null}
                 , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
-                , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00;(0.00)", -1.0, -1.0, false, 2)}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00;(#,##0.00)", -1.0, -1.0, false, 2)}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
                 new Object[]{"name", null}
@@ -326,7 +327,7 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
         xLabel39.setExpression("#{ entity.totalamtdue }");
         xLabel39.setCaptionFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         xLabel39.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        xLabel39.setNumberFormat("#,##0.00");
+        xLabel39.setNumberFormat("#,##0.00;(#,##0.00)");
         xFormPanel12.add(xLabel39);
 
         javax.swing.GroupLayout xPanel3Layout = new javax.swing.GroupLayout(xPanel3);
@@ -423,7 +424,7 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
         xLabel27.setCaptionFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         xLabel27.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xLabel27.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        xLabel27.setNumberFormat("#,##0.00");
+        xLabel27.setNumberFormat("#,##0.00;(#,##0.00)");
         xLabel27.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel8.add(xLabel27);
 
@@ -459,21 +460,21 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
         xLabel30.setCaption("Balance Forward");
         xLabel30.setExpression("#{ entity.balanceforward } ");
         xLabel30.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        xLabel30.setNumberFormat("#,##0.00;(0.00)");
+        xLabel30.setNumberFormat("#,##0.00;(#,##0.00)");
         xLabel30.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel1.add(xLabel30);
 
         xLabel32.setCaption("This Bill Amount");
         xLabel32.setExpression("#{ entity.billamount } ");
         xLabel32.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        xLabel32.setNumberFormat("#,##0.00;(0.00)");
+        xLabel32.setNumberFormat("#,##0.00;(#,##0.00)");
         xLabel32.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel1.add(xLabel32);
 
         xLabel40.setCaption("Total Surcharge");
         xLabel40.setExpression("#{ entity.totalsurcharge } ");
         xLabel40.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        xLabel40.setNumberFormat("#,##0.00;(0.00)");
+        xLabel40.setNumberFormat("#,##0.00;(#,##0.00)");
         xLabel40.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel1.add(xLabel40);
 
@@ -482,14 +483,14 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
         xLabel29.setCaption("Unapplied Credits");
         xLabel29.setExpression("#{ entity.totalcredits } ");
         xLabel29.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        xLabel29.setNumberFormat("#,##0.00;(0.00)");
+        xLabel29.setNumberFormat("#,##0.00;(#,##0.00)");
         xLabel29.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel2.add(xLabel29);
 
         xLabel31.setCaption("Unpaid Amt");
         xLabel31.setExpression("#{ entity.totalunpaid } ");
         xLabel31.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        xLabel31.setNumberFormat("#,##0.00;(0.00)");
+        xLabel31.setNumberFormat("#,##0.00;(#,##0.00)");
         xLabel31.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel2.add(xLabel31);
 
@@ -498,21 +499,21 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
         xLabel41.setCaption("Total Discount");
         xLabel41.setExpression("#{ entity.totaldiscount } ");
         xLabel41.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        xLabel41.setNumberFormat("#,##0.00;(0.00)");
+        xLabel41.setNumberFormat("#,##0.00;(#,##0.00)");
         xLabel41.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel4.add(xLabel41);
 
         xLabel43.setCaption("Total Cash Payments");
         xLabel43.setExpression("#{ entity.totalpayment } ");
         xLabel43.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        xLabel43.setNumberFormat("#,##0.00;(0.00)");
+        xLabel43.setNumberFormat("#,##0.00;(#,##0.00)");
         xLabel43.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel4.add(xLabel43);
 
         xLabel42.setCaption("Bill Amount Due");
         xLabel42.setExpression("#{ entity.totalamtdue } ");
         xLabel42.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        xLabel42.setNumberFormat("#,##0.00;(0.00)");
+        xLabel42.setNumberFormat("#,##0.00;(#,##0.00)");
         xLabel42.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel4.add(xLabel42);
 
@@ -525,12 +526,12 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
                 .addComponent(xFormPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(163, Short.MAX_VALUE))
+                .addContainerGap(157, Short.MAX_VALUE))
             .addGroup(pnlFootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlFootLayout.createSequentialGroup()
                     .addGap(16, 16, 16)
                     .addComponent(xFormPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(721, Short.MAX_VALUE)))
+                    .addContainerGap(715, Short.MAX_VALUE)))
         );
         pnlFootLayout.setVerticalGroup(
             pnlFootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -834,6 +835,10 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
         xButton9.setName("updateBillFees"); // NOI18N
         xButton9.setText("Run Billing Fees");
         jPanel6.add(xButton9);
+
+        xButton12.setName("updatePenaltyFees"); // NOI18N
+        xButton12.setText("Run Penalty Fees");
+        jPanel6.add(xButton12);
 
         xDataTable3.setHandler("listHandler");
         xDataTable3.setItems("");
@@ -1171,6 +1176,7 @@ public class WaterworksBillInitialPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XButton xButton1;
     private com.rameses.rcp.control.XButton xButton10;
     private com.rameses.rcp.control.XButton xButton11;
+    private com.rameses.rcp.control.XButton xButton12;
     private com.rameses.rcp.control.XButton xButton17;
     private com.rameses.rcp.control.XButton xButton18;
     private com.rameses.rcp.control.XButton xButton19;

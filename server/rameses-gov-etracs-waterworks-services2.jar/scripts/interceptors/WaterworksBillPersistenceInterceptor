@@ -24,38 +24,27 @@ class WaterworksBillPersistenceInterceptor{
 	@DataContext("vw_waterworks_account")
 	def vwAcctEm;
 
-	@DataContext("waterworks_credit")
-	def creditEm;
-
-	@DataContext("waterworks_payment")
-	def paymentEm;
-
-	@DataContext("waterworks_bill")
-	def billEm;
-
-	@DataContext("waterworks_billitem")
-	def billItemEm;
-
-	@DataContext("waterworks_consumption")
-	def consumptionEm;
-
-
-
 	@Before(pattern="PersistenceService.create", eval="#{args[0]._schemaname == 'waterworks_bill'}")
 	public void beforeCreate(def evt) {
 		def o  = evt.args[0];
 		if(!o.acctid) throw new Exception("acctid is required");
+		if(!o.txnmode) o.txnmode = 'CAPTURE';
 
 		def acct = vwAcctEm.find( [objid: o.acctid ] ).first();
 
-		//check first the bill year and month should not be greater than the group billing period
-		if( !acct.subarea.period?.year ) throw new Exception("Please assign first billing period in subarea");
-		def ym1 = (acct.subarea.period.year *12 ) + acct.subarea.period.month;
-		def ym2 = (o.year*12)+o.month;
-		if(ym2 > ym1) throw new Exception("Bill year and month must not be greater than the subarea billing period");
+		//check first the bill year and month should not be greater than the group billing period for CAPTURE
+		if(o.txnmode == "CAPTURE") {
+			if( !acct.subarea.period?.year ) throw new Exception("Please assign first billing period in subarea");
+			def ym1 = (acct.subarea.period.year *12 ) + acct.subarea.period.month;
+			def ym2 = (o.year*12)+o.month;
+			if(ym2 > ym1) throw new Exception("Bill year and month must not be greater than the subarea billing period");
+		}
+		else {
+			if( !o.year ) throw new Exception("Year is required");
+			if( !o.month ) throw new Exception("Month is required");			
+		}
 
 		if(!o.billno) o.billno = o.billrefno;
-
 		if(!o.billno) {
 			def pattern = var.waterworks_billno_format;
 			if(!pattern) throw new Exception("Please specify waterworks_billno_format in sys_var");
@@ -69,8 +58,14 @@ class WaterworksBillPersistenceInterceptor{
 		o.printed = 0;
 		o.billdate = o.period.billdate;
 		o.expirydate = o.period.billexpirydate;
-		o.state = "DRAFT";
-		o.step = 1;
+		if(o.txnmode == "CAPTURE") {
+			o.state = "DRAFT";
+			o.step = 1;
+		}
+		else {
+			o.state = "POSTED";
+			o.step = 5;
+		}	
 		o.totalcredits = 0;
 		o.totalprevunpaid = 0;
 		o.totalbillunpaid = 0;
@@ -84,20 +79,13 @@ class WaterworksBillPersistenceInterceptor{
 	public void afterCreate(def evt) {
 		def o  = evt.args[0];
 		def result = evt.result;
+		//before replacing the old bill, call bill service initnew bill to initiate the totals
+		if( result.txnmode == "ONLINE" ) {
+			//calculate balance forward and bill		
+			billSvc.initNewBill( [bill: result] );
+		}
 		acctEm.find( [objid: result.acctid ] ).update([ billid: result.objid ]);
 	}
 
-	//The only bill that can be deleted will be the initial bill
-	@Before(pattern="PersistenceService.removeEntity", eval="#{args[0]._schemaname == 'waterworks_bill'}")
-	public void beforeRemove(def evt) {
-		def o  = evt.args[0];
-		def bill = billEm.find([objid: o.objid]).first();
-		if(bill.initial!=1) throw new Exception("Only the initial bill can be cancelled");
-
-		//update first account and delete also credit payment if any.
-		acctEm.find([billid: o.objid]).update([billid:"{NULL}"]);
-		billEm.find( [objid: o.objid] ).update( [consumptionid: "{NULL}"]);
-		consumptionEm.find( [billid: o.objid]).delete();
-	}
 
 }

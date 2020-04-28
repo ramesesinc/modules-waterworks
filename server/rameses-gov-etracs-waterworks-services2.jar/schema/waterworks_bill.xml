@@ -17,6 +17,9 @@
 		<field name="dtcreated"/>
 		<field name="remarks"/>
 
+		<!-- CAPTURE OR ONLINE -->
+		<field name="txnmode" required="true"/>
+
 		<!-- flags -->
 		<field name="initial" type="integer"/>
 		<field name="billed"  type="integer"/>	
@@ -32,6 +35,9 @@
 		<field name="totalsurcharge" type="decimal" />
 		<field name="totalpayment" type="decimal" />
 		<field name="totaldiscount" type="decimal" />
+
+		<field name="totalunpaid" expr="(totalprevunpaid+totalbillunpaid)" type="decimal" />
+		<field name="totalamtdue" expr="(balanceforward+billamount+totalsurcharge-totalpayment-totaldiscount)" type="decimal" />
 
 	</element>
 </schema>

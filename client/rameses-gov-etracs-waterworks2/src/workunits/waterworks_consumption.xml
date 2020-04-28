@@ -1,19 +1,9 @@
-<workunit schemaName="vw_waterworks_consumption" 
-          entitySchemaName="waterworks_consumption"  
-          allowDelete="false">
+<workunit>
+
     <invokers>
-        <invoker type="waterworks_consumption:create" 
-                 caption="New Consumption Entry" action="create" 
-                 role="MASTER" target="popup"/>
-         
-        <invoker type="waterworks_consumption:open" 
-                 caption="Consumption Entry" action="open" target="popup">
-            <action role="MASTER" />
-            <action role="SHARED" allowCreate="false" allowEdit="false" allowDelete="false" />
-        </invoker>
-        
-        <invoker type="formActions" caption="Recalculate" action="recalculate" 
-                 visibleWhen="#{ entity.acctstate == 'DRAFT' &amp;&amp; mode != 'read'  }"/> 
+        <invoker type="waterworks_consumption" 
+                 caption="Edit Consumption" action="init" 
+                 target="popup"/>
     </invokers>
 
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksConsumptionModel"/>

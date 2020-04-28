@@ -12,6 +12,9 @@ class WaterworksPaymentService {
 	@DataContext("waterworks_payment")
 	def paymentEm;
 
+	@DataContext("waterworks_payment_item")
+	def paymentItemEm;
+
 	@DataContext("waterworks_billitem")
 	def billItemEm;
 
@@ -130,10 +133,14 @@ class WaterworksPaymentService {
 		if( refid == null) refid = param.refid;
 
 		//check first if we can still void the transaction
-		def pmt = paymentEm.find( [objid: refid  ]).first(1);
+		def pmt = paymentEm.find( [objid: refid  ]).first();
 
-		if(!pmt) throw new Exception("payment not found");
-		pmt.items?.each {
+		//in case it is null, it is called from the cash receipt.
+		if(!pmt) pmt = paymentEm.find( [refid: refid  ]).first();
+		if(!pmt) throw new Exception("Payment does not exist");
+
+		def pmtItems = paymentItemEm.find( [parentid: pmt.objid ]).list();
+		pmtItems?.each {
 			if(it.reftype == "waterworks_billitem") {
 				billItemEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid - :amt}", discount: 0 ], [amt: it.amount] );
 			}
@@ -141,6 +148,9 @@ class WaterworksPaymentService {
 		//automatically delete all related credits
 		creditEm.find( [paymentrefid: pmt.objid ] ).delete();
 		paymentEm.find( [objid: pmt.objid] ).update( [voided: 1 ] );
+
+		//delete payment items so it will not affect the billitems link
+		paymentItemEm.find( [parentid: pmt.objid] ).delete();		
 
 		//if there is a bill post totals
 		if( pmt.billid ) {
@@ -161,18 +171,20 @@ class WaterworksPaymentService {
 		if(! o.billid ) throw new Exception("billid is required in WaterworksBillService.updateBillFees");
 		
 		def bill = vwBillEm.find( [objid: o.billid] ).first();
-		def creditAmt = creditEm.find([acctid: bill.acctid]).select("c:{SUM(dr-cr)}").val();
-		if(!creditAmt) return;
-
-		//check if there are reminaing open items
-		def amtdue = billItemEm.find( [acctid: bill.acctid] ).select("c:{SUM(amount-amtpaid)}").where( "(amount-amtpaid)>0" ).val();
-		if( !amtdue ) return;
+		if( !bill.totalcredits ) return;
+		if( !bill.totalunpaid ) return ;
 
 		def txndate = bill.billdate;
 		if(!txndate) txndate = bill.period.billdate;
 		if(!txndate) txndate = dateSvc.getBasicServerDate();
 
-		def pp = [acctid: bill.acctid, amtpaid: creditAmt, billid: bill.objid, txndate:txndate, paymentreftype: "credit" ];
+		//determine amount to pay. if greater than or equal to totalunpaid pass zero so system will compute exact amt else pass credit amt
+		//this is to eliminate computation of overpayment due to discounts
+
+		def creditAmt = Math.abs( bill.totalcredits );
+		if( creditAmt >= bill.totalunpaid  ) creditAmt = 0;
+
+		def pp = [acctid: bill.acctid, amtpaid: creditAmt, billid: bill.objid, txndate:txndate, include_items: false ];
 		def b = getBillPaymentItems( pp );
 
 		def cr = [:];
@@ -182,14 +194,14 @@ class WaterworksPaymentService {
 		cr.acctid = bill.acctid;
 		cr.billid = bill.objid;		
 		cr.refno = bill.billno;
-        cr.billitems = b.billitems;
-        cr.amount = b.amount;
+        cr.billitems = b.billitems.findAll{ it.reftype == "waterworks_billitem" };
+		cr.amount = b.amount;  
         postPayment( cr );
 	} 
 
 	@ProxyMethod
 	public def getBillPaymentItems( def o ) {
-		if(!o.paymentreftype) throw new Exception("Please specify paymentreftype in getBillPaymentItems");	
+		//if(!o.paymentreftype) throw new Exception("Please specify paymentreftype in getBillPaymentItems");	
 		if(!o.acctid) throw new Exception("acctid is required in  WaterworksPaymentService.getPaymentItems");
 
 		def pp = [:];
@@ -208,15 +220,10 @@ class WaterworksPaymentService {
 			pp.amtpaid = pp.bill.totalunpaid;
 		}
 
-		def res = ruleSvc.getPaymentItems( pp );
+		if( pp.include_items == null ) pp.include_items = true;
+		if( o.amtpaid == null || o.amtpaid == 0 ) pp.include_credits = false; 
 
-		//if amtapid is not specified or payment type is credit do not include waterworks_credit only the billitems
-		if( !o.amtpaid || o.paymentreftype == "credit") {
-			res.billitems = res.billitems.findAll{ it.reftype == "waterworks_billitem" };
-			res.amount = res.billitems.sum{ it.amount - Math.abs(it.discount) };   
-		}
-
-		return res;
+		return ruleSvc.getPaymentItems( pp );
 	}
 
 

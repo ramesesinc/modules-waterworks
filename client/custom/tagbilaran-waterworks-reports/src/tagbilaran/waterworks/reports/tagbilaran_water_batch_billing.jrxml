@@ -46,6 +46,8 @@
 	<field name="subarea.barangay.name" class="java.lang.String"/>
 	<field name="reader.name" class="java.lang.String"/>
 	<field name="period.duedate" class="java.util.Date"/>
+	<field name="details" class="java.lang.Object"/>
+	<field name="totalamtdue" class="java.lang.Number"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -187,7 +189,7 @@
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{period.fromdate}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="115"
 						y="210"
@@ -200,7 +202,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Number"><![CDATA[$F{prevreading}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="115"
 						y="198"
@@ -213,7 +215,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Number"><![CDATA[$F{reading}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="115"
 						y="221"
@@ -356,7 +358,7 @@
 					</textElement>
 				<text><![CDATA[Barangay:]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="101"
 						y="117"
@@ -486,7 +488,7 @@
 					</textElement>
 				<text><![CDATA[Consumption (cu.m):]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="115"
 						y="174"
@@ -616,110 +618,6 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="284"
-						y="131"
-						width="142"
-						height="11"
-						key="staticText-25"/>
-					<box></box>
-					<textElement>
-						<font fontName="Courier New" size="8"/>
-					</textElement>
-				<text><![CDATA[Water Fee:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="284"
-						y="140"
-						width="142"
-						height="11"
-						key="staticText-26"/>
-					<box></box>
-					<textElement>
-						<font fontName="Courier New" size="8"/>
-					</textElement>
-				<text><![CDATA[Cost of Water Meter:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="284"
-						y="150"
-						width="142"
-						height="11"
-						key="staticText-27"/>
-					<box></box>
-					<textElement>
-						<font fontName="Courier New" size="8"/>
-					</textElement>
-				<text><![CDATA[Environmental Fee:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="284"
-						y="163"
-						width="142"
-						height="11"
-						key="staticText-28"/>
-					<box></box>
-					<textElement>
-						<font fontName="Courier New" size="8"/>
-					</textElement>
-				<text><![CDATA[Adjustment/Others:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="284"
-						y="179"
-						width="142"
-						height="11"
-						key="staticText-29"/>
-					<box></box>
-					<textElement>
-						<font fontName="Courier New" size="8"/>
-					</textElement>
-				<text><![CDATA[Total Current Charges:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="284"
-						y="192"
-						width="142"
-						height="11"
-						key="staticText-30"/>
-					<box></box>
-					<textElement>
-						<font fontName="Courier New" size="8"/>
-					</textElement>
-				<text><![CDATA[Penalties:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="284"
-						y="204"
-						width="142"
-						height="11"
-						key="staticText-31"/>
-					<box></box>
-					<textElement>
-						<font fontName="Courier New" size="8"/>
-					</textElement>
-				<text><![CDATA[Amount from Previous Months:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="284"
-						y="218"
-						width="142"
-						height="11"
-						key="staticText-32"/>
-					<box></box>
-					<textElement>
-						<font fontName="Courier New" size="8"/>
-					</textElement>
-				<text><![CDATA[TOTAL AMOUNT DUE:]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
 						x="67"
 						y="11"
 						width="194"
@@ -770,18 +668,28 @@
 					</textElement>
 				<text><![CDATA[TEL No 411-2222 LOCAL 172]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="###0.00;(###0.00)" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<subreport  isUsingCache="true">
 					<reportElement
-						x="420"
-						y="203"
-						width="94"
+						x="284"
+						y="131"
+						width="230"
+						height="28"
+						key="subreport-1"/>
+					<dataSourceExpression><![CDATA[$F{details}]]></dataSourceExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA["tagbilaran_water_batch_billing_details.jasper"]]></subreportExpression>
+				</subreport>
+				<textField isStretchWithOverflow="true" pattern="###0.00;(-###0.00)" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="369"
+						y="89"
+						width="81"
 						height="11"
-						key="textField"/>
+						key="textField-16"/>
 					<box></box>
-					<textElement textAlignment="Right">
+					<textElement textAlignment="Left">
 						<font fontName="Courier New" size="8"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Number"><![CDATA[$F{balanceforward}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Number"><![CDATA[$F{totalamtdue}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

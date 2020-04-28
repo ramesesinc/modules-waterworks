@@ -2,6 +2,10 @@ import com.rameses.annotations.*;
 
 class WaterworksCashReceiptService {
 
+
+    @Service('WaterworksBillService') 
+    def billSvc; 
+
     @Service('WaterworksPaymentService') 
     def pmtSvc; 
 
@@ -14,17 +18,17 @@ class WaterworksCashReceiptService {
     @DataContext("vw_waterworks_bill")
     def vwBillEm;
 
-    @DataContext("waterworks_account")
-    def acctEm;
+    @DataContext("vw_waterworks_account")
+    def vwAcctEm;
 
-    def findBill( def o ) {
+    def getBillingItems( def o ) {
         def bill = vwBillEm.find( [billno: o.id ] ).first();
         def acct = null;
         if(!bill) {
-            acct = acctEm.find( [acctno: o.id ] ).first();
+            acct = vwAcctEm.find( [acctno: o.id ] ).first();
         }
         else {
-            acct = acctEm.find([objid:bill.acctid]).first();
+            acct = vwAcctEm.find([objid:bill.acctid]).first();
         }
         if(!acct) throw new Exception("Bill or account not found");
         if( acct.state != "ACTIVE" ) throw new Exception("Account is not yet active");
@@ -34,39 +38,37 @@ class WaterworksCashReceiptService {
         bill = vwBillEm.find( [objid: acct.billid] ).first();
         if(bill.state != "POSTED") throw new Exception("Bill is not yet posted. Please contact admin");
 
-        //update bill if transaction date is not yet updated. If bill is expired. Must create a new bill.
-        return bill;    
-    }
+        if( bill.totalcredits > 0 && bill.totalamtdue > 0 ) {
+            throw new Exception("Applying credit now");
+        }
 
-    def getBillingItems( def o ) {
-        def bill = findBill( o );
+        //we need to update the bill first just for surcharges. This should run everytime cash recept 
+        billSvc.updatePenaltyFees( [objid: bill.objid ] );
 
         def param = [ acctid : bill.acctid, billid: bill.objid, include_items:true ];
         if( o.amtpaid ) param.amtpaid = o.amtpaid;
+
+        //set billdate as txndate
+        param.txndate = o.billdate;
         def res = pmtSvc.getBillPaymentItems( param );
-        if(!res.billitems) 
-            throw new Exception("There are no current bills to pay. Consider deposit instead");
-        res.billid = bill.objid;  
-        res.acctid = bill.acctid;  
-        res.year = bill.year;
-        res.month = bill.month;
-        return res;    
-    }
+        if(!res.billitems) {
+            res.items = [];
+            res.billitems = [];
+            res.amount = 0;        
+        }
 
-    def getDepositItems( def o ) {
-        def bill = findBill( o );
-
-        //check first if there are pending balances before testing deposit. there must be no unpaid
-
-        def param = [ acctid : bill.acctid, billid: bill.objid, include_items:true, amtpaid: o.amtpaid ];
-        def res = pmtSvc.getBillPaymentItems( param );
-        if(!res.billitems )
-            throw new Exception("There are no items for this receipt. Please check rules");
-        res.billid = bill.objid;     
-        res.acctid = bill.acctid;   
-        res.year = bill.year;
-        res.month = bill.month;
-        return res;    
+        def rct = [:];
+        rct.payer = acct.owner;
+        rct.paidby = acct.acctname + " (" + acct.acctno + ")";
+        rct.paidbyaddress = acct.address?.text;
+        rct.acctno = acct.acctno;
+        rct.acctid = acct.objid;
+        rct.billid = bill.objid;
+        rct.items = res.items;
+        rct.billitems = res.billitems;
+        rct.amount = res.amount;
+        rct.pmttxntype = "billing";
+        return rct;
     }
 
 	@ProxyMethod 
@@ -84,28 +86,11 @@ class WaterworksCashReceiptService {
 
         def res = null;        
         if( txntype == "billing" ) {
-            res = getBillingItems( pp ); 
-        }
-        else if(txntype == "deposit") {
-            res = getDepositItems( pp );             
+            return getBillingItems( pp ); 
         }
         else {
             throw new Exception("There are no current routine for " + txntype );
         }
-
-        def rct = [:];
-        rct.payer = res.owner;
-        rct.paidby = res.acctname + " (" + res.acctno + ")";
-        rct.paidbyaddress = res.address?.text;
-        rct.acctno = res.acctno;
-        rct.acctid = res.acctid;
-        rct.billid = res.billid;
-        rct.items = res.items;
-        rct.billitems = res.billitems;
-        rct.pmttxntype = txntype;
-        rct.year = res.year;
-        rct.month = res.month;
-        return rct;
 	}
 
 

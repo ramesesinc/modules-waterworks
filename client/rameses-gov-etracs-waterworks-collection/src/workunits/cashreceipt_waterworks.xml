@@ -21,8 +21,9 @@
         <invoker type="cashreceipt:waterworks" action="start" caption="Waterworks Collection"/>
     </invokers>
     
-    <code class="com.rameses.gov.etracs.waterworks.models.WaterCashReceiptModel"/> 
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksCashReceiptModel"/> 
     <pages>
         <page name="initial" template="com.rameses.gov.etracs.waterworks.views.WaterworksCashReceiptInitialPage" />
+        <page name="entry" template="com.rameses.gov.etracs.waterworks.views.WaterworksCashReceiptPage" />
     </pages>
 </workunit>

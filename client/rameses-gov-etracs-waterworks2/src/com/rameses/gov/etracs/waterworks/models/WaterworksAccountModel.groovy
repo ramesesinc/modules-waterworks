@@ -66,6 +66,10 @@ public class WaterworksAccountModel extends CrudFormModel {
         "entity.subarea" : { o->
             entity.stubout = null;
             binding.refresh("entity.stubout");
+        },
+        "paymentViewOption" : { o->
+            paymentFilter.where = paymentFilter.options[o];    
+            paymentList.reload();
         }
     ];
     
@@ -91,8 +95,8 @@ public class WaterworksAccountModel extends CrudFormModel {
         ledgerFilter = [:];
         ledgerFilter.options = [
             "acctid = :acctid",
-            "acctid = :acctid AND  (amount-amtpaid-discount) > 0",
-            "acctid = :acctid AND (amount-amtpaid-discount) = 0 AND amtpaid > 0"
+            "acctid = :acctid AND  (amount-amtpaid) > 0",
+            "acctid = :acctid AND (amount-amtpaid) = 0 AND amtpaid > 0"
         ];
         ledgerFilter.acctid = entity.objid;
         ledgerFilter.where = ledgerFilter.options[ledgerViewOption] ;
@@ -104,6 +108,24 @@ public class WaterworksAccountModel extends CrudFormModel {
         def p = [:];
         p.query = [refid: ledgerList.selectedItem?.item.objid];
         return Inv.lookupOpener("waterworks_payment_item:list", p );
+    }
+
+    /************************************************************************
+    * RELATED TO PAYMENT
+    *************************************************************************/
+    def paymentViewOption = 0;
+    def paymentFilter;
+    def paymentList;
+    def paymentItem;
+    def getPaymentQuery() {
+        paymentFilter = [:];
+        paymentFilter.acctid = entity.objid;
+        paymentFilter.options = [
+            " acctid=:acctid AND voided = 0 ", 
+            " acctid = :acctid "
+        ];
+        paymentFilter.where = paymentFilter.options[paymentViewOption];
+        return paymentFilter;
     }
 
     

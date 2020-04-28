@@ -3,14 +3,14 @@
     <invokers>
         <!-- this hooks in customer account. entity here refers to customer account -->
         <invoker type="vw_waterworks_account:form:formActions" 
-                 caption="Generate Initial Bill" 
-                 visibleWhen="#{ entity.state=='DRAFT' &amp;&amp; mode=='read' &amp;&amp; entity.bill?.objid==null  }"
+                 caption="Capture Initial Bill" 
+                 visibleWhen="#{ entity.state=='DRAFT' &amp;&amp; mode=='read' &amp;&amp; entity.bill?.objid==null }"
                  action="create" target="popup"/>
                  
         <!-- this should display at whatever state as long as it is initial -->         
         <invoker type="vw_waterworks_account:form:formActions" 
-                 caption="View Initial Bill" 
-                 visibleWhen="#{ mode=='read' &amp;&amp; entity.bill?.objid!=null &amp;&amp; entity.bill?.initial==1  }"
+                 caption="Edit Bill" 
+                 visibleWhen="#{ mode=='read' &amp;&amp; entity.bill?.objid!=null &amp;&amp; entity.bill?.state == 'DRAFT'  }"
                  action="openBill" target="popup"/>                 
         
         <!-- this hooks to formActions-->
@@ -23,11 +23,13 @@
         <invoker type="formActions" caption="Submit" action="save" 
                  visibleWhen="#{ entity.step == 0 }" />
 
+
+        <!-- -->         
         <invoker type="formActions" caption="View Summary" action="viewSummary" 
                  visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'edit' }" />
 
         <invoker type="formActions" caption="Back to Edit" action="viewEdit" 
-                 visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'summary' }" />         
+                 visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'summary' &amp;&amp; entity.state == 'DRAFT' }" />         
         
         <invoker type="viewActions" caption="Back" action="moveBackStep" 
                  visibleWhen="#{ entity.step &gt; 1 &amp;&amp; viewmode == 'edit'}" />
@@ -38,8 +40,8 @@
                  visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'edit' }" />
 
     </invokers>
-    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillInitialModel" />
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillCaptureModel" />
     <pages>
-        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksBillInitialPage" />
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksBillCapturePage" />
     </pages>
 </workunit>
