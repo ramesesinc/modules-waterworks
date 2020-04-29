@@ -32,8 +32,16 @@
             immediate="true" />
 
         <invoker type="billActions" caption="Edit Reading" action="editReading" 
-            visibleWhen="#{ readingPosted == false }"
+            visibleWhen="#{ readingPosted == false &amp;&amp; entity.state!='CLOSED' }"
             immediate="true" />
+
+        <invoker type="billActions" caption="Post Consumption to Bill" action="addConsumptionBill" 
+            visibleWhen="#{ readingPosted == false &amp;&amp;  entity.consumption?.amount &gt; 0 &amp;&amp; entity.state!='CLOSED' }"
+            immediate="true" />
+
+        <invoker type="billActions" caption="Update Balances" action="updateBillTotals" 
+            visibleWhen="#{ entity.state != 'CLOSED' }"
+            immediate="true" />          
         
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillModel" />

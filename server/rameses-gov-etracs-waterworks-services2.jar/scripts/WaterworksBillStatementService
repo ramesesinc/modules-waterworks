@@ -36,12 +36,17 @@ class WaterworksBillStatementService {
 		billItems.each {
 			def m = [:];
 			m.particulars = it.item.title;
-			if( it.particulars  ) m.particulars += "("+it.particulars+")";
+			if( it.particulars  ) m.particulars += "("+it.particulars+")" ;
 			m.txndate = it.txndate;
 			if(!m.txndate) m.txndate = bill.period.billdate;
 			m.dr = it.amount;
 			m.cr = 0;
 			m.group = "Current";
+
+			//this is added to flag the bill that consumption was already posted
+			if( it.item.objid == "WATER_FEE" ) {
+				m.consumption_posted = true;		
+			}
 			details << m;
 		}
 

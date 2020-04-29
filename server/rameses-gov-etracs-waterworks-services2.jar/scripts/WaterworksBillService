@@ -74,6 +74,11 @@ class WaterworksBillService {
 		c.txnmode = "ONLINE";
 		c = consumptionEm.create( c );
 		billEm.find( [objid: bill.objid]).update([consumptionid: c.objid]);
+
+		//we need to close the old bill so it will not be used anymore
+		if(acct.billid) {
+			billEm.find( [objid: acct.billid ]).update([state:"CLOSED"]);
+		}
 	}
 
 	//create and cancel bill
@@ -166,7 +171,7 @@ class WaterworksBillService {
 		if( !bill.consumptionid ) throw new Exception("There is no consumption for this bill");		
 
 		def cons = consumptionEm.find( [objid: bill.consumptionid ] ).first(); 
-		if(cons.hold == 1) throw new Exception("This consumption is on hold. Please check consumption first");
+		if(cons.hold == 1) throw new Exception("This consumption is on hold. Please check consumption entry");
 		if(!cons.amount) throw new Exception("There is no amount computed yet for this consumption. Run calculate first in consumption");
 
 		def m = [:];
@@ -281,7 +286,11 @@ class WaterworksBillService {
 		def pp = [:];
 		pp.account = acct;
 		pp.bill = bill;
-		pp.txndate = bill.period.duedate;
+
+		//if date specfied, use that else use the period due date
+		pp.txndate = o.txndate;
+		if(!pp.txndate) pp.txndate = bill.period.duedate;
+
 		def res = ruleSvc.getBillItems( pp );
 		//check if there are surcharge bills calculated
 		def newItems = res.billitems.findAll{ it.objid == null };

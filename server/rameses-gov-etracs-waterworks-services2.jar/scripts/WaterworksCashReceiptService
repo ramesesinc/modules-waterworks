@@ -38,12 +38,15 @@ class WaterworksCashReceiptService {
         bill = vwBillEm.find( [objid: acct.billid] ).first();
         if(bill.state != "POSTED") throw new Exception("Bill is not yet posted. Please contact admin");
 
-        if( bill.totalcredits > 0 && bill.totalamtdue > 0 ) {
-            throw new Exception("Applying credit now");
+        if( bill.totalcredits > 0 && bill.totalunpaid > 0 ) {
+            //this needs to run otherwise we cannot factor in the credits
+            pmtSvc.applyCredits( [billid: bill.objid] );
         }
-
+        
         //we need to update the bill first just for surcharges. This should run everytime cash recept 
-        billSvc.updatePenaltyFees( [objid: bill.objid ] );
+        if( o.txndate >=  bill.period.duedate ) {
+            billSvc.updatePenaltyFees( [objid: bill.objid, txndate: o.txndate ] );
+        }
 
         def param = [ acctid : bill.acctid, billid: bill.objid, include_items:true ];
         if( o.amtpaid ) param.amtpaid = o.amtpaid;
@@ -83,6 +86,7 @@ class WaterworksCashReceiptService {
         pp.id = param.id;
         if( param.amtpaid ) pp.amtpaid = param.amtpaid;
         if( param.payoption ) pp.payoption = param.payoption;
+        pp.txndate = txndate;
 
         def res = null;        
         if( txntype == "billing" ) {

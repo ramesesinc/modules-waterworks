@@ -31,6 +31,7 @@ class WaterworksBillPersistenceInterceptor{
 		if(!o.txnmode) o.txnmode = 'CAPTURE';
 
 		def acct = vwAcctEm.find( [objid: o.acctid ] ).first();
+		o.oldbillid = acct.billid;
 
 		//check first the bill year and month should not be greater than the group billing period for CAPTURE
 		if(o.txnmode == "CAPTURE") {

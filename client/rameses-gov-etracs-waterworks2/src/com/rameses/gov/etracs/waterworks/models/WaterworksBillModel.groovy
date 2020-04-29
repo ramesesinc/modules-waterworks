@@ -83,15 +83,47 @@ public class WaterworksBillModel extends CrudFormModel {
     }
 
     boolean getReadingPosted() {
-        return false;
+        if( detailList.find{ it.consumption_posted == true }) {
+            return true;        
+        }
+        else {
+            return false;
+        }
     }
 
     def editReading() {
         def pp = [:];
         pp.bill = entity;
-        pp.entity = entity.consumption;
+        pp.saveHandler = { o->
+            def v = [:];
+            v.readingdate = o.readingdate; 
+            v.reader = o.reader; 
+            v.reading = o.reading; 
+            v.volume = o.volume; 
+            v.amount = o.amount;   
+            v.hold = o.hold;
+            def m = [_schemaname: "waterworks_consumption"];
+            m.findBy = [objid: o.objid];
+            m.putAll(v);
+            persistenceService.update(m);
+            entity.consumption.putAll( v );
+            binding.refresh();
+        }
         return Inv.lookupOpener( "waterworks_consumption" , pp );
     }
 
+
+    void addConsumptionBill() {
+        if( !MsgBox.confirm("You are about to add the consumption to the bill. You cannot edit this anymore once posted. Proceed?")) return;
+        billSvc.addConsumptionBill( [objid: entity.objid ]);
+        refreshTotals();                
+        buildDetails();
+    }
+
+    void updateBillTotals() {
+        billSvc.updateBillTotals([objid: entity.objid]);
+        refreshTotals(); 
+        buildDetails();
+    }
     
 }

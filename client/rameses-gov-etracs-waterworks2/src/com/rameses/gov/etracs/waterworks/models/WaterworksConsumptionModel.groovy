@@ -18,12 +18,17 @@ public class WaterworksConsumptionModel  {
     @Binding
     def binding;
     
+    def saveHandler;
+
     def bill;                 
     def entity;  //the consumption
     def meter;
     
-    void init() {
+    public void init() {
+        if( !bill) throw new Exception("Please include bill");
         meter = bill.meter;
+        entity = [:];
+        entity.putAll( bill.consumption );
     }     
     
     @PropertyChangeListener
@@ -49,7 +54,7 @@ public class WaterworksConsumptionModel  {
         }
     ];
     
-    void calc() {
+    public void calc() {
         if(!bill) throw new Exception("bill is required");
         def z = [:];
         z.acctid = bill.acctid;
@@ -63,13 +68,13 @@ public class WaterworksConsumptionModel  {
     }
     
     def doOk() {
+        saveHandler( entity );
         return "_close";
     }
     
     def doCancel() {
         return "_close";
     }
-    
     
     
 }
