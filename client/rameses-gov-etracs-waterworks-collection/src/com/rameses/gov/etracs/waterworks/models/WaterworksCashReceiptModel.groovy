@@ -53,7 +53,7 @@ class WaterworksCashReceiptModel  extends CommonCashReceiptModel {
     }
     
     def viewStatement() {
-        return Inv.lookupOpener("waterworks_statement:view", [entity: [objid: entity.billid ]] ); 
+        return Inv.lookupOpener("waterworks_cashreceipt_statement", [entity: [objid: entity.billid ]] ); 
     }
     
 }    

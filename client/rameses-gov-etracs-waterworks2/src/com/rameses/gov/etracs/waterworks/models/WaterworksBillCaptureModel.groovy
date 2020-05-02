@@ -282,13 +282,6 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
         buildItemList();
     }    
 
-    void addConsumptionBill() {
-        if( !MsgBox.confirm("Please make sure that there are no entries yet with item WATER_SALES. Proceed?")) return;
-        billSvc.addConsumptionBill( [objid: entity.objid ]);
-        updateTotals();                
-        buildItemList();
-    }
-
     /***************
      * Payments
      * *************/

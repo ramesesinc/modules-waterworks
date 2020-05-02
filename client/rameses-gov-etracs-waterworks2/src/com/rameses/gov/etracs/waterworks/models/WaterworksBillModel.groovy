@@ -112,10 +112,9 @@ public class WaterworksBillModel extends CrudFormModel {
         return Inv.lookupOpener( "waterworks_consumption" , pp );
     }
 
-
-    void addConsumptionBill() {
+    void processBill() {
         if( !MsgBox.confirm("You are about to add the consumption to the bill. You cannot edit this anymore once posted. Proceed?")) return;
-        billSvc.addConsumptionBill( [objid: entity.objid ]);
+        billSvc.updateBillFees( [objid: entity.objid ]);
         refreshTotals();                
         buildDetails();
     }
@@ -124,6 +123,12 @@ public class WaterworksBillModel extends CrudFormModel {
         billSvc.updateBillTotals([objid: entity.objid]);
         refreshTotals(); 
         buildDetails();
+    }
+
+    void approveBill() {
+        if(!MsgBox.confirm("You are about to approve this bill. Information cannot be edited once posted. Proceed?")) return;
+        billSvc.approve( [objid: entity.objid ] );
+        refreshTotals();
     }
     
 }

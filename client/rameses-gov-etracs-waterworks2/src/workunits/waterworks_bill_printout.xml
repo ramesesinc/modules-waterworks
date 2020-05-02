@@ -29,7 +29,7 @@
                  reportId="waterworks_bill" 
                  reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_billing.jasper"
                  txnid="#{entity.objid}" 
-                 visibleWhen="#{ entity.state != 'DRAFT' }"/>
+                 visibleWhen="#{ entity.state != 'DRAFT' &amp;&amp; entity.txnmode == 'ONLINE'}"/>
 
         <invoker type="vw_waterworks_bill:form:formActions" 
                  caption="View Statement" 
@@ -39,7 +39,7 @@
                  reportId="waterworks_bill" 
                  reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_statement.jasper"
                  txnid="#{ entity.objid }" 
-                 visibleWhen="#{ entity.state != 'DRAFT' }"/>
+                 visibleWhen="#{ entity.state != 'DRAFT' &amp;&amp; entity.txnmode == 'ONLINE'}"/>
 
     </invokers> 
 </workunit>

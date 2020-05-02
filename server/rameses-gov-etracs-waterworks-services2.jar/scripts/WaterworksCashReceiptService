@@ -36,7 +36,8 @@ class WaterworksCashReceiptService {
 
         //replace bill with the active bill
         bill = vwBillEm.find( [objid: acct.billid] ).first();
-        if(bill.state != "POSTED") throw new Exception("Bill is not yet posted. Please contact admin");
+        if(!bill.state.matches("OPEN|POSTED")) 
+            throw new Exception("Bill must be OPEN or POSTED state. Please contact admin");
 
         if( bill.totalcredits > 0 && bill.totalunpaid > 0 ) {
             //this needs to run otherwise we cannot factor in the credits
@@ -44,7 +45,7 @@ class WaterworksCashReceiptService {
         }
         
         //we need to update the bill first just for surcharges. This should run everytime cash recept 
-        if( o.txndate >=  bill.period.duedate ) {
+        if( bill.period.duedate!=null && o.txndate >=  bill.period.duedate ) {
             billSvc.updatePenaltyFees( [objid: bill.objid, txndate: o.txndate ] );
         }
 

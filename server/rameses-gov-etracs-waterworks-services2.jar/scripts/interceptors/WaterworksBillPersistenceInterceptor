@@ -64,9 +64,9 @@ class WaterworksBillPersistenceInterceptor{
 			o.step = 1;
 		}
 		else {
-			o.state = "POSTED";
+			o.state = "OPEN";
 			o.step = 5;
-		}	
+		};	
 		o.totalcredits = 0;
 		o.totalprevunpaid = 0;
 		o.totalbillunpaid = 0;

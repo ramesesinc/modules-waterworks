@@ -77,41 +77,35 @@ public class WaterworksBillingPeriodPage extends javax.swing.JPanel {
         xDateField2.setCaption("Reading End Date");
         xDateField2.setName("entity.readingenddate"); // NOI18N
         xDateField2.setPreferredSize(new java.awt.Dimension(120, 20));
-        xDateField2.setRequired(true);
         xFormPanel2.add(xDateField2);
 
         xDateField6.setCaption("Bill Date");
         xDateField6.setName("entity.billdate"); // NOI18N
         xDateField6.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xDateField6.setPreferredSize(new java.awt.Dimension(120, 20));
-        xDateField6.setRequired(true);
         xFormPanel2.add(xDateField6);
 
         xDateField3.setCaption("Billing End Date");
         xDateField3.setName("entity.billingenddate"); // NOI18N
         xDateField3.setPreferredSize(new java.awt.Dimension(120, 20));
-        xDateField3.setRequired(true);
         xFormPanel2.add(xDateField3);
 
         xDateField5.setCaption("Discount Due Date");
         xDateField5.setName("entity.discdate"); // NOI18N
         xDateField5.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xDateField5.setPreferredSize(new java.awt.Dimension(120, 20));
-        xDateField5.setRequired(true);
         xFormPanel2.add(xDateField5);
 
         xDateField4.setCaption("Payment Due Date");
         xDateField4.setName("entity.duedate"); // NOI18N
         xDateField4.setCellPadding(new java.awt.Insets(10, 0, 0, 0));
         xDateField4.setPreferredSize(new java.awt.Dimension(120, 20));
-        xDateField4.setRequired(true);
         xFormPanel2.add(xDateField4);
 
         xDateField7.setCaption("Bill Expiry Date");
         xDateField7.setName("entity.billexpirydate"); // NOI18N
         xDateField7.setCellPadding(new java.awt.Insets(10, 0, 0, 0));
         xDateField7.setPreferredSize(new java.awt.Dimension(120, 20));
-        xDateField7.setRequired(true);
         xFormPanel2.add(xDateField7);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

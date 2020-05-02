@@ -50,8 +50,6 @@ class WaterworksBillService {
 		//get previous balance of bill and update current bill.
 		updateBalanceForward( [bill:bill] );
 
-		//we only pass the objid bec. the succeeding functions must force reload of the bill info		
-		updateBillFees( [objid: bill.objid] );
 		updateBillTotals( [objid: bill.objid] );
 
 		//update consumption. find previous consumption
@@ -162,34 +160,6 @@ class WaterworksBillService {
 		updateBillTotals( [objid: billItem.billid] );
 	}
 
-
-	@ProxyMethod
-	public def addConsumptionBill(def o) {
-		if(! o.objid ) throw new Exception("objid of bill is required in WaterworksBillService.addConsumptionBill");
-
-		def bill = vwBillEm.find( [objid: o.objid] ).first();
-		if( !bill.consumptionid ) throw new Exception("There is no consumption for this bill");		
-
-		def cons = consumptionEm.find( [objid: bill.consumptionid ] ).first(); 
-		if(cons.hold == 1) throw new Exception("This consumption is on hold. Please check consumption entry");
-		if(!cons.amount) throw new Exception("There is no amount computed yet for this consumption. Run calculate first in consumption");
-
-		def m = [:];
-		m.acctid = bill.acctid;
-		m.billid = bill.objid;
-		m.item = [objid: "WATER_FEE"];
-		m.amount = cons.amount;
-		m.amtpaid = 0;
-		m.discount = 0;
-		m.year = bill.period.year;
-		m.month = bill.period.month;
-		m.txndate = bill.period.billdate;	
-		m.system = 1;
-		m.billed = 0;
-		billItemEm.create( m );
-		updateBillTotals( [bill: bill ]);
-	}
-
 	//utilities for this bill. updateBalanceForward should only be called once, before payments or credits are applied.
 	@ProxyMethod
 	public def updateBalanceForward(  def b ) {
@@ -237,6 +207,8 @@ class WaterworksBillService {
 		billItemEm.create( m );
 	}
 
+
+	//This updates the whole billing process. Running this should wait that the consumption is provided already provided  
 	@ProxyMethod
 	public void updateBillFees( def o ) {
 		if(!o.bill && !o.objid ) throw new Exception("objid or bill is required in WaterworksBillService.updateBillFees");
@@ -248,6 +220,7 @@ class WaterworksBillService {
 		if(!acct) {
 			acct = vwAcctEm.find( [objid: bill.acctid ]).first();
 		}
+
 		def pp = [:];
 		pp.account = acct;
 		pp.bill = bill;
@@ -360,6 +333,7 @@ class WaterworksBillService {
 	@ProxyMethod
 	public void approve(def o) {
 		def bill = vwBillEm.find( [objid: o.objid] ).first(); 
+
 		if(bill.billamount<=0) 
 			throw new Exception("Bill amount must be greater than zero");
 		if(bill.totalunpaid>0 && bill.totalcredits>0) 

@@ -6,6 +6,9 @@ import java.text.*;
 
 class WaterworksMobileSupporService {
 
+	@Service("RuleMgmtService")
+	def ruleMgmtSvc;
+
 	@ProxyMethod
 	public def getBatch( def o ) {
 		//returns batch
@@ -22,5 +25,19 @@ class WaterworksMobileSupporService {
 	}
 
 
+	@ProxyMethod
+	public def getComputationFeeRules() {
+		def p = [ruleset:'waterworkscomputation', rulegroup:'initial', state:'DEPLOYED'];
+		def list = ruleMgmt.getList( p);
+		def result = [];
+		for( o in list ) {
+			def r = ruleMgmt.open( [objid: o.objid] );
+			def m = buildRuleText(r);
+			result << m;
+		}
+		return result;
+
+
+	}
 
 }

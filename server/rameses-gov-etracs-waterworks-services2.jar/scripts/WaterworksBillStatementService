@@ -11,7 +11,6 @@ class WaterworksBillStatementService {
 	@DataContext("waterworks_payment")
 	def pmtEm;
 
-
 	@ProxyMethod
 	public def getBillDetails( def o ) {
 		if(! o.objid ) throw new Exception("objid of bill is required in WaterworksBillService.getBillDetails");		
@@ -64,12 +63,12 @@ class WaterworksBillStatementService {
 				m.group = "Current";
 				details << m;			
 			}
-			if( it.discount > 0 ) {
+			if( it.discount != 0 ) {
 				def m = [:];
 				m.txndate = it.refdate;
 				m.particulars = "Discount " + it.refno;
 				m.dr = 0;
-				m.cr = it.discount;
+				m.cr = Math.abs(it.discount);
 				m.group = "Current";
 				details << m;
 			}
@@ -88,7 +87,26 @@ class WaterworksBillStatementService {
 		return b;
 	}
 
+	@ProxyMethod
+	public def getBillInfo( def o ) {
+		def bill = null;
+		if(o.objid) {
+			bill = vwBillEm.find([objid: o.objid]).first();
+			if(!bill) throw new Exception("Bill not found");
+		}
+		else if(o.acctid) {
+			bill = vwBillEm.find([acctid: o.acctid]).where( " period.year =:yr AND period.month = :mon ", [yr: o.year, mon: o.month] ).first();
+			if(!bill) throw new Exception("Bill not found");
+		}
+		else {
+			throw new Exception("Please pass objid or acctid in WaterworksBillStatementService.getBillInfo")
+		}
 
+		def det = getBillDetails([objid: bill.objid ] );
+		bill.details = det.details;
+
+		return bill;
+	}
 
 
 
