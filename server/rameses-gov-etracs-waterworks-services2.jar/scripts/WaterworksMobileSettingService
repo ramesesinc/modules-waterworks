@@ -47,14 +47,35 @@ class WaterworksMobileSettingService {
 			}
 		}
 		rule.actions.each {
-			def act = [ name:  it.actiondef.objid ]
-			if( it.actiondef.objid.toLowerCase().matches(".*computeconsumption")  ) {
-				def amtParam = it.params.find{ pt-> pt.actiondefparam.name=='amount' };
-				def expr =amtParam.expr.replace("def", "var");
-				def refParam = it.params.find{ pt-> pt.actiondefparam.name=='ref' };
+			def act = [ name:  it.actiondef.objid ];
 
+			//for compute consumption actioon
+			if( it.actiondef.objid.toLowerCase().matches(".*computeconsumption")  ) {
 				def actionName = "action"+it.pos;
-				def sbuff = new StringBuffer();
+				def refParam = it.params.find{ pt-> pt.actiondefparam.name=='ref' };				
+				def amtParam = it.params.find{ pt-> pt.actiondefparam.name=='amount' };
+				def expr = null;
+
+				//if expr type is range generate the expr instead
+				if( amtParam.exprtype == 'range') {
+					def lv = amtParam.listvalue;
+					def opt = (amtParam.rangeoption==0) ? "<" : "<=";  
+					def sbe = new StringBuilder();
+					for( int j=0; j< lv.size(); j++ ) {
+						def pe = lv[j];
+						if( j > 0 ) sbe.append( " else ");
+						if( pe.to !=null ) {
+							sbe.append( "if (" + amtParam.var.name + opt + pe.to + ")" );	
+						}
+						sbe.append( "{ return " + pe.value + "; }" );
+					}
+					expr = sbe.toString();
+				}
+				else {
+					expr = amtParam.expr.replace("def", "var").replace("\n", "").replace("\t", "");
+				}
+
+				def sbuff = new StringBuilder();
 				sbuff.append( "var " + actionName + " =function() {");
 				sbuff.append( expr );
 				sbuff.append("};");
@@ -79,14 +100,16 @@ class WaterworksMobileSettingService {
 			actions.each { a->
 				buff.append( a.expr );
 			}
+			buff.append(" return true; ");
 			buff.append( "}");
+			buff.append( "else { return false; } ");
 		}
 		buff.append( "}");
 		return buff.toString();
 	}
 
 	@ProxyMethod
-	public def getComputationFeeRules() {
+	public def getConsumptionRateRules() {
 		def list = ruleEm.find( [ruleset: "waterworkscomputation", rulegroup: "initial", state: "deployed"]).orderBy("salience DESC").list();
 
 		def result = [];

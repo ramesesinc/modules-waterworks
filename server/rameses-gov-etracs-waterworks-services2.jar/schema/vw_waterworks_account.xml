@@ -25,6 +25,7 @@
 		<field name="address_pin" caption="PIN"/>
 		
 		<field name="remarks" />
+		<field name="excludeinbatch" type="integer"/>
 
 		<complex name="stubout" ref="waterworks_stubout" jointype="many-to-one" required="false">
 			<key field="stuboutid" target="objid"/> 

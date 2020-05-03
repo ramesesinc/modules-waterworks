@@ -10,7 +10,8 @@ class WaterworksAccountListInterceptor{
 		result << [ title: 'Disconnected', id:'disconnected'];
 		result << [ title: 'Draft', id:'draft'];
 		result << [ title: 'Defective', id:'defective'];		
-		result << [ title: 'Closed', id:'closed'];				
+		result << [ title: 'Closed', id:'closed'];	
+		result << [ title: 'Excluded in Batch', id:'excludebatch'];			
 	}
 
 	@Before(pattern="QueryService.getList", eval="#{args[0]._schemaname == 'vw_waterworks_account'}")
@@ -45,6 +46,10 @@ class WaterworksAccountListInterceptor{
 
 			case 'closed':
 				str = "state = 'CLOSED' ";
+				break;
+
+			case 'excludebatch':
+				str = " excludeinbatch = 1 ";
 				break;
 
 		}

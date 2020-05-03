@@ -128,5 +128,18 @@ public class WaterworksAccountModel extends CrudFormModel {
         return paymentFilter;
     }
 
+    void excludeFromBatch() {
+        def m = [_schemaname: entitySchemaName ];
+        m.findBy = [objid: entity.objid];
+        m.excludeinbatch = 1;
+        persistenceService.update( m );
+    }
+
+    void includeInBatch() {
+        def m = [_schemaname: entitySchemaName ];
+        m.findBy = [objid: entity.objid];
+        m.excludeinbatch = 0;
+        persistenceService.update( m );
+    }
     
 }

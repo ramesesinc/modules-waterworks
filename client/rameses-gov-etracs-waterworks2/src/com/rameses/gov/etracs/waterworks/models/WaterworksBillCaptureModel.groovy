@@ -60,7 +60,8 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
         viewmode = 'initial';
     }
     
-    void afterSave() {
+    void saveNew() {
+        billSvc.createBill( entity );
         caller.entity.bill = entity;
         caller.reloadEntity();
         openBill();

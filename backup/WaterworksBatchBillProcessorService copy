@@ -1,0 +1,38 @@
+import com.rameses.annotations.*;
+import com.rameses.functions.*;
+
+class WaterworksBatchBillProcessorService {
+	
+	@DataContext('waterworks_batch_billing')
+	def batchEm; 
+
+	@DataContext("waterworks_billing")
+	def wbillEm;
+
+	@DataContext("vw_waterworks_billing")
+	def vw_billEm;
+
+
+
+	@Service("WaterworksComputationService")
+	def computeSvc;
+
+	@Service("WaterworksBillingRuleService")
+	def billingSvc;
+
+	@ProxyMethod 
+	def getBilledStatus( param ) { 
+		if ( !param.objid ) throw new Exception('objid parameter is required'); 
+		def m = [batchid: param.objid]; 
+		return batchEm.findBilledStatus( m ); 
+	} 
+
+	@ProxyMethod
+	public def getForBillingList(def o) {
+		return vw_billEm.find([batchid:o.batchid]).where("billed=0").orderBy("billno").select("objid,billno,acctid,meterid,consumptionid,meterstate").list(0, o._limit);
+	}
+
+	
+
+	
+} 

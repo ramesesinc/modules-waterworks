@@ -17,6 +17,9 @@
             <action role="SHARED" allowEdit="false" allowCreate="false"/> 
         </invoker>     
         
+        <!-- for calling processes -->
+        <invoker type="vw_waterworks_account:exec" target="process" />
+
         <!-- subitem actions -->
         
         <invoker type="ledgerActions" action="viewLedgerPayment" caption="View Payment Details" />

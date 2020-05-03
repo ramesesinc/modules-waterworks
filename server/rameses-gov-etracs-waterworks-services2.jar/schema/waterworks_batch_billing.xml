@@ -3,20 +3,13 @@
 		<field name="objid" primary="true" caption="Control No" visible="true"/>
 		
 		<field name="state" required="true"/>
-		<field name="dtcreated" required="true" caption="DateCreated"/>
-		<field name="createdby_objid" required="true"/>
-		<field name="createdby_name" required="true" caption="CreatedBy"/>
 		
 		<complex name="subarea" ref="waterworks_subarea" jointype="many-to-one" includefields="code,area.objid,area.code" required="true">
 			<key field="subareaid" target="objid" />
 		</complex> 
 
-		<field name="dtposted" />
-		<field name="postedby_objid" />
-		<field name="postedby_name" />
-
-		<field name="reader_objid" required="true"/>
-		<field name="reader_name" caption="Reader" required="true"/>
+		<field name="reader_objid" />
+		<field name="reader_name" caption="Reader" />
 		<field name="readingdate" caption="ReadingDate"/>
 
 		<complex name="period" ref="waterworks_billing_period" jointype="many-to-one" required="true">
@@ -27,7 +20,6 @@
 		<complex name="task" ref="waterworks_batch_billing_task" jointype="many-to-one" required="false">
 			<key field="taskid" target="taskid" />
 		</complex>
-
 		
 	</element>
 </schema>

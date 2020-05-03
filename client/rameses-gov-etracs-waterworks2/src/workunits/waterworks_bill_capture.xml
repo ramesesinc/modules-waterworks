@@ -20,7 +20,7 @@
                  action="cancelBill" immediate="true" 
                  visibleWhen="#{  entity.step != 0 &amp;&amp; viewmode == 'edit' }" /> 
 
-        <invoker type="formActions" caption="Submit" action="save" 
+        <invoker type="formActions" caption="Submit" action="saveNew" 
                  visibleWhen="#{ entity.step == 0 }" />
 
 

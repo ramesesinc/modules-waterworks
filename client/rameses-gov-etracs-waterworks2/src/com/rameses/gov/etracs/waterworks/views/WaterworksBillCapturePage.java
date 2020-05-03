@@ -36,6 +36,7 @@ public class WaterworksBillCapturePage extends javax.swing.JPanel {
         xIntegerField1 = new com.rameses.rcp.control.XIntegerField();
         monthList1 = new com.rameses.enterprise.components.MonthList();
         xTextField1 = new com.rameses.rcp.control.XTextField();
+        xDateField1 = new com.rameses.rcp.control.XDateField();
         jLabel2 = new javax.swing.JLabel();
         vwSummary = new com.rameses.rcp.control.XPanel();
         xTabbedPane1 = new com.rameses.rcp.control.XTabbedPane();
@@ -141,7 +142,14 @@ public class WaterworksBillCapturePage extends javax.swing.JPanel {
         xTextField1.setCaption("Bill Ref No");
         xTextField1.setName("entity.billrefno"); // NOI18N
         xTextField1.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
         xFormPanel3.add(xTextField1);
+
+        xDateField1.setCaption("Bill Date");
+        xDateField1.setName("entity.billdate"); // NOI18N
+        xDateField1.setOutputFormat("");
+        xDateField1.setPreferredSize(new java.awt.Dimension(150, 20));
+        xFormPanel3.add(xDateField1);
 
         jLabel2.setText("Enter Period of Initial Bill");
 
@@ -165,7 +173,7 @@ public class WaterworksBillCapturePage extends javax.swing.JPanel {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(xFormPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(397, Short.MAX_VALUE))
+                .addContainerGap(375, Short.MAX_VALUE))
         );
 
         add(vwInitial, "card3");
@@ -1217,6 +1225,7 @@ public class WaterworksBillCapturePage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XDataTable xDataTable4;
     private com.rameses.rcp.control.XDataTable xDataTable5;
     private com.rameses.rcp.control.XDataTable xDataTable6;
+    private com.rameses.rcp.control.XDateField xDateField1;
     private com.rameses.rcp.control.XFormPanel xFormPanel1;
     private com.rameses.rcp.control.XFormPanel xFormPanel11;
     private com.rameses.rcp.control.XFormPanel xFormPanel12;

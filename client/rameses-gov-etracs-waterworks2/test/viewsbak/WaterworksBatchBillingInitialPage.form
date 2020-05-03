@@ -27,8 +27,8 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-              <Component id="xFormPanel4" min="-2" pref="259" max="-2" attributes="0"/>
-              <EmptySpace pref="171" max="32767" attributes="0"/>
+              <Component id="xFormPanel4" min="-2" pref="198" max="-2" attributes="0"/>
+              <EmptySpace pref="232" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -54,7 +54,7 @@
         </Component>
         <Component class="com.rameses.rcp.control.XLabel" name="xLabel3">
           <Properties>
-            <Property name="caption" type="java.lang.String" value="Schedule"/>
+            <Property name="caption" type="java.lang.String" value="Schedule Group"/>
             <Property name="expression" type="java.lang.String" value="#{ entity.subarea.schedulegroup.objid } - #{ entity.subarea.schedulegroup.description }"/>
             <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
               <Insets value="[20, 0, 0, 0]"/>
@@ -67,49 +67,13 @@
         <Component class="com.rameses.rcp.control.XLabel" name="xLabel1">
           <Properties>
             <Property name="caption" type="java.lang.String" value="From Year"/>
-            <Property name="expression" type="java.lang.String" value="#{ entity.year }"/>
-          </Properties>
-        </Component>
-        <Component class="com.rameses.rcp.control.XLabel" name="xLabel2">
-          <Properties>
-            <Property name="caption" type="java.lang.String" value="From Month"/>
-            <Property name="expression" type="java.lang.String" value="#{ entity.month }"/>
+            <Property name="expression" type="java.lang.String" value="#{ entity.period.monthname } #{ entity.period.year }"/>
           </Properties>
         </Component>
         <Component class="com.rameses.rcp.control.XLabel" name="xLabel4">
           <Properties>
             <Property name="caption" type="java.lang.String" value="Period"/>
             <Property name="expression" type="java.lang.String" value="#{ entity.period.fromperiod } - #{ entity.period.toperiod } "/>
-          </Properties>
-        </Component>
-        <Component class="com.rameses.rcp.control.XLookupField" name="xLookupField3">
-          <Properties>
-            <Property name="caption" type="java.lang.String" value="Assign To Reader"/>
-            <Property name="expression" type="java.lang.String" value="#{ entity.reader.name }"/>
-            <Property name="handler" type="java.lang.String" value="waterworks_reader:lookup"/>
-            <Property name="name" type="java.lang.String" value="entity.reader" noResource="true"/>
-            <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-              <Insets value="[20, 0, 0, 0]"/>
-            </Property>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[0, 20]"/>
-            </Property>
-            <Property name="required" type="boolean" value="true"/>
-          </Properties>
-        </Component>
-        <Component class="com.rameses.rcp.control.XDateField" name="xDateField1">
-          <Properties>
-            <Property name="caption" type="java.lang.String" value="Reading Date"/>
-            <Property name="depends" type="[Ljava.lang.String;" editor="org.netbeans.beaninfo.editors.StringArrayEditor">
-              <StringArray count="1">
-                <StringItem index="0" value="entity.zone"/>
-              </StringArray>
-            </Property>
-            <Property name="name" type="java.lang.String" value="entity.readingdate" noResource="true"/>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[120, 20]"/>
-            </Property>
-            <Property name="required" type="boolean" value="true"/>
           </Properties>
         </Component>
       </SubComponents>

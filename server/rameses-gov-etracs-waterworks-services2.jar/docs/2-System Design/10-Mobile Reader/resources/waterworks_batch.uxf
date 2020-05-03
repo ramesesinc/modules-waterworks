@@ -104,7 +104,7 @@ stubouts</panel_attributes>
       <x>450</x>
       <y>230</y>
       <w>370</w>
-      <h>470</h>
+      <h>490</h>
     </coordinates>
     <panel_attributes>wm_account
 --
@@ -134,7 +134,7 @@ photo: bytes
 remarks
 readingdate: Date
 billprintdate : Date
-
+stuboutid
 
 
 </panel_attributes>
@@ -151,5 +151,17 @@ billprintdate : Date
     <panel_attributes>lt=&lt;-
 objid=batchid</panel_attributes>
     <additional_attributes>30;30;90;160;180;170</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>660</x>
+      <y>90</y>
+      <w>318</w>
+      <h>250</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+objid=stuboutid</panel_attributes>
+    <additional_attributes>30;30;220;40;250;190;160;230</additional_attributes>
   </element>
 </diagram>

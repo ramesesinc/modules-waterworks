@@ -12,6 +12,7 @@
 
 		<field name="lng" />
 		<field name="lat" />
+		<field name="excludeinbatch" type="integer"/>
 	</element>
 
 </schema>

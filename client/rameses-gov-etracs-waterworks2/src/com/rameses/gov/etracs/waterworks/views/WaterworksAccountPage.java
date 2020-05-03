@@ -596,8 +596,8 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         });
         schemaList5.setCustomFilter("acctid = :objid");
         schemaList5.setEntityName("waterworks_consumption");
-        schemaList5.setHandlerName("consumptionList");
         schemaList5.setOrderBy("year DESC, month DESC");
+        schemaList5.setQueryName("entityQry");
         schemaList5.setSchemaName("vw_waterworks_consumption");
         schemaList5.setAllowOpen(false);
         xPanel6.add(schemaList5, java.awt.BorderLayout.CENTER);

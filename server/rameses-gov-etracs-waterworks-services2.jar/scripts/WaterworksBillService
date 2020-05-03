@@ -2,12 +2,20 @@ import com.rameses.annotations.*;
 
 class WaterworksBillService {
 
+ 	@Service("ControlnoGeneratorService")
+    def controlNoSvc;
+
+   	@Service('Var')
+	def var;	
 
     @Service('DateService')
 	def dateSvc;
 
 	@Service("WaterworksBillingRuleService")
 	def ruleSvc;
+
+	@Service("WaterworksScheduleService")
+	def skedSvc;
 
 	@DataContext("vw_waterworks_account")
 	def vwAcctEm;
@@ -39,6 +47,69 @@ class WaterworksBillService {
 
 	@DataContext("waterworks_consumption")
 	def consumptionEm;
+
+	@Env
+	def env;
+
+
+	@ProxyMethod
+	public def createBill( def o ) {
+		if(!o.acctid) throw new Exception("acctid is required");
+		if(!o.txnmode) o.txnmode = 'CAPTURE';
+
+		o.createdby = [objid:env.USERID, name:env.FULLNAME];
+		o.dtcreated = dateSvc.serverDate;
+
+		def acct = vwAcctEm.find( [objid: o.acctid ] ).first();
+		o.oldbillid = acct.billid;
+
+		//determine the period
+		if(!o.period?.objid) {
+			if(!o.year ) throw new Exception("Year is required");
+			if(!o.month ) throw new Exception("Month is required");						
+			o.period = skedSvc.getSchedule( [scheduleid: acct.subarea.schedulegroupid, year: o.year, month: o.month ]  );
+			o.periodid = o.period.objid;
+		} 
+		if(!o.billdate) o.billdate = o.period.billdate;
+		o.expirydate = o.period.billexpirydate;			
+
+		//bill no.
+		if(!o.billno) o.billno = o.billrefno;
+		if(!o.billno) {
+			def pattern = var.waterworks_billno_format;
+			if(!pattern) throw new Exception("Please specify waterworks_billno_format in sys_var");
+			o.billno = controlNoSvc.getNextNo(pattern);
+		};
+
+		o.acctinfoid = acct.acctinfoid;
+		o.billed = 0;
+		o.printed = 0;
+		if(o.txnmode == "CAPTURE") {
+			o.state = "DRAFT";
+			o.step = 1;
+		}
+		else {
+			o.state = "OPEN";
+			o.step = 5;
+		};	
+		o.totalcredits = 0;
+		o.totalprevunpaid = 0;
+		o.totalbillunpaid = 0;
+		o.billamount = 0;
+		o.totalsurcharge = 0;
+		o.totalpayment = 0;
+		o.totaldiscount = 0;
+		o = billEm.create( o );
+
+		if( o.txnmode == "ONLINE" ) {
+			initNewBill( [bill: o] );
+		}
+
+		//update the account's bill
+		acctEm.find( [objid: o.acctid ] ).update([ billid: o.objid ]);
+		return o;
+	}
+
 
 
 	//This initializes the new bill after creation and returns
@@ -333,6 +404,9 @@ class WaterworksBillService {
 	@ProxyMethod
 	public void approve(def o) {
 		def bill = vwBillEm.find( [objid: o.objid] ).first(); 
+
+		//if there is a meter, there must be a consumptionid
+		if( !bill.consumptionid ) throw new Exception("There must be a consumption entry");
 
 		if(bill.billamount<=0) 
 			throw new Exception("Bill amount must be greater than zero");

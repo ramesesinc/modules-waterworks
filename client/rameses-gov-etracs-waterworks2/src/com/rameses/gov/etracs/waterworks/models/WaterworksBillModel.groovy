@@ -19,6 +19,9 @@ public class WaterworksBillModel extends CrudFormModel {
     @Service("WaterworksPaymentService")
     def pmtSvc;
     
+    //do not remove this. This is used to qualify the formActions
+    def viewmode = "summary";
+
     void openBillFromAccount() {
         if(! caller.entity?.bill?.objid ) 
             throw new Exception("There is no bill id in account");
@@ -39,7 +42,7 @@ public class WaterworksBillModel extends CrudFormModel {
         if(!MsgBox.confirm("You are about to create the next bill. Proceed?")) {
             throw new BreakException();
         }
-        def b = [_schemaname:entitySchemaName];
+        def b = [:];
         b.txnmode = "ONLINE";
         b.acctid = caller.entity.objid;
         b.year = oldBill.period.year;
@@ -48,7 +51,7 @@ public class WaterworksBillModel extends CrudFormModel {
             b.month = 1;
             b.year = b.year + 1;
         }
-        def newbill = persistenceService.create( b );
+        def newbill = billSvc.createBill( b );
         caller.entity.bill = newbill;
         caller.reloadEntity();
         entity = newbill;

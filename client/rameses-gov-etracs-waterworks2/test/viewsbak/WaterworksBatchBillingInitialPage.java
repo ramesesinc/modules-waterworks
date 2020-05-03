@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rameses.gov.etracs.waterworks.views;
+package viewsbak;
 
 import com.rameses.osiris2.themes.FormPage;
 import com.rameses.rcp.ui.annotations.Template;
@@ -34,10 +34,7 @@ public class WaterworksBatchBillingInitialPage extends javax.swing.JPanel {
         xLookupField1 = new com.rameses.rcp.control.XLookupField();
         xLabel3 = new com.rameses.rcp.control.XLabel();
         xLabel1 = new com.rameses.rcp.control.XLabel();
-        xLabel2 = new com.rameses.rcp.control.XLabel();
         xLabel4 = new com.rameses.rcp.control.XLabel();
-        xLookupField3 = new com.rameses.rcp.control.XLookupField();
-        xDateField1 = new com.rameses.rcp.control.XDateField();
 
         xFormPanel4.setCaptionVAlignment(com.rameses.rcp.constant.UIConstants.CENTER);
         xFormPanel4.setCaptionWidth(150);
@@ -50,39 +47,19 @@ public class WaterworksBatchBillingInitialPage extends javax.swing.JPanel {
         xLookupField1.setRequired(true);
         xFormPanel4.add(xLookupField1);
 
-        xLabel3.setCaption("Schedule");
+        xLabel3.setCaption("Schedule Group");
         xLabel3.setExpression("#{ entity.subarea.schedulegroup.objid } - #{ entity.subarea.schedulegroup.description }");
         xLabel3.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xLabel3.setPreferredSize(new java.awt.Dimension(0, 18));
         xFormPanel4.add(xLabel3);
 
         xLabel1.setCaption("From Year");
-        xLabel1.setExpression("#{ entity.year }");
+        xLabel1.setExpression("#{ entity.period.monthname } #{ entity.period.year }");
         xFormPanel4.add(xLabel1);
-
-        xLabel2.setCaption("From Month");
-        xLabel2.setExpression("#{ entity.month }");
-        xFormPanel4.add(xLabel2);
 
         xLabel4.setCaption("Period");
         xLabel4.setExpression("#{ entity.period.fromperiod } - #{ entity.period.toperiod } ");
         xFormPanel4.add(xLabel4);
-
-        xLookupField3.setCaption("Assign To Reader");
-        xLookupField3.setExpression("#{ entity.reader.name }");
-        xLookupField3.setHandler("waterworks_reader:lookup");
-        xLookupField3.setName("entity.reader"); // NOI18N
-        xLookupField3.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
-        xLookupField3.setPreferredSize(new java.awt.Dimension(0, 20));
-        xLookupField3.setRequired(true);
-        xFormPanel4.add(xLookupField3);
-
-        xDateField1.setCaption("Reading Date");
-        xDateField1.setDepends(new String[] {"entity.zone"});
-        xDateField1.setName("entity.readingdate"); // NOI18N
-        xDateField1.setPreferredSize(new java.awt.Dimension(120, 20));
-        xDateField1.setRequired(true);
-        xFormPanel4.add(xDateField1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -97,18 +74,15 @@ public class WaterworksBatchBillingInitialPage extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(171, Short.MAX_VALUE))
+                .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(232, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.rameses.rcp.control.XDateField xDateField1;
     private com.rameses.rcp.control.XFormPanel xFormPanel4;
     private com.rameses.rcp.control.XLabel xLabel1;
-    private com.rameses.rcp.control.XLabel xLabel2;
     private com.rameses.rcp.control.XLabel xLabel3;
     private com.rameses.rcp.control.XLabel xLabel4;
     private com.rameses.rcp.control.XLookupField xLookupField1;
-    private com.rameses.rcp.control.XLookupField xLookupField3;
     // End of variables declaration//GEN-END:variables
 }

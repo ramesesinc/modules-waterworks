@@ -4,209 +4,132 @@ import com.rameses.rcp.annotations.*;
 import com.rameses.rcp.common.*;
 import com.rameses.osiris2.client.*;
 import com.rameses.osiris2.common.*;
+import com.rameses.rcp.annotations.*;
 import com.rameses.seti2.models.*;
-import com.rameses.osiris2.report.*;
-import com.rameses.rcp.framework.*;
-import java.text.*;
-
 
 public class WaterworksBatchBillingModel extends WorkflowTaskModel {
-    
-   @Service("WaterworksComputationService")
-   def compSvc;
-    
-   @Service("WaterworksBatchBillProcessorService")
-   def batchSvc;
-   
-   @Service("WaterworksBillService")
-   def billSvc;
-   
-   def billDispatcher = ManagedObjects.instance.create(BillDispatcherReceipt.class);
-   def billPrinter = ManagedObjects.instance.create(WaterworksBillingPrinterModel.class);
-   
-   def selectedItem;
-   
-   /*
-    *   This method is used in style rule condition and DataTable column expression 
-    */
-   def getRoot() { 
-       return this; 
-   }
-   
-   def getQuery() {
-        return [batchid: entity.objid];
-   } 
-    
-   public String getTitle() {
-        return "Sub Area " + entity.subarea?.code + " " + entity.year + "-" +  entity.monthname + " (" + task.title + ")";
-   } 
-    
-   def getViewtype() {
-        if(task.state.matches("draft|for-review")) {
-            //return "billing";
-            return "reading";
-        }
-        else {
-            return "reading";
-        }
-   }
-   
-   public void afterSignal(def transition, def task) {
-       itemHandler.reloadAll();
-   }
 
-   def stat;
-   def progress = [
-        getTotalCount : {
-            if(stat==null) stat = batchSvc.getBilledStatus([ objid: entity.objid ]);
-            return stat.totalcount;
+    @Service("WaterworksBatchBillingService")
+    def batchSvc;
+
+    String title;
+    def viewmode;
+
+    boolean hasErrors = false;
+
+    def acctHandler;
+
+    public def create() {
+        mode = "create";
+        entity = [:];
+        title = "Batch Billing Initial";
+        return null;
+    }
+
+    @PropertyChangeListener
+    def listener = [
+        "entity.subarea" : { o->
+            entity.period = o.period;
+            binding.refresh();
+        },
+        "excludeinbatch" : { o->
+            errListHandler.reload();
+        },
+        "showerronly": { o->
+            errListHandler.reload();
+        }
+    ];
+
+    public void saveNew() {
+        if( !entity.period ) throw new Exception("Please specify a period. Check that the subarea must have a billing period");
+        entity = batchSvc.create( entity );
+        MsgBox.alert("Batch no. " + entity.objid + " is created");
+        open();
+    }
+
+    public void afterOpen() {
+        hasErrors = true;     
+        errListHandler.reload();
+        acctHandler = Inv.lookupOpener("vw_waterworks_account:exec", [:] );
+    }
+
+    public void afterSignal( def trans, def task) {
+        if( task.state == 'processing' ) {
+            MsgBox.alert("Start processing now...." );       
+        }
+    }
+
+
+    /*************************
+    * ACCOUNTS FOR PROCESSING
+    **************************/
+    boolean showerronly = false;
+    def excludeinbatch = 0;
+    def errList = [];
+    def errListHandler = [
+        isMultiSelect: {
+            return true;        
         },
         fetchList: { o->
-            o.batchid = entity.objid; 
-            return batchSvc.getForBillingList( o );
+            o.objid = entity.objid;
+            o.excludeinbatch = excludeinbatch;
+            o.showerronly = showerronly;
+            return batchSvc.getAccountsForBilling( o ); 
         },
-        processItem: { o->
-            o.year = entity.year;
-            o.month = entity.month;
-            billSvc.process( o );
-            binding.refresh('progressLabel');
-        },
-        onFinished: {
-            binding.refresh();
+        openItem: { o,col ->
+            def op = Inv.lookupOpener("vw_waterworks_account:open", [entity:[objid: o.objid]]);
+            op.target = "popup";
+            return op;
         }
-    ] as BatchProcessingModel;
-   
-    def itemHandler = [
-        getContextMenu: { item, name-> 
-            return getContextMenuList(item);
-        }, 
-        callContextMenu: { item, menuitem-> 
-            menuitem.func( item );
-        },
-        isColumnEditable: {item,colName->
-            //if(task?.state != "for-reading") return false;
-            if (colName == "reading" && item.meterid!=null) {
-                return true; 
-            }
-            else if (colName == "volume" && item.meterstate == 'DEFECTIVE') {
-                return true; 
-            }
-            else {
-                return false; 
-            }
-        },
-        onColumnUpdate: { item,colName->
-            if(colName.matches("reading|volume")) {
-                def res = calcConsumption(item);
-                item.putAll(res);
-                itemHandler.refreshSelectedItem();
-            }
-        },
-        isForceUpdate: {
-            return true; 
-        }    
-    ] ;
-   
-   def calcConsumption( def item ) {
-        def z = [:];
-        z.acctid = item.acctid;
-        z.consumptionid = item.consumptionid;
-        z.meterstate = item.meterstate;
-        z.prevreading = item.prevreading;
-        z.reading = item.reading;
-        z.volume = item.volume;
-        return compSvc.compute(z);
-   }
-   
-   def hold = { item->
-        def i = item.hold ? 0 : 1;
-        def h = [:];
-        h.data = [hold: i, objid: item.consumptionid ];
-        h.fields = [];
-        h._schemaname = "waterworks_consumption";
-        h._log_schemaname = "waterworks_changelog";
-        h._bypass_check_diff = true;
-        //h.beforeSave = { o-> }
-        h.handler = {item.hold = i;}
-        Modal.show("changeinfo", h, [title: "Change Hold Status"]);
-    }
-   
-   
-   def getContextMenuList(def item) {
-        def mnuList = [];
+    ] as PageListModel;
 
-        if(item.state == 'ERR') mnuList << [value: 'Fix Error']
-
-        mnuList << [value: 'View Account', func: viewAccount];
-        if ( task?.state.toString().matches('for-review|for-reading')) {
-            mnuList << [value: 'Recompute Bill', func:rebill];
-            mnuList << [value: 'Begin Balance', func: beginBalance];
-        } 
-        mnuList << [value: 'View Bill', func: viewBilling];
-        
-        if ( task?.state.toString().matches('for-reading|for-approval|approved')) {
-            mnuList << [value: 'Edit', func: editBillFunc];
+    public void excludeFromBatch() {
+        if(!errListHandler.selectedValue) throw new Exception("Please check an item to exclude");
+        errListHandler.selectedValue.each {
+            acctHandler.handle.entity = [objid:it.objid];
+            acctHandler.handle.excludeFromBatch();            
         }
-
-        def meterid = item.meterid; 
-        if( task?.state.toString().matches("for-reading")) { 
-            if( item.hold == 0 ) mnuList << [value: 'Hold', func:hold]; 
-            if( item.hold == 1 ) mnuList << [value: 'Activate', func:hold]; 
-            mnuList << [value: 'Recompute', func: recomputeConsumption]; 
-            mnuList << [value: 'Reset', func: resetConsumption]; 
-        }
-        mnuList << [value: 'View Account', func:viewAccount]; 
-        mnuList << [value: 'View Consumption History', func: viewConsumptionHistory]; 
-        
-        if ( task?.state == "approved" ) { 
-            boolean allowed = ( 
-                item.hold.toString() != '1' &&  
-                item.acctstate.toString() == 'ACTIVE' &&  
-                item.meterstate.toString() != 'DISCONNECTED'
-            ); 
-            if ( allowed ) { 
-                mnuList << [value: 'View Bill Receipt', func: viewBillReceipt]; 
-            }
-        } 
-        return  mnuList; 
+        errListHandler.reload();
     }
-    
-    
-    
-   void printBillDispatcherReceipt() {
-       billDispatcher.buildReport([ batchid: entity.objid ]); 
-   } 
-   
-    def showMenuActions( inv ) { 
-        def selItem = null; 
-        def menus = null; 
-        def invtype = inv.properties.type;
-        if ( hasCallerProperty('selectedItem')) { 
-            selItem = caller.selectedItem; 
-            if ( hasCallerMethod('getContextMenuList')) { 
-                menus = caller.getContextMenuList(); 
-            }
+
+    public void includeInBatch() {
+        if(!errListHandler.selectedValue) throw new Exception("Please check an item to exclude");
+        errListHandler.selectedValue.each {
+            acctHandler.handle.entity = [objid:it.objid];
+            acctHandler.handle.includeInBatch();
         }
-        if ( !menus ) return null; 
-        def ops = new PopupMenuOpener(); 
-        
-        def createMenuAction = { menu, data ->
-            return [
-                getCaption: {
-                    return menu?.value.toString(); 
-                }, 
-                execute: { 
-                    if ( menu?.func ) { 
-                        menu.func( data ); 
-                    } 
-                    return null; 
-                } 
-            ] as com.rameses.rcp.common.Action;
-        };
-       
-        menus.each{ ops.add( createActionMenu( it, selItem )); }
-        return ops;
+        errListHandler.reload();
     }
-   
-   
-}
+
+    public void refreshList() {
+        errListHandler.reload();
+    }
+
+    public def viewItem() {
+        if( !errListHandler.selectedItem?.item  )
+            throw new Exception("Please select an item");
+        def v = errListHandler.selectedItem.item;
+        return errListHandler.openItem( v, null );
+    }
+
+    /*************************
+    * READING ITEMS
+    **************************/
+    def searchReading;
+    def doSearchReading() {
+        readingListHandler.reload();
+    }
+
+    def readingListHandler = [
+        fetchList: { o->
+                
+        },
+        onUpdateColumn: { v, col ->
+            MsgBox.alert("item " + v + col);
+        }
+    ] as BasicListModel;
+
+
+
+
+}	

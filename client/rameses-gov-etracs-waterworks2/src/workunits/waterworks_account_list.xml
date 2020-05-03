@@ -3,7 +3,7 @@
           orderBy="acctno"  >
     <invokers>
         <invoker folderid="/menucategory/waterworks/account" caption="View Customer Accounts" action="init"
-            cols="acctno,acctname,address.text,classificationid,meter.serialno,meterstate,subarea.code,seqno">
+            cols="acctno,acctname,address.text,classificationid,meter.serialno,meterstate,subarea.code,seqno,bill.billno">
             <action role="MASTER" /> 
             <action role="SHARED" allowCreate="false" allowDelete="false" /> 
         </invoker>
