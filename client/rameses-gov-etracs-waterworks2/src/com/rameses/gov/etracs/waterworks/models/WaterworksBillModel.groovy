@@ -36,8 +36,6 @@ public class WaterworksBillModel extends CrudFormModel {
     void createFromAccount() {
         def oldBill = caller.entity.bill;
         if(!oldBill) throw new Exception("There is no current bill available");
-        if( oldBill.totalunpaid > 0 && oldBill.totalcredits > 0 )
-            throw new Exception("Please apply credits first in previous bill");        
 
         if(!MsgBox.confirm("You are about to create the next bill. Proceed?")) {
             throw new BreakException();
@@ -131,6 +129,7 @@ public class WaterworksBillModel extends CrudFormModel {
     void approveBill() {
         if(!MsgBox.confirm("You are about to approve this bill. Information cannot be edited once posted. Proceed?")) return;
         billSvc.approve( [objid: entity.objid ] );
+        entity.state = 'POSTED';
         refreshTotals();
     }
     

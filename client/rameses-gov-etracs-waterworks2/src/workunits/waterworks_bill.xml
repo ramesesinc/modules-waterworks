@@ -24,14 +24,16 @@
 
         <!-- this hooks to formActions-->
         <invoker type="formActions" caption="Close" action="_close" immediate="true" />
-        <invoker type="formActions" caption="Post" action="approveBill" role="APPROVER"
+        <invoker type="formActions" caption="Approve" action="approveBill" role="APPROVER"
             visibleWhen="#{ entity.state == 'OPEN' }"
             immediate="true" />
 
         <!-- BILL ACTIONS -->
+        <!--
         <invoker type="billActions" caption="Apply Credits" action="applyCredits" 
             visibleWhen="#{entity.totalcredits &gt; 0 &amp;&amp; entity.totalunpaid &gt; 0 }"
             immediate="true" />
+        -->
 
         <invoker type="billActions" caption="Edit Reading" action="editReading" 
             visibleWhen="#{ readingPosted == false &amp;&amp; entity.state=='OPEN' }"
@@ -41,10 +43,11 @@
             visibleWhen="#{ readingPosted == false &amp;&amp;  entity.consumption?.amount &gt; 0 &amp;&amp; entity.state=='OPEN' }"
             immediate="true" />
 
+        <!--    
         <invoker type="billActions" caption="Update Balances" action="updateBillTotals" 
             visibleWhen="#{ entity.state == 'OPEN' }"
             immediate="true" />          
-        
+        -->
                   
 
     </invokers>

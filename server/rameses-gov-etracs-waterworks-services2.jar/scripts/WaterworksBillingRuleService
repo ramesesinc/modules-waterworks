@@ -101,7 +101,17 @@ class WaterworksBillingRuleService {
 		def amtpaid = o.amtpaid;
 		def ym = (bill.period.year*12)+bill.period.month;
 
-		def bitems = billItemEm.find( [acctid: acct.objid ] ).where("(amount-amtpaid) > 0 AND ((year*12)+month) <= :yearmonth", [yearmonth: ym]).list();		
+		//if bill state = OPEN only return the previous bills not the current
+		def billitems = [];
+		def whereStmt = null;
+		if( bill.state == 'OPEN' ) {
+			whereStmt = "(amount-amtpaid) > 0 AND ((year*12)+month) < :yearmonth";
+		}
+		else {
+			whereStmt = "(amount-amtpaid) > 0 AND ((year*12)+month) <= :yearmonth";			
+		}
+
+		def bitems = billItemEm.find( [acctid: acct.objid ] ).where(whereStmt, [yearmonth: ym]).list();		
 		def fb = buildFacts( o, bitems, null );
 
 		def req = [rulename:'waterworkspayment'];

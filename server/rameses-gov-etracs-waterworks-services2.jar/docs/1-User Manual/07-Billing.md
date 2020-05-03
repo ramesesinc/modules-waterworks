@@ -10,8 +10,55 @@
 # Billing #
 
 The billing is prepared monthly and can be generated in two ways:
-- 1. Manually by clicking on generate bill in the account
-- 2. By batch billing
+1. Manually by clicking on generate bill in the account
+2. By batch billing
+
+## Billing States ##
+
+A bill has the ff. states:
+
+![billstates]
+
+
+- __DRAFT__ - This is the state of the first bill that is captured manually. Once approved it is set to POSTED.
+- __OPEN__ - When generating a new bill, the initial state is OPEN. At this time it only contains the balance forward. If payments are made at this state and there is no unpaid amount, the amount paid will be stored in the credits.
+- __POSTED__ - When the readings are approved, the current bill items will be generated. If there are credits in the open state, the credits will be automatically applied. 
+- __CLOSED__ - A bill will be closed when a new bill is generated. The amount due of the closed bill will be forwarded to the next bill.
+
+## Billing Cycle ##
+Each bill follows a the process depicted in the flowchart:
+
+![alt text][billcycle]
+
+- Step 1. __Create Bill__ - system creates the bill. Can be done individually or through batch billing.
+- Step 2. __Calculate Forward Balance__ - System captures balance from the previous bill. state is OPEN.
+
+- Step 3. Make Readings. This is the point where the readings are done. If using a mobile reader, the bills are downloaded into the device including their balances. Upon making actual reading, the device can immediatly calculate the bill and print and give to the customer. Once returned to the office, all readings can be uploaded to the system. Without the device, readings must be encoded manually.
+
+- Step 4. Run Billing. The system will call the run billing rules and will calculate the fees, from the readings computed and other fees. Unless approved, this items will not be visible yet during payment.
+
+- Step 5. The bill must be approved first before it can be paid. Only the Approver can perform this task.
+
+- Step 6. After approving, if there are credits from deposits or payments made during the OPEN state, it will be applied to the bill items. 
+
+- Step 7. After approving, the state is changed to POSTED. This is now ready for payment.
+
+- Step 8. __Print and Send Bill to Customer__. If there is still amount due, the bill will be sent to for printing state. After printing, the billrefno value will be supplied. The billrefno is the series no of the pre-printed paper. If there is no amount due, no need to send billing.
+
+- Step 9. __Calculate Surcharge and Penalty__. If there were no payments made or if payments were made but still did not cover the full payment required after the due date, the surcharge will be automatically applied. The surcharge are set in the rules.
+
+## Balance Forward Formula ##
+
+The system will perform the ff. the following formula to arrive at the balance forward (This is applied to the previous bill)
+
+```[Total billitems amount - amtpaid - discount]  - [Total Credits]```
+
+You must countercheck this by checking the previous bill:
+```[balance forward] + [total fees and charges] - [total payments] - [discounts]``` 
+
+The countercheck value and the system generated value must be the same.
+
+## Bill Information ##
 
 Each bill contains the ff: information (only the impt information must be noted):
 
@@ -39,43 +86,7 @@ Each bill contains the ff: information (only the impt information must be noted)
 
 </div>
 
-## Billing Cycle ##
-Each bill follows a the process depicted in the flowchart:
-
-
-![alt text][billcycle]
-
-- Steps 1-4. Bill Creation. The ff. processes execute at the same time:
-> 1. __Create Bill__ - system creates the bill. Can be done manually or through batch billing.
-> 2. __Calculate Forward Balance__ - System captures balance from the previous bill.
-> 3. __Calculate Other Fees and Other Charges__ - System determines the other charges through the billing rules. 
-> 4. __Apply Credit__ - This is applicable only if result in 2 is negative. The credits will be applied immediately to the charges and fees. 
-
-- Step 5. Reading is manually performed. This is the point where the readings are done. If using a mobile reader, the bills are downloaded into the device including their balances. Upon making actual reading, the device can immediatly calculate the bill and print and give to the customer. Once returned to the office, all readings can be uploaded to the system. Without the device, readings must be encoded manually.
-
-- Step 6-7. Posting consumption. The ff. processes execute at the same time:
-> 6. __Add Consumption to Bill__. The calculated readings are posted to the ledger. This happens after the reading is approved.
-> 7. __Apply Credits__. This is applicable only if after step 4 there are still credits unapplied or maybe the customer made payments prior to the readings. Credits will apply discounts when applicable.
-
-- Step 8. __Print and Send Bill to Customer__. The bill is printed and sent in batches to customers
-
-- Step 9. __Calculate Surcharge and Penalty__. If there were no payments made or if payments were made but still did not cover the full payment required after the due date, the surcharge will be automatically applied. The surcharge are set in the rules.
-
-When the date is beyond the bill expiry date the bill will automatically close and will require to open a new bill. All payment transactions made after the bill expiry date will be carried over to the new bill. 
-
-## Balance Forward Formula ##
-
-The system will perform the ff. the following formula to arrive at the balance forward (This is applied to the previous bill)
-
-```[Total billitems amount - amtpaid - discount]  - [Total Credits]```
-
-You must countercheck this by checking the previous bill:
-```[balance forward] + [total fees and charges] - [total payments] - [discounts]``` 
-
-The countercheck value and the system generated value must be the same.
-
-
-
+[billstates]: ./images/bill/billstates.gif
 [billcycle]: ./images/bill/billcycle.gif
 
 

@@ -54,8 +54,8 @@ public class WaterworksBillItemModel  {
         entity.amtpaid = 0;
         entity.discount = 0;
         entity.acctid = bill.acctid;
-        entity.billid = bill.objid;                        
         if( current ) {
+            entity.billid = bill.objid;   
             entity.year = bill.period.year;
             entity.month = bill.period.month;
         }
