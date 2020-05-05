@@ -31,10 +31,13 @@ class WaterworksBillStatementService {
 		details <<  bal;
 
 		//include billitems 
-		def billItems = billItemEm.find( [billid: bill.objid, year: bill.period.year, month: bill.period.month ] ).orderBy("item.sortorder ASC").list();
+		def billItems = billItemEm.find( [billid: bill.objid ] ).orderBy("item.sortorder ASC").list();
 		billItems.each {
 			def m = [:];
 			m.particulars = it.item.title;
+			if( ((bill.period.year*12)+bill.period.month) != ((it.year*12)+it.month) ) {
+				m.particulars += " "+it.year +"-" +it.monthname+" ";
+			}
 			if( it.particulars  ) m.particulars += "("+it.particulars+")" ;
 			m.txndate = it.txndate;
 			if(!m.txndate) m.txndate = bill.period.billdate;

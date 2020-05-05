@@ -79,7 +79,7 @@ public class WaterworksConsumptionBuilderModel {
 
     void calculateList() {
         //validate the list first that all readings are encoded
-        def unread = listItems.findAll{ !it.reading };
+        def unread = listItems.findAll{ it.reading==null };
         if( unread ) throw new Exception("All items must have readings");
         def prev = null;
         listItems.each {

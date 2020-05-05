@@ -125,8 +125,14 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
         return "_close";
     }
 
-    void updateTotals() {
+    void refreshTotals() {
         def r = billSvc.getBillTotals( [objid: entity.objid ] );
+        entity.putAll( r );
+        binding.refresh();
+    }
+
+    void updateBillTotals() {
+        def r = billSvc.updateBillTotals( [objid: entity.objid ] );
         entity.putAll( r );
         binding.refresh();
     }
@@ -159,7 +165,7 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
             pmt.refdate = entity.period.fromdate;
             pmt.amount = o;
             billSvc.addBeginCredit( pmt );
-            updateTotals();            
+            refreshTotals();            
             buildItemList();
         }
         return Inv.lookupOpener("decimal:prompt", [handler: h, title: "Enter beginning balance" ]);        
@@ -168,7 +174,7 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
     public void removeCredit() {
         if(!MsgBox.confirm("You are about to remove the credit payment")) return;
         billSvc.removeBeginCredit( [billid: entity.objid ] );
-        updateTotals();        
+        refreshTotals();        
         buildItemList();
     }
 
@@ -219,7 +225,7 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
             else {
                 def m = [_schemaname: "waterworks_billitem"];            
                 m.findBy = [acctid: entity.acctid];
-                m.where = ["((year*12)+month) < :yrmon", [ yrmon: yearMonth ] ];
+                m.where = ["((year*12)+month) < :yrmon AND billid IS NULL", [ yrmon: yearMonth ] ];
                 m.orderBy = "year DESC, month DESC";
                 itemList = queryService.getList( m );
                 itemList.each {
@@ -230,7 +236,6 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
         else {
             def m = [_schemaname: "waterworks_billitem"];
             m.findBy = [billid: entity.objid ];
-            m.where = ["((year*12)+month) = :yrmon", [ yrmon: yearMonth ] ];
             m.orderBy = "item.sortorder";
             itemList = queryService.getList( m );
         }
@@ -241,7 +246,7 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
         def p = [:];
         p.saveHandler = { o->
             billSvc.addBillItem( o );
-            updateTotals();                        
+            refreshTotals();                        
             buildItemList();
         }
         if(entity.step!=1) p.current = true;
@@ -254,7 +259,7 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
         def p = [:];
         p.saveHandler = { o->
             billSvc.updateBillItem( o );
-            updateTotals();   
+            refreshTotals();   
             buildItemList();
         }
         if( entity.step!=1) p.current = true;
@@ -266,22 +271,37 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
     void removeItem() {
         if(!selectedItem) throw new Exception("Please select item");
         billSvc.removeBillItem( [objid: selectedItem.objid ] );
-        updateTotals();         
+        refreshTotals();         
         buildItemList();
     }
 
     //rules for calculating other fees
-    void updateBillFees() {
-        billSvc.updateBillFees( [objid: entity.objid ]);
-        updateTotals(); 
-        buildItemList();
+    def updateBillFees() {
+        def h = { o->
+            def m = [:];
+            m.txndate = o;
+            m.objid = entity.objid;
+            billSvc.updateBillFees( m );
+            refreshTotals(); 
+            buildItemList();
+        }
+        return Inv.lookupOpener("date:prompt", [handler: h]);
     }
     
+    void resetBill() {
+        if( !MsgBox.confirm("You are about to clear the bill contents. Proceed?")) return;
+        billSvc.resetBill( [objid: entity.objid ]);
+        refreshTotals();                
+        buildItemList();
+    }
+
+    /*
     void updatePenaltyFees() {
         billSvc.updatePenaltyFees( [objid: entity.objid ]);
-        updateTotals(); 
+        refreshTotals(); 
         buildItemList();
-    }    
+    } 
+    */   
 
     /***************
      * Payments
@@ -291,7 +311,7 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
         if( entity.totalcredits == 0 || entity.totalunpaid == 0 ) 
             throw new Exception("credits cannot be applied");
         pmtSvc.applyCredits( [billid: entity.objid] );
-        updateTotals();            
+        refreshTotals();            
         updatePmtList();
     }
 
@@ -300,7 +320,7 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
             throw new Exception("Please apply first all unapplied credits before proceeding")
         }
         def s  = { o->
-            updateTotals();            
+            refreshTotals();            
             updatePmtList();
         }
         return Inv.lookupOpener("waterworks_payment:capture", [saveHandler:s, reftype: "cashreceipt"])
@@ -312,7 +332,7 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
         } 
         if(!MsgBox.confirm("You are about to cancel this payment. Proceed?")) return;
         pmtSvc.cancelPayment([refid: selectedPayment.objid ]);
-        updateTotals();
+        refreshTotals();
         updatePmtList();
     }
 

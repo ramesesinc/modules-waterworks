@@ -13,6 +13,7 @@ SELECT
    ai.meterid, 
    ai.meterstate,
 
+   sarea.schedulegroupid AS subarea_schedulegroupid,
    sarea.code AS subarea_code,
    sarea.barangay_name AS subarea_barangay_name,
    area.code AS area_code,

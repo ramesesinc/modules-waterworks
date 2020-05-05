@@ -24,6 +24,7 @@
 		<field name="seqno" caption="Seq No"/> 
 
 		<field name="subarea_code" /> 
+		<field name="subarea_schedulegroupid" /> 
 		<field name="subarea_barangay_name" /> 
 		<field name="area_code" /> 
 

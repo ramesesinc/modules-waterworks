@@ -397,7 +397,7 @@ public class WaterworksBillPage extends javax.swing.JPanel {
         xFormPanel12.setCaptionWidth(120);
 
         xLabel32.setCaption("Bill No");
-        xLabel32.setExpression("#{ entity.billno }");
+        xLabel32.setExpression("#{ entity.billno } (#{ entity.txnmode }) ");
         xFormPanel12.add(xLabel32);
 
         xLabel37.setCaption("Bill Date");

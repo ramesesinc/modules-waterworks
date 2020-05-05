@@ -46,7 +46,7 @@ class WaterworksCashReceiptService {
         
         //we need to update the bill first just for surcharges. This should run everytime cash recept 
         if( bill.period.duedate!=null && o.txndate >=  bill.period.duedate ) {
-            billSvc.updatePenaltyFees( [objid: bill.objid, txndate: o.txndate ] );
+            billSvc.updateBillFees( [objid: bill.objid, txndate: o.txndate ] );
         }
 
         def param = [ acctid : bill.acctid, billid: bill.objid, include_items:true ];

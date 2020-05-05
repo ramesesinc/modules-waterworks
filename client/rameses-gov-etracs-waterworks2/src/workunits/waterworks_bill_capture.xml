@@ -36,7 +36,10 @@
         <invoker type="viewActions" caption="Next" action="moveNextStep" 
                  visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'edit' &amp;&amp; entity.step &lt; 4}" />
 
-        <invoker type="formActions" caption="Approve" action="approve" 
+        <invoker type="viewActions" caption="Update Totals" action="updateBillTotals" 
+                 visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'edit' }" /> 
+
+        <invoker type="viewActions" caption="Approve" action="approve" 
                  visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'edit' }" />
 
     </invokers>

@@ -288,23 +288,25 @@ class WaterworksBillService {
 
 	//support function for updateBillFees and updatePenaltyFees
 	void saveBillItem( bill, itm, txndate ) {
-		def m = [:];
-		m.acctid = bill.acctid;
-		m.billid = bill.objid;
-		m.item = [objid: itm.billcode];
-		m.amount = itm.amount;
-		m.amtpaid = 0;
-		m.discount = 0;
-		m.year = itm.year;
-		m.month = itm.month;
-		m.txndate = txndate;	
-		m.system = 0;
-		m.billed = 0;
-		m.particulars = itm.remarks;
-		if(itm.recurringfeeid ) m.recurringfeeid = itm.recurringfeeid;
-		billItemEm.create( m );
+		//check if exist in acctid, year, month, itemid
+		if( !billItemEm.find( [acctid: bill.acctid, year:itm.year , month:itm.month, itemid: itm.billcode] ).exists() ) {
+			def m = [:];
+			m.acctid = bill.acctid;
+			m.billid = bill.objid;
+			m.item = [objid: itm.billcode];
+			m.amount = itm.amount;
+			m.amtpaid = 0;
+			m.discount = 0;
+			m.year = itm.year;
+			m.month = itm.month;
+			m.txndate = txndate;	
+			m.system = 0;
+			m.billed = 0;
+			m.particulars = itm.remarks;
+			if(itm.recurringfeeid ) m.recurringfeeid = itm.recurringfeeid;
+			billItemEm.create( m );
+		}
 	}
-
 
 	//This updates the whole billing process. Running this should wait that the consumption is provided already provided  
 	@ProxyMethod
@@ -323,8 +325,10 @@ class WaterworksBillService {
 		pp.account = acct;
 		pp.bill = bill;
 
-		//ensure that penalties are not run by setting the date before penalty date. arbitrarily set at period's todate		
-		pp.txndate = bill.period.todate; 
+		//ensure that penalties are not run by setting the date before penalty date. arbitrarily set at period's todate	
+		pp.txndate = o.txndate;
+		if(!pp.txndate)	 pp.txndate = bill.period.todate; 
+
 		def res = ruleSvc.getBillItems( pp );
 
 		//check if there are bills calculated
@@ -340,38 +344,6 @@ class WaterworksBillService {
 			updateBillTotals( [bill: bill ]);
 		}
 	}
-
-	@ProxyMethod
-	public void updatePenaltyFees( def o ) {
-		if(!o.bill && !o.objid ) throw new Exception("objid or bill is required in WaterworksBillService.updateBillFees");
-		def bill = o.bill;
-		if(!bill) {
-			bill = vwBillEm.find( [objid: o.objid] ).first();
-		}
-		def acct = o.account;
-		if(!acct) {
-			acct = vwAcctEm.find( [objid: bill.acctid ]).first();
-		}
-		if(!bill.period.duedate) throw new Exception("Due date is not set");
-
-		def pp = [:];
-		pp.account = acct;
-		pp.bill = bill;
-
-		//if date specfied, use that else use the period due date
-		pp.txndate = o.txndate;
-		if(!pp.txndate) pp.txndate = bill.period.duedate;
-
-		def res = ruleSvc.getBillItems( pp );
-		//check if there are surcharge bills calculated
-		def newItems = res.billitems.findAll{ it.objid == null };
-		if( newItems ) {
-			newItems.each {
-				saveBillItem( bill, it, pp.txndate );	
-			}
-			updateBillTotals( [bill: bill ]);
-		}		
-	}	
 
 	@ProxyMethod
 	public def resetBill( def o ) {

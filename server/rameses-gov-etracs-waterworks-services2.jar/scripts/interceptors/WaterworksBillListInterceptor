@@ -7,7 +7,6 @@ class WaterworksBillListInterceptor{
 		def result = evt.result;
 		result << [ title: 'Posted', id:'posted'];		
 		result << [ title: 'Open', id:'open'];
-		result << [ title: 'Draft', id:'draft'];
 		result << [ title: 'Closed', id:'closed'];		
 	}
 
@@ -21,10 +20,6 @@ class WaterworksBillListInterceptor{
 		def status = o.node.id;
 
 		switch( status ) {
-			case 'draft':
-				str = " state = 'DRAFT' ";
-				break; 
-
 			case 'open':
 				str = "state = 'OPEN' ";
 				break;
