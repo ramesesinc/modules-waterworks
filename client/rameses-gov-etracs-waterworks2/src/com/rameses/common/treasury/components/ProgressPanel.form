@@ -192,8 +192,8 @@
     <Component class="com.rameses.rcp.control.XButton" name="xButton3">
       <Properties>
         <Property name="name" type="java.lang.String" value="doStart" noResource="true"/>
-        <Property name="text" type="java.lang.String" value="Start"/>
         <Property name="visibleWhen" type="java.lang.String" value="#{ mode == &apos;init&apos; }"/>
+        <Property name="text" type="java.lang.String" value="Start"/>
       </Properties>
     </Component>
   </SubComponents>

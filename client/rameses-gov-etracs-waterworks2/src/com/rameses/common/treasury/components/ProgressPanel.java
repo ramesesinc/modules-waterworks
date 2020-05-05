@@ -4,6 +4,7 @@
  */
 package com.rameses.common.treasury.components;
 
+import com.rameses.rcp.common.BatchProcessingModel;
 import com.rameses.rcp.control.XComponentPanel;
 import com.rameses.rcp.ui.annotations.ComponentBean;
 

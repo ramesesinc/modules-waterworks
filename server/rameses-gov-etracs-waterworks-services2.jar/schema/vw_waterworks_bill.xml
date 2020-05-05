@@ -1,7 +1,7 @@
 <schema>
 	<element tablename="vw_waterworks_bill">
 		<field name="objid" primary="true"/> 
-		<field name="billno" searchable="true"/> 
+		<field name="billno" searchable="true" caption="Bill No"/> 
 		<field name="billrefno" searchable="true"/> 
 		<field name="state" /> 
 		<field name="txnmode" /> 
@@ -16,12 +16,12 @@
 		<field name="validitydate" /> 
 		<field name="expirydate" /> 
 
-		<field name="acctno" searchable="true"/> 
-		<field name="acctname" searchable="true"/> 
+		<field name="acctno" searchable="true" caption="Acct No"/> 
+		<field name="acctname" searchable="true" caption="Acct Name"/> 
 		<field name="acctstate" /> 
 		<field name="address_text" /> 
 		<field name="classificationid" /> 
-		<field name="seqno" /> 
+		<field name="seqno" caption="Seq No"/> 
 
 		<field name="subarea_code" /> 
 		<field name="subarea_barangay_name" /> 

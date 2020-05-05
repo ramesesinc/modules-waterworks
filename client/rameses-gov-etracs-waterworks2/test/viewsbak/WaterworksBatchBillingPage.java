@@ -4,6 +4,7 @@
  */
 package viewsbak;
 
+import com.rameses.rcp.common.BatchProcessingModel;
 import com.rameses.rcp.ui.annotations.Template;
 import com.rameses.seti2.views.WorkflowTaskFormPage;
 

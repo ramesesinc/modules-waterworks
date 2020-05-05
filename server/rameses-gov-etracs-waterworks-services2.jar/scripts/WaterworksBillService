@@ -374,6 +374,13 @@ class WaterworksBillService {
 	}	
 
 	@ProxyMethod
+	public def resetBill( def o ) {
+		if(!o.bill && !o.objid ) throw new Exception("objid or bill is required in WaterworksBillService.resetBill");
+		billItemEm.find( [billid: o.objid ] ).delete();
+		updateBillTotals( o );
+	}
+
+	@ProxyMethod
 	public def updateBillTotals( def o ) {
 		if(!o.bill && !o.objid ) throw new Exception("objid or bill is required in WaterworksBillService.updateBillTotals");
 
@@ -401,7 +408,7 @@ class WaterworksBillService {
 		//calculate also the total amt of sales and charges for this bill
 		v.balanceforward = bill.balanceforward;
 
-		v.billamount = billItemEm.find([billid: bill.objid]).select("c:{SUM(amount)}").where(" item.itemtype IS NULL OR  item.itemtype NOT IN ('SURCHARGE') ").val();
+		v.billamount = billItemEm.find([billid: bill.objid]).select("c:{SUM(amount)}").where(" (item.itemtype IS NULL OR  item.itemtype NOT IN ('SURCHARGE')) ").val();
 		if( v.billamount == null ) v.billamount = 0;
 
 		v.totalsurcharge = billItemEm.find([billid: bill.objid]).select("c:{SUM(amount)}").where(" item.itemtype IN ('SURCHARGE') " ).val();

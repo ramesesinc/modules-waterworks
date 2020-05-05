@@ -21,7 +21,8 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
     public WaterworksBatchBillingPage() {
         initComponents();
     }
-
+   
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -63,11 +64,13 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         xButton15 = new com.rameses.rcp.control.XButton();
         jPanel4 = new javax.swing.JPanel();
         svwProcessing = new com.rameses.rcp.control.XPanel();
-        xButton7 = new com.rameses.rcp.control.XButton();
-        xButton8 = new com.rameses.rcp.control.XButton();
         xLabel5 = new com.rameses.rcp.control.XLabel();
-        xLabel6 = new com.rameses.rcp.control.XLabel();
         xLabel7 = new com.rameses.rcp.control.XLabel();
+        xProgressBar1 = new com.rameses.rcp.control.XProgressBar();
+        jPanel9 = new javax.swing.JPanel();
+        xButton8 = new com.rameses.rcp.control.XButton();
+        xButton16 = new com.rameses.rcp.control.XButton();
+        xButton7 = new com.rameses.rcp.control.XButton();
         svwForReview = new com.rameses.rcp.control.XPanel();
         xDataTable2 = new com.rameses.rcp.control.XDataTable();
         jPanel5 = new javax.swing.JPanel();
@@ -425,32 +428,36 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
 
         svwProcessing.setVisibleWhen("#{ task.state == 'processing' }");
 
-        xButton7.setName("doStop"); // NOI18N
-        xButton7.setVisibleWhen("#{ mode == 'upload' }");
-        xButton7.setText("Stop");
-
-        xButton8.setName("doStart"); // NOI18N
-        xButton8.setVisibleWhen("#{ mode == 'init' }");
-        xButton8.setText("Start");
-
         xLabel5.setExpression("#{label}");
         xLabel5.setName("label"); // NOI18N
         xLabel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         xLabel5.setFontStyle("font-size:12; font-weight:bold;");
         xLabel5.setForeground(new java.awt.Color(100, 100, 100));
 
-        xLabel6.setExpression("#{progressvalue}");
-        xLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        xLabel6.setName("progressvalue"); // NOI18N
-        xLabel6.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 20, 0, 0));
-        xLabel6.setFontStyle("font-size:14; font-weight:bold;");
-        xLabel6.setForeground(new java.awt.Color(0, 51, 153));
-
         xLabel7.setExpression("Processing");
         xLabel7.setName("label"); // NOI18N
         xLabel7.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         xLabel7.setFontStyle("font-size:12; font-weight:bold;");
         xLabel7.setForeground(new java.awt.Color(100, 100, 100));
+
+        xProgressBar1.setHandler("progressBar");
+
+        jPanel9.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        xButton8.setName("startProcess"); // NOI18N
+        xButton8.setVisibleWhen("#{ processing == false && stat==null }");
+        xButton8.setText("Start");
+        jPanel9.add(xButton8);
+
+        xButton16.setName("resumeProcess"); // NOI18N
+        xButton16.setVisibleWhen("#{ processing == false && stat !=null }");
+        xButton16.setText("Restart");
+        jPanel9.add(xButton16);
+
+        xButton7.setName("cancelProcess"); // NOI18N
+        xButton7.setVisibleWhen("#{ processing == true }");
+        xButton7.setText("Cancel");
+        jPanel9.add(xButton7);
 
         javax.swing.GroupLayout svwProcessingLayout = new javax.swing.GroupLayout(svwProcessing);
         svwProcessing.setLayout(svwProcessingLayout);
@@ -459,16 +466,12 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
             .addGroup(svwProcessingLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addGroup(svwProcessingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(xLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(svwProcessingLayout.createSequentialGroup()
-                        .addComponent(xButton8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(xButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(svwProcessingLayout.createSequentialGroup()
-                        .addComponent(xLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(xLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(806, Short.MAX_VALUE))
+                    .addGroup(svwProcessingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(xProgressBar1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
+                        .addComponent(xLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(671, Short.MAX_VALUE))
         );
         svwProcessingLayout.setVerticalGroup(
             svwProcessingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -476,14 +479,12 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
                 .addGap(8, 8, 8)
                 .addComponent(xLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(svwProcessingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(xLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(xLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
-                .addGroup(svwProcessingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(xButton7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(xButton8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(288, Short.MAX_VALUE))
+                .addComponent(xLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(xProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(270, Short.MAX_VALUE))
         );
 
         pnlBody.add(svwProcessing, "card3");
@@ -668,6 +669,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel pnlBody;
     private javax.swing.JPanel pnlFooter;
     private javax.swing.JPanel pnlHeader;
@@ -684,6 +686,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XButton xButton13;
     private com.rameses.rcp.control.XButton xButton14;
     private com.rameses.rcp.control.XButton xButton15;
+    private com.rameses.rcp.control.XButton xButton16;
     private com.rameses.rcp.control.XButton xButton2;
     private com.rameses.rcp.control.XButton xButton5;
     private com.rameses.rcp.control.XButton xButton6;
@@ -702,12 +705,12 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLabel xLabel3;
     private com.rameses.rcp.control.XLabel xLabel4;
     private com.rameses.rcp.control.XLabel xLabel5;
-    private com.rameses.rcp.control.XLabel xLabel6;
     private com.rameses.rcp.control.XLabel xLabel7;
     private com.rameses.rcp.control.XLabel xLabel8;
     private com.rameses.rcp.control.XLabel xLabel9;
     private com.rameses.rcp.control.XLookupField xLookupField1;
     private com.rameses.rcp.control.XLookupField xLookupField5;
+    private com.rameses.rcp.control.XProgressBar xProgressBar1;
     private com.rameses.rcp.control.XRadio xRadio3;
     private com.rameses.rcp.control.XRadio xRadio4;
     private com.rameses.rcp.control.XTextField xTextField1;

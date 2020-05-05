@@ -24,9 +24,6 @@
 
         <!-- this hooks to formActions-->
         <invoker type="formActions" caption="Close" action="_close" immediate="true" />
-        <invoker type="formActions" caption="Approve" action="approveBill" role="APPROVER"
-            visibleWhen="#{ entity.state == 'OPEN' }"
-            immediate="true" />
 
         <!-- BILL ACTIONS -->
         <!--
@@ -43,12 +40,21 @@
             visibleWhen="#{ readingPosted == false &amp;&amp;  entity.consumption?.amount &gt; 0 &amp;&amp; entity.state=='OPEN' }"
             immediate="true" />
 
-        <!--    
-        <invoker type="billActions" caption="Update Balances" action="updateBillTotals" 
+        <invoker type="billActions" caption="Reset Bill" action="resetBill" 
+            visibleWhen="#{ readingPosted == true &amp;&amp; entity.state=='OPEN' }"
+            immediate="true" />    
+
+        <invoker type="billActions" caption="Approve" action="approveBill" role="APPROVER"
             visibleWhen="#{ entity.state == 'OPEN' }"
-            immediate="true" />          
-        -->
-                  
+            immediate="true" />
+
+        <invoker type="paymentActions" caption="Add Payment" action="addPayment" 
+            visibleWhen="#{ entity.state=='POSTED' }" role="ADMIN"
+            immediate="true" />    
+
+        <invoker type="paymentActions" caption="Cancel Payment" action="cancelPayment" 
+            visibleWhen="#{ entity.state=='POSTED' }" role="ADMIN"
+            immediate="true" />    
 
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillModel" />

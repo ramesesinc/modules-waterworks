@@ -31,6 +31,7 @@ public class WaterworksBillModel extends CrudFormModel {
 
     void afterOpen() {
         buildDetails();
+        updatePmtList();
     }
 
     void createFromAccount() {
@@ -69,6 +70,7 @@ public class WaterworksBillModel extends CrudFormModel {
         detailListHandler.reload();
     }
 
+    /*
     void applyCredits() {
          //if both credits and unpaid are greater than zero apply payment until one of it becomes zero
         if( entity.totalcredits == 0 || entity.totalunpaid == 0 ) 
@@ -76,6 +78,7 @@ public class WaterworksBillModel extends CrudFormModel {
         pmtSvc.applyCredits( [billid: entity.objid] );
         refreshTotals();            
     }
+    */
 
     void refreshTotals() {
         def r = billSvc.getBillTotals( [objid: entity.objid ] );
@@ -120,6 +123,13 @@ public class WaterworksBillModel extends CrudFormModel {
         buildDetails();
     }
 
+    void resetBill() {
+        if( !MsgBox.confirm("You are about to clear the bill contents. Proceed?")) return;
+        billSvc.resetBill( [objid: entity.objid ]);
+        refreshTotals();                
+        buildDetails();
+    }
+
     void updateBillTotals() {
         billSvc.updateBillTotals([objid: entity.objid]);
         refreshTotals(); 
@@ -133,4 +143,46 @@ public class WaterworksBillModel extends CrudFormModel {
         refreshTotals();
     }
     
+    /****************************************
+    * payment specific functions
+    *****************************************/
+    def selectedPayment;
+    def pmtList;
+    void updatePmtList() {
+        def m = [_schemaname: "waterworks_payment"];
+        m.findBy = [billid: entity.objid];
+        pmtList = queryService.getList(m);
+        pmtListHandler.reload();
+    }
+
+    def pmtListHandler = [
+        fetchList: { o->
+            return pmtList;
+        }
+    ] as BasicListModel;
+
+
+    def addPayment() {
+        if( entity.totalcredits > 0 && entity.totalunpaid > 0 ) {
+            throw new Exception("Please apply first all unapplied credits before proceeding")
+        }
+        def s  = { o->
+            refreshTotals();           
+            updatePmtList();
+            buildDetails();
+        }
+        return Inv.lookupOpener("waterworks_payment:capture", [saveHandler:s, reftype: "cashreceipt"])
+    }
+    
+    def cancelPayment() {
+        if(!selectedPayment) throw new Exception("Please select a payment item first");
+        if(!MsgBox.confirm("You are about to cancel this payment. Proceed?")) return;
+        pmtSvc.cancelPayment([refid: selectedPayment.objid ]);
+        refreshTotals();
+        updatePmtList();
+        buildDetails();
+    }
+
+
+
 }

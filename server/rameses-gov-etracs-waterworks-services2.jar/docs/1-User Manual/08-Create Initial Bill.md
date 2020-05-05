@@ -20,35 +20,51 @@ To create an initial bill, open the customer account. Click on __Generate Initia
 
 ![alt text][create1]
 
-> __Year__ - The bill year for the bill you want to create. 
+> __Year__ - The year billing period for the bill you want to create. 
 
-> __Month__ -  The bill month for the bill you want to create.
+> __Month__ -  The month billing period for the bill you want to create.
 
 > __Bill Ref No__ - The bill reference for the existing system used.
 
-> __Balance Forward__ - This is the accumulated balance forwarded from the bill of the previous month. If there is excess payment, enter the amount as a negative value. 
+> __Bill Date__ - The date of the bill. 
 
 If finished, click on Submit. This will save the bill. 
 
 
-## Adding Previous Entries ##
+## Building Previous Balance ##
 
-If the balance forward specified is a positive value, you must input previous entries. There must be at least one previous entry. The screen below will be displayed:
+If a bill has previous balance, you need to set it up. A beginning balance can be positive value, i.e. there are unpaid balances from previous bills or negative, which means there is an overpayment from previous bills. 
+
+
 
 ![alt text][create2]
 
-Click on the `Add Item` button to add entries. This will popup the ff. screen:
+If there are unpaid balance from previous bill, click on Add Item. If there is a negative balance from previous bill click on Add Credit.
+
+Clicking on the `Add Item` will show the ff. screen:
 
 ![alt text][create3]
 
-Click the `Save` button to save the entry. This should appear on the list. You can opt to save as many items if you want. For example, if you are implementing the monthly interest then you must encode each month as the system will use this as the basis for its computation. More importantly, make sure that the total amount encoded should total the balance forward amount. If you made a mistake in the balance forward amount, then you must Cancel the bill and redo it. When done click on the Next button.
+Click the `Save` button to save the entry. This should appear on the list. You can opt to save as many items if you want. For example, if you are implementing the monthly interest then you must encode each month as the system will use this as the basis for its computation. The balances appear on the bottom part of the screen.
+
+Clicking on `Add Credit` will show the ff. screen:
+
+![alt text][create4]
+
+After adding the credit, the balance forward becomes negative. That means the previous balance of this bill was an overpayment. 
+
+After setting up the beginning balance, click on Next.
+
+## Building Consumption Entries ##
+
+The next part is building the consumption entries. This pertains to the volume consumption in previous months. It might be beneficial to capture previous entries so you can have a history of consumption. Click on the `Build Consumptions` button.
+
+![alt text][create5]
+
+Enter the start month and start year. The to period will be the period of this bill. Ideally capture at least 6-12 months entry if you have the data. Click on Next. 
 
 
 
-
-
-
-============
 
 
 In the Ledger tab of the customer account, click on the `Add Ledger Entry` button. The ledger entry form will be displayed. Enter the data as follows:
@@ -109,4 +125,8 @@ Before a system can be approved, the system will ensure that the billings will b
 [create2]: ./images/bill/create2.png
 [create3]: ./images/bill/create3.png
 [create4]: ./images/bill/create4.png
+[create5]: ./images/bill/create5.png
+[create6]: ./images/bill/create6.png
+[create7]: ./images/bill/create7.png
+[create8]: ./images/bill/create8.png
 

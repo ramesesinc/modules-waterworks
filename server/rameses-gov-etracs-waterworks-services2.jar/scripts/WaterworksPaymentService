@@ -160,6 +160,10 @@ class WaterworksPaymentService {
 
 	@ProxyMethod 
 	public def cancelPayment( param ) {
+		//you cannot cancel if payment is ONLINE
+		def pmt = paymentEm.find( [objid: param.refid] ).first();
+		if( pmt.txnmode == 'ONLINE' ) throw new Exception("You cannot cancel a payment made online. Use void instead");
+
 		voidPayment( param );
 		paymentEm.find( [objid: param.refid] ).delete();
 	}

@@ -56,6 +56,7 @@ public class WaterworksCashReceiptBillStatementPage extends javax.swing.JPanel {
         xFormPanel12 = new com.rameses.rcp.control.XFormPanel();
         xLabel32 = new com.rameses.rcp.control.XLabel();
         xLabel37 = new com.rameses.rcp.control.XLabel();
+        xLabel38 = new com.rameses.rcp.control.XLabel();
         xLabel39 = new com.rameses.rcp.control.XLabel();
         pnlFoot = new javax.swing.JPanel();
         xFormPanel1 = new com.rameses.rcp.control.XFormPanel();
@@ -292,6 +293,11 @@ public class WaterworksCashReceiptBillStatementPage extends javax.swing.JPanel {
         xLabel37.setDateFormat("yyyy-MMM-dd");
         xFormPanel12.add(xLabel37);
 
+        xLabel38.setCaption("Bill Status");
+        xLabel38.setExpression("#{ entity.state }");
+        xLabel38.setDateFormat("yyyy-MMM-dd");
+        xFormPanel12.add(xLabel38);
+
         xLabel39.setCaption("Total Due");
         xLabel39.setExpression("#{ entity.totalamtdue }");
         xLabel39.setCaptionFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
@@ -469,6 +475,7 @@ public class WaterworksCashReceiptBillStatementPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLabel xLabel35;
     private com.rameses.rcp.control.XLabel xLabel36;
     private com.rameses.rcp.control.XLabel xLabel37;
+    private com.rameses.rcp.control.XLabel xLabel38;
     private com.rameses.rcp.control.XLabel xLabel39;
     private com.rameses.rcp.control.XLabel xLabel40;
     private com.rameses.rcp.control.XLabel xLabel41;

@@ -51,6 +51,23 @@ class WaterworksBatchBillingService {
 	}
 
 	@ProxyMethod
+	public def excludeAccountsInBatch( def o ) {
+		if(!o.items) throw new Exception("Please specify items in excludeAccountsInBatch");
+		o.items.each {
+			acctEm.find( [objid: it ]).update( [excludeinbatch: 1] );
+		}
+	}	
+
+	@ProxyMethod
+	public def includeAccountsInBatch( def o ) {
+		if(!o.items) throw new Exception("Please specify items in includeAccountsInBatch");
+		o.items.each {
+			acctEm.find( [objid: it ]).update( [excludeinbatch: 0] );
+		}
+	}	
+
+
+	@ProxyMethod
 	public def processBills( def o ) {
 		def batch = batchEm.find( [objid: o.objid]).first();
 		def m = [_start: 0, _limit: 20 ];			
@@ -61,11 +78,28 @@ class WaterworksBatchBillingService {
 			def b = [:];
 			b.acctid = it.acctid;
 			b.batchid = batch.objid;	
-			b.billno = batch.objid + "-" String.format("%05d", (i++));
+			b.billno = batch.objid + "-" + String.format("%05d", (i++));
 			b.period = batch.period;
 			billSvc.createBill( b );
 		}
 		return [processed: list.size()];
 	}
 	
+	@ProxyMethod
+	public def getProcessInfo( def o ) {
+		return [totalcount: 1000, status: 0, batchid: o.objid, counter: 0 ];
+	}
+
+	@ProxyMethod
+	public def processTest( def o ) {
+		if( o.counter > o.totalcount ) {
+			o.status = 1;
+		}
+		else {
+			o.counter = o.counter + 10;
+		}
+		return o;		
+	}
+
+
 } 
