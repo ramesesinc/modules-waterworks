@@ -40,7 +40,7 @@
                  visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'edit' }" /> 
 
         <invoker type="viewActions" caption="Approve" action="approve" 
-                 visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'edit' }" />
+                 visibleWhen="#{ (entity.step == 3 || entity.step==4) &amp;&amp; viewmode == 'edit' }" />
 
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillCaptureModel" />

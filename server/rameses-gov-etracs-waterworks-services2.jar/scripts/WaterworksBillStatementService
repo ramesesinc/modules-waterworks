@@ -30,26 +30,31 @@ class WaterworksBillStatementService {
 		bal.group = "Previous";
 		details <<  bal;
 
-		//include billitems 
-		def billItems = billItemEm.find( [billid: bill.objid ] ).orderBy("item.sortorder ASC").list();
-		billItems.each {
-			def m = [:];
-			m.particulars = it.item.title;
-			if( ((bill.period.year*12)+bill.period.month) != ((it.year*12)+it.month) ) {
-				m.particulars += " "+it.year +"-" +it.monthname+" ";
-			}
-			if( it.particulars  ) m.particulars += "("+it.particulars+")" ;
-			m.txndate = it.txndate;
-			if(!m.txndate) m.txndate = bill.period.billdate;
-			m.dr = it.amount;
-			m.cr = 0;
-			m.group = "Current";
+		boolean include_unposted = true;
+		if(o.include_unposted !=null) include_unposted = o.include_unposted;
 
-			//this is added to flag the bill that consumption was already posted
-			if( it.item.objid == "WATER_FEE" ) {
-				m.consumption_posted = true;		
+		//include billitems only if state is posted so it will not add confusion
+		if( include_unposted == true || bill.txnmode =='CAPTURED' || bill.state == 'POSTED'  ) {
+			def billItems = billItemEm.find( [billid: bill.objid ] ).orderBy("item.sortorder ASC").list();
+			billItems.each {
+				def m = [:];
+				m.particulars = it.item.title;
+				if( ((bill.period.year*12)+bill.period.month) != ((it.year*12)+it.month) ) {
+					m.particulars += " "+it.year +"-" +it.monthname+" ";
+				}
+				if( it.particulars  ) m.particulars += "("+it.particulars+")" ;
+				m.txndate = it.txndate;
+				if(!m.txndate) m.txndate = bill.period.billdate;
+				m.dr = it.amount;
+				m.cr = 0;
+				m.group = "Current";
+
+				//this is added to flag the bill that consumption was already posted
+				if( it.item.objid == "WATER_FEE" ) {
+					m.consumption_posted = true;		
+				}
+				details << m;
 			}
-			details << m;
 		}
 
 		details = details.sort{ it.txndate };

@@ -12,6 +12,9 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
     @Service("WaterworksBatchBillingService")
     def batchSvc;
 
+    @Service("WaterworksConsumptionService")
+    def consumptionSvc;
+
     String title;
     def viewmode;
 
@@ -22,6 +25,15 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         entity = [:];
         title = "Batch Billing Initial";
         return null;
+    }
+    
+    boolean getShowFormActions() {
+        if( entity.processing != null ) {
+            return false;
+        }
+        else {
+            return true;
+        } 
     }
 
     @PropertyChangeListener
@@ -49,15 +61,17 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         hasErrors = true;     
         errListHandler.reload();
         title = "Batch " + entity.objid + " " + task.title;
-        if( task.state == 'processing' ) {
-            //start process imeediately
+        if( entity.processing !=null ) {
             startProcess();
         }
     }
 
     public void afterSignal( def trans, def task) {
-        if( task.state == 'processing' ) {
-            MsgBox.alert("Start processing now...." );       
+        title = "Batch " + entity.objid + " " + task.title;
+        def proc = batchSvc.getProcessInfo( [ objid: entity.objid, taskstate: task.state ] );
+        if(proc!=null) {
+            entity.processing = proc;
+            startProcess();
         }
     }
 
@@ -111,19 +125,35 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
     /*************************
     * READING ITEMS
     **************************/
-    def searchReading;
-    def doSearchReading() {
-        readingListHandler.reload();
-    }
-    def readingListHandler = [
-        fetchList: { o->
-                
+    def billListHandler = [
+        isColumnEditable: { item, colName->
+            return (task.state == "for-reading");        
         },
-        onUpdateColumn: { v, col ->
-            MsgBox.alert("item " + v + col);
-        }
-    ] as BasicListModel;
+        onColumnUpdate: {v, colName ->
+            if( colName == "consumption.reading") {
+                def c = [:];
+                c.acctid = v.acctid;
+                c.meterstate = v.meterstate;
+                c.consumptionid = v.consumptionid;
+                c.prevreading = v.consumption.prev.reading;
+                c.reading = v.consumption.reading;
+                def u = consumptionSvc.calcAndUpdate( c );
+                v.consumption.putAll( u );
+                billListHandler.refreshSelectedItem();
+            }
+            else if( colName=="consumption.hold" ) {
+                def c = [:];
+                c.consumptionid = v.consumptionid;
+                c.hold = v.consumption?.hold;
+                if(c.hold==null) c.hold = 0;
+                consumptionSvc.updateHold( c );
+            }
+        }  
+    ];
 
+    def getBatchQry() {
+        [objid: entity.objid];
+    }
 
     /**********************
     * Processors
@@ -153,15 +183,15 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
     ] as ProgressModel;
 
     void startProcess() {
-        stat = batchSvc.getProcessInfo([ objid: entity.objid ]);
+        stat = entity.processing;
         processing = true;
         currentProcessor = [
             getTotalCount: {
                 return stat.totalcount;
             },
             fetchList: { o->
-                stat = batchSvc.processTest( stat );
-                Thread.sleep(1000);
+                stat = batchSvc.processBatch( stat );
+                Thread.sleep(500); //this is impt. to be able to run properly
                 if( stat.status == 0 ) 
                     return [ stat ];
                 else 
@@ -176,100 +206,11 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
                 processing = false;
             },
             onFinished: {
+                entity.remove("processing");
                 binding.refresh();
             }
         ] as BatchProcessingModel;
         currentProcessor.start();
     }
-
-    /*
-    //for creating bills
-    void startCreateBills() {
-        stat = batchSvc.getAccountsForBatchBillingInfo([ objid: entity.objid ]);
-        currentProcessor = [
-            getTotalCount : {
-                return stat.totalcount;
-            },
-            fetchList: { o->
-                return batchSvc.createBatchBills( [objid: entity.objid] );
-            },
-            processItem: { o->
-                binding.refresh('progressLabel');
-            },
-            onFinished: {
-                binding.refresh();
-            }
-        ] as BatchProcessingModel;
-        currentProcessor.start();
-    }
-
-    //this creates a billing process for each Item. indicator is totalbillamount
-    void startProcessBills() {
-        stat = batchSvc.getBatchBillsForProcessing([ objid: entity.objid ]);
-        currentProcessor = [
-            getTotalCount : {
-                return stat.totalcount;
-            },
-            fetchList: { o->
-                return batchSvc.processBills( [objid: entity.objid] );
-            },
-            processItem: { o->
-                o.year = entity.year;
-                o.month = entity.month;
-                billSvc.process( o );
-                binding.refresh('progressLabel');
-            },
-            onFinished: {
-                binding.refresh();
-            }
-        ] as BatchProcessingModel;
-    }
-
-    def startPrintBills() {
-        int seriesCounter;
-        currentProcessor = [
-            getTotalCount : {
-                return stat.totalcount;
-            },
-            fetchList: { o->
-                return batchSvc.getForPrintingList( [objid: entity.objid] );
-            },
-            processItem: { o->
-                printerSvc.print( o );
-                billSvc.savePrint( [objid: o.objid, printed:1, billrefno: o.billrefno] );
-                seriesCounter++;
-                binding.refresh('progressLabel');
-            },
-            onFinished: {
-                binding.refresh();
-            }
-        ] as BatchProcessingModel;
-        def pp = [:];
-        pp.handler = { o->
-            seriesCounter = o;
-            stat = batchSvc.getBillsForPrinting([ objid: entity.objid ]);
-            currentProcessor.start();
-        }
-        return Inv.lookupOpener("integer_prompt", "Enter Start Number Series");
-    }
-
-    void startApproveBills() {
-        stat = batchSvc.getProcessInfo([ objid: entity.objid ]);
-        currentProcessor = [
-            getTotalCount : {
-                return stat.totalcount;
-            },
-            fetchList: { o->
-                return batchSvc.approveBills( [objid: entity.objid] );
-            },
-            processItem: { o->
-                binding.refresh('progressLabel');
-            },
-            onFinished: {
-                binding.refresh();
-            }
-        ] as BatchProcessingModel;
-    }
-    */
 
 }	

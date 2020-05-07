@@ -18,15 +18,28 @@ class WaterworksBatchBillingTaskInterceptor {
 	@DataContext("waterworks_bill")
 	def billEm;
 
+	@DataContext("vw_waterworks_bill")
+	def vwBillEm;
+
 	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].action == 'submit' && args[0].to == 'processing'  }")
 	public void checkErrorsBeforeProcess( evt ) {
 		def p = evt.args[0]; 
 	
-		def cnt = batchEm.findInvalidAccountsForBillingCount([batchid: p.refid ] );
+		def cnt = batchEm.findForBillingCount( [batchid: p.refid, errstate:1 ] );
 		if( cnt!=null && cnt?.count > 0 ){
 			throw new Exception("Cannot submit for processing. There are still " + cnt.count +  " accounts included in the batch that need to be resolved.");
 		}
+
+		//def good = batchEm.findForBillingCount( [batchid: p.refid, errstate:0 ] );
+		//throw new Exception("Yes there are good transsactions " + good.count ); 
 	}
 
+	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].to == 'for-approval'  }")
+	public void checkErrorsBeforeApproval( evt ) {
+		def p = evt.args[0]; 
+		def errs = vwBillEm.find( [batchid: p.refid ]).select("c:{COUNT(*)}").where( "meterstate='ACTIVE' AND consumption.hold=0 AND consumption.volume=0" ).val();
+		if( errs!=null && errs > 0 ) 
+			throw new Exception("All accounts with active meters that are not on hold must have a volume consumption");
+	}
 	
 } 

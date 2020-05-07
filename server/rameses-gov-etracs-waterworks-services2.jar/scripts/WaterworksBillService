@@ -419,14 +419,21 @@ class WaterworksBillService {
 		if(bill.billamount<=0) 
 			throw new Exception("Bill amount must be greater than zero");
 		
-		billEm.find( [objid: bill.objid ]).update( [state: "POSTED"] );
+		def dtPosted = dateSvc.getServerDate();	
+		billEm.find( [objid: bill.objid ]).update( [state: "POSTED", dtposted: dtPosted ] );
 
 		//this must execute after posting otherwise there will be no items to pay.
 		if(bill.totalunpaid>0 && bill.totalcredits>0) {
 			//automatically apply the credits during posting.
 			pmtSvc.applyCredits( [billid: bill.objid] );
 		}
+
+		//update also the dates of the billitems
+		billItemEm.find( [billid: bill.objid] ).update( [txndate: dtPosted ] );
 		
+		//we also need to fire update bill fees to compute if there are surcharges
+		updateBillFees( [objid: bill.objid, txndate: dtPosted] );
+
 		if(bill.txnmode == 'CAPTURE' ) {
 			acctEm.find( [objid: bill.acctid ]).update( [state:"ACTIVE"] ); 
 		}

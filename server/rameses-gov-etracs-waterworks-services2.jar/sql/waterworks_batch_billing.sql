@@ -1,6 +1,8 @@
 [getAccountsForBilling]
 SELECT a.* FROM 
-(SELECT wbb.objid AS batchid, wa.objid, wa.state, wa.acctno, wa.acctname, wbp.year AS lastbillyear, wbp.month AS lastbillmonth,
+(SELECT wbb.objid AS batchid, wa.objid, 
+	wa.state, wa.acctno, wa.acctname, wbp.year AS lastbillyear, wbp.month AS lastbillmonth,
+	wbbp.year, wbbp.month,
 CASE 
 	WHEN 
 		wa.state = 'DRAFT' AND wb.objid IS NULL
@@ -11,7 +13,7 @@ CASE
 	WHEN 
 		NOT(wbp.objid IS NULL) AND NOT((wbp.year*12)+wbp.month) = (((wbbp.year*12)+wbbp.month) - 1)
 	THEN 'Latest bill generated is not prior period' 
-	ELSE NULL
+	ELSE 'OK'
 END AS errmsg	
 FROM vw_waterworks_account wa 
 LEFT JOIN waterworks_bill wb ON wa.billid = wb.objid 
@@ -23,9 +25,9 @@ AND wa.excludeinbatch = ${excludeinbatch} ) a
 WHERE ${filter}
 LIMIT $P{start}, $P{limit}
 
-[findInvalidAccountsForBillingCount]
+[findForBillingCount]
 SELECT COUNT(*) AS count FROM 
-(SELECT wbb.objid 
+(SELECT wbb.objid, 
 CASE 
 	WHEN 
 		wa.state = 'DRAFT' AND wb.objid IS NULL
@@ -45,16 +47,7 @@ INNER JOIN waterworks_batch_billing wbb ON wa.subareaid = wbb.subareaid
 INNER JOIN waterworks_billing_period wbbp ON wbb.periodid = wbbp.objid 
 WHERE wbb.objid = $P{batchid}
 AND wa.excludeinbatch = 0 ) a
-WHERE a.errstate = 1
+WHERE a.errstate = $P{errstate}
 
-[getAccountIdsForProcessing]
-SELECT a.* FROM 
-(SELECT wa.objid AS acctid
-FROM vw_waterworks_account wa 
-WHERE wa.state = 'ACTIVE'
-AND wa.excludeinbatch = 0 
-AND wa.objid NOT IN ( 
-	SELECT wb2.acctid FROM waterworks_bill wb2 WHERE wb2.batchid = $P{batchid}
-)) a
-LIMIT $P{start}, $P{limit}
+
 

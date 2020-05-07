@@ -26,11 +26,6 @@
         <invoker type="formActions" caption="Close" action="_close" immediate="true" />
 
         <!-- BILL ACTIONS -->
-        <!--
-        <invoker type="billActions" caption="Apply Credits" action="applyCredits" 
-            visibleWhen="#{entity.totalcredits &gt; 0 &amp;&amp; entity.totalunpaid &gt; 0 }"
-            immediate="true" />
-        -->
 
         <invoker type="billActions" caption="Edit Reading" action="editReading" 
             visibleWhen="#{ readingPosted == false &amp;&amp; entity.state=='OPEN' }"
@@ -45,7 +40,7 @@
             immediate="true" />    
 
         <invoker type="billActions" caption="Approve" action="approveBill" role="APPROVER"
-            visibleWhen="#{ entity.state == 'OPEN' }"
+            visibleWhen="#{ entity.state == 'OPEN' &amp;&amp; entity.batchid ==null }"
             immediate="true" />
 
         <invoker type="paymentActions" caption="Add Payment" action="addPayment" 

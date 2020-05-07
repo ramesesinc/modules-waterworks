@@ -26,7 +26,7 @@ class WaterworksBillStatementReportInterceptor {
 
 		def bill = vwBillEm.find( [objid: t.txnid] ).first();
 
-		def res = statementSvc.getBillDetails( [objid: bill.objid ] );
+		def res = statementSvc.getBillDetails( [objid: bill.objid, include_unposted: false ] );
 
 		bill.barcode = bill.billno;
 		bill.amount = res.totalamount;
@@ -51,7 +51,13 @@ class WaterworksBillStatementReportInterceptor {
 			bill.history << m;
 		}
 		bill.history = bill.history.sort{ it.monthindex };
-
+		bill.averageconsumption = 0;
+		if(bill.history) {
+			def avlist = bill.history.findAll{ it.volume > 0};
+			if(avlist) {
+				bill.averageconsumption = (int)( avlist.sum{it.volume} / avlist.size());
+			}
+		};	
 		result.data = bill;
 	}
 

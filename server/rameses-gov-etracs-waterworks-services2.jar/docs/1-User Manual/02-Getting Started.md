@@ -26,9 +26,9 @@ The steps are summarized as follows:
 - 3. Manage Meter
 - 4. Capture Account 
 - 5. Setup the item accounts
-- 6. Building the Ledgers, beginning balances
-- 7. Create a single bill
-- 8. Run the batch billing. Perform bill processing, reading, and printing 
+- 6. Setup consumption and billing rules
+- 7. Create an initial bill and generate direct bills
+- 8. Perform batch billing, processing, reading, printing and posting
 - 9. Collection
 - 10. Viewing Statements and reports
 

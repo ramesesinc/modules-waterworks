@@ -51,7 +51,7 @@ Clicking on `Add Credit` will show the ff. screen:
 
 ![alt text][create4]
 
-After adding the credit, the balance forward becomes negative. That means the previous balance of this bill was an overpayment. 
+After adding the credit, the balance forward becomes negative. That means the previous balance of this bill was an overpayment. The lower section of the screen will display the totals and balances. 
 
 After setting up the beginning balance, click on Next.
 
@@ -61,53 +61,44 @@ The next part is building the consumption entries. This pertains to the volume c
 
 ![alt text][create5]
 
-Enter the start month and start year. The to period will be the period of this bill. Ideally capture at least 6-12 months entry if you have the data. Click on Next. 
+Enter the start month and start year. The to period will be the period of this bill. Ideally capture at least 6-12 months entry if you have the data. Click on Next.
+
+![alt text][create6]
+ Enter the readings and click on `Next`. This will compute the rates based on the rules. This is also a good time to check if the consumption rules are correct. 
+Refer to the section *Consumption and Billing Rules*. View the amounts computed and go back to the rules section to adjust if necessary.
 
 
+![alt text][create7]
+Click on Submit when completed. This will add the consumptions to the screen.  
 
 
+![alt text][create8]
 
-In the Ledger tab of the customer account, click on the `Add Ledger Entry` button. The ledger entry form will be displayed. Enter the data as follows:
-- __Item__ - Lookup the appropriate item account. If the entry not in the list, you can go to the Waterworks ItemAccount list and add the entry. See section *Waterworks Itemaccount*.
+Click on `Next` button to move to the current bill section.
 
-- __Year__ - Enter Year of period.
-- __Month__ - Enter Month of period.
-- __Amount__ - Enter Amount. If it is partially paid, enter the remaining balance. 
-- __Particulars__ - Specify specific details of this entry. 
-- __System Generated__ - is an informational value indicating if the entry was created by the system. If created by the system it cannot be edited.
+## Building Current Bill ##
 
-Click on `Save` to add the entry on the list. To edit, select the item in the list and click on `Open`. When the form appears, click on the `Edit` button to make the fields editable.
+This section contains the current bill items, i.e. the items of the current bill. You can manually add items or automatically through the billing rules. Before running the rules however, you need to setup the billing rules. Refer to the *Consumption and Billing Rules* section for this. To manually add items click on the `Add Item` button similar to the procedure in the previous section. To run the blling rules, click on the `Run Billing Fees` button. This will prompt for a transaction date. This transaction date is important because it will determine if the surcharge will be calculated or not. You can view the bill due date on the screen. 
 
-If there are prior balances from the current period, you need to add ledger entries using the previous year and month. If you are implementing interest per month penalty for unpaid dues, then you must make the water sales entries for every month so that the system can automatically compute it in the succeedung billings. Otherwise just enter the prior year and month and summarize all the other balances so it will be easier.
+![alt text][create9]
 
-Once completed, click on the Generate Bill to view the initial bill.
+After it is invoked, the bill fees will be displayed.
 
-## Adding Consumption ##
-This entry is required for customer accounts that have meters. The meter readings should be added in sequence i.e. the first entry you will make will  be the initial reading. Once added, the system will automatically increment by month the next readings and you wont be able to edit the year and month of succeeding. So it is very important to ensure first that the initial entry will be correct, otherwise you will have to delete and re encode everything. 
+## Capture Payment ##
+If payment was already made for the bill you can capture payment. To do this click on the `Next` button to move to the Payment view. To add payment click on `Add Payment` button. (Before executing this make sure that the payment rules are setup and each item account has at least one treasury mapping account)
 
+![alt text][create10]
 
+The add payment will prompt for the ff. info:
 
-## Adding Credits ##
+- __Refno__ - the payment reference no. In this case the receipt no.
+- __Ref Date__ - the payment reference or receipt date
+- __Amount Paid__ - the amount of the receipt. If this is zero, it will compute the full bill amount
+- __Remarks__ - optional.
 
-On the other hand, if there are no previous unpaid balances but there is overpayment, you need to record this in the credits entry. This will have a negative value effect in the balance forward. To add credits, go to the Credits Tab of the customer account then click on the `Add Credit Entry` button. Fill in the necessary data and click on save.
+After filling out the fields, the payment details will be displayed. If there are discount rules, it will be applied at this point. You can also click the `View Receipt` button 
 
-- __Year__ - Enter Year of period.
-- __Month__ - Enter Month of period.
-- __Amount__ - Enter Amount of excess payment.
-- __Particulars__ - Specify specific details of this entry.
-- __System Generated__ - is an informational value indicating if the entry was created by the system. If created by the system it cannot be edited. 
-
-
-
-
-## Create First Bill ##
-Click on the `Generate Bill` button. It will display the current values for your confirmation. The system will default or suggest the validity date based on the current date. In the first billing, the system will not run the rules and will just collect whetever is inputted in the ledgers. Specify the __Validity Date__. By setting this value, it will instruct the billing to automatically update the bill once this date has arrived. For example, if the date you prepared the bill is before its due date, there will still be no penalty at the time of generating the bill. The validity date you need to set it should be its due date. 
-
-
-
-Once the bill is activated, the system keeps track of this date and it will automatically update the bill when the time expires.
-
-After the bill is created and the account activated, you cannot manually add entries anymore to the credits and payment side of the ledger.
+![alt text][create11]
 
 
 ### Conditions for Approval ###
@@ -129,4 +120,12 @@ Before a system can be approved, the system will ensure that the billings will b
 [create6]: ./images/bill/create6.png
 [create7]: ./images/bill/create7.png
 [create8]: ./images/bill/create8.png
+
+[create9]: ./images/bill/create9.png
+[create10]: ./images/bill/create10.png
+[create11]: ./images/bill/create11.png
+[create12]: ./images/bill/create12.png
+[create13]: ./images/bill/create13.png
+[create14]: ./images/bill/create14.png
+[create15]: ./images/bill/create15.png
 

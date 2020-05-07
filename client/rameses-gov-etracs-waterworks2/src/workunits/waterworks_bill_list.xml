@@ -4,7 +4,7 @@
     <invokers>
         <invoker folderid="/menucategory/waterworks/billing" caption="View Bills" 
                  action="init"
-                cols="billno,period.year,period.month,acctno,acctname,address.text,seqno"
+                cols="billno,batchid,period.year,period.month,acctno,acctname,address.text,seqno"
                 index="0">
             <action role="BILLING" /> 
             <action role="SHARED" allowCreate="false" allowDelete="false" /> 
