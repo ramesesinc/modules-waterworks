@@ -19,10 +19,9 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
      * Creates new form WaterworksBatchBillingPage
      */
     public WaterworksBatchBillingPage() {
-        initComponents();
+        initComponents();    
     }
    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,6 +37,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         xLabel3 = new com.rameses.rcp.control.XLabel();
         xLabel1 = new com.rameses.rcp.control.XLabel();
         xLabel4 = new com.rameses.rcp.control.XLabel();
+        xLookupField6 = new com.rameses.rcp.control.XLookupField();
         vwCompleted = new com.rameses.rcp.control.XPanel();
         xFormPanel6 = new com.rameses.rcp.control.XFormPanel();
         xLabel9 = new com.rameses.rcp.control.XLabel();
@@ -109,6 +109,14 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         xLabel4.setExpression("#{ entity.period.fromdate } - #{ entity.period.todate } ");
         xFormPanel4.add(xLabel4);
 
+        xLookupField6.setCaption("Assign To Reader");
+        xLookupField6.setExpression("#{ entity.reader.name }");
+        xLookupField6.setHandler("waterworks_reader:lookup");
+        xLookupField6.setName("entity.reader"); // NOI18N
+        xLookupField6.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xLookupField6.setPreferredSize(new java.awt.Dimension(0, 20));
+        xFormPanel4.add(xLookupField6);
+
         javax.swing.GroupLayout vwInitialLayout = new javax.swing.GroupLayout(vwInitial);
         vwInitial.setLayout(vwInitialLayout);
         vwInitialLayout.setHorizontalGroup(
@@ -122,8 +130,8 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
             vwInitialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(vwInitialLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(315, Short.MAX_VALUE))
+                .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(271, Short.MAX_VALUE))
         );
 
         add(vwInitial, "card2");
@@ -564,6 +572,21 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", "printed"}
+                , new Object[]{"caption", "Printed"}
+                , new Object[]{"width", 60}
+                , new Object[]{"minWidth", 60}
+                , new Object[]{"maxWidth", 60}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.CheckBoxColumnHandler(java.lang.Integer.class, 1, 0)}
+            }),
+            new com.rameses.rcp.common.Column(new Object[]{
                 new Object[]{"name", null}
                 , new Object[]{"caption", "-"}
                 , new Object[]{"width", 100}
@@ -711,6 +734,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLabel xLabel9;
     private com.rameses.rcp.control.XLookupField xLookupField1;
     private com.rameses.rcp.control.XLookupField xLookupField5;
+    private com.rameses.rcp.control.XLookupField xLookupField6;
     private com.rameses.rcp.control.XProgressBar xProgressBar2;
     private com.rameses.rcp.control.XRadio xRadio3;
     private com.rameses.rcp.control.XRadio xRadio4;

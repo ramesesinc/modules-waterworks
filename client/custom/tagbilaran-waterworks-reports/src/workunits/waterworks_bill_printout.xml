@@ -19,5 +19,12 @@
                  reportName="tagbilaran/waterworks/reports/tagbilaran_water_batch_billing.jasper"
                  txnid="#{entity.objid}" 
                  visibleWhen="#{ entity.state == 'POSTED' &amp;&amp; viewmode == 'summary' }"/>
+    
+        <!-- called by batch print -->         
+        <invoker type="waterworks_batch:print" 
+                 caption="View Batch Bill" 
+                 reportName="tagbilaran/waterworks/reports/tagbilaran_water_batch_billing.jasper"/>
+    
     </invokers> 
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillFormReportModel" />
 </workunit>

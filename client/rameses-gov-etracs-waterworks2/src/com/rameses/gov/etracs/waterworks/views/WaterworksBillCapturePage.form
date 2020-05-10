@@ -87,8 +87,8 @@
             </Component>
             <Component class="com.rameses.rcp.control.XTextField" name="xTextField1">
               <Properties>
-                <Property name="caption" type="java.lang.String" value="Bill Ref No"/>
-                <Property name="name" type="java.lang.String" value="entity.billrefno" noResource="true"/>
+                <Property name="caption" type="java.lang.String" value="Bill No"/>
+                <Property name="name" type="java.lang.String" value="entity.billno" noResource="true"/>
                 <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[20, 0, 0, 0]"/>
                 </Property>

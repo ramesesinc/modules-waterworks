@@ -15,6 +15,8 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
     @Service("WaterworksConsumptionService")
     def consumptionSvc;
 
+    def batchPrinter = ManagedObjects.instance.create(WaterworksBatchPrintModel.class);
+
     String title;
     def viewmode;
 
@@ -155,9 +157,31 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         [objid: entity.objid];
     }
 
-    /**********************
-    * Processors
-    ***********************/
+    //run the billing processes, create, build bill and post.
+    void startProcess() {
+        def h = { o->
+            def res = batchSvc.processBatch( o );
+            return res.count;
+        }
+        runProcess( h );
+    }
+
+     //run the billing processes, create, build bill and post.
+    public void printBatch() {
+        boolean pass = batchPrinter.init(entity.objid);
+        if(!pass) return;
+
+        //set the entity processing to signal change screen to processing page
+        entity.processing = batchPrinter.info;
+        def h = { o->
+            return batchPrinter.sendPrint( o );
+        }
+        runProcess( h );
+    }
+
+    /**************************************************
+    * Main processor that provides UI feedback
+    ***************************************************/
     def stat;
     def currentProcessor;
     def label;
@@ -182,20 +206,25 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         }
     ] as ProgressModel;
 
-    void startProcess() {
-        stat = entity.processing;
+    void runProcess(def _handler) {
+        stat = entity.processing;                
         processing = true;
         currentProcessor = [
             getTotalCount: {
                 return stat.totalcount;
             },
             fetchList: { o->
-                stat = batchSvc.processBatch( stat );
-                Thread.sleep(500); //this is impt. to be able to run properly
-                if( stat.status == 0 ) 
-                    return [ stat ];
-                else 
-                    return null;     
+                //returns the processed count.
+                int processedCount = _handler(o);
+                Thread.sleep(500); //this was added so it will not hog the resources
+                if( processedCount == 0 ) {
+                    return null;
+                }
+                else {
+                    if(stat.counter==null) stat.counter = 0;
+                    stat.counter = stat.counter + processedCount;
+                    return [stat];                    
+                }
             },
             processItem: { o->
                 label =  "processing " + stat.counter +" of "+stat.totalcount;
@@ -210,7 +239,18 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
                 binding.refresh();
             }
         ] as BatchProcessingModel;
-        currentProcessor.start();
+        currentProcessor.start();        
+    }
+
+    void markMobileReading() {
+        if(!MsgBox.confirm("You are about to mark this for mobile reading. Proceed?")) return;
+        batchSvc.markForMobileReading( [objid: entity.objid, mobilereading: 1]);
+        entity.mobilereading = 1; 
+    }
+
+    void unmarkMobileReading() {
+        batchSvc.markForMobileReading( [objid: entity.objid, mobilereading: 0]);
+        entity.mobilereading = 0; 
     }
 
 }	

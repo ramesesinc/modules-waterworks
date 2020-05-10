@@ -21,6 +21,7 @@
             <folder id="txn" caption="Transactions" icon="home/icons/folder.png"/>
             <folder id="account" caption="Accounts" icon="home/icons/folder.png"/>
             <folder id="billing" caption="Billing" icon="home/icons/folder.png"/>
+            <folder id="report" caption="Reports" icon="home/icons/folder.png"/>
         </folder>            
     </folder>
     

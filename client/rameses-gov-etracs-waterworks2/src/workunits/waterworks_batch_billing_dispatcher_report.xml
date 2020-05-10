@@ -1,0 +1,12 @@
+<workunit extends="com/rameses/seti2/templates/FormReport.xml">
+    <invokers> 
+        
+        <invoker type="waterworks_batch_billing:form:formActions" 
+            reportId="waterworks_batch_dispatcher_report" 
+            caption="Batch Disptacher List" 
+            reportName="com/rameses/gov/etracs/waterworks/report/forms/batch_dispatcher_list.jasper"
+             txnid="#{ entity.objid }"
+            action="preview"/>
+    </invokers>
+    
+</workunit>

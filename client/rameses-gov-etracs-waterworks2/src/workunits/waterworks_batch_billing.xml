@@ -26,12 +26,17 @@
         <invoker type="formActions" caption="Submit" action="saveNew" 
                  visibleWhen="#{ mode == 'create' }"/>
                          
-        <invoker type="formActions" caption="Print Bill" action="printBill" 
+        <invoker type="formActions" caption="Print Batch" action="printBatch" 
                  visibleWhen="#{ task.state == 'approved' }"/>
 
-        <!-- 
-        <invoker type="formActions" caption="Bill Dispatcher's Receipt" action="printBillDispatcherReceipt" />
-        -->
+        <invoker type="formActions" caption="Mark for Mobile Reading" action="markMobileReading" 
+                 visibleWhen="#{ entity.mobilereading != 1 }"/>
+
+        <invoker type="formActions" caption="Unmark Mobile Reading" action="unmarkMobileReading" 
+                xrole="ADMIN"
+                visibleWhen="#{ entity.mobilereading == 1 }"/>
+
+
     </invokers>
     
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBatchBillingModel" />

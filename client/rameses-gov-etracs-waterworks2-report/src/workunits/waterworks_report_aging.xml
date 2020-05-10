@@ -1,0 +1,16 @@
+<workunit extends="com/rameses/seti2/templates/FormReport.xml">
+    <invokers>
+        <invoker folderid="/explorer/report/waterworks" 
+                 caption="Bills Aging Report" 
+                 reportId="waterworks_aging_report" 
+                 reportName="com/rameses/gov/etracs/waterworks/report/forms/account_aging_list.jasper"
+                 action="preview"  role="REPORT" /> 
+        
+        <invoker folderid="/menucategory/waterworks/report" 
+                 caption="Bills Aging Report" 
+                 reportId="waterworks_aging_report" 
+                 reportName="com/rameses/gov/etracs/waterworks/report/forms/account_aging_list.jasper"
+                 action="preview"  role="REPORT" />         
+    </invokers> 
+    
+</workunit>

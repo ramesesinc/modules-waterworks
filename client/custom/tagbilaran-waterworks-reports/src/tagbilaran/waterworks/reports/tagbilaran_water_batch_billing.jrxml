@@ -23,6 +23,7 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
+	<parameter name="ORGNAME" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="acctno" class="java.lang.String"/>
 	<field name="acctname" class="java.lang.String"/>
@@ -668,16 +669,6 @@
 					</textElement>
 				<text><![CDATA[TEL No 411-2222 LOCAL 172]]></text>
 				</staticText>
-				<subreport  isUsingCache="true">
-					<reportElement
-						x="284"
-						y="131"
-						width="230"
-						height="28"
-						key="subreport-1"/>
-					<dataSourceExpression><![CDATA[$F{details}]]></dataSourceExpression>
-					<subreportExpression  class="java.lang.String"><![CDATA["tagbilaran_water_batch_billing_details.jasper"]]></subreportExpression>
-				</subreport>
 				<textField isStretchWithOverflow="true" pattern="###0.00;(-###0.00)" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="369"
@@ -691,6 +682,17 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Number"><![CDATA[$F{totalamtdue}]]></textFieldExpression>
 				</textField>
+				<subreport  isUsingCache="true">
+					<reportElement
+						x="281"
+						y="133"
+						width="233"
+						height="99"
+						key="subreport-1"
+						isPrintRepeatedValues="false"/>
+					<dataSourceExpression><![CDATA[$F{details}]]></dataSourceExpression>
+					<subreportExpression  class="java.lang.String"><![CDATA["tagbilaran_water_batch_billing_details.jasper"]]></subreportExpression>
+				</subreport>
 			</band>
 		</detail>
 		<columnFooter>

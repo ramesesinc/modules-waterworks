@@ -139,8 +139,8 @@ public class WaterworksBillCapturePage extends javax.swing.JPanel {
         monthList1.setRequired(true);
         xFormPanel3.add(monthList1);
 
-        xTextField1.setCaption("Bill Ref No");
-        xTextField1.setName("entity.billrefno"); // NOI18N
+        xTextField1.setCaption("Bill No");
+        xTextField1.setName("entity.billno"); // NOI18N
         xTextField1.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
         xFormPanel3.add(xTextField1);
