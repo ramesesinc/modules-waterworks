@@ -16,6 +16,9 @@ public class WaterworksBillModel extends CrudFormModel {
     @Service("WaterworksBillService")
     def billSvc;
 
+    @Service("WaterworksBatchBillingService")
+    def batchSvc;
+
     @Service("WaterworksPaymentService")
     def pmtSvc;
     
@@ -183,6 +186,28 @@ public class WaterworksBillModel extends CrudFormModel {
         buildDetails();
     }
 
+
+    void rejoinBatch() {
+        if(!MsgBox.confirm("You are about to join this batch. This process cannot be undone. Proceed?")) return;
+        def bt = batchSvc.rejoinBatch( [billid: entity.objid ] );
+        entity.batchid = bt.batchid;
+        binding.refresh();
+    }
+
+    void generateNextBill() {
+        if(!MsgBox.confirm("You are about to create the next bill. Proceed?")) return;
+        def b = [:];
+        b.txnmode = "ONLINE";
+        b.acctid = entity.acctid;
+        b.year = entity.period.year;
+        b.month = entity.period.month + 1;
+        if(b.month > 12) {
+            b.month = 1;
+            b.year = b.year + 1;
+        }
+        entity = billSvc.createBill( b );
+        open();
+    }
 
 
 }

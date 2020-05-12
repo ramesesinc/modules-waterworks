@@ -61,8 +61,10 @@ public class WaterworksBillPage extends javax.swing.JPanel {
         xLabel34 = new com.rameses.rcp.control.XLabel();
         xLabel35 = new com.rameses.rcp.control.XLabel();
         xLabel36 = new com.rameses.rcp.control.XLabel();
+        xLabel55 = new com.rameses.rcp.control.XLabel();
         xFormPanel12 = new com.rameses.rcp.control.XFormPanel();
         xLabel32 = new com.rameses.rcp.control.XLabel();
+        xLabel54 = new com.rameses.rcp.control.XLabel();
         xLabel37 = new com.rameses.rcp.control.XLabel();
         xLabel38 = new com.rameses.rcp.control.XLabel();
         xLabel39 = new com.rameses.rcp.control.XLabel();
@@ -223,7 +225,7 @@ public class WaterworksBillPage extends javax.swing.JPanel {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(xDataTable1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(xFormPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         xTabbedPane2.addTab("General Info", jPanel8);
@@ -372,7 +374,7 @@ public class WaterworksBillPage extends javax.swing.JPanel {
         vwSummary.add(xTabbedPane2, java.awt.BorderLayout.CENTER);
 
         xPanel3.setVisibleWhen("#{  entity.step > 0 }");
-        xPanel3.setPreferredSize(new java.awt.Dimension(805, 90));
+        xPanel3.setPreferredSize(new java.awt.Dimension(805, 105));
 
         xFormPanel11.setCaptionWidth(150);
 
@@ -394,11 +396,20 @@ public class WaterworksBillPage extends javax.swing.JPanel {
         xLabel36.setDateFormat("yyyy-MMM-dd");
         xFormPanel11.add(xLabel36);
 
+        xLabel55.setCaption("Sub area");
+        xLabel55.setExpression("#{ entity.subarea.code } ");
+        xLabel55.setDateFormat("yyyy-MMM-dd");
+        xFormPanel11.add(xLabel55);
+
         xFormPanel12.setCaptionWidth(120);
 
         xLabel32.setCaption("Bill No");
         xLabel32.setExpression("#{ entity.billno } (#{ entity.txnmode }) ");
         xFormPanel12.add(xLabel32);
+
+        xLabel54.setCaption("Batch No");
+        xLabel54.setExpression("#{ entity.batchid }  ");
+        xFormPanel12.add(xLabel54);
 
         xLabel37.setCaption("Bill Date");
         xLabel37.setExpression("#{ entity.billdate }");
@@ -433,8 +444,8 @@ public class WaterworksBillPage extends javax.swing.JPanel {
                 .addGroup(xPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(xFormPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(xPanel3Layout.createSequentialGroup()
-                        .addComponent(xFormPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(xFormPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         vwSummary.add(xPanel3, java.awt.BorderLayout.NORTH);
@@ -599,6 +610,8 @@ public class WaterworksBillPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLabel xLabel51;
     private com.rameses.rcp.control.XLabel xLabel52;
     private com.rameses.rcp.control.XLabel xLabel53;
+    private com.rameses.rcp.control.XLabel xLabel54;
+    private com.rameses.rcp.control.XLabel xLabel55;
     private com.rameses.rcp.control.XPanel xPanel1;
     private com.rameses.rcp.control.XPanel xPanel3;
     private com.rameses.rcp.control.XTabbedPane xTabbedPane2;

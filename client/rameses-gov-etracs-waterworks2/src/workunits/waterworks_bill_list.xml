@@ -1,10 +1,10 @@
 <workunit extends="com/rameses/seti2/templates/CrudNodeList.xml" 
           schemaName="vw_waterworks_bill" 
-          orderBy="billno"  >
+          orderBy="billno">
     <invokers>
         <invoker folderid="/menucategory/waterworks/billing" caption="View Bills" 
                  action="init"
-                cols="billno,batchid,period.year,period.month,acctno,acctname,address.text,seqno"
+                cols="billno,batchid,period.year,period.monthname,acctno,acctname,address.text,subarea.code,seqno"
                 index="0">
             <action role="BILLING" /> 
             <action role="SHARED" allowCreate="false" allowDelete="false" /> 

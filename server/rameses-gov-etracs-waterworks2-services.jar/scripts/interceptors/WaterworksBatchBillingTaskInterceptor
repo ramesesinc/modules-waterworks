@@ -21,6 +21,10 @@ class WaterworksBatchBillingTaskInterceptor {
 	@DataContext("vw_waterworks_bill")
 	def vwBillEm;
 
+	@Service("WaterworksScheduleService")
+	def skedSvc;
+
+
 	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].action == 'submit' && args[0].to == 'processing'  }")
 	public void checkErrorsBeforeProcess( evt ) {
 		def p = evt.args[0]; 
@@ -37,9 +41,38 @@ class WaterworksBatchBillingTaskInterceptor {
 	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].to == 'for-approval'  }")
 	public void checkErrorsBeforeApproval( evt ) {
 		def p = evt.args[0]; 
+		def batch = batchEm.find([objid: p.refid]).first();			
+		if(batch.mobilereading==1) 
+			throw new Exception("This batch is currently processing a mobile reading. Please upload readings first")
+
 		def errs = vwBillEm.find( [batchid: p.refid ]).select("c:{COUNT(*)}").where( "meterstate='ACTIVE' AND consumption.hold=0 AND consumption.volume=0" ).val();
 		if( errs!=null && errs > 0 ) 
 			throw new Exception("All accounts with active meters that are not on hold must have a volume consumption");
+
+	}
+
+	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].action == 'close-batch'  }")
+	public void validateBeforeClose( evt ) {
+		def p = evt.args[0]; 
+		def unprinted = billEm.find( [batchid: p.refid ]).select("c:{COUNT(*)}").where("printed=0").val();
+		if( unprinted > 0 ) throw new Exception("This batch cannot be closed yet because there are unprinted bills");
+	}
+
+	@After(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].action == 'close-batch'  }")
+	public void updateSubAreaToNextPeriod( evt ) {
+		def p = evt.args[0]; 
+		
+		def batch = batchEm.find( [objid: p.refid ] ).first();
+		def ym = ((batch.period.year*12)+batch.period.month) + 1;
+		int nyr = (int)(ym / 12);
+		int nmon = (int)(ym % 12);
+		if( nmon == 0 ) {
+			nmon = 12;
+			nyr = nyr - 1;
+		}
+		def sa = subareaEm.find( [objid: batch.subareaid ] ).first();
+		def nextPeriod = skedSvc.getSchedule([scheduleid: sa.schedulegroupid, year: nyr, month: nmon]);
+		//subareaEm.find( [objid: batch.subareaid ]).update( [periodid: nextPeriod.objid ] );
 	}
 	
 } 

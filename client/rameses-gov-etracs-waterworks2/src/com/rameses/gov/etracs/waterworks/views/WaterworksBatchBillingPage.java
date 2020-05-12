@@ -5,6 +5,7 @@
  */
 package com.rameses.gov.etracs.waterworks.views;
 
+import com.rameses.rcp.framework.Binding;
 import com.rameses.rcp.ui.annotations.Template;
 import com.rameses.seti2.views.WorkflowTaskFormPage;
 
@@ -19,7 +20,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
      * Creates new form WaterworksBatchBillingPage
      */
     public WaterworksBatchBillingPage() {
-        initComponents();    
+        initComponents();  
     }
    
     /**
@@ -38,16 +39,12 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         xLabel1 = new com.rameses.rcp.control.XLabel();
         xLabel4 = new com.rameses.rcp.control.XLabel();
         xLookupField6 = new com.rameses.rcp.control.XLookupField();
-        vwCompleted = new com.rameses.rcp.control.XPanel();
-        xFormPanel6 = new com.rameses.rcp.control.XFormPanel();
-        xLabel9 = new com.rameses.rcp.control.XLabel();
-        xLookupField5 = new com.rameses.rcp.control.XLookupField();
-        xDateField3 = new com.rameses.rcp.control.XDateField();
         vwInfo = new com.rameses.rcp.control.XPanel();
         pnlHeader = new javax.swing.JPanel();
         xFormPanel5 = new com.rameses.rcp.control.XFormPanel();
         xLabel8 = new com.rameses.rcp.control.XLabel();
         xLabel10 = new com.rameses.rcp.control.XLabel();
+        xLabel11 = new com.rameses.rcp.control.XLabel();
         pnlFooter = new javax.swing.JPanel();
         pnlBody = new javax.swing.JPanel();
         svwInvalidAccounts = new com.rameses.rcp.control.XPanel();
@@ -71,14 +68,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         schemaList1 = new com.rameses.seti2.components.SchemaList();
         vwProcessing = new com.rameses.rcp.control.XPanel();
-        jPanel11 = new javax.swing.JPanel();
-        xLabel11 = new com.rameses.rcp.control.XLabel();
-        xLabel6 = new com.rameses.rcp.control.XLabel();
-        xProgressBar2 = new com.rameses.rcp.control.XProgressBar();
-        jPanel10 = new javax.swing.JPanel();
-        xButton17 = new com.rameses.rcp.control.XButton();
-        xButton18 = new com.rameses.rcp.control.XButton();
-        xButton19 = new com.rameses.rcp.control.XButton();
+        xSubFormPanel1 = new com.rameses.rcp.control.XSubFormPanel();
 
         setLayout(new java.awt.CardLayout());
 
@@ -115,6 +105,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         xLookupField6.setName("entity.reader"); // NOI18N
         xLookupField6.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xLookupField6.setPreferredSize(new java.awt.Dimension(0, 20));
+        xLookupField6.setRequired(true);
         xFormPanel4.add(xLookupField6);
 
         javax.swing.GroupLayout vwInitialLayout = new javax.swing.GroupLayout(vwInitial);
@@ -136,65 +127,27 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
 
         add(vwInitial, "card2");
 
-        vwCompleted.setVisibleWhen("#{ mode!='create' && task.state == 'end' }");
-
-        xFormPanel6.setCaptionVAlignment(com.rameses.rcp.constant.UIConstants.CENTER);
-        xFormPanel6.setCaptionWidth(150);
-
-        xLabel9.setCaption("Period");
-        xLabel9.setExpression("#{ entity.period.fromperiod } - #{ entity.period.toperiod } ");
-        xFormPanel6.add(xLabel9);
-
-        xLookupField5.setCaption("Assign To Reader");
-        xLookupField5.setExpression("#{ entity.reader.name }");
-        xLookupField5.setHandler("waterworks_reader:lookup");
-        xLookupField5.setName("entity.reader"); // NOI18N
-        xLookupField5.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
-        xLookupField5.setPreferredSize(new java.awt.Dimension(0, 20));
-        xLookupField5.setRequired(true);
-        xFormPanel6.add(xLookupField5);
-
-        xDateField3.setCaption("Reading Date");
-        xDateField3.setDepends(new String[] {"entity.zone"});
-        xDateField3.setName("entity.readingdate"); // NOI18N
-        xDateField3.setPreferredSize(new java.awt.Dimension(120, 20));
-        xDateField3.setRequired(true);
-        xFormPanel6.add(xDateField3);
-
-        javax.swing.GroupLayout vwCompletedLayout = new javax.swing.GroupLayout(vwCompleted);
-        vwCompleted.setLayout(vwCompletedLayout);
-        vwCompletedLayout.setHorizontalGroup(
-            vwCompletedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(vwCompletedLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(xFormPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(547, Short.MAX_VALUE))
-        );
-        vwCompletedLayout.setVerticalGroup(
-            vwCompletedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(vwCompletedLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(xFormPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        add(vwCompleted, "card3");
-
-        vwInfo.setVisibleWhen("#{ mode!='create' &&  entity.processing == null }");
+        vwInfo.setVisibleWhen("#{ mode!='create' &&  progressOpener == null }");
         vwInfo.setLayout(new java.awt.BorderLayout());
 
-        pnlHeader.setPreferredSize(new java.awt.Dimension(200, 60));
+        pnlHeader.setPreferredSize(new java.awt.Dimension(200, 80));
 
         xFormPanel5.setCaptionVAlignment(com.rameses.rcp.constant.UIConstants.CENTER);
         xFormPanel5.setCaptionWidth(120);
 
         xLabel8.setCaption("Batch No");
-        xLabel8.setExpression("#{ entity.objid } ");
+        xLabel8.setExpression("#{ entity.objid }  ( #{ entity.period.year } - #{ entity.period.monthname } )");
+        xLabel8.setCaptionFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        xLabel8.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         xFormPanel5.add(xLabel8);
 
         xLabel10.setCaption("Period");
         xLabel10.setExpression("#{ entity.period.fromdate } - #{ entity.period.todate } ");
         xFormPanel5.add(xLabel10);
+
+        xLabel11.setCaption("Reader Name");
+        xLabel11.setExpression("#{ entity.reader.name } ");
+        xFormPanel5.add(xLabel11);
 
         javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
         pnlHeader.setLayout(pnlHeaderLayout);
@@ -210,7 +163,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
             .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(xFormPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         vwInfo.add(pnlHeader, java.awt.BorderLayout.NORTH);
@@ -424,7 +377,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
                 new Object[]{"name", "billno"}
                 , new Object[]{"caption", "Bill No"}
                 , new Object[]{"width", 100}
-                , new Object[]{"minWidth", 100}
+                , new Object[]{"minWidth", 150}
                 , new Object[]{"maxWidth", 200}
                 , new Object[]{"required", false}
                 , new Object[]{"resizable", true}
@@ -572,6 +525,21 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", "billed"}
+                , new Object[]{"caption", "Billed"}
+                , new Object[]{"width", 60}
+                , new Object[]{"minWidth", 60}
+                , new Object[]{"maxWidth", 60}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.CheckBoxColumnHandler(java.lang.Integer.class, 1, 0)}
+            }),
+            new com.rameses.rcp.common.Column(new Object[]{
                 new Object[]{"name", "printed"}
                 , new Object[]{"caption", "Printed"}
                 , new Object[]{"width", 60}
@@ -615,71 +583,13 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
 
         add(vwInfo, "card4");
 
-        vwProcessing.setVisibleWhen("#{ mode!='create' && entity.processing !=null }");
+        vwProcessing.setVisibleWhen("#{ mode!='create' && progressOpener !=null }");
         vwProcessing.setLayout(new java.awt.BorderLayout());
 
-        xLabel11.setExpression("Processing");
-        xLabel11.setName("label"); // NOI18N
-        xLabel11.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        xLabel11.setFontStyle("font-size:12; font-weight:bold;");
-        xLabel11.setForeground(new java.awt.Color(100, 100, 100));
-
-        xLabel6.setExpression("#{label}");
-        xLabel6.setName("label"); // NOI18N
-        xLabel6.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        xLabel6.setFontStyle("font-size:12; font-weight:bold;");
-        xLabel6.setForeground(new java.awt.Color(100, 100, 100));
-
-        xProgressBar2.setHandler("progressBar");
-
-        jPanel10.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        xButton17.setName("startProcess"); // NOI18N
-        xButton17.setVisibleWhen("#{ processing == false && stat==null }");
-        xButton17.setText("Start");
-        jPanel10.add(xButton17);
-
-        xButton18.setName("resumeProcess"); // NOI18N
-        xButton18.setVisibleWhen("#{ processing == false && stat !=null }");
-        xButton18.setText("Restart");
-        jPanel10.add(xButton18);
-
-        xButton19.setName("cancelProcess"); // NOI18N
-        xButton19.setVisibleWhen("#{ processing == true }");
-        xButton19.setText("Cancel");
-        jPanel10.add(xButton19);
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(xProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel11Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(xLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(xLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(695, Short.MAX_VALUE))
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(xLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(xLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(xProgressBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(341, Short.MAX_VALUE))
-        );
-
-        vwProcessing.add(jPanel11, java.awt.BorderLayout.CENTER);
+        xSubFormPanel1.setHandler("progressOpener");
+        xSubFormPanel1.setName(""); // NOI18N
+        xSubFormPanel1.setDynamic(true);
+        vwProcessing.add(xSubFormPanel1, java.awt.BorderLayout.CENTER);
 
         add(vwProcessing, "card5");
     }// </editor-fold>//GEN-END:initComponents
@@ -691,8 +601,6 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
@@ -705,7 +613,6 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
     private com.rameses.seti2.components.SchemaList schemaList1;
     private com.rameses.rcp.control.XPanel svwBillsList;
     private com.rameses.rcp.control.XPanel svwInvalidAccounts;
-    private com.rameses.rcp.control.XPanel vwCompleted;
     private com.rameses.rcp.control.XPanel vwInfo;
     private com.rameses.rcp.control.XPanel vwInitial;
     private com.rameses.rcp.control.XPanel vwProcessing;
@@ -714,29 +621,21 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XButton xButton12;
     private com.rameses.rcp.control.XButton xButton13;
     private com.rameses.rcp.control.XButton xButton14;
-    private com.rameses.rcp.control.XButton xButton17;
-    private com.rameses.rcp.control.XButton xButton18;
-    private com.rameses.rcp.control.XButton xButton19;
     private com.rameses.rcp.control.XButton xButton9;
     private com.rameses.rcp.control.XCheckBox xCheckBox2;
     private com.rameses.rcp.control.XDataTable xDataTable2;
-    private com.rameses.rcp.control.XDateField xDateField3;
     private com.rameses.rcp.control.XFormPanel xFormPanel4;
     private com.rameses.rcp.control.XFormPanel xFormPanel5;
-    private com.rameses.rcp.control.XFormPanel xFormPanel6;
     private com.rameses.rcp.control.XLabel xLabel1;
     private com.rameses.rcp.control.XLabel xLabel10;
     private com.rameses.rcp.control.XLabel xLabel11;
     private com.rameses.rcp.control.XLabel xLabel3;
     private com.rameses.rcp.control.XLabel xLabel4;
-    private com.rameses.rcp.control.XLabel xLabel6;
     private com.rameses.rcp.control.XLabel xLabel8;
-    private com.rameses.rcp.control.XLabel xLabel9;
     private com.rameses.rcp.control.XLookupField xLookupField1;
-    private com.rameses.rcp.control.XLookupField xLookupField5;
     private com.rameses.rcp.control.XLookupField xLookupField6;
-    private com.rameses.rcp.control.XProgressBar xProgressBar2;
     private com.rameses.rcp.control.XRadio xRadio3;
     private com.rameses.rcp.control.XRadio xRadio4;
+    private com.rameses.rcp.control.XSubFormPanel xSubFormPanel1;
     // End of variables declaration//GEN-END:variables
 }

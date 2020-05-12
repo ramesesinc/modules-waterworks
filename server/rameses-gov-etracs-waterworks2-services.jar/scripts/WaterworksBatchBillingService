@@ -13,6 +13,8 @@ class WaterworksBatchBillingService {
 	@Service("WaterworksBillService")
 	def billSvc;
 
+	@Service("Var")
+	def var;
 
 	@DataContext('waterworks_batch_billing')
 	def batchEm; 
@@ -23,8 +25,16 @@ class WaterworksBatchBillingService {
 	@DataContext('waterworks_bill')
 	def billEm; 
 
+	@DataContext('vw_waterworks_account')
+	def vwAcctEm; 
+
+
 	@ProxyMethod
 	public def create( def o ) {
+		//check if there is unclosed previous batch
+		def b = batchEm.find( [subareaid: o.subarea.objid ] ).where(" NOT(task.state = 'end') ").first();	
+		if( b ) throw new Exception("There is still pending batch bill for this subarea. Please close that first");
+
 		def yrmon = "" + o.period.year + String.format("%02d", o.period.month);
 		o.objid = "WB" + yrmon +"-"+ o.subarea.code;  
 		o.state = 'DRAFT';		
@@ -92,7 +102,11 @@ class WaterworksBatchBillingService {
 
 	@ProxyMethod
 	public def processBatch( def o ) {
-		int batch_process_size = 50;
+		def sz = var.waterworks_batch_process_size;
+		if( sz==null ) sz = 50;
+
+		int batch_process_size = sz;
+
 		def items = null;
 		if(o.action=="create-bills") {
 			def p = [:];
@@ -105,12 +119,12 @@ class WaterworksBatchBillingService {
 			items?.each {
 				o.counter = o.counter + 1;
 				def vv = [acctid: it.objid, year:it.year,month:it.month, batchid: o.batchid];
-				b.billno = o.batchid + "-" + String.format("%05d", o.counter);
+				vv.billno = o.batchid + "-" + String.format("%05d", o.counter);
 				vv.txnmode = "ONLINE";
-				billSvc.createBill( vv );
+				def _bill = billSvc.createBill( vv );
 
 				//we will immediately create the fixed items if any so we will not get this anymore later.
-				billSvc.updateBillFees( [objid: it.objid ] );
+				billSvc.updateBillFees( [objid: _bill.objid ] );
 			}
 		}
 		else if( o.action == "update-bills") {
@@ -145,5 +159,35 @@ class WaterworksBatchBillingService {
 		batchEm.find([objid: o.objid ]).update( [mobilereading: o.mobilereading ]);
 	}
 
+	@ProxyMethod
+	public def rejoinBatch( def o ) {
+		if( !o.billid ) throw new Exception("billid is required in WaterworksBatchBillingService.rejoinBatch");
+		def bill = billEm.find( [objid: o.billid ] ).first();
+		def acct = vwAcctEm.find( [objid: bill.acctid] ).first();
+		if( acct.billid != bill.objid )
+			throw new Exception("Account not found having this bill as current. Please check if this is the current bill");
+		def batch = batchEm.find( [subareaid: acct.subareaid] ).first();
+		if( !batch ) throw new Exception("Batch does not exist for this subarea");
+		
+		if(batch.periodid!=bill.periodid)
+			throw new Exception("The bill's period does not match the batch billing period");
+
+		if(batch.mobilereading == 1)
+			throw new Exception("This bill is already sent for mobile reading. It cannot be joined at this time");
+
+		//if batch state is for reading	
+		if( bill.state == 'OPEN' && batch.task.state?.toLowerCase() != 'for-reading' ) 
+			throw new Exception("This bill (open) can only joined to batch that is for-reading state ");		
+
+		if( bill.state == 'POSTED' && batch.task.state?.toLowerCase() != 'approved' ) 
+			throw new Exception("This bill (posted) can only joined to batch that is in approved state ");		
+
+		billEm.find([objid: bill.objid]).update([batchid: batch.objid]);
+
+		//include in batch in next time
+		acctEm.find( [objid: acct.objid]).update( [excludeinbatch:0] );
+
+		return [batchid: batch.objid];			
+	}
 
 } 

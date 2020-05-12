@@ -16,7 +16,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,-125,0,0,3,-45"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,-124,0,0,3,-45"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -71,7 +71,7 @@
                               <Component id="xDataTable1" min="-2" pref="368" max="-2" attributes="0"/>
                               <Component id="xFormPanel6" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="23" max="32767" attributes="0"/>
+                          <EmptySpace pref="9" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -258,7 +258,7 @@
           <Properties>
             <Property name="visibleWhen" type="java.lang.String" value="#{  entity.step &gt; 0 }"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[805, 90]"/>
+              <Dimension value="[805, 105]"/>
             </Property>
           </Properties>
           <Constraints>
@@ -283,10 +283,10 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="xFormPanel12" alignment="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="xFormPanel11" min="-2" pref="85" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                          <Component id="xFormPanel12" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="xFormPanel11" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -325,6 +325,13 @@
                     <Property name="dateFormat" type="java.lang.String" value="yyyy-MMM-dd"/>
                   </Properties>
                 </Component>
+                <Component class="com.rameses.rcp.control.XLabel" name="xLabel55">
+                  <Properties>
+                    <Property name="caption" type="java.lang.String" value="Sub area"/>
+                    <Property name="expression" type="java.lang.String" value="#{ entity.subarea.code } "/>
+                    <Property name="dateFormat" type="java.lang.String" value="yyyy-MMM-dd"/>
+                  </Properties>
+                </Component>
               </SubComponents>
             </Container>
             <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel12">
@@ -336,6 +343,12 @@
                   <Properties>
                     <Property name="caption" type="java.lang.String" value="Bill No"/>
                     <Property name="expression" type="java.lang.String" value="#{ entity.billno } (#{ entity.txnmode }) "/>
+                  </Properties>
+                </Component>
+                <Component class="com.rameses.rcp.control.XLabel" name="xLabel54">
+                  <Properties>
+                    <Property name="caption" type="java.lang.String" value="Batch No"/>
+                    <Property name="expression" type="java.lang.String" value="#{ entity.batchid }  "/>
                   </Properties>
                 </Component>
                 <Component class="com.rameses.rcp.control.XLabel" name="xLabel37">

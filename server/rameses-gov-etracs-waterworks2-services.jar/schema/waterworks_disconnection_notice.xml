@@ -1,0 +1,15 @@
+<schema>
+	<element tablename="waterworks_disconnection_notice">
+		<field name="objid" primary="true" visible="true" caption="Control No"/>
+		<field name="state" />
+		<field name="acctid" />
+		<field name="acctinfoid" />
+		<field name="dtcreated" type="date"/>
+		<field name="createdby_objid" />
+		<field name="createdby_name" />
+		<field name="dtfiled" type="date"/>
+		<field name="dtsent" />
+		<field name="monthsdelinquent" type="integer"/>
+	</element>
+
+</schema>

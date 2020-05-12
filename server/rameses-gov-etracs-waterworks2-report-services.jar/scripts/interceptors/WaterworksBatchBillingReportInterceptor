@@ -16,7 +16,7 @@ class WaterworksBatchBillingReportInterceptor {
 		def batch = batchEm.find( [objid: t.txnid] ).first();
 		batch.year = batch.period.year;
 		batch.monthname = batch.period.monthname;
-		batch.items = vwBillEm.find([batchid: batch.objid]).select("seqno,billno,acctno,acctname,address.text,prevreading:{consumption.prev.reading}").orderBy("seqno").list();
+		batch.items = vwBillEm.find([batchid: batch.objid]).select("seqno,billno,acctno,acctname,address.text,prevreading:{consumption.prev.reading},reading:{consumption.reading},meter.*").orderBy("seqno").list();
 
 		result.data = batch;
 	}

@@ -21,6 +21,7 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
     def viewmode;
 
     boolean hasErrors = false;
+    def progressOpener;     //for batch processing
 
     public def create() {
         mode = "create";
@@ -30,7 +31,7 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
     }
     
     boolean getShowFormActions() {
-        if( entity.processing != null ) {
+        if( progressOpener != null ) {
             return false;
         }
         else {
@@ -59,22 +60,53 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         open();
     }
 
+    //The procstatus and printstatus can be found during persistence read of the batch billing
     public void afterOpen() {
         hasErrors = true;     
         errListHandler.reload();
         title = "Batch " + entity.objid + " " + task.title;
-        if( entity.processing !=null ) {
-            startProcess();
+        if( entity.printstatus !=null ) {
+            batchPrinter.batchid = entity.objid;
+        }
+        if( entity.procstatus !=null ) {
+            startBatchProcess();
         }
     }
 
     public void afterSignal( def trans, def task) {
         title = "Batch " + entity.objid + " " + task.title;
-        def proc = batchSvc.getProcessInfo( [ objid: entity.objid, taskstate: task.state ] );
-        if(proc!=null) {
-            entity.processing = proc;
-            startProcess();
+        if( task.state == "end" ) {
+            //do nothing
         }
+        else {
+            if( task.state?.matches("approved|end") ) {
+                batchPrinter.batchid = entity.objid;
+                entity.printstatus = batchPrinter.getPrintStatus();
+            }
+            startBatchProcess();                    
+        }
+    }
+
+    //Main Progress Monitor
+    void launchProcess( def procHandler, def totalcount, onFinish ) {
+        def m = [:];
+        m.totalcount = totalcount;
+        m.batchHandler = [
+            process: procHandler,
+            onFinish : {
+                progressOpener = null;
+                if(onFinish!=null) {
+                    def op = onFinish();
+                    binding.fireNavigation( op, "self", true );
+                }
+                else {
+                    binding.refresh();  
+                }    
+            }
+        ];    
+        def op = Inv.lookupOpener("batch_progress", m );
+        op.target = "self";
+        progressOpener = op;    
     }
 
     /*************************
@@ -129,7 +161,7 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
     **************************/
     def billListHandler = [
         isColumnEditable: { item, colName->
-            return (task.state == "for-reading");        
+            return (task.state == "for-reading" && entity.mobilereading != 1);        
         },
         onColumnUpdate: {v, colName ->
             if( colName == "consumption.reading") {
@@ -157,89 +189,15 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         [objid: entity.objid];
     }
 
-    //run the billing processes, create, build bill and post.
-    void startProcess() {
-        def h = { o->
-            def res = batchSvc.processBatch( o );
-            return res.count;
+    void startBatchProcess() {
+        if(!task.state?.matches('for-reading|for-approval|approved')) return;
+        def proc = batchSvc.getProcessInfo( [ objid: entity.objid, taskstate: task.state ] );
+        if( proc==null || proc.totalcount == 0 ) return;
+        def hdlr = { o->
+            def c = batchSvc.processBatch( proc );
+            return c.count;
         }
-        runProcess( h );
-    }
-
-     //run the billing processes, create, build bill and post.
-    public void printBatch() {
-        boolean pass = batchPrinter.init(entity.objid);
-        if(!pass) return;
-
-        //set the entity processing to signal change screen to processing page
-        entity.processing = batchPrinter.info;
-        def h = { o->
-            return batchPrinter.sendPrint( o );
-        }
-        runProcess( h );
-    }
-
-    /**************************************************
-    * Main processor that provides UI feedback
-    ***************************************************/
-    def stat;
-    def currentProcessor;
-    def label;
-    boolean processing = false;
-
-    void cancelProcess() {
-        if(!MsgBox.confirm("Cancel process?")) return;
-        currentProcessor.cancel();
-    }
-
-    void resumeProcess() {
-        currentProcessor.start();
-        processing = true;
-    }
-
-    def progressBar = [
-        getMaxValue: {
-            return (stat==null) ? 0 : stat.totalcount;
-        },
-        getValue: {
-            return (stat==null) ? 0 : stat.counter;
-        }
-    ] as ProgressModel;
-
-    void runProcess(def _handler) {
-        stat = entity.processing;                
-        processing = true;
-        currentProcessor = [
-            getTotalCount: {
-                return stat.totalcount;
-            },
-            fetchList: { o->
-                //returns the processed count.
-                int processedCount = _handler(o);
-                Thread.sleep(500); //this was added so it will not hog the resources
-                if( processedCount == 0 ) {
-                    return null;
-                }
-                else {
-                    if(stat.counter==null) stat.counter = 0;
-                    stat.counter = stat.counter + processedCount;
-                    return [stat];                    
-                }
-            },
-            processItem: { o->
-                label =  "processing " + stat.counter +" of "+stat.totalcount;
-                progressBar.refresh();
-                binding.refresh('label');
-            },
-            afterCancel: {
-                processing = false;
-            },
-            onFinished: {
-                entity.remove("processing");
-                binding.refresh();
-            }
-        ] as BatchProcessingModel;
-        currentProcessor.start();        
+        launchProcess( hdlr, proc.totalcount, null );
     }
 
     void markMobileReading() {
@@ -252,5 +210,47 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         batchSvc.markForMobileReading( [objid: entity.objid, mobilereading: 0]);
         entity.mobilereading = 0; 
     }
+
+
+    /*************************
+    * RELATED TO PRINTING
+    **************************/
+    boolean getCanPrint() {
+        if( entity.printstatus == null ) return false;
+        return ( entity.printstatus.printedcount != entity.printstatus.totalcount ) 
+    }
+
+    boolean getCanReprint() {
+        if( entity.printstatus == null ) return false;
+        return ( entity.printstatus.printedcount == entity.printstatus.totalcount ) 
+    }
+
+    //run the billing processes, create, build bill and post.
+    public void printBatch() {
+        def info = batchPrinter.init();
+        if(!info) return;
+        def handler = { o-> 
+            return batchPrinter.sendPrint( o ); 
+        }
+        def onFinish = { 
+            //we need to update this so we can display the reprint button.
+            entity.printstatus = batchPrinter.getPrintStatus();
+            batchPrinter.previewReport(); 
+        }
+        launchProcess( handler , info.totalcount, onFinish );
+    }
+
+    //run the billing processes, create, build bill and post.
+    public def reprintBatch() {
+        def info = batchPrinter.initReprint();
+        if(!info) return;
+        def handler = { o-> 
+            return batchPrinter.sendReprint( o ); 
+        }
+        def preview = { batchPrinter.previewReport(); }
+        launchProcess( handler , info.totalcount, preview );
+    }
+
+
 
 }	

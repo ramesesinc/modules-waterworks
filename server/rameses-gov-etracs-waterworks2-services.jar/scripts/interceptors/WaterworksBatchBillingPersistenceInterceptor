@@ -6,6 +6,9 @@ class WaterworksBatchBillingPersistenceInterceptor {
 	@Service("WaterworksBatchBillingService")
 	def batchSvc;
 	
+	@Service("WaterworksBatchBillPrintingService")
+	def printingSvc;
+
 	@DataContext("waterworks_batch_billing")
 	def batchEm;
 
@@ -26,9 +29,15 @@ class WaterworksBatchBillingPersistenceInterceptor {
 		def p = evt.args[0]; 
 		def entity = evt.result;
 		def proc = batchSvc.getProcessInfo( [ objid: entity.objid, taskstate: entity.task.state ] );
-		if(proc && proc.status != 0 ) {
-			entity.processing = proc;
-		} 
+		if( proc ) {
+			entity.procstatus = proc;
+		}
+		
+		if( entity.task.state?.matches("approved|end") ) {
+			def pstatus = printingSvc.getBatchPrintStatus( [batchid: entity.objid ] );
+			entity.printstatus = pstatus;
+		}
+
 	}
 
 	

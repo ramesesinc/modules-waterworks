@@ -40,6 +40,7 @@
 		</complex>
 		<field name="meterstate" />
 
+		<field name="period_objid" />
 		<field name="period_year" type="integer"/>
 		<field name="period_month" type="integer"/>
 		<field name="period_fromdate" type="date"/>

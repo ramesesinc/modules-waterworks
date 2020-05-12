@@ -1,0 +1,12 @@
+<workunit>
+    <invokers>
+        <invoker type="batch_progress" caption="Batch Progress In Place" action="start"/>            
+    </invokers>
+    
+    <code class="com.rameses.gov.etracs.waterworks.models.BatchProgressModel" />    
+
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.BatchProgressPage"/>
+    </pages>    
+    
+</workunit>

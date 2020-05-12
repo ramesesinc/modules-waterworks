@@ -259,7 +259,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         xIntegerField2.setRequired(true);
         xFormPanel2.add(xIntegerField2);
 
-        xLabel5.setCaption("Group Bill Period");
+        xLabel5.setCaption("Batch Bill Period");
         xLabel5.setDepends(new String[] {"entity.subarea"});
         xLabel5.setExpression("#{ entity.subarea.period.year } #{ entity.subarea.period.monthname }");
         xLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));

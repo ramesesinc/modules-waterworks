@@ -18,7 +18,7 @@ SELECT
    sarea.barangay_name AS subarea_barangay_name,
    area.code AS area_code,
 
-
+   p.objid AS period_objid,
    p.year AS period_year,
    p.month AS period_month,
    p.fromdate AS period_fromdate,

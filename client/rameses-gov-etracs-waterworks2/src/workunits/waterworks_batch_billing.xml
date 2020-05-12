@@ -12,30 +12,22 @@
                  action="open" formId="#{entity.objid}" formTitle="#{entity.batchno}"/>
 
         <!-- INSIDE MENUS -->  
-        <!--       
-        <invoker type="readingMenu" caption="View Actions" action="showMenuActions" 
-                 depends="selectedItem" visibleWhen="#{selectedItem != null}" 
-                 target="process" mnemonic="V"/>
-
-        <invoker type="billingMenu" caption="View Actions" action="showMenuActions" 
-                 depends="selectedBillItem" visibleWhen="#{selectedBillItem != null}" 
-                 target="process" mnemonic="V"/>
-        -->
-                
-        <!-- form actions -->         
         <invoker type="formActions" caption="Submit" action="saveNew" 
                  visibleWhen="#{ mode == 'create' }"/>
-                         
-        <invoker type="formActions" caption="Print Batch" action="printBatch" 
-                 visibleWhen="#{ task.state == 'approved' }"/>
 
-        <invoker type="formActions" caption="Mark for Mobile Reading" action="markMobileReading" 
-                 visibleWhen="#{ entity.mobilereading != 1 }"/>
+        <!-- form actions -->         
+        <invoker type="formActions" caption="Send for Mobile Reading" action="markMobileReading" 
+                 visibleWhen="#{ task?.state == 'for-reading' &amp;&amp; entity.mobilereading != 1 }"/>
 
-        <invoker type="formActions" caption="Unmark Mobile Reading" action="unmarkMobileReading" 
+        <invoker type="formActions" caption="Revert Mobile Reading" action="unmarkMobileReading" 
                 xrole="ADMIN"
                 visibleWhen="#{ entity.mobilereading == 1 }"/>
 
+        <invoker type="formActions" caption="Print Batch" action="printBatch" 
+                 visibleWhen="#{ canPrint == true }"/>
+
+        <invoker type="formActions" caption="Print Preview" action="reprintBatch" 
+                 visibleWhen="#{ canReprint == true }"/>
 
     </invokers>
     

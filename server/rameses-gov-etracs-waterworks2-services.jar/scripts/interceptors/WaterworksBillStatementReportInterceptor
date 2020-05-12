@@ -58,7 +58,7 @@ class WaterworksBillStatementReportInterceptor {
 				bill.averageconsumption = (int)( avlist.sum{it.volume} / avlist.size());
 			}
 		};	
-		result.data = [bill, bill];
+		result.data = [bill];
 	}
 
 } 

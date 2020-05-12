@@ -1,7 +1,7 @@
 [getAccountsForBilling]
 SELECT a.* FROM 
 (SELECT wbb.objid AS batchid, wa.objid, 
-	wa.state, wa.acctno, wa.acctname, wbp.year AS lastbillyear, wbp.month AS lastbillmonth,
+	wa.state, wa.acctno, wa.acctname, wbp.year AS lastbillyear, wbp.month AS lastbillmonth, wa.seqno,
 	wbbp.year, wbbp.month,
 CASE 
 	WHEN 
@@ -21,9 +21,12 @@ LEFT JOIN waterworks_billing_period wbp ON wb.periodid = wbp.objid
 INNER JOIN waterworks_batch_billing wbb ON wa.subareaid = wbb.subareaid
 INNER JOIN waterworks_billing_period wbbp ON wbb.periodid = wbbp.objid 
 WHERE wbb.objid = $P{batchid}
+AND wa.state IN  ('DRAFT','ACTIVE') 
 AND wa.excludeinbatch = ${excludeinbatch} ) a
 WHERE ${filter}
+ORDER BY a.seqno, a.acctno
 LIMIT $P{start}, $P{limit}
+
 
 [findForBillingCount]
 SELECT COUNT(*) AS count FROM 
@@ -46,6 +49,7 @@ LEFT JOIN waterworks_billing_period wbp ON wb.periodid = wbp.objid
 INNER JOIN waterworks_batch_billing wbb ON wa.subareaid = wbb.subareaid
 INNER JOIN waterworks_billing_period wbbp ON wbb.periodid = wbbp.objid 
 WHERE wbb.objid = $P{batchid}
+AND wa.state IN  ('DRAFT','ACTIVE') 
 AND wa.excludeinbatch = 0 ) a
 WHERE a.errstate = $P{errstate}
 

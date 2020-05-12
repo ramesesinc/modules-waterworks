@@ -1,0 +1,8 @@
+<workunit extends="com/rameses/seti2/templates/CrudList.xml" schemaName="waterworks_disconnection_notice">
+    <invokers>
+		<invoker folderid="/menucategory/waterworks/billing" caption="Disconnection Notices" 
+                 action="init"
+                cols="billno,batchid,period.year,period.monthname,acctno,acctname,address.text,subarea.code,seqno"
+                index="50" />
+    </invokers>
+</workunit>

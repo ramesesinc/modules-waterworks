@@ -41,6 +41,10 @@
 	<field name="readingdate" class="java.util.Date"/>
 	<field name="prevreading" class="java.lang.Number"/>
 	<field name="reading" class="java.lang.Number"/>
+	<field name="meter.serialno" class="java.lang.String"/>
+	<field name="meterstate" class="java.lang.String"/>
+	<field name="meter.size.title" class="java.lang.String"/>
+	<field name="seqno" class="java.lang.Number"/>
 
 	<variable name="TOTAL_COUNT" class="java.lang.Number" resetType="Report" calculation="Count">
 		<variableExpression><![CDATA[$F{acctno}]]></variableExpression>
@@ -96,9 +100,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="-5"
+						x="41"
 						y="0"
-						width="137"
+						width="91"
 						height="30"
 						key="staticText-21"/>
 					<box leftPadding="3" rightPadding="3">					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -113,7 +117,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="456"
+						x="689"
 						y="0"
 						width="50"
 						height="30"
@@ -130,7 +134,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="573"
+						x="393"
 						y="0"
 						width="181"
 						height="16"
@@ -147,7 +151,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="573"
+						x="393"
 						y="16"
 						width="76"
 						height="14"
@@ -164,7 +168,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="649"
+						x="469"
 						y="16"
 						width="61"
 						height="14"
@@ -181,7 +185,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="710"
+						x="530"
 						y="16"
 						width="44"
 						height="14"
@@ -198,9 +202,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="399"
+						x="638"
 						y="0"
-						width="57"
+						width="51"
 						height="30"
 						key="staticText-30"/>
 					<box leftPadding="3" rightPadding="3">					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -215,9 +219,9 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="506"
+						x="574"
 						y="0"
-						width="67"
+						width="65"
 						height="30"
 						key="staticText-31"/>
 					<box leftPadding="3" rightPadding="3">					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -232,16 +236,37 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="766"
-						y="7"
-						width="119"
-						height="16"
+						x="739"
+						y="0"
+						width="153"
+						height="30"
 						key="staticText-32"/>
-					<box leftPadding="3" rightPadding="3"></box>
+					<box leftPadding="3" rightPadding="3">					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8"/>
 					</textElement>
 				<text><![CDATA[Signature]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="0"
+						y="0"
+						width="41"
+						height="30"
+						key="staticText-33"/>
+					<box leftPadding="3" rightPadding="3">					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+				<text><![CDATA[Seq No]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -261,7 +286,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid"/>
 </box>
 					<textElement verticalAlignment="Top">
-						<font size="7"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{acctno}]]></textFieldExpression>
 				</textField>
@@ -279,7 +304,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid"/>
 </box>
 					<textElement verticalAlignment="Top">
-						<font size="7"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{acctname}]]></textFieldExpression>
 				</textField>
@@ -287,7 +312,7 @@
 					<reportElement
 						x="194"
 						y="15"
-						width="201"
+						width="194"
 						height="16"
 						key="textField-3"
 						isPrintRepeatedValues="false"
@@ -298,18 +323,20 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid"/>
 </box>
 					<textElement verticalAlignment="Top">
-						<font size="7"/>
+						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[($F{address.text} ? $F{address.text}.toString().replace('\n',' ') : "")]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="456"
+						x="689"
 						y="0"
 						width="50"
 						height="16"
-						key="textField-5"/>
-					<box leftPadding="3" rightPadding="3" topPadding="2">					<topPen lineWidth="0.0" lineStyle="Solid"/>
+						key="textField-5">
+							<printWhenExpression><![CDATA[$F{prevreading} != $F{reading}]]></printWhenExpression>
+						</reportElement>
+					<box topPadding="2">					<topPen lineWidth="0.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid"/>
@@ -321,9 +348,9 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="2"
+						x="44"
 						y="0"
-						width="131"
+						width="89"
 						height="16"
 						key="textField-10"/>
 					<box leftPadding="3" rightPadding="3" topPadding="2">					<topPen lineWidth="0.0" lineStyle="Solid"/>
@@ -338,12 +365,12 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="399"
+						x="639"
 						y="0"
-						width="57"
+						width="50"
 						height="16"
 						key="textField-11"/>
-					<box leftPadding="3" rightPadding="3" topPadding="2">					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<box topPadding="2">					<topPen lineWidth="0.0" lineStyle="Solid"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid"/>
@@ -353,22 +380,22 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Number"><![CDATA[$F{prevreading}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="505"
+						x="574"
 						y="0"
 						width="65"
 						height="18"
 						key="textField"/>
 					<box></box>
-					<textElement textAlignment="Center">
+					<textElement textAlignment="Center" verticalAlignment="Top">
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{readingdate}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="399"
+						x="574"
 						y="0"
 						width="0"
 						height="33"
@@ -380,18 +407,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="61"
-						y="0"
-						width="0"
-						height="33"
-						key="line-2"/>
-					<graphicElement stretchType="NoStretch">
-					<pen lineWidth="0.0" lineStyle="Solid"/>
-</graphicElement>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						x="456"
+						x="639"
 						y="0"
 						width="0"
 						height="33"
@@ -403,7 +419,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="506"
+						x="688"
 						y="0"
 						width="0"
 						height="33"
@@ -415,7 +431,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="573"
+						x="738"
 						y="0"
 						width="0"
 						height="33"
@@ -427,7 +443,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="649"
+						x="469"
 						y="0"
 						width="0"
 						height="33"
@@ -439,7 +455,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="709"
+						x="529"
 						y="0"
 						width="0"
 						height="33"
@@ -451,7 +467,7 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="753"
+						x="892"
 						y="0"
 						width="0"
 						height="33"
@@ -489,7 +505,7 @@
 					<reportElement
 						x="0"
 						y="32"
-						width="879"
+						width="892"
 						height="0"
 						key="line-12"/>
 					<graphicElement stretchType="NoStretch">
@@ -510,16 +526,82 @@
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="-10"
+						x="393"
 						y="0"
 						width="0"
 						height="33"
 						key="line-14"
 						stretchType="RelativeToBandHeight"/>
+					<graphicElement stretchType="RelativeToBandHeight"/>
+				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="394"
+						y="0"
+						width="76"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{meter.serialno}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="469"
+						y="0"
+						width="61"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{meterstate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="530"
+						y="0"
+						width="44"
+						height="18"
+						key="textField"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{meter.size.title}]]></textFieldExpression>
+				</textField>
+				<line direction="TopDown">
+					<reportElement
+						x="41"
+						y="0"
+						width="0"
+						height="33"
+						key="line-15"
+						stretchType="RelativeToBandHeight"/>
 					<graphicElement stretchType="RelativeToBandHeight">
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 </graphicElement>
 				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="0"
+						width="41"
+						height="16"
+						key="textField-12"/>
+					<box leftPadding="3" rightPadding="3" topPadding="2">					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid"/>
+</box>
+					<textElement verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{seqno}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
