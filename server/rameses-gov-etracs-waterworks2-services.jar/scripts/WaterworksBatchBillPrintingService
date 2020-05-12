@@ -40,10 +40,12 @@ class WaterworksBatchBillPrintingService {
 
 	@ProxyMethod
 	public def getPrintList( def o ) {
+		int batch_process_size = 20;
 		def sz = var.waterworks_batch_print_size;
-		if( sz==null ) sz = 50;
-
-		int batch_process_size = sz;
+		if( sz !=null ) {
+			batch_process_size = sz.toInteger();
+		}
+		
 		def list = vwBillEm.find([batchid: o.batchid]).where("printed=0").limit(batch_process_size).orderBy("billno ASC").list();
 		list.each{
 			def res = statementSvc.getBillDetails( [objid: it.objid, include_unposted: false ] );
@@ -79,10 +81,11 @@ class WaterworksBatchBillPrintingService {
 
 	@ProxyMethod
 	public def getReprintList( def o ) {
+		int batch_process_size = 20;
 		def sz = var.waterworks_batch_print_size;
-		if( sz==null ) sz = 50;
-
-		int batch_process_size = sz;
+		if( sz !=null ) {
+			batch_process_size = sz.toInteger();
+		}
 
 		def list = vwBillEm.find([batchid: o.batchid]).where("printed=1").orderBy("billno ASC").list(o.start, batch_process_size);
 		list.each{

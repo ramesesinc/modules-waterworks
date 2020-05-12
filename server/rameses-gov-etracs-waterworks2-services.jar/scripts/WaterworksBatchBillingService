@@ -102,10 +102,11 @@ class WaterworksBatchBillingService {
 
 	@ProxyMethod
 	public def processBatch( def o ) {
+		int batch_process_size = 20;
 		def sz = var.waterworks_batch_process_size;
-		if( sz==null ) sz = 50;
-
-		int batch_process_size = sz;
+		if( sz !=null ) {
+			batch_process_size = sz.toInteger();
+		}
 
 		def items = null;
 		if(o.action=="create-bills") {
