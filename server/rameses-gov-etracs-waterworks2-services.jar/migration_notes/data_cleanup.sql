@@ -35,3 +35,5 @@ DELETE FROM waterworks_recurringfee;
 
 [cleanupBatchBill]
 UPDATE waterworks_batch_billing SET taskid = NULL;
+DELETE FROM waterworks_batch_billing_task;
+DELETE FROM waterworks_batch_billing;

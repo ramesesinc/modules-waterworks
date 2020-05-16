@@ -68,7 +68,7 @@ public class WaterworksConsumptionBuilderPage extends javax.swing.JPanel {
         xIntegerField2.setCaption("To Year");
         xIntegerField2.setDisableWhen("#{ true }");
         xIntegerField2.setEditable(false);
-        xIntegerField2.setName("bill.period.year"); // NOI18N
+        xIntegerField2.setName("toyear"); // NOI18N
         xIntegerField2.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xIntegerField2.setEnabled(false);
         xIntegerField2.setPreferredSize(new java.awt.Dimension(80, 20));
@@ -78,7 +78,7 @@ public class WaterworksConsumptionBuilderPage extends javax.swing.JPanel {
         monthList2.setCaption("To Month");
         monthList2.setDisableWhen("#{ true }");
         monthList2.setEnabled(false);
-        monthList2.setName("bill.period.month"); // NOI18N
+        monthList2.setName("tomonth"); // NOI18N
         monthList2.setVisibleWhen("#{ current != true }");
         xFormPanel5.add(monthList2);
 

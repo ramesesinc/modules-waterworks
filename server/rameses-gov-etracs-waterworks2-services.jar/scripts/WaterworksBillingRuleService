@@ -33,11 +33,14 @@ class WaterworksBillingRuleService {
 
 		def facts = [];
 		facts << new WaterAccount( acct );
-		facts << new WaterBill( bill );
-		if( bill.consumption?.objid ) {
-			facts << new WaterConsumption( bill.consumption );
-		}	
 
+		if(bill) {
+			facts << new WaterBill( bill );
+			if( bill.consumption?.objid ) {
+				facts << new WaterConsumption( bill.consumption );
+			}	
+		}
+			
 		if( o.txndate ) {
 			facts << new TransactionDate( o.txndate );
 		}

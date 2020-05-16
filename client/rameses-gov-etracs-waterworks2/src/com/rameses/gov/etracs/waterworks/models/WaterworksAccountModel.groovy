@@ -19,6 +19,7 @@ public class WaterworksAccountModel extends CrudFormModel {
         entity.units = 1;
         entity.meter = [:];
         entity.state = "DRAFT";
+        entity.excludeinbatch = 0;
     }
     
     void afterOpen() {
@@ -26,9 +27,11 @@ public class WaterworksAccountModel extends CrudFormModel {
     }
     
     boolean isEditAllowed() {
+        /*
         if( entity.state != "DRAFT" ) {
             return false;
         }
+        */
         return super.isEditAllowed();
     }
     

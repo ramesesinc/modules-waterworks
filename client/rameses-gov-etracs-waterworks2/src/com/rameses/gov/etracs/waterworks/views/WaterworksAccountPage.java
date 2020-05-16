@@ -129,7 +129,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
 
         xLookupField1.setCaption("Owner Name");
         xLookupField1.setExpression("#{entity.owner.name}");
-        xLookupField1.setHandler("individualentity:lookup");
+        xLookupField1.setHandler("entity:lookup");
         xLookupField1.setName("entity.owner"); // NOI18N
         xLookupField1.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel1.add(xLookupField1);
@@ -820,7 +820,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         jPanel9.setPreferredSize(new java.awt.Dimension(421, 40));
 
         xLabel1.setCaption("Total Credits");
-        xLabel1.setExpression("#{ entity.bill.totalcredits }");
+        xLabel1.setExpression("#{ entity.totalcredits }");
         xLabel1.setName("entity.totalcredits"); // NOI18N
         xLabel1.setCaptionWidth(150);
         xLabel1.setNumberFormat("#,##0.00");

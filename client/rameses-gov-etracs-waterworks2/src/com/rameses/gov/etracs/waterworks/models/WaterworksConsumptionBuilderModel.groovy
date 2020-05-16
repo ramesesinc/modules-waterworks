@@ -15,13 +15,16 @@ public class WaterworksConsumptionBuilderModel {
     @Service("WaterworksConsumptionService")
     def consumptionSvc;
 
-    def bill;
-    def meter;
+    def account;
     def listItems;
     def selectedItem;
 
     int startYear;
     int startMonth;
+
+    int toyear;
+    int tomonth;
+
     int hold = 0;
     def handler;
 
@@ -31,8 +34,7 @@ public class WaterworksConsumptionBuilderModel {
     int step = 0;
 
     void init() {
-        if(!bill) throw new Exception("bill is required");
-        if(!meter) throw new Exception("meter is required");   
+        if(!account) throw new Exception("account is required");   
 
         //if defaultItems provided start at the beginning year month, otherwise start one month less than period
         if( defaultItems ) {
@@ -42,8 +44,8 @@ public class WaterworksConsumptionBuilderModel {
             startMonth = fym.month;
         }    
         else {
-            startYear = bill.period.year; 
-            startMonth = bill.period.month - 1;
+            startYear = toyear; 
+            startMonth = tomonth - 1;
             if( startMonth==0) {
                 startMonth = 12;
                 startYear = startYear - 1;
@@ -54,7 +56,7 @@ public class WaterworksConsumptionBuilderModel {
     void buildEntries() {
         listItems = [];
         int ym1 = (startYear*12)+startMonth;
-        int ym2 = (bill.period.year*12)+bill.period.month; 
+        int ym2 = (toyear*12)+tomonth; 
 
         (ym1..ym2).each { ym->
             int y = (int)(ym/12);
@@ -88,14 +90,14 @@ public class WaterworksConsumptionBuilderModel {
             }
             prev = it;
         }
-        listItems = consumptionSvc.calcItems( [acctid: bill.acctid, meterstate: bill.meterstate, items: listItems] );
+        listItems = consumptionSvc.calcItems( [acctid: account.objid, meterstate: account.meter.state, items: listItems] );
         listModel.reload();
     }
 
     def saveItems() {
         if(!MsgBox.confirm("You are about to save the items. Proceed?")) return null; 
 
-        def pp = [billid: bill.objid, items: listItems ];
+        def pp = [acctid: account.objid, items: listItems ];
         if( defaultItems ) {
             pp.deleteditems = defaultItems.findAll{ it.objid }.collect{ [objid: it.objid] };
         }

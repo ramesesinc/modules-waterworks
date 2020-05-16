@@ -38,21 +38,12 @@ public class WaterworksBillModel extends CrudFormModel {
     }
 
     void createFromAccount() {
-        def oldBill = caller.entity.bill;
-        if(!oldBill) throw new Exception("There is no current bill available");
-
         if(!MsgBox.confirm("You are about to create the next bill. Proceed?")) {
             throw new BreakException();
         }
         def b = [:];
         b.txnmode = "ONLINE";
         b.acctid = caller.entity.objid;
-        b.year = oldBill.period.year;
-        b.month = oldBill.period.month + 1;
-        if(b.month > 12) {
-            b.month = 1;
-            b.year = b.year + 1;
-        }
         def newbill = billSvc.createBill( b );
         caller.entity.bill = newbill;
         caller.reloadEntity();

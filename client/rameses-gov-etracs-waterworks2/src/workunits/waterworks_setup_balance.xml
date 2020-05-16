@@ -1,0 +1,41 @@
+<workunit schemaName="vw_waterworks_bill" entitySchemaName="waterworks_bill"
+        allowCreate="false" allowEdit="false" allowDelete="false">
+    <invokers>
+        <!-- this hooks in customer account. entity here refers to customer account -->
+        <invoker type="vw_waterworks_account:form:formActions" 
+                action="init"
+                caption="Setup Begin Balance" target="popup"
+                visibleWhen="#{ entity.state == 'DRAFT' }"    
+                />
+                 
+        <!-- this should display at whatever state as long as it is initial --> 
+        <!--        
+        <invoker type="vw_waterworks_account:form:formActions" 
+                 caption="Edit Initial Bill" 
+                 visibleWhen="#{ mode=='read' &amp;&amp; entity.bill?.objid!=null &amp;&amp; entity.bill?.state == 'DRAFT'  }"
+                 action="openBill" target="popup"/>                 
+        -->
+
+        <!-- this hooks to formActions-->
+        <invoker type="formActions" caption="Close" action="_close" immediate="true" />
+
+        <!--
+        <invoker type="formActions" caption="Submit" action="saveNew" 
+                 visibleWhen="#{ viewmode == 'initial' }" />
+        
+        <invoker type="formActions" caption="Cancel Bill" action="cancelBill" 
+                 immediate="true" visibleWhen="#{ viewmode == 'view' }"/>
+
+        <invoker type="viewActions" caption="Update Totals" action="updateBillTotals" 
+                 visibleWhen="#{ viewmode == 'view' }" /> 
+
+        
+        -->
+        <invoker type="formActions" caption="Approve" action="approve" />
+
+    </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksSetupBalanceModel" />
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksSetupBalancePage" />
+    </pages>
+</workunit>

@@ -24,18 +24,15 @@ class WaterworksBatchBillingTaskInterceptor {
 	@Service("WaterworksScheduleService")
 	def skedSvc;
 
+	@DataContext("waterworks_batch_billing_error")
+	def errorEm;
 
-	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].action == 'submit' && args[0].to == 'processing'  }")
+	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].action == 'submit' && args[0].to == 'for-reading'  }")
 	public void checkErrorsBeforeProcess( evt ) {
 		def p = evt.args[0]; 
-	
-		def cnt = batchEm.findForBillingCount( [batchid: p.refid, errstate:1 ] );
-		if( cnt!=null && cnt?.count > 0 ){
-			throw new Exception("Cannot submit for processing. There are still " + cnt.count +  " accounts included in the batch that need to be resolved.");
-		}
-
-		//def good = batchEm.findForBillingCount( [batchid: p.refid, errstate:0 ] );
-		//throw new Exception("Yes there are good transsactions " + good.count ); 
+		def cnt = errorEm.find( [batchid: p.refid] ).select("c:{COUNT(*)}").val();	
+		if(cnt!=null && cnt > 0 ) 
+			throw new Exception("Please resolve the batch errors first before proceeding");
 	}
 
 	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].to == 'for-approval'  }")
@@ -63,16 +60,15 @@ class WaterworksBatchBillingTaskInterceptor {
 		def p = evt.args[0]; 
 		
 		def batch = batchEm.find( [objid: p.refid ] ).first();
-		def ym = ((batch.period.year*12)+batch.period.month) + 1;
-		int nyr = (int)(ym / 12);
-		int nmon = (int)(ym % 12);
-		if( nmon == 0 ) {
-			nmon = 12;
-			nyr = nyr - 1;
+		int nyr = batch.period.year;
+		int nmon = batch.period.month + 1;
+		if( nmon > 12 ) {
+			nmon = 1;
+			nyr = nyr + 1;
 		}
 		def sa = subareaEm.find( [objid: batch.subareaid ] ).first();
 		def nextPeriod = skedSvc.getSchedule([scheduleid: sa.schedulegroupid, year: nyr, month: nmon]);
-		//subareaEm.find( [objid: batch.subareaid ]).update( [periodid: nextPeriod.objid ] );
+		subareaEm.find( [objid: batch.subareaid ]).update( [periodid: nextPeriod.objid ] );
 	}
 	
 } 

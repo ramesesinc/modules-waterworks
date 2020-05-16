@@ -28,6 +28,8 @@ class WaterworksBatchBillingService {
 	@DataContext('vw_waterworks_account')
 	def vwAcctEm; 
 
+	@DataContext('waterworks_batch_billing_error')
+	def errorEm; 
 
 	@ProxyMethod
 	public def create( def o ) {
@@ -82,9 +84,13 @@ class WaterworksBatchBillingService {
 	@ProxyMethod
 	public def getProcessInfo( def o ) {
 		def info = [batchid:o.objid, counter: 0, status: 0];
-		if(o.taskstate == 'for-reading') {
+		if(o.taskstate == 'draft') {
 			info.action = "create-bills";
 			info.totalcount = batchEm.findForBillingCount( [ batchid:o.objid,errstate:0] )?.count;
+			if( info.totalcount == 0 ) {
+				info.totalerrors = 	errorEm.find( [batchid: o.objid]).select("c:{COUNT(*)}").val();
+				info.totalprocessed = billEm.find( [batchid: o.objid ]).select("c:{COUNT(*)}").val();
+			}
 		}
 		else if(o.taskstate == 'for-approval') {
 			info.action = "update-bills";
@@ -100,6 +106,17 @@ class WaterworksBatchBillingService {
 		return info;
 	}
 
+
+	public void logError( def o, def ex  ) {
+		def err = [:];
+		err.account = [objid: o.acctid];
+		err.batchid = o.batchid;
+		err.billid = o.billid;
+		err.action = o.action;
+		err.errmsg = ex.getCause().message;
+		errorEm.create( err )
+	}
+
 	@ProxyMethod
 	public def processBatch( def o ) {
 		int batch_process_size = 20;
@@ -112,38 +129,46 @@ class WaterworksBatchBillingService {
 		if(o.action=="create-bills") {
 			def p = [:];
 			p.batchid = o.batchid;
-			p.filter =  " errmsg = 'OK' ";
 			p.start = 0;
-			p.excludeinbatch = 0;
 			p.limit = batch_process_size;
 			items = batchEm.getAccountsForBilling( p );
 			items?.each {
-				o.counter = o.counter + 1;
-				def vv = [acctid: it.objid, year:it.year,month:it.month, batchid: o.batchid];
-				vv.billno = o.batchid + "-" + String.format("%05d", o.counter);
-				vv.txnmode = "ONLINE";
-				def _bill = billSvc.createBill( vv );
-
-				//we will immediately create the fixed items if any so we will not get this anymore later.
-				billSvc.updateBillFees( [objid: _bill.objid ] );
+				try {
+					def vv = [acctid: it.objid, year:it.year,month:it.month, batchid: o.batchid];
+					vv.billnoformat = o.batchid + "-%05d"; 
+					vv.txnmode = "ONLINE";
+					def _bill = billSvc.createBill( vv );
+					//we will immediately create the fixed items if any so we will not get this anymore later.
+					billSvc.updateBillFees( [objid: _bill.objid ] );
+				}
+				catch(ex) {
+					logError( [acctid: it.objid, batchid: o.batchid, action: o.action], ex );
+				}
 			}
 		}
 		else if( o.action == "update-bills") {
 			items = billEm.find([batchid: o.batchid]).where("billed=0").select("objid").limit(batch_process_size).list();
 			items?.each{ 
-				o.counter = o.counter + 1;			
-				billSvc.updateBillFees( [objid: it.objid] );
-				billEm.find( [objid: it.objid]).update( [billed:1]);
+				try {
+					billSvc.updateBillFees( [objid: it.objid] );
+					billEm.find( [objid: it.objid]).update( [billed:1]);
+				}
+				catch(ex) {
+					logError( [billid: it.objid, acctid:it.acctid, batchid: o.batchid, action: o.action ], ex );
+				}
 			}
 		}
 		else if( o.action == "approve-bills") {
 			items = billEm.find([batchid: o.batchid]).where(" state='OPEN' AND billed=1 ").select("objid").limit(batch_process_size).list();
-			items.each{ 
-				o.counter = o.counter + 1;
-				billSvc.approve( [objid: it.objid] ); 
+			items.each {
+				try {
+					billSvc.approve( [objid: it.objid] ); 
+				} 
+				catch(ex) {
+					logError( [billid: it.objid, acctid: it.acctid, batchid: o.batchid, action: o.action ], ex );
+				}
 			}
 		}
-
 		//items size
 		if( !items ) {
 			return [count: 0];
@@ -152,6 +177,43 @@ class WaterworksBatchBillingService {
 			return [count: items.size()];		
 		}
 	}
+
+	@ProxyMethod
+	public def resolveError( def o ) {
+		if(!o.errorid) throw new Exception("errorid is required in WaterworksBatchBillingService.resolveError")
+		def err = errorEm.find( [objid: o.errorid ] ).first();
+		if(!err) throw new Exception("Error not found. Please pass the correct errid " + err.objid );
+		def res = [status:"OK", message:"OK"];
+		try {
+			if(err.action=="create-bills") {
+				def batch = batchEm.find( [objid: err.batchid ] ).first();
+				def vv = [acctid: err.acctid, year:batch.period.year,month:batch.period.month, batchid: batch.objid];
+				vv.billnoformat = batch.objid + "-%05d"; 
+				vv.txnmode = "ONLINE";
+				def _bill = billSvc.createBill( vv );
+				//we will immediately create the fixed items if any so we will not get this anymore later.
+				billSvc.updateBillFees( [objid: _bill.objid ] );
+			}
+			else if( err.action=="update-bills") {
+				billSvc.updateBillFees( [objid: it.objid] );
+				billEm.find( [objid: it.objid]).update( [billed:1]);
+			}
+			else if( err.action == "approve-bills") {
+				billSvc.approve( [objid: it.objid] ); 
+			}
+			else {
+				res.status = "ERROR";
+				res.message = "Action " + err.action + " not handled";
+			}
+		}
+		catch(e) {
+			res.status = "ERROR";
+			res.message = e.message;			
+			errorEm.find( [objid: err.objid ] ).update( [errmsg: e.message] );
+		}
+		return res;
+	}
+
 
 	@ProxyMethod
 	public void markForMobileReading( def o ) {

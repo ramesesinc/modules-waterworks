@@ -4,14 +4,14 @@
  */
 package com.rameses.gov.etracs.waterworks.views;
 
-import com.rameses.osiris2.themes.OKCancelPage;
 import com.rameses.rcp.ui.annotations.Template;
+import com.rameses.seti2.views.CrudFormPage;
 
 /**
  *
  * @author Elmo Nazareno
  */
-@Template(OKCancelPage.class)
+@Template(CrudFormPage.class)
 public class WaterworksBillItemPage extends javax.swing.JPanel {
 
     /**
@@ -32,24 +32,26 @@ public class WaterworksBillItemPage extends javax.swing.JPanel {
 
         xPanel1 = new com.rameses.rcp.control.XPanel();
         xFormPanel2 = new com.rameses.rcp.control.XFormPanel();
-        xComboBox1 = new com.rameses.rcp.control.XComboBox();
+        xIntegerField1 = new com.rameses.rcp.control.XIntegerField();
+        monthList1 = new com.rameses.enterprise.components.MonthList();
         xLookupField1 = new com.rameses.rcp.control.XLookupField();
         xDecimalField2 = new com.rameses.rcp.control.XDecimalField();
-        xDecimalField3 = new com.rameses.rcp.control.XDecimalField();
-        xDecimalField4 = new com.rameses.rcp.control.XDecimalField();
         xTextField1 = new com.rameses.rcp.control.XTextField();
         xCheckBox1 = new com.rameses.rcp.control.XCheckBox();
 
         xFormPanel2.setCaptionVAlignment(com.rameses.rcp.constant.UIConstants.CENTER);
         xFormPanel2.setCaptionWidth(100);
 
-        xComboBox1.setCaption("Year Month");
-        xComboBox1.setExpression(" #{item.monthname }  #{ item.year }");
-        xComboBox1.setItems("yearMonths");
-        xComboBox1.setName("yearMonth"); // NOI18N
-        xComboBox1.setVisibleWhen("#{ current == false }");
-        xComboBox1.setRequired(true);
-        xFormPanel2.add(xComboBox1);
+        xIntegerField1.setCaption("Year");
+        xIntegerField1.setName("entity.year"); // NOI18N
+        xIntegerField1.setPattern("####");
+        xIntegerField1.setRequired(true);
+        xFormPanel2.add(xIntegerField1);
+
+        monthList1.setCaption("Month");
+        monthList1.setName("entity.month"); // NOI18N
+        monthList1.setRequired(true);
+        xFormPanel2.add(monthList1);
 
         xLookupField1.setCaption("Item");
         xLookupField1.setExpression("#{item.title}");
@@ -64,18 +66,6 @@ public class WaterworksBillItemPage extends javax.swing.JPanel {
         xDecimalField2.setPreferredSize(new java.awt.Dimension(120, 20));
         xDecimalField2.setRequired(true);
         xFormPanel2.add(xDecimalField2);
-
-        xDecimalField3.setCaption("Amount Paid");
-        xDecimalField3.setDisableWhen("#{ true }");
-        xDecimalField3.setName("entity.amtpaid"); // NOI18N
-        xDecimalField3.setPreferredSize(new java.awt.Dimension(120, 20));
-        xFormPanel2.add(xDecimalField3);
-
-        xDecimalField4.setCaption("Discount");
-        xDecimalField4.setDisableWhen("#{ true }");
-        xDecimalField4.setName("entity.discount"); // NOI18N
-        xDecimalField4.setPreferredSize(new java.awt.Dimension(120, 20));
-        xFormPanel2.add(xDecimalField4);
 
         xTextField1.setCaption("Particulars");
         xTextField1.setName("entity.particulars"); // NOI18N
@@ -128,12 +118,11 @@ public class WaterworksBillItemPage extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.rameses.enterprise.components.MonthList monthList1;
     private com.rameses.rcp.control.XCheckBox xCheckBox1;
-    private com.rameses.rcp.control.XComboBox xComboBox1;
     private com.rameses.rcp.control.XDecimalField xDecimalField2;
-    private com.rameses.rcp.control.XDecimalField xDecimalField3;
-    private com.rameses.rcp.control.XDecimalField xDecimalField4;
     private com.rameses.rcp.control.XFormPanel xFormPanel2;
+    private com.rameses.rcp.control.XIntegerField xIntegerField1;
     private com.rameses.rcp.control.XLookupField xLookupField1;
     private com.rameses.rcp.control.XPanel xPanel1;
     private com.rameses.rcp.control.XTextField xTextField1;

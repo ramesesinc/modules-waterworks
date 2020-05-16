@@ -8,6 +8,6 @@
                  reportId="waterworks_disconnection_notice" 
                  reportName="tagbilaran/waterworks/reports/disconnection_notice.jasper"
                  txnid="#{entity.objid}" 
-                 xvisibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; viewmode == 'summary' }"/>
+                 visibleWhen="#{ entity.state == 'ACTIVE' &amp;&amp; mode != 'create' }"/>
     </invokers> 
 </workunit>

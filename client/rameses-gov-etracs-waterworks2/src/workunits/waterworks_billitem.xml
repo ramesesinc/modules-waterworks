@@ -1,4 +1,4 @@
-<workunit schemaName="waterworks_billitem">
+<workunit schemaName="waterworks_billitem" allowCreate="true">
     <invokers>
         <invoker type="waterworks_billitem:create"  
                  caption="Add Bill Item" target="popup" action="create"/>

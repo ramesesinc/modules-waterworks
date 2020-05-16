@@ -1,0 +1,67 @@
+import com.rameses.annotations.*;
+import com.rameses.rules.common.*;
+import waterworks.facts.*;
+
+class WaterworksAccountService  {
+	
+	@DataContext("waterworks_account")
+	def acctEm;	
+
+	@DataContext("vw_waterworks_account")
+	def vwAcctEm;	
+
+	@DataContext("waterworks_billitem")
+	def billItemEm;	
+
+	@DataContext("waterworks_consumption")
+	def consumptionEm;	
+
+	@ProxyMethod
+	public def approve( def o ) {
+		if(!o.acctid) throw new Exception("acctid is required in WaterworksAccountService.approve");
+		//before approving check if the billitem year and month is at least one month before the batch period year and month
+		def acct = vwAcctEm.find( [objid:o.acctid]).first();
+
+		if(!acct.subarea?.period?.year) 
+			throw new Exception("WaterworksAccountService.approve error. There is no subarea period specified for the account");
+
+		//setup the required year and month the entries must have	
+		def ym1 = ((acct.subarea.period.year*12)+acct.subarea.period.month)-1;
+		def y1 = (int)(ym1 / 12);
+		def m1 = (int)(ym1 % 12);
+		if(m1==0) {
+			m1 = 12;
+			y1 = y1 - 1;
+		}
+		def monthNames = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+		
+		//find the latest billitem
+		def lastItem = billItemEm.find( [acctid: acct.objid] ).orderBy("year DESC, month DESC").first();
+		if( lastItem?.objid ) {
+			def ym2 = (lastItem.year*12)+lastItem.month;
+			if(ym2 != ym1) 
+				throw new Exception( "The last entry for billitems must be " + y1 + " " + monthNames[m1-1] );	
+		}	
+
+		def lastCons = consumptionEm.find( [acctid: acct.objid] ).orderBy("year DESC, month DESC").first();
+		if(!lastCons?.objid) 
+			throw new Exception("There must be at least one consumption entry");
+		
+		def ym2 = (lastCons.year*12)+lastCons.month;
+		if(ym2 != ym1) 
+			throw new Exception( "The last entry for consumption must be " + y1 + " " + monthNames[m1-1] );
+
+		def u =  [state: "ACTIVE"];
+		acctEm.find( [objid: acct.objid] ).update(u);
+		return u;
+	}
+
+	//This is a temporary method. 
+	@ProxyMethod
+	public def calcPrevSurcharge( def o ) {
+		if(!o.acctid) throw new Exception("Calculate previous surcharge");
+		
+	}
+
+
+}

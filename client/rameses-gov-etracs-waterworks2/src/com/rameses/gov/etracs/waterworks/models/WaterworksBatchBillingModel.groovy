@@ -44,12 +44,6 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         "entity.subarea" : { o->
             entity.period = o.period;
             binding.refresh();
-        },
-        "excludeinbatch" : { o->
-            errListHandler.reload();
-        },
-        "showerronly": { o->
-            errListHandler.reload();
         }
     ];
 
@@ -65,12 +59,13 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         hasErrors = true;     
         errListHandler.reload();
         title = "Batch " + entity.objid + " " + task.title;
+        startBatchProcess();
+
+        /*
         if( entity.printstatus !=null ) {
             batchPrinter.batchid = entity.objid;
         }
-        if( entity.procstatus !=null ) {
-            startBatchProcess();
-        }
+        */
     }
 
     public void afterSignal( def trans, def task) {
@@ -95,13 +90,7 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
             process: procHandler,
             onFinish : {
                 progressOpener = null;
-                if(onFinish!=null) {
-                    def op = onFinish();
-                    binding.fireNavigation( op, "self", true );
-                }
-                else {
-                    binding.refresh();  
-                }    
+                if(onFinish!=null) onFinish();
             }
         ];    
         def op = Inv.lookupOpener("batch_progress", m );
@@ -109,52 +98,41 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         progressOpener = op;    
     }
 
-    /*************************
-    * ACCOUNTS FOR PROCESSING
-    **************************/
-    boolean showerronly = false;
-    def excludeinbatch = 0;
-    def errList = [];
+    def selectedErr;
     def errListHandler = [
-        isMultiSelect: {
-            return true;        
-        },
-        fetchList: { o->
-            o.objid = entity.objid;
-            o.excludeinbatch = excludeinbatch;
-            o.showerronly = showerronly;
-            return batchSvc.getAccountsForBilling( o ); 
-        },
         openItem: { o,col ->
-            def op = Inv.lookupOpener("vw_waterworks_account:open", [entity:[objid: o.objid]]);
+            def op = Inv.lookupOpener("vw_waterworks_account:open", [entity:[objid: o.acctid]]);
             op.target = "popup";
             return op;
-        }
-    ] as PageListModel;
-
-    public void excludeFromBatch() {
-        if(!errListHandler.selectedValue) throw new Exception("Please check an item to exclude");
-        batchSvc.excludeAccountsInBatch( errListHandler.selectedValue*.objid ); 
-        errListHandler.reload();
-    }
-
-    public void includeInBatch() {
-        if(!errListHandler.selectedValue) throw new Exception("Please check an item to exclude");
-        batchSvc.includeAccountsInBatch( errListHandler.selectedValue*.objid );         
-        errListHandler.reload();
-    }
-
-    public void refreshList() {
-        errListHandler.reload();
-    }
-
+        },
+        resolve : {
+            def res = batchSvc.resolveError( [errorid: selectedErr.objid] );
+            if( res.status == "ERROR") {
+                selectedErr.errmsg = res.message;
+            }
+            else {
+                errListHandler.reload();
+            }            
+        },
+        excludeInBatch : {
+            if( MsgBox.confirm("You are about to exclude this account in the batch.") ) {
+                def res = batchSvc.resolveError( [errorid: selectedErr.objid] );
+                if( res.status == "ERROR") {
+                    selectedErr.errmsg = res.message;
+                }
+                else {
+                    errListHandler.reload();
+                }
+            }
+        },
+    ] as BasicListModel;
+    
     public def viewItem() {
         if( !errListHandler.selectedItem?.item  )
             throw new Exception("Please select an item");
-        def v = errListHandler.selectedItem.item;
+        def v =  errListHandler.selectedItem.item;
         return errListHandler.openItem( v, null );
     }
-
 
     /*************************
     * READING ITEMS
@@ -185,21 +163,6 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         }  
     ];
 
-    def getBatchQry() {
-        [objid: entity.objid];
-    }
-
-    void startBatchProcess() {
-        if(!task.state?.matches('for-reading|for-approval|approved')) return;
-        def proc = batchSvc.getProcessInfo( [ objid: entity.objid, taskstate: task.state ] );
-        if( proc==null || proc.totalcount == 0 ) return;
-        def hdlr = { o->
-            def c = batchSvc.processBatch( proc );
-            return c.count;
-        }
-        launchProcess( hdlr, proc.totalcount, null );
-    }
-
     void markMobileReading() {
         if(!MsgBox.confirm("You are about to mark this for mobile reading. Proceed?")) return;
         batchSvc.markForMobileReading( [objid: entity.objid, mobilereading: 1]);
@@ -211,6 +174,31 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         entity.mobilereading = 0; 
     }
 
+    def getBatchQry() {
+        [objid: entity.objid];
+    }
+
+    /*************************
+    * RELATED TO BATCH PROCESSING
+    **************************/
+    void startBatchProcess() {
+        if(!task.state?.matches('draft|for-reading|for-approval|approved')) return;
+        hasErrors = false;
+        def proc = batchSvc.getProcessInfo( [ objid: entity.objid, taskstate: task.state ] );
+        if( proc.totalerrors > 0 ) hasErrors = true;
+        if( proc==null || proc.totalcount == 0 ) return;
+
+        def hdlr = { o->
+            def c = batchSvc.processBatch( proc );
+            return c.count;
+        }
+        def onEndProcess = {
+            proc = batchSvc.getProcessInfo( [ objid: entity.objid, taskstate: task.state ] );
+            if(proc.totalerrors >0 ) hasErrors = true;
+            binding.refresh();   
+        }
+        launchProcess( hdlr, proc.totalcount, onEndProcess );
+    }
 
     /*************************
     * RELATED TO PRINTING
@@ -235,7 +223,8 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         def onFinish = { 
             //we need to update this so we can display the reprint button.
             entity.printstatus = batchPrinter.getPrintStatus();
-            batchPrinter.previewReport(); 
+            def op = batchPrinter.previewReport(); 
+            binding.fireNavigation( op, "self", true );
         }
         launchProcess( handler , info.totalcount, onFinish );
     }
@@ -247,7 +236,10 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         def handler = { o-> 
             return batchPrinter.sendReprint( o ); 
         }
-        def preview = { batchPrinter.previewReport(); }
+        def preview = { 
+            def op = batchPrinter.previewReport(); 
+            binding.fireNavigation( op, "self", true );
+        }
         launchProcess( handler , info.totalcount, preview );
     }
 

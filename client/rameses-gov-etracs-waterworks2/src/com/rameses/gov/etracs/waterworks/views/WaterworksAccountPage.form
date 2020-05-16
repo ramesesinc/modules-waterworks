@@ -149,7 +149,7 @@
                       <Properties>
                         <Property name="caption" type="java.lang.String" value="Owner Name"/>
                         <Property name="expression" type="java.lang.String" value="#{entity.owner.name}"/>
-                        <Property name="handler" type="java.lang.String" value="individualentity:lookup"/>
+                        <Property name="handler" type="java.lang.String" value="entity:lookup"/>
                         <Property name="name" type="java.lang.String" value="entity.owner" noResource="true"/>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[0, 20]"/>
@@ -1036,7 +1036,7 @@
                             <Component class="com.rameses.rcp.control.XLabel" name="xLabel1">
                               <Properties>
                                 <Property name="caption" type="java.lang.String" value="Total Credits"/>
-                                <Property name="expression" type="java.lang.String" value="#{ entity.bill.totalcredits }"/>
+                                <Property name="expression" type="java.lang.String" value="#{ entity.totalcredits }"/>
                                 <Property name="name" type="java.lang.String" value="entity.totalcredits" noResource="true"/>
                                 <Property name="captionWidth" type="int" value="150"/>
                                 <Property name="numberFormat" type="java.lang.String" value="#,##0.00"/>

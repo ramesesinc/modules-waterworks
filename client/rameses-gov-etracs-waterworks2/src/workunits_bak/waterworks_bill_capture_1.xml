@@ -1,0 +1,38 @@
+<workunit schemaName="vw_waterworks_bill" entitySchemaName="waterworks_bill"
+        allowCreate="false" allowEdit="false" allowDelete="false">
+    <invokers>
+        <!-- this hooks in customer account. entity here refers to customer account -->
+        <invoker type="vw_waterworks_account:form:formActions" 
+                 caption="Capture Begin Balance" 
+                 visibleWhen="#{ entity.state=='DRAFT' &amp;&amp; mode=='read' &amp;&amp; entity.bill?.objid==null }"
+                 action="create" target="popup"/>
+                 
+        <!-- this should display at whatever state as long as it is initial -->         
+        <invoker type="vw_waterworks_account:form:formActions" 
+                 caption="Edit Bagin Balance" 
+                 visibleWhen="#{ mode=='read' &amp;&amp; entity.bill?.objid!=null &amp;&amp; entity.bill?.state == 'DRAFT'  }"
+                 action="openBill" target="popup"/>                 
+        
+        <!-- this hooks to formActions-->
+        <invoker type="formActions" caption="Close" action="_close" immediate="true" />
+
+        <invoker type="formActions" caption="Submit" action="saveNew" 
+                 visibleWhen="#{ entity.step == 0 }" />
+
+        <invoker type="viewActions" caption="Back" action="moveBackStep" 
+                 visibleWhen="#{ entity.step &gt; 1 &amp;&amp; viewmode == 'edit'}" />
+        <invoker type="viewActions" caption="Next" action="moveNextStep" 
+                 visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'edit' &amp;&amp; entity.step &lt; 4}" />
+
+        <invoker type="viewActions" caption="Update Totals" action="updateBillTotals" 
+                 visibleWhen="#{ entity.step != 0 &amp;&amp; viewmode == 'edit' }" /> 
+
+        <invoker type="viewActions" caption="Approve" action="approve" 
+                 visibleWhen="#{ (entity.step == 3 || entity.step==4) &amp;&amp; viewmode == 'edit' }" />
+
+    </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillCapture2Model" />
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksBillCapture2Page" />
+    </pages>
+</workunit>

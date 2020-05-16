@@ -4,15 +4,14 @@
         
         <invoker type="vw_waterworks_account:form:formActions" 
                  caption="View Current Bill" 
-                 visibleWhen="#{ mode=='read' &amp;&amp; entity.bill?.objid!=null &amp;&amp; entity.bill?.state != 'DRAFT'  }" 
+                 visibleWhen="#{ mode=='read' &amp;&amp; entity.bill?.objid!=null }" 
                  target="popup"
                  index="200"
                  action="openBillFromAccount" /> 
 
-
         <invoker type="vw_waterworks_account:form:billActions" 
                  caption="Generate Next Bill" 
-                 visibleWhen="#{ mode=='read' &amp;&amp; entity.bill?.objid!=null &amp;&amp; entity.bill?.state != 'DRAFT'  }" 
+                 visibleWhen="#{ mode=='read' &amp;&amp; entity.state == 'ACTIVE' }" 
                  target="popup"
                  index="200"
                  action="createFromAccount" /> 
@@ -24,12 +23,12 @@
 
         <!-- this hooks to formActions-->
         <invoker type="formActions" caption="Close" action="_close" immediate="true" />
+
         <invoker type="formActions" caption="Generate Next Bill" 
             action="generateNextBill" visibleWhen="#{ entity.batchid == null &amp;&amp; entity.state == 'POSTED'}"  
             immediate="true" />
 
         <!-- BILL ACTIONS -->
-
         <invoker type="billActions" caption="Edit Reading" action="editReading" 
             visibleWhen="#{ readingPosted == false &amp;&amp; entity.state=='OPEN' }"
             immediate="true" />
@@ -55,7 +54,7 @@
             immediate="true" />    
 
         <invoker type="billActions" caption="Rejoin Batch" action="rejoinBatch" 
-            visibleWhen="#{ entity.batchid == null &amp;&amp; entity.state == 'OPEN' }"
+            visibleWhen="#{ entity.batchid == null }"
             immediate="true" />
 
     </invokers>

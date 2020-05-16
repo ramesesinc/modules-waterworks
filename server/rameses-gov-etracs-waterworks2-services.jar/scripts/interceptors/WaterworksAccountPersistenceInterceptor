@@ -32,6 +32,7 @@ class WaterworksAccountPersistenceInterceptor{
 	public void beforeCreate(def evt) {
 		def o  = evt.args[0];
 		o.objid = "WACCT" + new UID();
+		o.excludeinbatch = 0;
         if( !o.acctno ) {
         	def pattern = var.waterworks_acctno_format;
         	if(!pattern) throw new Exception("Please specify pattern in sys_variable - waterworks_account_no_format" );
@@ -91,7 +92,9 @@ class WaterworksAccountPersistenceInterceptor{
 		def o = evt.result;
 		def amt = creditEm.find( [acctid: o.objid ]).select("amount:{SUM(dr-cr)}").val();
 		o.totalcredits = 0;
-		if(amt!=null)	o.totalcredits = amt;
+		if(amt!=null) {
+			o.totalcredits = amt;
+		}	
 	}
 
 

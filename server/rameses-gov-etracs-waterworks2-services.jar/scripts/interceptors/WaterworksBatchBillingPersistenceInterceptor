@@ -23,22 +23,5 @@ class WaterworksBatchBillingPersistenceInterceptor {
 		batchEm.find([ objid: p.objid ]).update([ taskid: '{NULL}' ]); 
 		taskEm.find([ refid: p.objid ]).delete();
 	}
-
-	@After(pattern="PersistenceService.read", eval="#{ args[0]._schemaname == 'waterworks_batch_billing'}")
-	void afterReadEntity( evt ) {
-		def p = evt.args[0]; 
-		def entity = evt.result;
-		def proc = batchSvc.getProcessInfo( [ objid: entity.objid, taskstate: entity.task.state ] );
-		if( proc ) {
-			entity.procstatus = proc;
-		}
-		
-		if( entity.task.state?.matches("approved|end") ) {
-			def pstatus = printingSvc.getBatchPrintStatus( [batchid: entity.objid ] );
-			entity.printstatus = pstatus;
-		}
-
-	}
-
 	
 } 
