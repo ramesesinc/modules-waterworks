@@ -19,6 +19,13 @@ class WaterworksBillStatementReportInterceptor {
 	@Service("WaterworksBillStatementService")
 	def statementSvc;
 
+	@Service("Var")
+	def sysVar;
+
+	@Service("WaterworksBarcodeFormatService")
+	def barcodeSvc;
+
+
 	@After(pattern="FormReportService.getData", eval="#{ args[0].reportid == 'waterworks_bill' }")
 	public void getStatementReport( def evt ) {
 		def t = evt.args[0];
@@ -28,7 +35,7 @@ class WaterworksBillStatementReportInterceptor {
 
 		def res = statementSvc.getBillDetails( [objid: bill.objid, include_unposted: false ] );
 
-		bill.barcode = bill.billno;
+		bill.barcode =  barcodeSvc.formatBillBarcode(bill.billno);
 		bill.amount = res.totalamount;
 		bill.totalamount = res.totalamount;		
 		bill.details = res.details;
@@ -39,6 +46,7 @@ class WaterworksBillStatementReportInterceptor {
 			bill.reading = bill.consumption.reading;
 			bill.prevreading = bill.consumption.prev.reading;
 			bill.readingdate = bill.consumption.readingdate;
+			bill.reader = bill.consumption.reader;
 		}
 
 		bill.history = [];

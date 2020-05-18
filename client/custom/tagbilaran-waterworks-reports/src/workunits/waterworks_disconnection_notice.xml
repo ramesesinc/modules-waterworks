@@ -1,30 +1,13 @@
 <workunit extends="com/rameses/seti2/templates/FormReport.xml">
     <invokers>
-        <invoker type="vw_waterworks_bill:form:formActions" 
-                 caption="View Bill Printout" 
+        <invoker type="vw_waterworks_account:form:formActions" 
+                 caption="Print Disconnection" 
                  target="self" 
                  action="preview"
                  index="100"
-                 reportId="waterworks_bill" 
-                 reportName="tagbilaran/waterworks/reports/tagbilaran_water_batch_billing.jasper"
+                 reportId="waterworks_disconnection_notice" 
+                 reportName="tagbilaran/waterworks/reports/disconnection_notice.jasper"
                  txnid="#{entity.objid}" 
-                 visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; viewmode == 'summary' }"/>
-
-        <invoker type="vw_waterworks_bill:form:formActions" 
-                 caption="View Bill Printout" 
-                 target="self" 
-                 action="preview"
-                 index="100"
-                 reportId="waterworks_bill" 
-                 reportName="tagbilaran/waterworks/reports/tagbilaran_water_batch_billing.jasper"
-                 txnid="#{entity.objid}" 
-                 visibleWhen="#{ entity.state == 'POSTED' &amp;&amp; viewmode == 'summary' }"/>
-    
-        <!-- called by batch print -->         
-        <invoker type="waterworks_batch:print" 
-                 caption="Batch Bill Printout" 
-                 reportName="tagbilaran/waterworks/reports/tagbilaran_water_batch_billing.jasper"/>
-    
+                 visibleWhen="#{ entity.state == 'ACTIVE' &amp;&amp; mode != 'create' }"/>
     </invokers> 
-    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillFormReportModel" />
 </workunit>

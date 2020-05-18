@@ -68,7 +68,7 @@ class WaterworksBillService {
 		o.dtcreated = dateSvc.serverDate;
 
 		def acct = vwAcctEm.find( [objid: o.acctid ] ).first();
-		if( acct.state == "ACTIVE") throw new Exception("Account is not active. Please approve first");
+		if( acct.state != "ACTIVE") throw new Exception("Account is not active. Please approve first");
 
 		//assumption is if year is passed, then month must have been passed also
 		int yearMonth = 0;
@@ -93,7 +93,10 @@ class WaterworksBillService {
 		}
 		else {
 			//check first that old bill is correct with requested year and month			
-			def prevBill = billEm.find( [objid: acct.billid ] ).first();
+			def prevBill = vwBillEm.find( [objid: acct.billid ] ).first();
+			if(!prevBill) 
+				throw new Exception("Prevbill does not exist with billid " + acct.billid );
+				
 			if( yearMonth > 0 ) {
 				if( ((prevBill.period.year*12)+prevBill.period.month+1) != yearMonth ) {
 					throw new Exception("Previous bill month and year must be one month less than the new bill year and month");

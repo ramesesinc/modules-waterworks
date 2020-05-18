@@ -6,7 +6,7 @@
 		<field name="action" />
 		<field name="errmsg" />
 
-		<complex name="account" ref="vw_waterworks_account" jointype="many-to-one" includefields="acctno,acctname,seqno">
+		<complex name="account" ref="vw_waterworks_account" jointype="many-to-one" includefields="acctno,acctname">
 			<key field="acctid" target="objid" />
 		</complex>	
 	</element>

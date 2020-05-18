@@ -89,6 +89,8 @@ class WaterworksConsumptionService {
         u.reading = o.reading;
         u.volume = res.volume;
         u.amount = res.amount;   
+        u.reader = o.reader;
+        u.readingdate = o.readingdate;
         consumptionEm.find([objid:o.consumptionid]).update( u );
         return u;
     }

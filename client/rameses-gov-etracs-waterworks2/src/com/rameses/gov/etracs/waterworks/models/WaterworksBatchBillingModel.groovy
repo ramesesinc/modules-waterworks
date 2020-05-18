@@ -18,7 +18,6 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
     def batchPrinter = ManagedObjects.instance.create(WaterworksBatchPrintModel.class);
 
     String title;
-    def viewmode;
 
     boolean hasErrors = false;
     def progressOpener;     //for batch processing
@@ -56,16 +55,9 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
 
     //The procstatus and printstatus can be found during persistence read of the batch billing
     public void afterOpen() {
-        hasErrors = true;     
-        errListHandler.reload();
         title = "Batch " + entity.objid + " " + task.title;
         startBatchProcess();
-
-        /*
-        if( entity.printstatus !=null ) {
-            batchPrinter.batchid = entity.objid;
-        }
-        */
+        loadPrintStatus();
     }
 
     public void afterSignal( def trans, def task) {
@@ -74,11 +66,8 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
             //do nothing
         }
         else {
-            if( task.state?.matches("approved|end") ) {
-                batchPrinter.batchid = entity.objid;
-                entity.printstatus = batchPrinter.getPrintStatus();
-            }
             startBatchProcess();                    
+            loadPrintStatus();            
         }
     }
 
@@ -100,46 +89,36 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
 
     def selectedErr;
     def errListHandler = [
-        openItem: { o,col ->
+        onOpenItem: { o,col ->
             def op = Inv.lookupOpener("vw_waterworks_account:open", [entity:[objid: o.acctid]]);
             op.target = "popup";
             return op;
-        },
-        resolve : {
-            def res = batchSvc.resolveError( [errorid: selectedErr.objid] );
-            if( res.status == "ERROR") {
-                selectedErr.errmsg = res.message;
-            }
-            else {
-                errListHandler.reload();
-            }            
-        },
-        excludeInBatch : {
-            if( MsgBox.confirm("You are about to exclude this account in the batch.") ) {
-                def res = batchSvc.resolveError( [errorid: selectedErr.objid] );
-                if( res.status == "ERROR") {
-                    selectedErr.errmsg = res.message;
-                }
-                else {
-                    errListHandler.reload();
-                }
-            }
-        },
-    ] as BasicListModel;
+        }
+    ];
     
     public def viewItem() {
-        if( !errListHandler.selectedItem?.item  )
+        if( !selectedErr  )
             throw new Exception("Please select an item");
-        def v =  errListHandler.selectedItem.item;
-        return errListHandler.openItem( v, null );
+        return errListHandler.openItem( selectedErr, null );
     }
+
+    public void rerunProcess() {
+        batchSvc.clearErrors([objid: entity.objid ]);
+        startBatchProcess();  
+    }
+
+    public void resolveError() {
+        if(!selectedErr) throw new Exception("Please select an item");
+        batchSvc.resolveError( [errorid: selectedErr.objid ] );
+        errListHandler.reload();
+    } 
 
     /*************************
     * READING ITEMS
     **************************/
     def billListHandler = [
         isColumnEditable: { item, colName->
-            return (task.state == "for-reading" && entity.mobilereading != 1);        
+            return (task.state == "for-reading");        
         },
         onColumnUpdate: {v, colName ->
             if( colName == "consumption.reading") {
@@ -149,6 +128,8 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
                 c.consumptionid = v.consumptionid;
                 c.prevreading = v.consumption.prev.reading;
                 c.reading = v.consumption.reading;
+                c.reader = entity.reader;
+                c.readingdate = entity.readingdate;
                 def u = consumptionSvc.calcAndUpdate( c );
                 v.consumption.putAll( u );
                 billListHandler.refreshSelectedItem();
@@ -163,30 +144,55 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         }  
     ];
 
-    void markMobileReading() {
-        if(!MsgBox.confirm("You are about to mark this for mobile reading. Proceed?")) return;
-        batchSvc.markForMobileReading( [objid: entity.objid, mobilereading: 1]);
-        entity.mobilereading = 1; 
-    }
-
-    void unmarkMobileReading() {
-        batchSvc.markForMobileReading( [objid: entity.objid, mobilereading: 0]);
-        entity.mobilereading = 0; 
-    }
 
     def getBatchQry() {
         [objid: entity.objid];
     }
 
+    def changeReadingDate() {
+        def h = { o->
+            def m = [_schemaname:schemaName];
+            m.findBy = [objid: entity.objid];
+            m.readingdate = o;
+            persistenceService.update( m );
+            entity.readingdate = o;
+            binding.refresh();            
+        }
+        def op = Inv.lookupOpener( "date:prompt", [handler: h, value: entity.readingdate ] );
+        op.target = "popup";
+        return op;
+    }
+
+    def changeReader() {
+        def h = { o->
+            def m = [_schemaname:schemaName];
+            m.findBy = [objid: entity.objid];
+            m.reader = o;
+            persistenceService.update( m );
+            entity.reader = o;
+            binding.refresh();            
+        }
+        def op = Inv.lookupOpener( "waterworks_reader:lookup", [onselect: h] );
+        op.target = "popup";
+        return op;
+    }
+
+
     /*************************
     * RELATED TO BATCH PROCESSING
     **************************/
     void startBatchProcess() {
-        if(!task.state?.matches('draft|for-reading|for-approval|approved')) return;
+        if(!task.state?.matches('draft|for-approval|approved')) return;
         hasErrors = false;
         def proc = batchSvc.getProcessInfo( [ objid: entity.objid, taskstate: task.state ] );
-        if( proc.totalerrors > 0 ) hasErrors = true;
-        if( proc==null || proc.totalcount == 0 ) return;
+        if(proc==null) throw new Exception("Process is not found. Please check no process handler for task " + task.state );
+        if( proc.totalerrors > 0 ) {
+            hasErrors = true;
+        }    
+        
+        if( proc.totalcount == 0 ) {
+            return;
+        }    
 
         def hdlr = { o->
             def c = batchSvc.processBatch( proc );
@@ -194,7 +200,9 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         }
         def onEndProcess = {
             proc = batchSvc.getProcessInfo( [ objid: entity.objid, taskstate: task.state ] );
-            if(proc.totalerrors >0 ) hasErrors = true;
+            if( proc.totalerrors > 0 ) {
+                hasErrors = true;
+            }    
             binding.refresh();   
         }
         launchProcess( hdlr, proc.totalcount, onEndProcess );
@@ -211,6 +219,12 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
     boolean getCanReprint() {
         if( entity.printstatus == null ) return false;
         return ( entity.printstatus.printedcount == entity.printstatus.totalcount ) 
+    }
+
+    public void loadPrintStatus() {
+        if(!task.state?.matches('approved|end')) return; 
+        batchPrinter.batchid = entity.objid;     
+        entity.printstatus = batchPrinter.getPrintStatus();
     }
 
     //run the billing processes, create, build bill and post.

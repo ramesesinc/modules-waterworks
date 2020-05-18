@@ -57,7 +57,7 @@ class WaterworksCashReceiptBillStatementModel {
     }
 
     void loadInfo() {
-        entity = statementSvc.getBillInfo( [objid: entity.objid ]);        
+        entity = statementSvc.getBillInfo( [objid: entity.objid, include_unposted:false ]);        
     }
 
     def detailListHandler = [

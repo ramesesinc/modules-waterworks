@@ -373,7 +373,6 @@ public class WaterworksBillPage extends javax.swing.JPanel {
 
         vwSummary.add(xTabbedPane2, java.awt.BorderLayout.CENTER);
 
-        xPanel3.setVisibleWhen("#{  entity.step > 0 }");
         xPanel3.setPreferredSize(new java.awt.Dimension(805, 105));
 
         xFormPanel11.setCaptionWidth(150);

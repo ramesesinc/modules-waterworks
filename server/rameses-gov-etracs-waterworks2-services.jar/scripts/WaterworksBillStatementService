@@ -11,6 +11,9 @@ class WaterworksBillStatementService {
 	@DataContext("waterworks_payment")
 	def pmtEm;
 
+	@Service("WaterworksBarcodeFormatService")
+	def barcodeSvc;
+
 	@ProxyMethod
 	public def getBillDetails( def o ) {
 		if(! o.objid ) throw new Exception("objid of bill is required in WaterworksBillService.getBillDetails");		
@@ -26,7 +29,7 @@ class WaterworksBillStatementService {
 			bal.dr =bill.balanceforward;			
 			bal.cr = 0;			
 		};
-		bal.txndate = bill.period.todate;
+		bal.txndate = bill.period.fromdate;
 		bal.group = "Previous";
 		details <<  bal;
 
@@ -34,7 +37,7 @@ class WaterworksBillStatementService {
 		if(o.include_unposted !=null) include_unposted = o.include_unposted;
 
 		//include billitems only if state is posted so it will not add confusion
-		if( include_unposted == true || bill.txnmode =='CAPTURED' || bill.state == 'POSTED'  ) {
+		if( include_unposted == true || bill.state == 'POSTED'  ) {
 			def billItems = billItemEm.find( [billid: bill.objid ] ).orderBy("item.sortorder ASC").list();
 			billItems.each {
 				def m = [:];
@@ -109,11 +112,11 @@ class WaterworksBillStatementService {
 		else {
 			throw new Exception("Please pass objid or acctid in WaterworksBillStatementService.getBillInfo")
 		}
-
-		def det = getBillDetails([objid: bill.objid ] );
+		def bp = [objid: bill.objid, include_unposted: o.include_unposted ];
+		def det = getBillDetails( bp );
 		bill.details = det.details;
 		bill.totalamount = det.totalamount;		
-		bill.barcode = bill.billno;
+		bill.barcode = barcodeSvc.formatBillBarcode( bill.billno );
 
 		return bill;
 	}

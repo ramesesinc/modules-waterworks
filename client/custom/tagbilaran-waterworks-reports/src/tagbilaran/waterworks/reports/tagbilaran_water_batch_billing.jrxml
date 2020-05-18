@@ -49,6 +49,8 @@
 	<field name="period.duedate" class="java.util.Date"/>
 	<field name="details" class="java.lang.Object"/>
 	<field name="totalamtdue" class="java.lang.Number"/>
+	<field name="barcode" class="java.lang.String"/>
+	<field name="readingdate" class="java.util.Date"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -448,7 +450,7 @@
 					<textElement>
 						<font fontName="Courier New" size="8"/>
 					</textElement>
-				<text><![CDATA[Location:]]></text>
+				<text><![CDATA[Reading Date:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -502,19 +504,6 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{reader.name}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement
-						x="279"
-						y="27"
-						width="227"
-						height="14"
-						key="staticText-18"/>
-					<box></box>
-					<textElement textAlignment="Center">
-						<font fontName="Courier New" size="12"/>
-					</textElement>
-				<text><![CDATA[Statement of Account]]></text>
-				</staticText>
 				<staticText>
 					<reportElement
 						x="277"
@@ -693,6 +682,58 @@
 					<dataSourceExpression><![CDATA[$F{details}]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA["tagbilaran_water_batch_billing_details.jasper"]]></subreportExpression>
 				</subreport>
+				<image  scaleImage="FillFrame" hAlign="Right" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="428"
+						y="6"
+						width="96"
+						height="17"
+						key="barcode-1"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch">
+					<pen lineWidth="0.0"/>
+</graphicElement>
+					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(5,$F{barcode},false,false,null,0,0)]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement
+						x="289"
+						y="31"
+						width="227"
+						height="14"
+						key="staticText-18"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font fontName="Courier New" size="12"/>
+					</textElement>
+				<text><![CDATA[Statement of Account]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="428"
+						y="23"
+						width="96"
+						height="9"
+						key="textField-17"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="6"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{barcode}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="MMM dd yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="115"
+						y="185"
+						width="106"
+						height="11"
+						key="textField-18"/>
+					<box></box>
+					<textElement>
+						<font fontName="Courier New" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{readingdate}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>

@@ -16,12 +16,11 @@
                  visibleWhen="#{ mode == 'create' }"/>
 
         <!-- form actions -->         
-        <invoker type="formActions" caption="Send for Mobile Reading" action="markMobileReading" 
-                 visibleWhen="#{ task?.state == 'for-reading' &amp;&amp; entity.mobilereading != 1 }"/>
-
-        <invoker type="formActions" caption="Revert Mobile Reading" action="unmarkMobileReading" 
-                xrole="ADMIN"
-                visibleWhen="#{ entity.mobilereading == 1 }"/>
+        <invoker type="formActions" caption="Change Reading Date" action="changeReadingDate" 
+                 visibleWhen="#{ task.state == 'for-reading' }"/>
+                 
+        <invoker type="formActions" caption="Change Reader" action="changeReader" 
+                 visibleWhen="#{ task.state == 'for-reading' }"/>
 
         <invoker type="formActions" caption="Print Batch" action="printBatch" 
                  visibleWhen="#{ canPrint == true }"/>

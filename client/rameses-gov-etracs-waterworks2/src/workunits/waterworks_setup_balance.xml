@@ -5,7 +5,7 @@
         <invoker type="vw_waterworks_account:form:formActions" 
                 action="init"
                 caption="Setup Begin Balance" target="popup"
-                visibleWhen="#{ entity.state == 'DRAFT' }"    
+                visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; mode == 'read'}"    
                 />
                  
         <!-- this should display at whatever state as long as it is initial --> 

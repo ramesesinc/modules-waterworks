@@ -256,7 +256,6 @@
         </Container>
         <Container class="com.rameses.rcp.control.XPanel" name="xPanel3">
           <Properties>
-            <Property name="visibleWhen" type="java.lang.String" value="#{  entity.step &gt; 0 }"/>
             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[805, 105]"/>
             </Property>

@@ -123,13 +123,13 @@ class WaterworksBillingRuleService {
 		def billitems = [];
 		def whereStmt = null;
 		if( bill.state == 'OPEN' ) {
-			whereStmt = "(amount-amtpaid) > 0 AND ((year*12)+month) < :yearmonth";
+			whereStmt = "(amount-amtpaid) > 0 AND ((year*12)+month) < :yearmonth AND ( billid IS NULL OR NOT(billid=:billid) )";
 		}
 		else {
 			whereStmt = "(amount-amtpaid) > 0 AND ((year*12)+month) <= :yearmonth";			
 		}
 
-		def bitems = billItemEm.find( [acctid: acct.objid ] ).where(whereStmt, [yearmonth: ym]).list();		
+		def bitems = billItemEm.find( [acctid: acct.objid ] ).where(whereStmt, [yearmonth: ym, billid: bill.objid]).list();		
 		def fb = buildFacts( o, bitems, null, null );
 
 		def req = [rulename:'waterworkspayment'];

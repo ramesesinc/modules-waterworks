@@ -924,7 +924,7 @@
 						x="298"
 						y="211"
 						width="263"
-						height="28"
+						height="288"
 						key="subreport-3"/>
 					<dataSourceExpression><![CDATA[$F{details}]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA["waterworks_billing_details.jasper"]]></subreportExpression>
@@ -959,7 +959,7 @@
 					<reportElement
 						x="1"
 						y="7"
-						width="571"
+						width="564"
 						height="59"
 						forecolor="#003399"
 						key="rectangle-4"/>
@@ -969,12 +969,12 @@
 					<reportElement
 						x="1"
 						y="10"
-						width="526"
+						width="536"
 						height="55"
 						key="staticText-40"/>
 					<box></box>
 					<textElement textAlignment="Justified" verticalAlignment="Middle">
-						<font size="8"/>
+						<font size="7"/>
 					</textElement>
 				<text><![CDATA[LEARN TO DETECT LEAKAGES. SEE IF YOUR INTERNAL PLUMBING OR FIXTURES ARE LEAKING OR DEFECTIVE. DO THIS BY SHUTTING OFF ALL YOUR FAUCETS. IF YOUR WATER METER CONTINUES TO RUN EVEN WITH ALL THE FAUCETS CLOSED, THERE IS DEFINITELY A LEAKAGE IN YOUR LINE AFTER YOUR WATER METER: YOUR FIXTURES NEED REPAIR OR REPLACEMENT. PLEASE ENGAGE THE SERVICES OF A PRIVATE PLUMBER TO FIX SAID LEAKAGE. WATER SERVICE LINES AFTER THE WATER METER ARE THE CONSUMER'S PROPERTY AND RESPONSIBILITY.]]></text>
 				</staticText>

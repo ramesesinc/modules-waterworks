@@ -42,7 +42,7 @@ class WaterworksMobileSupporService {
 		if(!batch) {
 			return [ status: 'ERR', message: "Batch not found" ];
 		}
-		if( batch.mobilereading != 1 ) {
+		if( batch.task.state.toLowerCase() != 'mobile-reading' ) {
 			return [ status: 'ERR', message: "Batch is not yet available for download" ];
 		}	
 		if(batch.readerid != o.readerid) {
@@ -92,12 +92,6 @@ class WaterworksMobileSupporService {
 				acctInfoEm.find( [objid: bill.acctinfoid ] ).update( a );
 			}	
 		}
-	}
-
-	@ProxyMethod
-	public def closeUploadBatch( def o ) {
-		if(!o.data ) return [ status: 'ERR', message: "data is required in closeUploadBatch" ];
-		batchBillingEm.find( [objid: data.objid ] ).update([mobilereading: 0]);
 	}
 
 

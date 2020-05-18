@@ -11,7 +11,6 @@
 		<field name="reader_objid" />
 		<field name="reader_name" caption="Reader" />
 		<field name="readingdate" caption="ReadingDate"/>
-		<field name="mobilereading" type="integer"/>
 
 		<complex name="period" ref="waterworks_billing_period" jointype="many-to-one" required="true">
 			<key field="periodid" target="objid"/>

@@ -27,7 +27,7 @@ class WaterworksBatchBillingTaskInterceptor {
 	@DataContext("waterworks_batch_billing_error")
 	def errorEm;
 
-	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].action == 'submit' && args[0].to == 'for-reading'  }")
+	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].action == 'submit-for-reading'  }")
 	public void checkErrorsBeforeProcess( evt ) {
 		def p = evt.args[0]; 
 		def cnt = errorEm.find( [batchid: p.refid] ).select("c:{COUNT(*)}").val();	
@@ -35,12 +35,10 @@ class WaterworksBatchBillingTaskInterceptor {
 			throw new Exception("Please resolve the batch errors first before proceeding");
 	}
 
-	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].to == 'for-approval'  }")
+	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].action == 'submit-for-approval'  }")
 	public void checkErrorsBeforeApproval( evt ) {
 		def p = evt.args[0]; 
 		def batch = batchEm.find([objid: p.refid]).first();			
-		if(batch.mobilereading==1) 
-			throw new Exception("This batch is currently processing a mobile reading. Please upload readings first")
 
 		def errs = vwBillEm.find( [batchid: p.refid ]).select("c:{COUNT(*)}").where( "meterstate='ACTIVE' AND consumption.hold=0 AND consumption.volume=0" ).val();
 		if( errs!=null && errs > 0 ) 
