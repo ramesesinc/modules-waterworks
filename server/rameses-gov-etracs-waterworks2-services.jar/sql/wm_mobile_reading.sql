@@ -1,7 +1,6 @@
 [findBatch]
 SELECT
 wbb.objid, 
-wbb.mobilereading,
 wbb.subareaid,
 sa.code AS subareacode,
 sa.barangay_name AS barangay,
@@ -14,8 +13,10 @@ wbp.todate,
 wbp.duedate,
 wbp.discdate,
 wbb.reader_objid AS readerid,
-wbb.reader_name AS readername
+wbb.reader_name AS readername,
+bt.state AS task_state
 FROM waterworks_batch_billing wbb 
+INNER JOIN waterworks_batch_billing_task bt ON wbb.taskid = bt.taskid 
 INNER JOIN waterworks_subarea sa ON wbb.subareaid = sa.objid
 INNER JOIN waterworks_area wa ON  sa.areaid=wa.objid 
 INNER JOIN waterworks_billing_period wbp ON wbb.periodid = wbp.objid 

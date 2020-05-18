@@ -104,7 +104,8 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
 
     public void rerunProcess() {
         batchSvc.clearErrors([objid: entity.objid ]);
-        startBatchProcess();  
+        startBatchProcess(); 
+        binding.refresh(); 
     }
 
     public void resolveError() {

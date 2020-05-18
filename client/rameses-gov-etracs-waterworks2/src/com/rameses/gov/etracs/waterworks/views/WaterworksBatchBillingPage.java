@@ -48,6 +48,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         xLabel12 = new com.rameses.rcp.control.XLabel();
         pnlFooter = new javax.swing.JPanel();
         pnlBody = new javax.swing.JPanel();
+        xTabbedPane1 = new com.rameses.rcp.control.XTabbedPane();
         svwErrorPage = new com.rameses.rcp.control.XPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -181,7 +182,9 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
 
         vwInfo.add(pnlFooter, java.awt.BorderLayout.SOUTH);
 
-        pnlBody.setLayout(new java.awt.CardLayout());
+        pnlBody.setLayout(new java.awt.BorderLayout());
+
+        xTabbedPane1.setDynamic(true);
 
         svwErrorPage.setVisibleWhen("#{ hasErrors == true }");
         svwErrorPage.setLayout(new java.awt.BorderLayout());
@@ -306,9 +309,8 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         schemaList2.setShowFilter(false);
         svwErrorPage.add(schemaList2, java.awt.BorderLayout.CENTER);
 
-        pnlBody.add(svwErrorPage, "card4");
+        xTabbedPane1.addTab("Errors", svwErrorPage);
 
-        svwBillsList.setVisibleWhen("#{ hasErrors == false }");
         svwBillsList.setLayout(new java.awt.BorderLayout());
 
         jPanel3.setPreferredSize(new java.awt.Dimension(832, 20));
@@ -555,9 +557,12 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         schemaList1.setOrderBy("seqno");
         schemaList1.setQueryName("batchQry");
         schemaList1.setSchemaName("vw_waterworks_bill");
+        schemaList1.setAllowSearch(true);
         svwBillsList.add(schemaList1, java.awt.BorderLayout.CENTER);
 
-        pnlBody.add(svwBillsList, "card2");
+        xTabbedPane1.addTab("Account Bills", svwBillsList);
+
+        pnlBody.add(xTabbedPane1, java.awt.BorderLayout.CENTER);
 
         vwInfo.add(pnlBody, java.awt.BorderLayout.CENTER);
 
@@ -607,5 +612,6 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLookupField xLookupField1;
     private com.rameses.rcp.control.XLookupField xLookupField6;
     private com.rameses.rcp.control.XSubFormPanel xSubFormPanel1;
+    private com.rameses.rcp.control.XTabbedPane xTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }
