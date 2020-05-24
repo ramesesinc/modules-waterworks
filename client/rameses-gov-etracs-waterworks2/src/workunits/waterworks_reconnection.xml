@@ -1,0 +1,25 @@
+<workunit schemaName="vw_waterworks_reconnection" 
+          entitySchemaName="waterworks_reconnection"  
+          processName="waterworks_reconnection">
+    <invokers>
+        <invoker type="waterworks_reconnection:create" caption="New Reconnection" 
+            action="create" />
+
+        <invoker type="waterworks_reconnection:open" caption="Resconnection" 
+            action="open" />
+
+        <invoker type="formActions" caption="View Statement" 
+            action="viewStatement" visibleWhen="#{mode=='read'}"/>
+
+        <invoker type="formActions" caption="Submit" 
+            action="save" visibleWhen="#{mode=='create'}"/>
+
+    </invokers>
+    
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksReconnectionModel" />    
+
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksReconnectionPage"/>
+    </pages>    
+    
+</workunit>

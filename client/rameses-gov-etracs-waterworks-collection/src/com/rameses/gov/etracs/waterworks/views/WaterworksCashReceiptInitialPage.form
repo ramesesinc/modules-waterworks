@@ -62,13 +62,39 @@
           <Properties>
             <Property name="name" type="java.lang.String" value="pmttxntype" noResource="true"/>
             <Property name="optionValue" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="&quot;newapplication&quot;" type="code"/>
+              <Connection code="&quot;newconnection&quot;" type="code"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="SansSerif" size="14" style="0"/>
             </Property>
             <Property name="showCaption" type="boolean" value="false"/>
-            <Property name="text" type="java.lang.String" value="New Application"/>
+            <Property name="text" type="java.lang.String" value="New Connection"/>
+          </Properties>
+        </Component>
+        <Component class="com.rameses.rcp.control.XRadio" name="xRadio4">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="pmttxntype" noResource="true"/>
+            <Property name="optionValue" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="&quot;reconnection&quot;" type="code"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="14" style="0"/>
+            </Property>
+            <Property name="showCaption" type="boolean" value="false"/>
+            <Property name="text" type="java.lang.String" value="Reconnection"/>
+          </Properties>
+        </Component>
+        <Component class="com.rameses.rcp.control.XRadio" name="xRadio5">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="pmttxntype" noResource="true"/>
+            <Property name="optionValue" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="&quot;compromise&quot;" type="code"/>
+            </Property>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="SansSerif" size="14" style="0"/>
+            </Property>
+            <Property name="showCaption" type="boolean" value="false"/>
+            <Property name="text" type="java.lang.String" value="Compromise "/>
           </Properties>
         </Component>
         <Component class="com.rameses.rcp.control.XTextField" name="xTextField2">

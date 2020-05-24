@@ -14,8 +14,6 @@
 		<field name="lat" />
 		<field name="excludeinbatch" type="integer"/>
 		
-		<field name="email"/>
-		<field name="mobileno"/>
 	</element>
 
 </schema>

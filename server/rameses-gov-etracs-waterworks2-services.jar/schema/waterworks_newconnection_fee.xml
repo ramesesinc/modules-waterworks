@@ -1,6 +1,6 @@
 <schema>
 
-	<element tablename="waterworks_application_fee">
+	<element tablename="waterworks_newconnection_fee">
 		<field name="objid" primary="true"  prefix="WAF"/>
 		<field name="parentid" required="true"/> 
 		<field name="item_objid" required="true"/>

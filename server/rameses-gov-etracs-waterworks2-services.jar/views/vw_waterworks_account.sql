@@ -25,7 +25,10 @@ SELECT
   ai.classificationid,
   ai.units,
   ai.attributes,
-  ai.meterstate
+  ai.meterstate,
+  ai.email,
+  ai.mobileno,
+  ai.phoneno
 
 FROM waterworks_account wa 
 INNER JOIN waterworks_account_info ai ON wa.acctinfoid = ai.objid  

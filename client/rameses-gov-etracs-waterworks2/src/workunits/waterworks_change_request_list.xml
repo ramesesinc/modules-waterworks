@@ -1,0 +1,12 @@
+<workunit  extends="com/rameses/seti2/templates/WorkflowTaskList.xml" 
+          processName="waterworks_change_request"
+          schemaName="vw_waterworks_change_request" 
+          entitySchemaName="waterworks_change_request"
+          allowCreate="false"
+          allowNotify="true">
+    <invokers>
+        <invoker folderid="/menucategory/waterworks/txn" action="init" 
+            cols="objid,controlno,apptype,dtcreated,account.acctno,account.acctname"
+            caption="View Change Request List" index="0"/>
+    </invokers>
+</workunit>

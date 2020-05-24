@@ -21,12 +21,15 @@
 		<field name="address_pin" caption="PIN"/>
 		<field name="meterstate"/>
 
-		
+		<field name="email"/>
+		<field name="mobileno"/>
+		<field name="phoneno"/>
+
 		<complex name="stubout" ref="waterworks_stubout" jointype="many-to-one" required="false">
 			<key field="stuboutid" target="objid"/> 
 		</complex>
 		
-		<complex name="subarea" ref="waterworks_subarea" jointype="many-to-one" required="true">
+		<complex name="subarea" ref="waterworks_subarea" jointype="many-to-one" required="false">
 			<key field="subareaid" target="objid"/> 
 		</complex>
 

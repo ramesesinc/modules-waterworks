@@ -1,0 +1,13 @@
+<workunit extends="com/rameses/seti2/templates/WorkflowTaskList.xml" 
+          processName="waterworks_disconnection"
+          schemaName="vw_waterworks_disconnection" 
+          entitySchemaName="waterworks_disconnection"
+          cols="controlno,dtcreated,account.acctno,account.acctname,task.state"
+          allowNotify="true">
+
+    <invokers>
+        <invoker folderid="/menucategory/waterworks/account" caption="Disconnection"
+                 action="init" index="10" />
+    </invokers>
+      
+</workunit>

@@ -1,0 +1,15 @@
+<workunit schemaName="vw_waterworks_change_request" 
+          processName="waterworks_change_request">
+    <invokers>
+        <invoker type="waterworks_change_request:open" caption="Change Request" 
+            target="popup"
+            action="open" />
+    </invokers>
+    
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksChangeRequestModel" />    
+
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksChangeRequestPage"/>
+    </pages>    
+    
+</workunit>

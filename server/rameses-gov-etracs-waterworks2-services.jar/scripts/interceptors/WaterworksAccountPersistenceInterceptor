@@ -71,7 +71,7 @@ class WaterworksAccountPersistenceInterceptor{
 		//throw new Exception("fired " + o.meter.objid + " acctinfo " + acctinfoid);
 		if(o.meter?.objid ) {
 			def u = [:];
-			u.currentacctid = acctinfoid;
+			u.currentacctid = res.objid;
 			u.state = o.meter.state;
 			wmeter.find( [objid: o.meter.objid ] ).update( u ); 
 		}

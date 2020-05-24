@@ -16,22 +16,22 @@ class WaterworksApplicationTaskInterceptor{
 	@DataContext("waterworks_installment")
 	def inst;
 
-	@DataContext("waterworks_application_fee")
+	@DataContext("waterworks_newconnection_fee")
 	def appFee;
 
-	@DataContext("waterworks_application_requirement")
+	@DataContext("waterworks_newconnection_requirement")
 	def req;
 
-	@DataContext("waterworks_application")
+	@DataContext("waterworks_newconnection")
 	def app;
 
-	@DataContext("waterworks_application_bom")
+	@DataContext("waterworks_newconnection_bom")
 	def bom;
 
 	@Env
 	def env;
 
-	@Before(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_application' && args[0].taskstate== 'for-review-requirement' }")
+	@Before(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_newconnection' && args[0].taskstate== 'for-review-requirement' }")
 	public void checkRequirement(def evt) {
 		def t = evt.args[0];
 		def r = req.select("title").find( [ parentid: t.refid] ).where("required=1 AND (complied IS NULL OR complied=0)").list();
@@ -44,7 +44,7 @@ class WaterworksApplicationTaskInterceptor{
 		}	
 	}
 
-	@Before(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_application' && args[0].taskstate=='for-assessment' }")
+	@Before(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_newconnection' && args[0].taskstate=='for-assessment' }")
 	public void checkBeforeMaterialAvailability(def evt) {
 		def t = evt.args[0];
 		//1. check if there is a stubout specified.
@@ -56,7 +56,7 @@ class WaterworksApplicationTaskInterceptor{
 		if( j == 0 ) throw new Exception("Please specify at least one material item");		
 	}
 
-	@Before(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_application' && args[0].taskstate=='for-material-availability' && args[0].action=='submit'}")
+	@Before(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_newconnection' && args[0].taskstate=='for-material-availability' && args[0].action=='submit'}")
 	public void checkBeforeBilling(def evt) {
 		def t = evt.args[0];
 		//1. check if there is a stubout specified.
@@ -65,7 +65,7 @@ class WaterworksApplicationTaskInterceptor{
 	}
 
 
-	@Before(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_application' && args[0].to=='for-payment'}")
+	@Before(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_newconnection' && args[0].to=='for-payment'}")
 	public void checkBeforePayment(def evt) {
 		def t = evt.args[0];
 		//1. check if there is a stubout specified.
@@ -74,7 +74,7 @@ class WaterworksApplicationTaskInterceptor{
 	}
 
 	@Before(pattern="WorkflowTaskService.signal", 
-		eval="#{args[0].processname == 'waterworks_application' && args[0].action == 'return_for-billing'}")
+		eval="#{args[0].processname == 'waterworks_newconnection' && args[0].action == 'return_for-billing'}")
 	public void beforeReturnForReBilling(def evt) {
 		def t = evt.args[0];
 		def m = appFee.find( [parentid: t.refid, txntype:'BOM'] ).first();
@@ -88,7 +88,7 @@ class WaterworksApplicationTaskInterceptor{
 	}
 
 
-	@Before(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_application' && args[0].to=='for-activation'}")
+	@Before(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_newconnection' && args[0].to=='for-activation'}")
 	public void checkBeforeActivation(def evt) {
 		def t = evt.args[0];
 		//1. check if there is a meter specified
@@ -98,7 +98,7 @@ class WaterworksApplicationTaskInterceptor{
 			  
 	}
 
-	@Before(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_application' && args[0].action=='activate'}")
+	@Before(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_newconnection' && args[0].action=='activate'}")
 	public void doActivate(def evt) {
 		def t = evt.args[0];
 		
@@ -127,7 +127,7 @@ class WaterworksApplicationTaskInterceptor{
 	}
 
 	//send the account number of the account after creation
-	@After(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_application' && args[0].action=='activate'}")
+	@After(pattern="WorkflowTaskService.signal", eval="#{args[0].processname == 'waterworks_newconnection' && args[0].action=='activate'}")
 	public void afterActivate(def evt) {
 		def result = evt.result;
 		result.acctno = env.acctno;

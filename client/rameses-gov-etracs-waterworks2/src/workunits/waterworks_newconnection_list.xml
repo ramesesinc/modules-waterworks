@@ -1,0 +1,13 @@
+<workunit extends="com/rameses/seti2/templates/WorkflowTaskList.xml" 
+          processName="waterworks_newconnection"
+          schemaName="waterworks_newconnection" 
+          cols="controlno,dtcreated,account.acctname,task.state"
+          allowCreate="false"
+          allowNotify="true">
+
+    <invokers>
+        <invoker folderid="/menucategory/waterworks/account" caption="View New Connection List"
+                 action="init" index="10" />
+    </invokers>
+      
+</workunit>

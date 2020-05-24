@@ -1,0 +1,71 @@
+import com.rameses.annotations.*;
+import treasury.facts.*;
+
+class WaterworksChangeRequestPersistenceTaskInterceptor {
+	
+	@Service("DateService")
+	def dateSvc;
+
+	@Service("WorkflowTaskService")
+	def taskSvc;
+
+	@Service("ControlnoGeneratorService")
+    def controlNoSvc;
+
+	@Service("Var")
+	def var;
+
+	@DataContext("waterworks_account")
+	def acctEm;
+
+	@DataContext("waterworks_account_info")
+	def acctInfoEm;
+
+	@DataContext("waterworks_change_request")
+	def changeRequestEm;
+
+	@DataContext("waterworks_change_request_task")
+	def changeRequestTaskEm;
+
+	@Before(pattern="PersistenceService.create", eval="#{ args[0]._schemaname == 'waterworks_change_request'}")
+	void beforeCreateChangeRequest( evt ) {
+		def p = evt.args[0]; 
+		def pattern = var.waterworks_change_request_controlno_format;
+		if(!pattern) throw new Exception("Please specify waterworks_change_request_controlno_format in sys_var");
+		p.controlno = controlNoSvc.getNextNo(pattern);
+		//create the new account info
+		def newInfo = acctInfoEm.find( [objid: p.acctinfoid ] ).first();
+		newInfo.remove("objid");
+		newInfo.putAll( p.newaccount );
+		newInfo = acctInfoEm.create( newInfo );
+
+		p.newacctinfoid = newInfo.objid;
+	}
+
+	@After(pattern="PersistenceService.create", eval="#{ args[0]._schemaname == 'waterworks_change_request'}")
+	void afterCreateChangeRequest( evt ) {
+		def result = evt.result; 
+		def wf = [:];
+		wf.processname = 'waterworks_change_request';
+		wf.refid = result.objid;
+		wf.startdate = dateSvc.serverDate;
+		taskSvc.start( wf );
+	}
+
+	@Before(pattern="PersistenceService.removeEntity", eval="#{ args[0]._schemaname == 'waterworks_change_request'}")
+	void beforeRemoveChangeRequest( evt ) {
+		def p = evt.args[0];
+		def cr = changeRequestEm.find( [objid: p.objid] ).first();
+		changeRequestEm.find( [objid: p.objid]  ).update( [newacctinfoid: "{NULL}", taskid: "{NULL}"])
+		acctInfoEm.find( [objid: cr.newacctinfoid ]).delete();
+		changeRequestTaskEm.find( [refid: cr.objid ]).delete();
+	}
+
+	@After(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_change_request' && args[0].action == 'approve'  }")
+	public void afterApproveChangeRequest( evt ) {
+		def p = evt.args[0]; 
+		def cr = changeRequestEm.find( [objid: p.refid] ).first();
+		acctInfoEm.find( [objid: cr.acctid ] ).update( [acctinfoid: cr.newacctinfoid ] );
+	}
+
+} 
