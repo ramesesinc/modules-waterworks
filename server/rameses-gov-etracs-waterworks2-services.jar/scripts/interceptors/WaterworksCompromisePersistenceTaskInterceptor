@@ -1,0 +1,47 @@
+import com.rameses.annotations.*;
+import treasury.facts.*;
+
+class WaterworksCompromisePersistenceTaskInterceptor {
+	
+	@Service("DateService")
+	def dateSvc;
+
+	@Service("WorkflowTaskService")
+	def taskSvc;
+
+	@Service("ControlnoGeneratorService")
+    def controlNoSvc;
+
+	@Service("Var")
+	def var;
+
+	@DataContext("waterworks_account")
+	def acctEm;
+
+	@DataContext("waterworks_compromise")
+	def compromiseEm;
+	
+	@Before(pattern="PersistenceService.create", eval="#{ args[0]._schemaname == 'waterworks_compromise'}")
+	void beforeCreateCompromise( evt ) {
+		def p = evt.args[0]; 
+		def pattern = var.waterworks_compromise_controlno_format;
+		if(!pattern) throw new Exception("Please specify waterworks_compromise_controlno_format in sys_var");
+		p.controlno = controlNoSvc.getNextNo(pattern);
+		p.amountdue = 0;
+		p.acctid = p.account.objid;
+		p.acctinfoid = p.account.acctinfoid;
+	}
+
+	@After(pattern="PersistenceService.create", eval="#{ args[0]._schemaname == 'waterworks_compromise'}")
+	void afterCreateCompromise( evt ) {
+		def result = evt.result; 
+		def wf = [:];
+		wf.processname = 'waterworks_compromise';
+		wf.refid = result.objid;
+		wf.startdate = dateSvc.serverDate;
+		taskSvc.start( wf );
+	}
+
+
+
+} 

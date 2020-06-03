@@ -34,7 +34,7 @@
         <invoker type="vw_waterworks_bill:form:formActions" 
                  caption="View Statement" 
                  target="self" 
-                 action="preview"
+                 action="query"
                  index="51"
                  reportId="waterworks_bill" 
                  reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_statement.jasper"

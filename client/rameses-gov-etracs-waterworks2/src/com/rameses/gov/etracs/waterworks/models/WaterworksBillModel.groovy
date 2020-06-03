@@ -186,7 +186,9 @@ public class WaterworksBillModel extends CrudFormModel {
     }
 
     void generateNextBill() {
-        if(!MsgBox.confirm("You are about to create the next bill. Proceed?")) return;
+        if(!MsgBox.confirm("You are about to create the next bill. Proceed1?")) return;
+        MsgBox.alert("entity is " + entity);
+        
         def b = [:];
         b.txnmode = "ONLINE";
         b.acctid = entity.acctid;

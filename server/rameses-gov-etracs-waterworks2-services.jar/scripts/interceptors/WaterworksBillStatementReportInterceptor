@@ -26,10 +26,23 @@ class WaterworksBillStatementReportInterceptor {
 	def barcodeSvc;
 
 
+	@After(pattern="FormReportService.getParameters", eval="#{ args[0].reportid == 'waterworks_bill' }")
+	public void getParameters( def evt ) {
+		def t = evt.args[0];
+		def bill = vwBillEm.find( [objid: t.txnid] ).first();
+		def result = evt.result;
+		result.parameters = [];
+		result.parameters << [caption: 'Bill No', type: 'label', expression:'This is Bill No ' + bill.billno ];		
+		result.parameters << [name:'year', caption: 'Year', type: 'integer' ];
+		result.parameters << [name:'month', caption: 'Month', type:'monthlist' ];			
+	}
+
 	@After(pattern="FormReportService.getData", eval="#{ args[0].reportid == 'waterworks_bill' }")
 	public void getStatementReport( def evt ) {
 		def t = evt.args[0];
 		def result = evt.result;
+
+		//throw new Exception("fire result " + t.parameters)
 
 		def bill = vwBillEm.find( [objid: t.txnid] ).first();
 

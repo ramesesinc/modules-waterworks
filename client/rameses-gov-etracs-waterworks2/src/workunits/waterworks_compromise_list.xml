@@ -1,0 +1,14 @@
+<workunit extends="com/rameses/seti2/templates/WorkflowTaskList.xml" 
+          processName="waterworks_compromise"
+          schemaName="vw_waterworks_compromise" 
+          entitySchemaName="waterworks_compromise"
+          cols="controlno,dtcreated,account.acctno,account.acctname,task.state"
+          allowCreate="true"
+          allowNotify="true">
+
+    <invokers>
+        <invoker folderid="/menucategory/waterworks/billing" caption="Compromise Agreement List"
+                 action="init" index="10" />
+    </invokers>
+      
+</workunit>
