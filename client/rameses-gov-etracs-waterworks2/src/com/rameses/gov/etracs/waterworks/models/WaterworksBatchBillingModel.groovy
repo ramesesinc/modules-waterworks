@@ -22,6 +22,16 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
     boolean hasErrors = false;
     def progressOpener;     //for batch processing
 
+    public String getSchemaName() {
+        if(mode=="create") {
+            return "waterworks_batch_billing";
+        }
+        else {
+            return "vw_waterworks_batch_billing";
+        }
+    }
+
+
     public def create() {
         mode = "create";
         entity = [:];
@@ -41,13 +51,14 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
     @PropertyChangeListener
     def listener = [
         "entity.subarea" : { o->
-            entity.period = o.period;
+            entity.scheduleid = o.schedulegroup?.objid;
+            entity.year = o.year;            
+            entity.month = o.month;                        
             binding.refresh();
         }
     ];
 
     public void saveNew() {
-        if( !entity.period ) throw new Exception("Please specify a period. Check that the subarea must have a billing period");
         entity = batchSvc.create( entity );
         MsgBox.alert("Batch no. " + entity.objid + " is created");
         open();

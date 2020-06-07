@@ -29,6 +29,9 @@ class WaterworksBillService {
 	@DataContext("waterworks_bill")
 	def billEm;
 
+	@DataContext("waterworks_subarea")
+	def subAreaEm;
+
 	@DataContext("waterworks_account")
 	def acctEm;
 
@@ -61,7 +64,10 @@ class WaterworksBillService {
 	@ProxyMethod
 	public def createBill( def o ) {
 		if(!o.acctid) throw new Exception("acctid is required in createBill");
-
+		//if there is no previous bill, check that the last billitem and cosnumtpion coincides with the month and year required 
+		if(!o.year) throw new Exception("year is required in createBill. Please check subarea");
+		if(!o.month) throw new Exception("month is required in createBill. Please check subarea");			
+		if(!o.scheduleid) throw new Exception("scheduleid is required in createBill. Please check subarea");			
 		if(!o.txnmode) o.txnmode = 'ONLINE';
 
 		o.createdby = [objid:env.USERID, name:env.FULLNAME];
@@ -76,9 +82,6 @@ class WaterworksBillService {
 		def lastCons = null;
 
 		if( !acct.billid) {
-			//if there is no previous bill, check that the last billitem and cosnumtpion coincides with the month and year required 
-			if(!o.year) throw new Exception("year is required in createBill");
-			if(!o.month) throw new Exception("month is required in createBill");			
 			//get the next period
 			lastCons = consumptionEm.find( [acctid: acct.objid] ).orderBy("year DESC, month DESC").first();
 			if(!lastCons) throw new Exception("There is no previous consumption found for this account");
@@ -98,7 +101,7 @@ class WaterworksBillService {
 				throw new Exception("Prevbill does not exist with billid " + acct.billid );
 				
 			if( yearMonth > 0 ) {
-				if( ((prevBill.period.year*12)+prevBill.period.month+1) != yearMonth ) {
+				if( ((prevBill.year*12)+prevBill.month+1) != yearMonth ) {
 					throw new Exception("Previous bill month and year must be one month less than the new bill year and month");
 				} 
 			}
@@ -114,10 +117,10 @@ class WaterworksBillService {
 				throw new Exception("Previous bill is still in OPEN state. Please approve and post the previous bill.")
 			lastCons = consumptionEm.find( [objid: prevBill.consumptionid ] ).first();
 			billEm.find( [objid: prevBill.objid ]).update([state:"CLOSED"]);
+			o.scheduleid = prevBill.scheduleid;
 		}
 
-		o.period = skedSvc.getSchedule( [scheduleid: acct.subarea.schedulegroupid, year: o.year, month: o.month ]  );
-		o.periodid = o.period.objid;		
+		o.period = skedSvc.getSchedule( [scheduleid:o.scheduleid, year: o.year, month: o.month ]  );
 
 		if(!o.billdate) o.billdate = o.period.billdate;
 		o.expirydate = o.period.billexpirydate;			
@@ -150,8 +153,8 @@ class WaterworksBillService {
 		def c = [:];
 		c.acctid = bill.acctid;
 		c.billid = bill.objid;
-		c.year = bill.period.year;
-		c.month = bill.period.month;
+		c.year = bill.year;
+		c.month = bill.month;
 		c.reading = lastCons.reading;
 		c.meterid = acct.meterid;
 		c.volume = 0;
@@ -189,7 +192,7 @@ class WaterworksBillService {
 		if(!bill) {
 			bill = vwBillEm.find( [objid: b.objid ]).first();
 		}
-		def p = [ ym: (bill.period.year*12)+bill.period.month, billid: bill.objid ];
+		def p = [ ym: (bill.year*12)+bill.month, billid: bill.objid ];
 		//calculate balance forward
 		def wh =  "((year*12)+month) < :ym AND ((amount-amtpaid)>0) AND (billid IS NULL OR NOT(billid = :billid))"
 		def totaldue = billItemEm.find( [acctid: bill.acctid ] ).select("c:{SUM(amount-amtpaid)}").where(wh, p).val();
@@ -279,7 +282,7 @@ class WaterworksBillService {
 		if( !bill ) {
 			bill =  vwBillEm.find( [objid: o.objid] ).first();
 		}
-		int ym = (bill.period.year*12)+bill.period.month;
+		int ym = (bill.year*12)+bill.month;
 
 		def v = [:];
 		v.totalcredits = creditEm.find([acctid: bill.acctid]).select("c:{SUM(dr-cr)}").val();

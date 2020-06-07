@@ -5,8 +5,8 @@
         <invoker type="waterworks_subarea:lookup" 
                 orderBy="code"
                 allowOpen="#{true}"
-                cols="code,description,schedulegroupid,schedulegroup.objid,schedulegroup.description"
-                hiddenCols="period.*"
+                cols="code,description,schedulegroup.objid,schedulegroup.description"
+                hiddenCols="year,month"
                 caption="Lookup Sub Area" action="init"/>
     </invokers>
 </workunit>

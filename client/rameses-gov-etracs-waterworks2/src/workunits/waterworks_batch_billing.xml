@@ -1,4 +1,4 @@
-<workunit schemaName="waterworks_batch_billing">
+<workunit processName="waterworks_batch_billing">
     <invokers> 
         <invoker folderid="/menucategory/waterworks/billing" 
                  caption="New Batch Billing" action="create" role="BILLING" index="1" 

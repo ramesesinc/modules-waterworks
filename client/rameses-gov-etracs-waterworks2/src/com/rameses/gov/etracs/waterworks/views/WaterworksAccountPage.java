@@ -60,7 +60,6 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         xLookupField4 = new com.rameses.rcp.control.XLookupField();
         xLookupField5 = new com.rameses.rcp.control.XLookupField();
         xIntegerField2 = new com.rameses.rcp.control.XIntegerField();
-        xLabel5 = new com.rameses.rcp.control.XLabel();
         xCheckBox1 = new com.rameses.rcp.control.XCheckBox();
         jPanel5 = new javax.swing.JPanel();
         xFormPanel5 = new com.rameses.rcp.control.XFormPanel();
@@ -74,6 +73,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         xFormPanel4 = new com.rameses.rcp.control.XFormPanel();
         xLabel6 = new com.rameses.rcp.control.XLabel();
         xLabel7 = new com.rameses.rcp.control.XLabel();
+        xLabel8 = new com.rameses.rcp.control.XLabel();
         xPanel6 = new com.rameses.rcp.control.XPanel();
         jPanel11 = new javax.swing.JPanel();
         xActionBar2 = new com.rameses.rcp.control.XActionBar();
@@ -280,15 +280,6 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         xIntegerField2.setRequired(true);
         xFormPanel2.add(xIntegerField2);
 
-        xLabel5.setCaption("Batch Bill Period");
-        xLabel5.setDepends(new String[] {"entity.subarea"});
-        xLabel5.setExpression("#{ entity.subarea.period.year } #{ entity.subarea.period.monthname }");
-        xLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
-        xLabel5.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
-        xLabel5.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        xLabel5.setPreferredSize(new java.awt.Dimension(0, 20));
-        xFormPanel2.add(xLabel5);
-
         xCheckBox1.setCaption("");
         xCheckBox1.setCheckValue(1);
         xCheckBox1.setName("entity.excludeinbatch"); // NOI18N
@@ -411,6 +402,14 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
         xLabel7.setNumberFormat("#,##0.00;(#,##0.00)");
         xLabel7.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel4.add(xLabel7);
+
+        xLabel8.setCaption("Bill Year/Month");
+        xLabel8.setDepends(new String[] {});
+        xLabel8.setExpression("#{ entity.bill.year} #{ entity.bill.monthname} ");
+        xLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
+        xLabel8.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        xLabel8.setPreferredSize(new java.awt.Dimension(0, 20));
+        xFormPanel4.add(xLabel8);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -1169,7 +1168,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.DateColumnHandler(null, null, null)}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "period.year"}
+                new Object[]{"name", "year"}
                 , new Object[]{"caption", "Year"}
                 , new Object[]{"width", 80}
                 , new Object[]{"minWidth", 80}
@@ -1184,7 +1183,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.IntegerColumnHandler(null, -1, -1)}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "period.monthname"}
+                new Object[]{"name", "monthname"}
                 , new Object[]{"caption", "Month"}
                 , new Object[]{"width", 100}
                 , new Object[]{"minWidth", 100}
@@ -1290,7 +1289,7 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
             })
         });
         schemaList6.setCustomFilter("acctid = :objid");
-        schemaList6.setOrderBy("period.year DESC, period.month DESC");
+        schemaList6.setOrderBy("year DESC, month DESC");
         schemaList6.setQueryName("entityQry");
         schemaList6.setSchemaName("vw_waterworks_bill");
         xPanel8.add(schemaList6, java.awt.BorderLayout.CENTER);
@@ -1500,9 +1499,9 @@ public class WaterworksAccountPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLabel xLabel21;
     private com.rameses.rcp.control.XLabel xLabel3;
     private com.rameses.rcp.control.XLabel xLabel4;
-    private com.rameses.rcp.control.XLabel xLabel5;
     private com.rameses.rcp.control.XLabel xLabel6;
     private com.rameses.rcp.control.XLabel xLabel7;
+    private com.rameses.rcp.control.XLabel xLabel8;
     private com.rameses.rcp.control.XList xList1;
     private com.rameses.rcp.control.XLookupField xLookupField1;
     private com.rameses.rcp.control.XLookupField xLookupField3;

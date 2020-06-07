@@ -11,7 +11,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-11,0,0,4,75"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-11,0,0,3,-38"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignCardLayout"/>
@@ -32,7 +32,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                   <Component id="xFormPanel4" min="-2" pref="546" max="-2" attributes="0"/>
-                  <EmptySpace pref="533" max="32767" attributes="0"/>
+                  <EmptySpace pref="420" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -40,8 +40,8 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                  <Component id="xFormPanel4" min="-2" pref="195" max="-2" attributes="0"/>
-                  <EmptySpace pref="271" max="32767" attributes="0"/>
+                  <Component id="xFormPanel4" min="-2" pref="248" max="-2" attributes="0"/>
+                  <EmptySpace pref="218" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -68,7 +68,7 @@
             <Component class="com.rameses.rcp.control.XLabel" name="xLabel3">
               <Properties>
                 <Property name="caption" type="java.lang.String" value="Schedule"/>
-                <Property name="expression" type="java.lang.String" value="#{ entity.subarea.schedulegroup.objid } - #{ entity.subarea.schedulegroup.description }"/>
+                <Property name="expression" type="java.lang.String" value="#{ entity.scheduleid }"/>
                 <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[20, 0, 0, 0]"/>
                 </Property>
@@ -77,16 +77,18 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="com.rameses.rcp.control.XLabel" name="xLabel1">
+            <Component class="com.rameses.rcp.control.XIntegerField" name="xIntegerField1">
               <Properties>
-                <Property name="caption" type="java.lang.String" value="Year / Month"/>
-                <Property name="expression" type="java.lang.String" value="#{ entity.period.monthname } #{ entity.period.year }"/>
+                <Property name="caption" type="java.lang.String" value="Bill Year"/>
+                <Property name="name" type="java.lang.String" value="entity.year" noResource="true"/>
+                <Property name="required" type="boolean" value="true"/>
               </Properties>
             </Component>
-            <Component class="com.rameses.rcp.control.XLabel" name="xLabel4">
+            <Component class="com.rameses.enterprise.components.MonthList" name="monthList1">
               <Properties>
-                <Property name="caption" type="java.lang.String" value="Period"/>
-                <Property name="expression" type="java.lang.String" value="#{ entity.period.fromdate } - #{ entity.period.todate } "/>
+                <Property name="caption" type="java.lang.String" value="Bill Month"/>
+                <Property name="name" type="java.lang.String" value="entity.month" noResource="true"/>
+                <Property name="required" type="boolean" value="true"/>
               </Properties>
             </Component>
             <Component class="com.rameses.rcp.control.XLookupField" name="xLookupField6">
@@ -136,9 +138,16 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="xFormPanel5" min="-2" pref="725" max="-2" attributes="0"/>
-                      <EmptySpace pref="368" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="590" max="-2" attributes="0"/>
+                      <Component id="xFormPanel5" min="-2" pref="301" max="-2" attributes="0"/>
+                      <EmptySpace pref="95" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                          <Component id="xFormPanel6" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="412" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -146,8 +155,15 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="xFormPanel5" min="-2" max="-2" attributes="0"/>
+                      <Component id="xFormPanel5" min="-2" pref="88" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="xFormPanel6" min="-2" pref="88" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -159,22 +175,16 @@
                 <Property name="captionWidth" type="int" value="120"/>
               </Properties>
               <SubComponents>
-                <Component class="com.rameses.rcp.control.XLabel" name="xLabel8">
-                  <Properties>
-                    <Property name="caption" type="java.lang.String" value="Batch No"/>
-                    <Property name="expression" type="java.lang.String" value="#{ entity.objid }  ( #{ entity.period.year } - #{ entity.period.monthname } )"/>
-                    <Property name="captionFont" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="SansSerif" size="14" style="1"/>
-                    </Property>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="SansSerif" size="14" style="1"/>
-                    </Property>
-                  </Properties>
-                </Component>
                 <Component class="com.rameses.rcp.control.XLabel" name="xLabel11">
                   <Properties>
-                    <Property name="caption" type="java.lang.String" value="Period"/>
-                    <Property name="expression" type="java.lang.String" value="#{ entity.period.fromdate } - #{ entity.period.todate } "/>
+                    <Property name="caption" type="java.lang.String" value="Schedule Group"/>
+                    <Property name="expression" type="java.lang.String" value="#{ entity.scheduleid } "/>
+                  </Properties>
+                </Component>
+                <Component class="com.rameses.rcp.control.XLabel" name="xLabel13">
+                  <Properties>
+                    <Property name="caption" type="java.lang.String" value="Reading Date"/>
+                    <Property name="expression" type="java.lang.String" value="#{ entity.readingdate } "/>
                   </Properties>
                 </Component>
                 <Component class="com.rameses.rcp.control.XLabel" name="xLabel10">
@@ -183,10 +193,36 @@
                     <Property name="expression" type="java.lang.String" value="#{ entity.reader.name }"/>
                   </Properties>
                 </Component>
+              </SubComponents>
+            </Container>
+            <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel6">
+              <Properties>
+                <Property name="captionVAlignment" type="java.lang.String" value="CENTER"/>
+                <Property name="captionWidth" type="int" value="120"/>
+              </Properties>
+              <SubComponents>
+                <Component class="com.rameses.rcp.control.XLabel" name="xLabel9">
+                  <Properties>
+                    <Property name="caption" type="java.lang.String" value="Batch No"/>
+                    <Property name="expression" type="java.lang.String" value="#{ entity.objid }  ( #{ entity.year } - #{ entity.monthname } )"/>
+                    <Property name="captionFont" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="1"/>
+                    </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="14" style="1"/>
+                    </Property>
+                  </Properties>
+                </Component>
                 <Component class="com.rameses.rcp.control.XLabel" name="xLabel12">
                   <Properties>
-                    <Property name="caption" type="java.lang.String" value="Reading Date"/>
-                    <Property name="expression" type="java.lang.String" value="#{ entity.readingdate }"/>
+                    <Property name="caption" type="java.lang.String" value="Period"/>
+                    <Property name="expression" type="java.lang.String" value="From: #{ entity.period.fromdate } - To: #{ entity.period.todate } "/>
+                  </Properties>
+                </Component>
+                <Component class="com.rameses.rcp.control.XLabel" name="xLabel14">
+                  <Properties>
+                    <Property name="caption" type="java.lang.String" value="Due Date"/>
+                    <Property name="expression" type="java.lang.String" value="#{ entity.period.duedate } "/>
                   </Properties>
                 </Component>
               </SubComponents>
@@ -208,7 +244,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="832" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="986" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">

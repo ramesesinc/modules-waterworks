@@ -19,6 +19,9 @@ class WaterworksBatchBillingService {
 	@DataContext('waterworks_batch_billing')
 	def batchEm; 
 
+	@DataContext('vw_waterworks_batch_billing')
+	def vwBatchEm;
+
 	@DataContext('waterworks_account')
 	def acctEm; 
 
@@ -34,12 +37,12 @@ class WaterworksBatchBillingService {
 	@ProxyMethod
 	public def create( def o ) {
 		//check if there is unclosed previous batch
-		def b = batchEm.find( [subareaid: o.subarea.objid ] ).where(" NOT(task.state = 'end') ").first();	
+		def b = vwBatchEm.find( [subareaid: o.subarea.objid ] ).where(" NOT(task.state = 'end') ").first();	
 		if( b ) throw new Exception("There is still pending batch bill for this subarea. Please close that first");
 
-		def yrmon = "" + o.period.year + String.format("%02d", o.period.month);
+		def yrmon = "" + o.year + String.format("%02d", o.month);
 		o.objid = "WB" + yrmon +"-"+ o.subarea.code;  
-		o.state = 'DRAFT';		
+		o.state = 'DRAFT';	
 		o = batchEm.create( o ); 
 
 		def p = [:];
@@ -47,6 +50,7 @@ class WaterworksBatchBillingService {
 		p.refid = o.objid;
 		p.startdate = dateSvc.serverDate;
 		taskSvc.start(p);
+
 		return o;
 	}
 
@@ -103,7 +107,7 @@ class WaterworksBatchBillingService {
 			items = batchEm.getAccountsForBilling( p );
 			items?.each {
 				try {
-					def vv = [acctid: it.objid, year:it.year,month:it.month, batchid: o.batchid];
+					def vv = [acctid: it.objid, year:it.year,month:it.month,scheduleid:it.scheduleid, batchid: o.batchid];
 					vv.billnoformat = o.batchid + "-[%05d]"; 
 					vv.txnmode = "ONLINE";
 					def _bill = billSvc.createBill( vv );
@@ -156,7 +160,7 @@ class WaterworksBatchBillingService {
 		try {
 			if(err.action=="create-bills") {
 				def batch = batchEm.find( [objid: err.batchid ] ).first();
-				def vv = [acctid: err.acctid, year:batch.period.year,month:batch.period.month, batchid: batch.objid];
+				def vv = [acctid: err.acctid, year:batch.year,month:batch.month, batchid: batch.objid];
 				vv.billnoformat = batch.objid + "-[%05d]"; 
 				vv.txnmode = "ONLINE";
 				def _bill = billSvc.createBill( vv );
@@ -199,10 +203,10 @@ class WaterworksBatchBillingService {
 		def acct = vwAcctEm.find( [objid: bill.acctid] ).first();
 		if( acct.billid != bill.objid )
 			throw new Exception("Account not found having this bill as current. Please check if this is the current bill");
-		def batch = batchEm.find( [subareaid: acct.subareaid] ).orderBy(" period.year DESC, period.month DESC ").first();
+		def batch = vwBatchEm.find( [subareaid: acct.subareaid] ).orderBy(" year DESC, month DESC ").first();
 		if( !batch ) throw new Exception("Batch does not exist for this subarea");
 		
-		if(batch.periodid!=bill.periodid)
+		if(batch.year!=bill.year && batch.month!=bill.month)
 			throw new Exception("The bill's period does not match the batch billing period");
 
 		if(batch.task.state?.toLowerCase() == 'mobile-reading' )

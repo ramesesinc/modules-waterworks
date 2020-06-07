@@ -10,13 +10,17 @@
         
         <!-- form actions -->
         <invoker type="acctActions" caption="Change Seqno" action="changeSeqno" />
+        
+        <!--
         <invoker type="formActions" caption="Add Billing Period" 
                  action="addBillingPeriod" 
                  visibleWhen="#{ mode == 'read' &amp;&amp; entity.period?.objid == null }"/>
-                 
+        -->
+        <!--                  
         <invoker type="formActions" caption="Change Billing Period" 
                  action="addBillingPeriod" 
                  visibleWhen="#{ mode == 'read' &amp;&amp; entity.period?.objid != null }"/>         
+        -->
         
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksSubareaModel" />

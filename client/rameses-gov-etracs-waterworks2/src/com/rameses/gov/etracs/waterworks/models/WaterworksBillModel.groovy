@@ -37,19 +37,7 @@ public class WaterworksBillModel extends CrudFormModel {
         updatePmtList();
     }
 
-    void createFromAccount() {
-        if(!MsgBox.confirm("You are about to create the next bill. Proceed?")) {
-            throw new BreakException();
-        }
-        def b = [:];
-        b.txnmode = "ONLINE";
-        b.acctid = caller.entity.objid;
-        def newbill = billSvc.createBill( b );
-        caller.entity.bill = newbill;
-        caller.reloadEntity();
-        entity = newbill;
-        open();
-    }
+    
 
     def detailList;
     def detailListHandler = [
@@ -185,15 +173,40 @@ public class WaterworksBillModel extends CrudFormModel {
         binding.refresh();
     }
 
+    //create bills
+    void addNewBill() {
+        def f = [
+            [name: "year", caption: "Year", type:"integer"],
+            [name: "month", caption: "Month", type:"monthlist"],
+        ];
+        def z = [_schemaname: "waterworks_subarea"];
+        z.select = "year,month,schedulegroupid";
+        z.findBy = [objid: caller.entity.subareaid];
+        def d = queryService.findFirst(z);
+        def b = [:];
+        def h = { o->
+            b.year = o.year;
+            b.month = o.month;
+            b.scheduleid = d.schedulegroupid;
+        }
+        Modal.show("dynamic:form", [fields: f, data:d, handler: h], [title: 'Specify Bill Year/Month']);
+        if(!b) throw new BreakException();
+        b.txnmode = "ONLINE";
+        b.acctid = caller.entity.objid;       
+        def newbill = billSvc.createBill( b );
+        caller.entity.bill = newbill;
+        caller.reloadEntity();
+        entity = newbill;
+        open();
+    }
     void generateNextBill() {
-        if(!MsgBox.confirm("You are about to create the next bill. Proceed1?")) return;
-        MsgBox.alert("entity is " + entity);
-        
+        if(!MsgBox.confirm("You are about to create the next bill. Proceed?")) return;
         def b = [:];
         b.txnmode = "ONLINE";
         b.acctid = entity.acctid;
-        b.year = entity.period.year;
-        b.month = entity.period.month + 1;
+        b.year = entity.year;
+        b.month = entity.month + 1;
+        b.scheduleid = entity.scheduleid;
         if(b.month > 12) {
             b.month = 1;
             b.year = b.year + 1;

@@ -9,7 +9,7 @@
 		<field name="balanceforward" type="decimal" caption="Balance Forward"/>
 		<field name="acctid" required="true"/>
 		<field name="acctinfoid" required="true"/>
-		<field name="periodid" required="true"/>
+		
 		<field name="expirydate" />
 		<field name="validitydate" />
 		<field name="createdby_objid" />
@@ -19,6 +19,10 @@
 
 		<!-- CAPTURE OR ONLINE -->
 		<field name="txnmode" required="true"/>
+		
+		<field name="year" />
+		<field name="month" />
+		<field name="scheduleid" />
 
 		<!-- flags -->
 		<field name="initial" type="integer"/>

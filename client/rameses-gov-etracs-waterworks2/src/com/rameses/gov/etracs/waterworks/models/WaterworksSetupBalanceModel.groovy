@@ -34,11 +34,11 @@ public class WaterworksSetupBalanceModel {
 
     void init() {
         account = caller.entity;
-        def period = account.subarea?.period;
-        if( !period )
-            throw new Exception("Please specify the subarea and period in the account");
-        this.year = period.year;
-        this.month = period.month - 1;
+        def subarea = account.subarea;
+        if( !subarea )
+            throw new Exception("Please specify the subarea and subarea in the account");
+        this.year = subarea.year;
+        this.month = subarea.month - 1;
         if( this.month <= 0 ) {
             this.month = 12;
             this.year = this.year - 1;

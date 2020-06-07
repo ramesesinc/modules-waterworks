@@ -24,8 +24,8 @@ public class WaterBill {
 	public WaterBill(def bill){
 		def period = bill.period;
 		if(period) {
-			this.year = period.year;
-			this.month = period.month;
+			this.year = bill.year;
+			this.month = bill.month;
 			if( period.fromdate) this.fromdate = period.fromdate ;
 			if( period.todate) this.todate = period.todate ;
 			if( period.billdate) this.billdate = period.billdate ;

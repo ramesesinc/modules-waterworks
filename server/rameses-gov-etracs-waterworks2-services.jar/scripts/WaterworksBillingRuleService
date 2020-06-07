@@ -80,7 +80,7 @@ class WaterworksBillingRuleService {
 		def acct = o.account;
 		def bill = o.bill;
 
-		def ym = (bill.period.year*12)+bill.period.month;
+		def ym = (bill.year*12)+bill.month;
 
 		//these are called to calculate the surcharge. Include only items that have balances
 		def pastItems = billItemEm.find( [acctid: acct.objid ] ).where("(amount-amtpaid) > 0 AND ((year*12)+month) < :yearmonth", [yearmonth: ym]).list();
@@ -117,7 +117,7 @@ class WaterworksBillingRuleService {
 		def acct = o.account;
 		def bill = o.bill;
 		def amtpaid = o.amtpaid;
-		def ym = (bill.period.year*12)+bill.period.month;
+		def ym = (bill.year*12)+bill.month;
 
 		//if bill state = OPEN only return the previous bills not the current
 		def billitems = [];

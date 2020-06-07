@@ -1,7 +1,8 @@
-DROP VIEW IF EXISTS vw_waterworks_bill;
-CREATE VIEW vw_waterworks_bill AS
+DROP VIEW IF EXISTS vw_waterworks_batch_billing;
+CREATE VIEW vw_waterworks_batch_billing AS
 SELECT 
    wb.*, 
+   wb.objid AS batchno,
    CASE wb.month 
       WHEN 1 THEN 'JAN' 
       WHEN 2 THEN 'FEB' 
@@ -16,19 +17,8 @@ SELECT
       WHEN 11 THEN 'NOV' 
       WHEN 12 THEN 'DEC' 
    END AS monthname,
-       
-   a.acctno, 
-   ai.acctname, 
-   a.state AS acctstate, 
-   a.seqno,
-   ai.subareaid,
-   ai.address_text,
-   ai.classificationid,
-   ai.stuboutid,
-   ai.meterid, 
-   ai.meterstate,
 
-   sarea.schedulegroupid AS subarea_schedulegroupid,
+    sarea.schedulegroupid AS subarea_schedulegroupid,
    sarea.code AS subarea_code,
    sarea.barangay_name AS subarea_barangay_name,
    area.code AS area_code,
@@ -43,10 +33,7 @@ SELECT
    p.duedate AS period_duedate,
    p.billexpirydate AS period_billexpirydate
 
-FROM waterworks_bill wb 
-INNER JOIN waterworks_account a on a.objid = wb.acctid
-INNER JOIN waterworks_account_info ai ON wb.acctinfoid = ai.objid
-INNER JOIN waterworks_subarea sarea ON ai.subareaid=sarea.objid
+FROM waterworks_batch_billing wb 
+INNER JOIN waterworks_subarea sarea ON wb.subareaid=sarea.objid
 INNER JOIN waterworks_area area ON sarea.areaid=area.objid
 LEFT JOIN waterworks_billing_period p ON wb.year = p.year AND wb.month=p.month AND wb.scheduleid = p.scheduleid
-

@@ -37,21 +37,21 @@ public class WaterworksBillCaptureModel extends CrudFormModel {
     ];
     
     String getSubtitle() {
-        String period =  " -"+entity.period.monthname + " " +entity.period.year; 
+        String period =  " -"+entity.monthname + " " +entity.year; 
         return titles[ entity.step - 1 ] + period;
     }
 
     int getYearMonth() {
-        return (entity.period.year *12)+entity.period.month;
+        return (entity.year *12)+entity.month;
     }
     
     void afterCreate() {
         //parent here is the customer account
         def parent = caller.entity;
-        def period = parent.subarea?.period;
-        if(period) {
-            entity.year = period.year;
-            entity.month = period.month;
+        def subarea = parent.subarea;
+        if(subarea) {
+            entity.year = subarea.year;
+            entity.month = subarea.month;
             entity.acctid = parent.objid;
         }
         entity.initial = 1;

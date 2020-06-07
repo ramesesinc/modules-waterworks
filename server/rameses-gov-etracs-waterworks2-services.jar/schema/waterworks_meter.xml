@@ -14,7 +14,7 @@
 
 		<field name="currentacctid" />
 		
-		<complex name="account" ref="waterworks_account" jointype="many-to-one" required="false"
+		<complex name="account" ref="vw_waterworks_account" jointype="many-to-one" required="false"
 			includefields="objid,acctname,acctno,address.text">
 			<key field="currentacctid" target="objid"/>
 		</complex>

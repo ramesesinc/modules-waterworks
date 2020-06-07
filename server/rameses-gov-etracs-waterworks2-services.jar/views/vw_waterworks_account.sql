@@ -26,8 +26,9 @@ SELECT
   ai.units,
   ai.attributes,
   ai.meterstate,
-  ai.email,
+
   ai.mobileno,
+  ai.email,
   ai.phoneno
 
 FROM waterworks_account wa 

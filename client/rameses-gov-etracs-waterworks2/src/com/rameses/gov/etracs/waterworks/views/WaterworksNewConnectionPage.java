@@ -231,7 +231,7 @@ public class WaterworksNewConnectionPage extends javax.swing.JPanel {
 
         xLabel12.setCaption("Batch Bill Period");
         xLabel12.setDepends(new String[] {"entity.subarea"});
-        xLabel12.setExpression("#{ entity.subarea.period.year } #{ entity.subarea.period.monthname }");
+        xLabel12.setExpression("#{ entity.subarea.year } #{ entity.subarea.monthname }");
         xLabel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
         xLabel12.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xLabel12.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N

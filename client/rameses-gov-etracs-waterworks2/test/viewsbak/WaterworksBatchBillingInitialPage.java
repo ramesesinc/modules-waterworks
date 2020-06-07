@@ -53,8 +53,8 @@ public class WaterworksBatchBillingInitialPage extends javax.swing.JPanel {
         xLabel3.setPreferredSize(new java.awt.Dimension(0, 18));
         xFormPanel4.add(xLabel3);
 
-        xLabel1.setCaption("From Year");
-        xLabel1.setExpression("#{ entity.period.monthname } #{ entity.period.year }");
+        xLabel1.setCaption("Year");
+        xLabel1.setExpression("#{ entity.monthname } #{ entity.year }");
         xFormPanel4.add(xLabel1);
 
         xLabel4.setCaption("Period");

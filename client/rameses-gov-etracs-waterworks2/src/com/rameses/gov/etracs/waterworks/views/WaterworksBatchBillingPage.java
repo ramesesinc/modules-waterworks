@@ -36,16 +36,19 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         xFormPanel4 = new com.rameses.rcp.control.XFormPanel();
         xLookupField1 = new com.rameses.rcp.control.XLookupField();
         xLabel3 = new com.rameses.rcp.control.XLabel();
-        xLabel1 = new com.rameses.rcp.control.XLabel();
-        xLabel4 = new com.rameses.rcp.control.XLabel();
+        xIntegerField1 = new com.rameses.rcp.control.XIntegerField();
+        monthList1 = new com.rameses.enterprise.components.MonthList();
         xLookupField6 = new com.rameses.rcp.control.XLookupField();
         vwInfo = new com.rameses.rcp.control.XPanel();
         pnlHeader = new javax.swing.JPanel();
         xFormPanel5 = new com.rameses.rcp.control.XFormPanel();
-        xLabel8 = new com.rameses.rcp.control.XLabel();
         xLabel11 = new com.rameses.rcp.control.XLabel();
+        xLabel13 = new com.rameses.rcp.control.XLabel();
         xLabel10 = new com.rameses.rcp.control.XLabel();
+        xFormPanel6 = new com.rameses.rcp.control.XFormPanel();
+        xLabel9 = new com.rameses.rcp.control.XLabel();
         xLabel12 = new com.rameses.rcp.control.XLabel();
+        xLabel14 = new com.rameses.rcp.control.XLabel();
         pnlFooter = new javax.swing.JPanel();
         pnlBody = new javax.swing.JPanel();
         xTabbedPane1 = new com.rameses.rcp.control.XTabbedPane();
@@ -81,18 +84,20 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         xFormPanel4.add(xLookupField1);
 
         xLabel3.setCaption("Schedule");
-        xLabel3.setExpression("#{ entity.subarea.schedulegroup.objid } - #{ entity.subarea.schedulegroup.description }");
+        xLabel3.setExpression("#{ entity.scheduleid }");
         xLabel3.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xLabel3.setPreferredSize(new java.awt.Dimension(0, 18));
         xFormPanel4.add(xLabel3);
 
-        xLabel1.setCaption("Year / Month");
-        xLabel1.setExpression("#{ entity.period.monthname } #{ entity.period.year }");
-        xFormPanel4.add(xLabel1);
+        xIntegerField1.setCaption("Bill Year");
+        xIntegerField1.setName("entity.year"); // NOI18N
+        xIntegerField1.setRequired(true);
+        xFormPanel4.add(xIntegerField1);
 
-        xLabel4.setCaption("Period");
-        xLabel4.setExpression("#{ entity.period.fromdate } - #{ entity.period.todate } ");
-        xFormPanel4.add(xLabel4);
+        monthList1.setCaption("Bill Month");
+        monthList1.setName("entity.month"); // NOI18N
+        monthList1.setRequired(true);
+        xFormPanel4.add(monthList1);
 
         xLookupField6.setCaption("Assign To Reader");
         xLookupField6.setExpression("#{ entity.reader.name }");
@@ -110,14 +115,14 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
             .addGroup(vwInitialLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(533, Short.MAX_VALUE))
+                .addContainerGap(420, Short.MAX_VALUE))
         );
         vwInitialLayout.setVerticalGroup(
             vwInitialLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(vwInitialLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(271, Short.MAX_VALUE))
+                .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(218, Short.MAX_VALUE))
         );
 
         add(vwInitial, "card2");
@@ -130,39 +135,60 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         xFormPanel5.setCaptionVAlignment(com.rameses.rcp.constant.UIConstants.CENTER);
         xFormPanel5.setCaptionWidth(120);
 
-        xLabel8.setCaption("Batch No");
-        xLabel8.setExpression("#{ entity.objid }  ( #{ entity.period.year } - #{ entity.period.monthname } )");
-        xLabel8.setCaptionFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        xLabel8.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        xFormPanel5.add(xLabel8);
-
-        xLabel11.setCaption("Period");
-        xLabel11.setExpression("#{ entity.period.fromdate } - #{ entity.period.todate } ");
+        xLabel11.setCaption("Schedule Group");
+        xLabel11.setExpression("#{ entity.scheduleid } ");
         xFormPanel5.add(xLabel11);
+
+        xLabel13.setCaption("Reading Date");
+        xLabel13.setExpression("#{ entity.readingdate } ");
+        xFormPanel5.add(xLabel13);
 
         xLabel10.setCaption("Reader");
         xLabel10.setExpression("#{ entity.reader.name }");
         xFormPanel5.add(xLabel10);
 
-        xLabel12.setCaption("Reading Date");
-        xLabel12.setExpression("#{ entity.readingdate }");
-        xFormPanel5.add(xLabel12);
+        xFormPanel6.setCaptionVAlignment(com.rameses.rcp.constant.UIConstants.CENTER);
+        xFormPanel6.setCaptionWidth(120);
+
+        xLabel9.setCaption("Batch No");
+        xLabel9.setExpression("#{ entity.objid }  ( #{ entity.year } - #{ entity.monthname } )");
+        xLabel9.setCaptionFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        xLabel9.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        xFormPanel6.add(xLabel9);
+
+        xLabel12.setCaption("Period");
+        xLabel12.setExpression("From: #{ entity.period.fromdate } - To: #{ entity.period.todate } ");
+        xFormPanel6.add(xLabel12);
+
+        xLabel14.setCaption("Due Date");
+        xLabel14.setExpression("#{ entity.period.duedate } ");
+        xFormPanel6.add(xLabel14);
 
         javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
         pnlHeader.setLayout(pnlHeaderLayout);
         pnlHeaderLayout.setHorizontalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlHeaderLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(xFormPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 725, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(368, Short.MAX_VALUE))
+                .addGap(590, 590, 590)
+                .addComponent(xFormPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(95, Short.MAX_VALUE))
+            .addGroup(pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlHeaderLayout.createSequentialGroup()
+                    .addGap(16, 16, 16)
+                    .addComponent(xFormPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(412, Short.MAX_VALUE)))
         );
         pnlHeaderLayout.setVerticalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlHeaderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(xFormPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(xFormPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlHeaderLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(xFormPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         vwInfo.add(pnlHeader, java.awt.BorderLayout.NORTH);
@@ -173,7 +199,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         pnlFooter.setLayout(pnlFooterLayout);
         pnlFooterLayout.setHorizontalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 832, Short.MAX_VALUE)
+            .addGap(0, 986, Short.MAX_VALUE)
         );
         pnlFooterLayout.setVerticalGroup(
             pnlFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -588,6 +614,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private com.rameses.enterprise.components.MonthList monthList1;
     private javax.swing.JPanel pnlBody;
     private javax.swing.JPanel pnlFooter;
     private javax.swing.JPanel pnlHeader;
@@ -602,13 +629,15 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XButton xButton15;
     private com.rameses.rcp.control.XFormPanel xFormPanel4;
     private com.rameses.rcp.control.XFormPanel xFormPanel5;
-    private com.rameses.rcp.control.XLabel xLabel1;
+    private com.rameses.rcp.control.XFormPanel xFormPanel6;
+    private com.rameses.rcp.control.XIntegerField xIntegerField1;
     private com.rameses.rcp.control.XLabel xLabel10;
     private com.rameses.rcp.control.XLabel xLabel11;
     private com.rameses.rcp.control.XLabel xLabel12;
+    private com.rameses.rcp.control.XLabel xLabel13;
+    private com.rameses.rcp.control.XLabel xLabel14;
     private com.rameses.rcp.control.XLabel xLabel3;
-    private com.rameses.rcp.control.XLabel xLabel4;
-    private com.rameses.rcp.control.XLabel xLabel8;
+    private com.rameses.rcp.control.XLabel xLabel9;
     private com.rameses.rcp.control.XLookupField xLookupField1;
     private com.rameses.rcp.control.XLookupField xLookupField6;
     private com.rameses.rcp.control.XSubFormPanel xSubFormPanel1;

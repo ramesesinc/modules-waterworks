@@ -40,6 +40,7 @@ public class WaterworksSubareaModel extends CrudFormModel {
     }
     
     def addBillingPeriod() {
+        /*
        def s = { o->
            def m = [_schemaname: schemaName];
            m.objid = entity.objid;
@@ -49,6 +50,7 @@ public class WaterworksSubareaModel extends CrudFormModel {
            binding.refresh();
        } 
        return Inv.lookupOpener("waterworks_billing_period:lookup", [onselect:s, scheduleid: entity.schedulegroup.objid ]);
+       */
     }
     
     

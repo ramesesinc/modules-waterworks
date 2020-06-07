@@ -16,17 +16,24 @@ class WaterworksAccountService  {
 	@DataContext("waterworks_consumption")
 	def consumptionEm;	
 
+	@DataContext("waterworks_subarea")
+	def subAreaEm;	
+
 	@ProxyMethod
 	public def approve( def o ) {
 		if(!o.acctid) throw new Exception("acctid is required in WaterworksAccountService.approve");
 		//before approving check if the billitem year and month is at least one month before the batch period year and month
 		def acct = vwAcctEm.find( [objid:o.acctid]).first();
 
-		if(!acct.subarea?.period?.year) 
-			throw new Exception("WaterworksAccountService.approve error. There is no subarea period specified for the account");
+		def subarea = subAreaEm.find( [objid: acct.subareaid ]).first();
+
+		if(!subarea?.year) 
+			throw new Exception("WaterworksAccountService.approve error. There is no subarea year specified ");
+		if(!subarea?.month) 
+			throw new Exception("WaterworksAccountService.approve error. There is no subarea month specified ");
 
 		//setup the required year and month the entries must have	
-		def ym1 = ((acct.subarea.period.year*12)+acct.subarea.period.month)-1;
+		def ym1 = ((subarea.year*12)+subarea.month)-1;
 		def y1 = (int)(ym1 / 12);
 		def m1 = (int)(ym1 % 12);
 		if(m1==0) {

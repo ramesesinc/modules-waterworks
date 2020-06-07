@@ -6,8 +6,8 @@ sa.code AS subareacode,
 sa.barangay_name AS barangay,
 sa.barangay_objid AS barangayid,
 wa.code AS areacode,
-wbp.year,
-wbp.month,
+wbb.year,
+wbb.month,
 wbp.fromdate,
 wbp.todate,
 wbp.duedate,
@@ -19,7 +19,7 @@ FROM waterworks_batch_billing wbb
 INNER JOIN waterworks_batch_billing_task bt ON wbb.taskid = bt.taskid 
 INNER JOIN waterworks_subarea sa ON wbb.subareaid = sa.objid
 INNER JOIN waterworks_area wa ON  sa.areaid=wa.objid 
-INNER JOIN waterworks_billing_period wbp ON wbb.periodid = wbp.objid 
+LEFT JOIN waterworks_billing_period wbp ON wbb.scheduleid=wbp.scheduleid AND wbb.year=wbp.year AND wbb.month=wbp.month 
 WHERE wbb.objid = $P{batchid}
 
 [getStubouts]

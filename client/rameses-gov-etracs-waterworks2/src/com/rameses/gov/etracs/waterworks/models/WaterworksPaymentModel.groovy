@@ -30,8 +30,8 @@ class WaterworksPaymentModel extends PageFlowController  {
         if(reftype == null) throw new Exception("Reftype is required");
         entity = [:];
         def bill = caller.entity;
-        entity.year = bill.period.year;
-        entity.month = bill.period.month;
+        entity.year = bill.year;
+        entity.month = bill.month;
         entity.billid = bill.objid;
         entity.acctid = bill.acctid;
         entity.reftype = reftype;

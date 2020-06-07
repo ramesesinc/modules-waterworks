@@ -10,11 +10,11 @@
                  action="openBillFromAccount" /> 
 
         <invoker type="vw_waterworks_account:form:billActions" 
-                 caption="Generate Next Bill" 
+                 caption="Add New Bill" 
                  visibleWhen="#{ mode=='read' &amp;&amp; entity.state == 'ACTIVE' }" 
                  target="popup"
                  index="200"
-                 action="createFromAccount" /> 
+                 action="addNewBill" /> 
 
         <invoker type="vw_waterworks_bill:open" 
                  caption="View Bill" 

@@ -1,6 +1,6 @@
 <workunit extends="com/rameses/seti2/templates/FormReport.xml">
     <invokers>
-        <invoker type="vw_waterworks_account:form:formActions" 
+        <invoker xtype="vw_waterworks_account:form:formActions" 
                  caption="Print Disconnection" 
                  target="self" 
                  action="preview"

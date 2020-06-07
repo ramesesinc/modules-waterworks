@@ -234,7 +234,7 @@
                 <Component class="com.rameses.rcp.control.XLabel" name="xLabel33">
                   <Properties>
                     <Property name="caption" type="java.lang.String" value="Bill Year/Month"/>
-                    <Property name="expression" type="java.lang.String" value="#{ entity.period.year } #{ entity.period.monthname }"/>
+                    <Property name="expression" type="java.lang.String" value="#{ entity.year } #{ entity.monthname }"/>
                   </Properties>
                 </Component>
                 <Component class="com.rameses.rcp.control.XLabel" name="xLabel34">

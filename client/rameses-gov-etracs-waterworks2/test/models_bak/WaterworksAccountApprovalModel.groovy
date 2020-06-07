@@ -93,7 +93,7 @@ public class WaterworksAccountApprovalModel {
 
     boolean checkHasReading() {
         if(!consumption?.objid ) {
-            int yrMonth = (entity.subarea.period.year*12)+entity.subarea.period.month-1;
+            int yrMonth = (entity.subarea.year*12)+entity.subarea.month-1;
             //loading reading first if exists
             def m = [_schemaname: "waterworks_consumption"];
             m.findBy = [acctid: entity.objid, meterid: entity.meter.objid ];
@@ -118,8 +118,8 @@ public class WaterworksAccountApprovalModel {
             //update if exist
             def m = [_schemaname:  "waterworks_consumption"];
             m.acctid = entity.objid;
-            m.year = entity.subarea.period.year;
-            m.month = entity.subarea.period.month - 1;
+            m.year = entity.subarea.year;
+            m.month = entity.subarea.month - 1;
             if(m.month <= 0 ) {
                 m.month = 12;
                 m.year = m.year - 1;

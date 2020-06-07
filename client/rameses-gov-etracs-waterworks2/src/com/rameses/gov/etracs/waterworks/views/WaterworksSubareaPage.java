@@ -39,12 +39,10 @@ public class WaterworksSubareaPage extends javax.swing.JPanel {
         xTextField3 = new com.rameses.rcp.control.XTextField();
         xTextField4 = new com.rameses.rcp.control.XTextField();
         xLookupField1 = new com.rameses.rcp.control.XLookupField();
-        xLookupField4 = new com.rameses.rcp.control.XLookupField();
         xLabel2 = new com.rameses.rcp.control.XLabel();
-        xLabel7 = new com.rameses.rcp.control.XLabel();
-        xLabel5 = new com.rameses.rcp.control.XLabel();
-        xLabel6 = new com.rameses.rcp.control.XLabel();
-        xLabel8 = new com.rameses.rcp.control.XLabel();
+        xLookupField4 = new com.rameses.rcp.control.XLookupField();
+        xIntegerField1 = new com.rameses.rcp.control.XIntegerField();
+        monthList1 = new com.rameses.enterprise.components.MonthList();
         xPanel1 = new com.rameses.rcp.control.XPanel();
         schemaList2 = new com.rameses.seti2.components.SchemaList();
         xPanel2 = new com.rameses.rcp.control.XPanel();
@@ -102,55 +100,36 @@ public class WaterworksSubareaPage extends javax.swing.JPanel {
         xLookupField1.setHandler("barangay:lookup");
         xLookupField1.setName("entity.barangay"); // NOI18N
         xLookupField1.setPreferredSize(new java.awt.Dimension(0, 20));
-        xLookupField1.setRequired(true);
         xFormPanel2.add(xLookupField1);
+
+        xLabel2.setCaption("");
+        xLabel2.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        xLabel2.setPreferredSize(new java.awt.Dimension(0, 20));
+        xLabel2.setShowCaption(false);
+        xLabel2.setText("Billing Period ");
+        xFormPanel2.add(xLabel2);
 
         xLookupField4.setCaption("Schedule Group");
         xLookupField4.setDisableWhen("#{ mode != 'create' }");
         xLookupField4.setExpression("#{ entity.schedulegroup.objid }");
         xLookupField4.setHandler("waterworks_schedule_group:lookup");
         xLookupField4.setName("entity.schedulegroup"); // NOI18N
+        xLookupField4.setCellPadding(new java.awt.Insets(10, 0, 0, 0));
         xLookupField4.setPreferredSize(new java.awt.Dimension(0, 20));
         xLookupField4.setRequired(true);
         xFormPanel2.add(xLookupField4);
 
-        xLabel2.setCaption("");
-        xLabel2.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
-        xLabel2.setPreferredSize(new java.awt.Dimension(0, 20));
-        xLabel2.setShowCaption(false);
-        xLabel2.setText("Billing Period ");
-        xFormPanel2.add(xLabel2);
+        xIntegerField1.setCaption("Current Bill Year");
+        xIntegerField1.setName("entity.year"); // NOI18N
+        xIntegerField1.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xIntegerField1.setRequired(true);
+        xFormPanel2.add(xIntegerField1);
 
-        xLabel7.setCaption("Year/Month");
-        xLabel7.setExpression("#{ entity.period.year } #{ entity.period.monthname }");
-        xLabel7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
-        xLabel7.setCellPadding(new java.awt.Insets(0, 30, 0, 0));
-        xLabel7.setPreferredSize(new java.awt.Dimension(200, 20));
-        xFormPanel2.add(xLabel7);
-
-        xLabel5.setCaption("From Period");
-        xLabel5.setExpression("#{ entity.period.fromdate }");
-        xLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
-        xLabel5.setCellPadding(new java.awt.Insets(0, 30, 0, 0));
-        xLabel5.setDateFormat("yyyy-MM-dd");
-        xLabel5.setPreferredSize(new java.awt.Dimension(200, 20));
-        xFormPanel2.add(xLabel5);
-
-        xLabel6.setCaption("To Period");
-        xLabel6.setExpression("#{ entity.period.todate }");
-        xLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
-        xLabel6.setCellPadding(new java.awt.Insets(0, 30, 0, 0));
-        xLabel6.setDateFormat("yyyy-MM-dd");
-        xLabel6.setPreferredSize(new java.awt.Dimension(200, 20));
-        xFormPanel2.add(xLabel6);
-
-        xLabel8.setCaption("Expiry Date");
-        xLabel8.setExpression("#{ entity.period.billexpirydate }");
-        xLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
-        xLabel8.setCellPadding(new java.awt.Insets(20, 30, 0, 0));
-        xLabel8.setDateFormat("yyyy-MM-dd");
-        xLabel8.setPreferredSize(new java.awt.Dimension(200, 20));
-        xFormPanel2.add(xLabel8);
+        monthList1.setCaption("Current Bill Month");
+        monthList1.setName("entity.month"); // NOI18N
+        monthList1.setRequired(true);
+        xFormPanel2.add(monthList1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -165,8 +144,8 @@ public class WaterworksSubareaPage extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(xFormPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addComponent(xFormPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(134, Short.MAX_VALUE))
         );
 
         xTabbedPane1.addTab("General Info", jPanel1);
@@ -226,12 +205,12 @@ public class WaterworksSubareaPage extends javax.swing.JPanel {
         );
         xPanel1Layout.setVerticalGroup(
             xPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 498, Short.MAX_VALUE)
+            .addGap(0, 442, Short.MAX_VALUE)
             .addGroup(xPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(xPanel1Layout.createSequentialGroup()
-                    .addGap(0, 45, Short.MAX_VALUE)
+                    .addGap(0, 17, Short.MAX_VALUE)
                     .addComponent(schemaList2, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 46, Short.MAX_VALUE)))
+                    .addGap(0, 18, Short.MAX_VALUE)))
         );
 
         xTabbedPane1.addTab("Stubouts", xPanel1);
@@ -332,15 +311,13 @@ public class WaterworksSubareaPage extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private com.rameses.enterprise.components.MonthList monthList1;
     private com.rameses.seti2.components.SchemaList schemaList2;
     private com.rameses.seti2.components.SchemaList schemaList3;
     private com.rameses.rcp.control.XFormPanel xFormPanel2;
+    private com.rameses.rcp.control.XIntegerField xIntegerField1;
     private com.rameses.rcp.control.XLabel xLabel1;
     private com.rameses.rcp.control.XLabel xLabel2;
-    private com.rameses.rcp.control.XLabel xLabel5;
-    private com.rameses.rcp.control.XLabel xLabel6;
-    private com.rameses.rcp.control.XLabel xLabel7;
-    private com.rameses.rcp.control.XLabel xLabel8;
     private com.rameses.rcp.control.XLookupField xLookupField1;
     private com.rameses.rcp.control.XLookupField xLookupField2;
     private com.rameses.rcp.control.XLookupField xLookupField3;

@@ -27,8 +27,8 @@ public class WaterworksBatchBillingInitialModel extends CrudFormModel {
             if( o.period?.month == null ) throw new Exception("Please specify next period month in subarea");
             if( o.schedulegroup?.objid == null ) throw new Exception("Please specify schedule group in subarea");
             entity.subarea = o;
-            entity.year = o.period.year;
-            entity.month = o.period.month;
+            entity.year = o.year;
+            entity.month = o.month;
             def sked = schedSvc.getSchedule( [year:entity.year, month:entity.month, scheduleid: o.schedulegroup.objid] );
             if(sked) {
                 entity.readingdate = sked.readingdate;

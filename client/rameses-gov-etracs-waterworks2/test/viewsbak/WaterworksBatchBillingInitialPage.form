@@ -66,8 +66,8 @@
         </Component>
         <Component class="com.rameses.rcp.control.XLabel" name="xLabel1">
           <Properties>
-            <Property name="caption" type="java.lang.String" value="From Year"/>
-            <Property name="expression" type="java.lang.String" value="#{ entity.period.monthname } #{ entity.period.year }"/>
+            <Property name="caption" type="java.lang.String" value="Year"/>
+            <Property name="expression" type="java.lang.String" value="#{ entity.monthname } #{ entity.year }"/>
           </Properties>
         </Component>
         <Component class="com.rameses.rcp.control.XLabel" name="xLabel4">

@@ -12,15 +12,13 @@
 		<field name="reader_name" caption="Reader" />
 		<field name="readingdate" caption="ReadingDate"/>
 
-		<complex name="period" ref="waterworks_billing_period" jointype="many-to-one" required="true">
-			<key field="periodid" target="objid"/>
-		</complex>
+		<field name="year" required="true"/>
+		<field name="month" required="true"/>
+		<field name="scheduleid" required="true"/>
 
 		<field name="taskid" />
-		<complex name="task" ref="waterworks_batch_billing_task" jointype="many-to-one" required="false">
-			<key field="taskid" target="taskid" />
-		</complex>
 		
+
 	</element>
 </schema>
 

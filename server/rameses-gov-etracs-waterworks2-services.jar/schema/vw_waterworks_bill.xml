@@ -40,9 +40,11 @@
 		</complex>
 		<field name="meterstate" />
 
-		<field name="period_objid" />
-		<field name="period_year" type="integer"/>
-		<field name="period_month" type="integer"/>
+		<field name="scheduleid" />
+		<field name="year" />
+		<field name="month" />
+		<field name="monthname" />
+
 		<field name="period_fromdate" type="date"/>
 		<field name="period_todate" type="date"/>
 		<field name="period_readingdate" type="date"/>
@@ -52,7 +54,6 @@
 		<field name="period_discdate" type="date"/>
 		<field name="period_duedate" type="date"/>
 		<field name="period_billexpirydate" type="date"/>
-		<field name="period_monthname" expr="MONTH_ARRAY(period.month)" />
 
 		<complex name="consumption" ref="vw_waterworks_bill_consumption" jointype="many-to-one" required="false">
 			<key field="consumptionid" target="objid"/> 

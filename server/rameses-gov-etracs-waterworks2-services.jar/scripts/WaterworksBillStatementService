@@ -42,7 +42,7 @@ class WaterworksBillStatementService {
 			billItems.each {
 				def m = [:];
 				m.particulars = it.item.title;
-				if( ((bill.period.year*12)+bill.period.month) != ((it.year*12)+it.month) ) {
+				if( ((bill.year*12)+bill.month) != ((it.year*12)+it.month) ) {
 					m.particulars += " "+it.year +"-" +it.monthname+" ";
 				}
 				if( it.particulars  ) m.particulars += "("+it.particulars+")" ;
@@ -106,7 +106,7 @@ class WaterworksBillStatementService {
 			if(!bill) throw new Exception("Bill not found");
 		}
 		else if(o.acctid) {
-			bill = vwBillEm.find([acctid: o.acctid]).where( " period.year =:yr AND period.month = :mon ", [yr: o.year, mon: o.month] ).first();
+			bill = vwBillEm.find([acctid: o.acctid]).where( " year =:yr AND month = :mon ", [yr: o.year, mon: o.month] ).first();
 			if(!bill) throw new Exception("Bill not found");
 		}
 		else {

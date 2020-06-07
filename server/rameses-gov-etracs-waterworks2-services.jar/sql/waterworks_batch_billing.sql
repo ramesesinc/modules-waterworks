@@ -1,8 +1,7 @@
 [getAccountsForBilling]
-SELECT wa.objid, wbbp.year, wbbp.month
+SELECT wa.objid, wbb.year, wbb.month, wbb.scheduleid
 FROM vw_waterworks_account wa
 INNER JOIN waterworks_batch_billing wbb ON wa.subareaid = wbb.subareaid
-INNER JOIN waterworks_billing_period wbbp ON wbb.periodid = wbbp.objid 
 WHERE wbb.objid = $P{batchid} 
 AND wa.state IN ('DRAFT','ACTIVE')
 AND (wa.excludeinbatch IS NULL OR wa.excludeinbatch=0)
@@ -18,7 +17,6 @@ LIMIT ${start}, ${limit}
 SELECT COUNT(*) AS count
 FROM vw_waterworks_account wa
 INNER JOIN waterworks_batch_billing wbb ON wa.subareaid = wbb.subareaid
-INNER JOIN waterworks_billing_period wbbp ON wbb.periodid = wbbp.objid 
 WHERE wbb.objid = $P{batchid}
 AND wa.state IN ('DRAFT','ACTIVE')
 AND (wa.excludeinbatch IS NULL OR wa.excludeinbatch=0)

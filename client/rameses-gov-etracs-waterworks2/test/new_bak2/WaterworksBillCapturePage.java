@@ -297,7 +297,7 @@ public class WaterworksBillCapturePage extends javax.swing.JPanel {
         xFormPanel11.setCaptionWidth(150);
 
         xLabel33.setCaption("Bill Year/Month");
-        xLabel33.setExpression("#{ entity.period.year } #{ entity.period.monthname }");
+        xLabel33.setExpression("#{ entity.year } #{ entity.monthname }");
         xFormPanel11.add(xLabel33);
 
         xLabel34.setCaption("Bill Period");
@@ -392,7 +392,7 @@ public class WaterworksBillCapturePage extends javax.swing.JPanel {
         xFormPanel7.setCaptionWidth(150);
 
         xLabel20.setCaption("Bill Year/Month");
-        xLabel20.setExpression("#{ entity.period.year } #{ entity.period.monthname }");
+        xLabel20.setExpression("#{ entity.year } #{ entity.monthname }");
         xFormPanel7.add(xLabel20);
 
         xLabel21.setCaption("Bill Period");

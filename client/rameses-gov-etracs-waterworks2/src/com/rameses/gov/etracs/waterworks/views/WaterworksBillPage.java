@@ -378,7 +378,7 @@ public class WaterworksBillPage extends javax.swing.JPanel {
         xFormPanel11.setCaptionWidth(150);
 
         xLabel33.setCaption("Bill Year/Month");
-        xLabel33.setExpression("#{ entity.period.year } #{ entity.period.monthname }");
+        xLabel33.setExpression("#{ entity.year } #{ entity.monthname }");
         xFormPanel11.add(xLabel33);
 
         xLabel34.setCaption("Bill Period");

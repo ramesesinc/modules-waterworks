@@ -177,7 +177,7 @@ public class WaterworksAccountApprovalPage extends javax.swing.JPanel {
         jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         xLabel1.setCaption("Year");
-        xLabel1.setExpression("#{  entity.subarea.period.year }");
+        xLabel1.setExpression("#{  entity.subarea.year }");
         xLabel1.setName(""); // NOI18N
         xLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         xLabel1.setCaptionFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N

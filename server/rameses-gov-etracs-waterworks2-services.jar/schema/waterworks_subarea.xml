@@ -9,16 +9,17 @@
 			<key field="areaid" target="objid" />
 		</complex>	
 
-		<complex name="schedulegroup" ref="waterworks_schedule_group" jointype="many-to-one" required="true">
+		<complex name="schedulegroup" ref="waterworks_schedule_group" jointype="many-to-one" required="true" includefields="objid,description">
 			<key field="schedulegroupid" target="objid" />
 		</complex>	
 			
-		<complex name="period" ref="waterworks_billing_period" jointype="many-to-one" required="false" caption="Next Period">
-			<key field="periodid" target="objid" />
-		</complex>	
-
-		<field name="barangay_objid" required="true"/>
+		<field name="barangay_objid" />
 		<field name="barangay_name" caption="Barangay" indexed="true"/>
+
+		<field name="year" caption="Year" required="true"/>
+		<field name="month" caption="Month" required="true"/>
+		<field name="monthname" caption="Month Name" expr="MONTH_ARRAY(month)"/>
+
 	</element>
 
 </schema>

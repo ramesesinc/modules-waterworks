@@ -31,7 +31,7 @@ class WaterworksCashReceiptBillStatementModel {
     }
 
     def getYearMonth( def month ) {
-        def ym = ((entity.period.year*12)+entity.period.month) + month;
+        def ym = ((entity.year*12)+entity.month) + month;
         def m = [:];
         m.year = (int)(ym/12);
         m.month = (int)(ym % 12);
