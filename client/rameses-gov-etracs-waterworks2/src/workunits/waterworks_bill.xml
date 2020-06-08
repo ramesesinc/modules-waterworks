@@ -42,7 +42,7 @@
             immediate="true" />    
 
         <invoker type="billActions" caption="Approve" action="approveBill" role="APPROVER"
-            visibleWhen="#{ entity.batchid == null &amp;&amp; entity.state == 'OPEN' }"
+            visibleWhen="#{  entity.state == 'OPEN' }"
             immediate="true" />
 
         <invoker type="paymentActions" caption="Add Payment" action="addPayment" 

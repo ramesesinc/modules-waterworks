@@ -5,6 +5,7 @@ import com.rameses.rcp.common.*;
 import com.rameses.osiris2.client.*;
 import com.rameses.osiris2.common.*;
 import com.rameses.seti2.models.*;
+import com.rameses.util.*;
 import java.text.*;
 
 public class WaterworksSetupBalanceModel {
@@ -34,16 +35,30 @@ public class WaterworksSetupBalanceModel {
 
     void init() {
         account = caller.entity;
-        def subarea = account.subarea;
-        if( !subarea )
-            throw new Exception("Please specify the subarea and subarea in the account");
-        this.year = subarea.year;
-        this.month = subarea.month - 1;
-        if( this.month <= 0 ) {
-            this.month = 12;
-            this.year = this.year - 1;
+        
+        def f = [
+            [name: "year", caption: "Year", type:"integer"],
+            [name: "month", caption: "Month", type:"monthlist"],
+        ];
+        def z = [_schemaname: "waterworks_subarea"];
+        z.select = "year,month,schedulegroupid";
+        z.findBy = [objid: account.subarea.objid];
+        def d = queryService.findFirst(z);
+        d.month = d.month - 1;
+        if( d.month <= 0 ) {
+            d.month = 12;
+            d.year = d.year - 1;
         }
-        this.monthname = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][this.month-1];
+        
+        boolean pass = false;
+        def h = { o->
+            this.year = o.year;
+            this.month = o.month;
+            this.monthname = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][this.month-1];            
+            pass = true;
+        }
+        Modal.show("dynamic:form", [fields: f, data:d, handler: h], [title: 'Specify Bill Year/Month']);
+        if(!pass) throw new BreakException();        
         buildItemList();
     }
 
