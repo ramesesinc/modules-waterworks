@@ -150,7 +150,7 @@ class WaterworksMobileSettingService {
 		def result = [];
 		for( o in list ) {
 			def r = ruleMgmt.open( [objid: o.objid] );
-			def m = buildRuleText(r);
+			def m = [rulename: r.name, salience:r.salience, script:buildRuleText(r)];
 			result << m;
 		}
 		return result;
@@ -162,7 +162,7 @@ class WaterworksMobileSettingService {
 		def result = [];
 		for( o in list ) {
 			def r = ruleMgmt.open( [objid: o.objid] );
-			def m = buildRuleText(r);
+			def m = [rulename: r.name, salience: r.salience, script: buildRuleText(r)];
 			result << m;
 		}
 		return result;
