@@ -1,5 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package com.rameses.gov.etracs.waterworks.views;
@@ -9,15 +10,15 @@ import com.rameses.seti2.views.CrudFormPage;
 
 /**
  *
- * @author dell
+ * @author elmonazareno
  */
 @Template(CrudFormPage.class)
-public class MaterialPage extends javax.swing.JPanel {
+public class WaterworksMaterialPage extends javax.swing.JPanel {
 
     /**
-     * Creates new form MaterialPage
+     * Creates new form WaterworksMaterialPage
      */
-    public MaterialPage() {
+    public WaterworksMaterialPage() {
         initComponents();
     }
 
@@ -30,45 +31,37 @@ public class MaterialPage extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        xTextField1 = new com.rameses.rcp.control.XTextField();
         xFormPanel1 = new com.rameses.rcp.control.XFormPanel();
         xTextField2 = new com.rameses.rcp.control.XTextField();
         xTextField3 = new com.rameses.rcp.control.XTextField();
         xComboBox1 = new com.rameses.rcp.control.XComboBox();
         xDecimalField1 = new com.rameses.rcp.control.XDecimalField();
-        xDecimalField2 = new com.rameses.rcp.control.XDecimalField();
-        xDecimalField3 = new com.rameses.rcp.control.XDecimalField();
-
-        xTextField1.setText("xTextField1");
 
         xFormPanel1.setCaptionWidth(160);
 
         xTextField2.setCaption("Code");
         xTextField2.setName("entity.code"); // NOI18N
+        xTextField2.setRequired(true);
         xFormPanel1.add(xTextField2);
 
         xTextField3.setCaption("Title");
         xTextField3.setName("entity.title"); // NOI18N
         xTextField3.setPreferredSize(new java.awt.Dimension(0, 20));
+        xTextField3.setRequired(true);
+        xTextField3.setTextCase(com.rameses.rcp.constant.TextCase.NONE);
         xFormPanel1.add(xTextField3);
 
         xComboBox1.setCaption("Unit of Measure");
-        xComboBox1.setItems("listTypes.unit");
+        xComboBox1.setItems("units");
         xComboBox1.setName("entity.unit"); // NOI18N
         xComboBox1.setPreferredSize(new java.awt.Dimension(100, 20));
+        xComboBox1.setRequired(true);
         xFormPanel1.add(xComboBox1);
 
-        xDecimalField1.setCaption("Unit Cost");
-        xDecimalField1.setName("entity.unitcost"); // NOI18N
+        xDecimalField1.setCaption("Unit Price");
+        xDecimalField1.setName("entity.price"); // NOI18N
+        xDecimalField1.setRequired(true);
         xFormPanel1.add(xDecimalField1);
-
-        xDecimalField2.setCaption("Cash Price");
-        xDecimalField2.setName("entity.unitprice"); // NOI18N
-        xFormPanel1.add(xDecimalField2);
-
-        xDecimalField3.setCaption("Installment Price");
-        xDecimalField3.setName("entity.installmentprice"); // NOI18N
-        xFormPanel1.add(xDecimalField3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -76,24 +69,23 @@ public class MaterialPage extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(xFormPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(xFormPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(31, 31, 31)
                 .addComponent(xFormPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(114, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.rameses.rcp.control.XComboBox xComboBox1;
     private com.rameses.rcp.control.XDecimalField xDecimalField1;
-    private com.rameses.rcp.control.XDecimalField xDecimalField2;
-    private com.rameses.rcp.control.XDecimalField xDecimalField3;
     private com.rameses.rcp.control.XFormPanel xFormPanel1;
-    private com.rameses.rcp.control.XTextField xTextField1;
     private com.rameses.rcp.control.XTextField xTextField2;
     private com.rameses.rcp.control.XTextField xTextField3;
     // End of variables declaration//GEN-END:variables

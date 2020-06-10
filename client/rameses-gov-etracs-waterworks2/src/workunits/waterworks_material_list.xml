@@ -1,0 +1,7 @@
+<workunit extends="com/rameses/seti2/templates/CrudList.xml" 
+          schemaName="waterworks_material" allowCreate="true" allowOpen="true" allowDelete="true"
+          cols="code,title,unit,price">
+    <invokers>
+        <invoker folderid="/explorer/master/waterworks" caption="Materials" action="init" />
+    </invokers>
+</workunit>

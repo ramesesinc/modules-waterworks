@@ -52,7 +52,7 @@ FROM (
 	   SUM(wbi.amount - wbi.amtpaid) AS amtdue
 	   FROM waterworks_billitem wbi 
 	   INNER JOIN waterworks_bill wb ON wbi.billid = wb.objid 
-		 INNER JOIN waterworks_billing_period wbp ON wb.periodid = wbp.objid 
+	   INNER JOIN waterworks_billing_period wbp ON wb.year=wbp.year AND wb.month=wbp.month AND wb.scheduleid=wbp.scheduleid
 	   WHERE wbi.amount- wbi.amtpaid > 0 AND NOT(wbi.billid IS NULL) 
 	   GROUP BY wb.acctid, wb.billno, wbp.year, wbp.month, wbp.duedate    
 		 
@@ -60,14 +60,13 @@ FROM (
 	   SELECT 
 		 wbi.acctid, 
 		 '-' AS billno,
-		 wbp.year,
-		 wbp.month,
-		 wbp.duedate, 
+		 wbi.year,
+		 wbi.month,
+		 NULL AS duedate, 
 		 SUM(wbi.amount - wbi.amtpaid) AS amtdue
 		 FROM waterworks_billitem wbi
-		 INNER JOIN waterworks_billing_period wbp ON wbi.year=wbp.year AND wbi.month=wbp.month 
 	   WHERE wbi.amount- wbi.amtpaid > 0 AND wbi.billid IS NULL
-		 GROUP BY wbi.acctid, wbp.year, wbp.month, wbp.duedate  
+		 GROUP BY wbi.acctid, wbi.year, wbi.month  
 	) a
 	INNER JOIN waterworks_account wa ON a.acctid = wa.objid 
 	INNER JOIN waterworks_account_info wai ON wa.acctinfoid = wai.objid
