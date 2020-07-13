@@ -11,8 +11,10 @@ SELECT
 	wc.readingdate,
 	wc.reader_objid,
 	wc.reader_name,
-	prev.reading AS prev_reading
+	prev.reading AS prev_reading,
+	wb.batchid
 
 FROM waterworks_consumption wc 
+LEFT JOIN waterworks_bill wb ON wc.billid = wb.objid
 LEFT JOIN waterworks_consumption prev 
 ON prev.acctid = wc.acctid AND prev.meterid = wc.meterid  AND (( prev.year*12 )+prev.month) = ( (wc.year*12)+wc.month-1)

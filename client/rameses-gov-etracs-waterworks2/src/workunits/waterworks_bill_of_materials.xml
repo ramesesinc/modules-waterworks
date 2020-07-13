@@ -1,0 +1,14 @@
+<workunit>
+
+    <invokers>
+        <invoker type="waterworks_bill_of_materials:view" caption="Bill of Materials"
+                 action="init" target="popup"/>
+        
+    </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillOfMaterialsModel" />    
+
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksBillOfMaterialsPage"/>
+    </pages>    
+    
+</workunit>

@@ -209,15 +209,16 @@ class WaterworksBatchBillingService {
 		if(batch.year!=bill.year && batch.month!=bill.month)
 			throw new Exception("The bill's period does not match the batch billing period");
 
+		//allow rejoin batch anytime provided the year and month is the same as the batch.
+		/*
 		if(batch.task.state?.toLowerCase() == 'mobile-reading' )
-			throw new Exception("This bill is currently for mobile reading. It cannot be joined at this time");
-
-		//if batch state is for reading	
-		if( bill.state == 'OPEN' && batch.task.state?.toLowerCase() != 'for-reading' ) 
-			throw new Exception("This bill (open) can only joined to batch that is for-reading state ");		
+			throw new Exception("This bill is currently for mobile reading. It cannot be joined at this time");	
+		if( bill.state == 'OPEN' && !batch.task.state?.toLowerCase().matches('draft|for-reading') ) 
+			throw new Exception("This bill (open) can only be joined to batch that is in draft or for-reading state");		
 
 		if( bill.state == 'POSTED' && batch.task.state?.toLowerCase() != 'approved' ) 
-			throw new Exception("This bill (posted) can only joined to batch that is in approved state ");		
+			throw new Exception("This bill (posted) can only be joined to batch that is in approved state ");
+		*/	
 
 		billEm.find([objid: bill.objid]).update([batchid: batch.objid]);
 

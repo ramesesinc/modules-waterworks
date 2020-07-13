@@ -20,6 +20,13 @@ class WaterworksDisconnectReconnectPersistenceTaskInterceptor {
 
 	@DataContext("waterworks_disconnection")
 	def disconnectionEm;
+
+	@DataContext("vw_waterworks_disconnection")
+	def vwDisconnectionEm;
+
+	@DataContext("waterworks_disconnection_task")
+	def disconnectionTaskEm;
+
 	
 	@DataContext("waterworks_reconnection")
 	def reconnectionEm;
@@ -46,11 +53,20 @@ class WaterworksDisconnectReconnectPersistenceTaskInterceptor {
 		taskSvc.start( wf );
 	}
 
+	@Before(pattern="PersistenceService.removeEntity", eval="#{ args[0]._schemaname == 'waterworks_disconnection'}")
+	void beforeRemoveDisconnection( evt ) {
+		def p = evt.args[0];
+		def disc = vwDisconnectionEm.find( [objid: p.objid] ).first();
+		if( disc.task.state!='draft') throw new Exception("Disconnection can only be deleted at draft state");
+		disconnectionEm.find( [objid: disc.objid]  ).update( [taskid: "{NULL}"])
+		disconnectionTaskEm.find( [refid: disc.objid ]).delete();
+	}
+
 	@After(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_disconnection' && args[0].action == 'approve'  }")
 	public void afterApproveDisconnection( evt ) {
 		def p = evt.args[0]; 
 		def dc = disconnectionEm.find( [objid: p.refid] ).first();
-		acctInfoEm.find( [objid: dc.acctid ] ).update( [state: "DISCONNECTED" ] );
+		acctEm.find( [objid: dc.acctid ] ).update( [state: "DISCONNECTED" ] );
 	}
 
 	//RECONNECTION

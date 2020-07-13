@@ -9,7 +9,5 @@
 		<field name="newacctinfoid" required="true" />
 		<field name="reason" required="true" />
 		<field name="taskid" />
-
-		
 	</element>
 </schema>

@@ -5,6 +5,7 @@
  */
 package com.rameses.gov.etracs.waterworks.views;
 
+import com.rameses.rcp.common.EditorListModel;
 import com.rameses.rcp.ui.annotations.Template;
 import com.rameses.seti2.views.WorkflowTaskFormPage;
 
@@ -66,14 +67,21 @@ public class WaterworksNewConnectionPage extends javax.swing.JPanel {
         jPanel9 = new javax.swing.JPanel();
         xFormPanel4 = new com.rameses.rcp.control.XFormPanel();
         xDecimalField2 = new com.rameses.rcp.control.XDecimalField();
-        xDataTable3 = new com.rameses.rcp.control.XDataTable();
         jPanel10 = new javax.swing.JPanel();
+        xActionBar2 = new com.rameses.rcp.control.XActionBar();
+        schemaList1 = new com.rameses.seti2.components.SchemaList();
         jPanel1 = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel5 = new javax.swing.JPanel();
         xDataTable2 = new com.rameses.rcp.control.XDataTable();
+        jPanel3 = new javax.swing.JPanel();
+        xActionBar3 = new com.rameses.rcp.control.XActionBar();
 
+        setPreferredSize(new java.awt.Dimension(1060, 550));
         setLayout(new java.awt.BorderLayout());
+
+        xTabbedPane1.setPreferredSize(new java.awt.Dimension(300, 50));
+
+        jPanel2.setPreferredSize(new java.awt.Dimension(200, 494));
 
         com.rameses.rcp.control.border.XTitledBorder xTitledBorder1 = new com.rameses.rcp.control.border.XTitledBorder();
         xTitledBorder1.setTitle("Account Information");
@@ -324,7 +332,7 @@ public class WaterworksNewConnectionPage extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -356,12 +364,12 @@ public class WaterworksNewConnectionPage extends javax.swing.JPanel {
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1101, Short.MAX_VALUE)
+            .addGap(0, 1030, Short.MAX_VALUE)
             .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                    .addContainerGap(420, Short.MAX_VALUE)
+                    .addContainerGap(385, Short.MAX_VALUE)
                     .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(420, Short.MAX_VALUE)))
+                    .addContainerGap(384, Short.MAX_VALUE)))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -375,14 +383,22 @@ public class WaterworksNewConnectionPage extends javax.swing.JPanel {
 
         xPanel1.add(jPanel9, java.awt.BorderLayout.SOUTH);
 
-        xDataTable3.setHandler("feeList");
-        xDataTable3.setColumns(new com.rameses.rcp.common.Column[]{
+        jPanel10.setPreferredSize(new java.awt.Dimension(0, 30));
+        jPanel10.setLayout(new java.awt.BorderLayout());
+
+        xActionBar2.setFormName("formName");
+        xActionBar2.setName("feeActions"); // NOI18N
+        jPanel10.add(xActionBar2, java.awt.BorderLayout.CENTER);
+
+        xPanel1.add(jPanel10, java.awt.BorderLayout.NORTH);
+
+        schemaList1.setColumns(new com.rameses.rcp.common.Column[]{
             new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "item.code"}
+                new Object[]{"name", "item.objid"}
                 , new Object[]{"caption", "Item Code"}
                 , new Object[]{"width", 100}
-                , new Object[]{"minWidth", 0}
-                , new Object[]{"maxWidth", 0}
+                , new Object[]{"minWidth", 150}
+                , new Object[]{"maxWidth", 150}
                 , new Object[]{"required", false}
                 , new Object[]{"resizable", true}
                 , new Object[]{"nullWhenEmpty", true}
@@ -394,10 +410,10 @@ public class WaterworksNewConnectionPage extends javax.swing.JPanel {
             }),
             new com.rameses.rcp.common.Column(new Object[]{
                 new Object[]{"name", "item.title"}
-                , new Object[]{"caption", "Item Title"}
+                , new Object[]{"caption", "Item Name"}
                 , new Object[]{"width", 200}
-                , new Object[]{"minWidth", 0}
-                , new Object[]{"maxWidth", 0}
+                , new Object[]{"minWidth", 300}
+                , new Object[]{"maxWidth", 350}
                 , new Object[]{"required", false}
                 , new Object[]{"resizable", true}
                 , new Object[]{"nullWhenEmpty", true}
@@ -411,6 +427,21 @@ public class WaterworksNewConnectionPage extends javax.swing.JPanel {
                 new Object[]{"name", "amount"}
                 , new Object[]{"caption", "Amount"}
                 , new Object[]{"width", 100}
+                , new Object[]{"minWidth", 150}
+                , new Object[]{"maxWidth", 150}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
+            }),
+            new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", null}
+                , new Object[]{"caption", "-"}
+                , new Object[]{"width", 100}
                 , new Object[]{"minWidth", 0}
                 , new Object[]{"maxWidth", 0}
                 , new Object[]{"required", false}
@@ -420,28 +451,18 @@ public class WaterworksNewConnectionPage extends javax.swing.JPanel {
                 , new Object[]{"visible", true}
                 , new Object[]{"visibleWhen", null}
                 , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
-                , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
             })
         });
-        xPanel1.add(xDataTable3, java.awt.BorderLayout.CENTER);
-
-        jPanel10.setPreferredSize(new java.awt.Dimension(0, 30));
-
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1101, Short.MAX_VALUE)
-        );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
-        );
-
-        xPanel1.add(jPanel10, java.awt.BorderLayout.NORTH);
+        schemaList1.setCustomFilter("appid = :appid");
+        schemaList1.setHandler("feeListModel");
+        schemaList1.setQueryName("entityQry");
+        schemaList1.setSchemaName("waterworks_newconnection_fee");
+        xPanel1.add(schemaList1, java.awt.BorderLayout.CENTER);
 
         xTabbedPane1.addTab("Fees", xPanel1);
 
+        jPanel1.setPreferredSize(new java.awt.Dimension(200, 494));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         xDataTable2.setHandler("requirementList");
@@ -529,11 +550,11 @@ public class WaterworksNewConnectionPage extends javax.swing.JPanel {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1080, Short.MAX_VALUE)
+            .addGap(0, 1030, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel5Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(xDataTable2, javax.swing.GroupLayout.DEFAULT_SIZE, 1068, Short.MAX_VALUE)
+                    .addComponent(xDataTable2, javax.swing.GroupLayout.DEFAULT_SIZE, 1018, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         jPanel5Layout.setVerticalGroup(
@@ -546,13 +567,20 @@ public class WaterworksNewConnectionPage extends javax.swing.JPanel {
                     .addContainerGap()))
         );
 
-        jTabbedPane1.addTab("   Requirements   ", jPanel5);
+        jPanel1.add(jPanel5, java.awt.BorderLayout.PAGE_START);
 
-        jPanel1.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
-
-        xTabbedPane1.addTab("Info xx", jPanel1);
+        xTabbedPane1.addTab("Requirements", jPanel1);
 
         add(xTabbedPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(200, 30));
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        xActionBar3.setFormName("formName");
+        xActionBar3.setName("appActions"); // NOI18N
+        jPanel3.add(xActionBar3, java.awt.BorderLayout.CENTER);
+
+        add(jPanel3, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -564,16 +592,18 @@ public class WaterworksNewConnectionPage extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private com.rameses.seti2.components.SchemaList schemaList1;
+    private com.rameses.rcp.control.XActionBar xActionBar2;
+    private com.rameses.rcp.control.XActionBar xActionBar3;
     private com.rameses.rcp.control.XButton xButton4;
     private com.rameses.rcp.control.XButton xButton5;
     private com.rameses.rcp.control.XComboBox xComboBox1;
     private com.rameses.rcp.control.XDataTable xDataTable2;
-    private com.rameses.rcp.control.XDataTable xDataTable3;
     private com.rameses.rcp.control.XDecimalField xDecimalField2;
     private com.rameses.rcp.control.XFormPanel xFormPanel1;
     private com.rameses.rcp.control.XFormPanel xFormPanel4;

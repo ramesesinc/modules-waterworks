@@ -10,7 +10,10 @@ import com.rameses.util.*;
 
 public class WaterworksNewConnectionModel extends WorkflowTaskModel {
     
-	def classTypes;
+    @Service("WaterworksNewConnectionService")
+    def newConnSvc;
+    
+    def classTypes;
 
     String title = "Application for New Connection";
 
@@ -28,13 +31,13 @@ public class WaterworksNewConnectionModel extends WorkflowTaskModel {
         classTypes = queryService.getList( m );        
     }
 
-	public void afterCreate() {
+    public void afterCreate() {
         entity.account = [address:[:], attributes: [], units:1 ];
-	}
+        entity.materials = [];
+    }
     
-
-	//related to attributes
-	def selectedAttribute;
+    //related to attributes
+    def selectedAttribute;
 
     void addAttribute() {
         def p = [:]
@@ -58,5 +61,22 @@ public class WaterworksNewConnectionModel extends WorkflowTaskModel {
         return Inv.lookupOpener("waterworks_stubout:lookup", p );
     }
     
-
+    def getEntityQry() {
+        return [appid: entity.objid];
+    }
+    
+    def feeListModel = [:];
+    void assess() {
+        def r = newConnSvc.buildFees(getEntityQry()); 
+        entity.total = r.total;
+        feeListModel.reload();
+        binding.refresh("entity.total");
+    }
+    
+    def requirementListModel = [];
+    
+    def showBillOfMaterials() {
+        return Inv.lookupOpener("waterworks_bill_of_materials:view", [entity:entity]);
+    }
+    
 }

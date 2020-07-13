@@ -1,13 +1,22 @@
 <workunit schemaName="waterworks_newconnection">
 
     <invokers>
+        <invoker type="waterworks_newconnection:create" caption="New Connection"
+                 action="create" />
+        
         <invoker type="waterworks_newconnection:open" caption="New Connection"
                  action="open" index="5"/>
 
 
         <invoker type="formActions" caption="Submit"
-                 action="save" index="!" visibleWhen="#{mode == 'create'}"/>
+                 action="save" visibleWhen="#{mode == 'create'}"/>
+        
+        <invoker type="appActions" caption="Bill of Materials"
+                 action="showBillOfMaterials" />
 
+        <invoker type="feeActions" caption="Assess" action="assess"
+                  visibleWhen="#{mode == 'read'}"/>
+        
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksNewConnectionModel" />    
 

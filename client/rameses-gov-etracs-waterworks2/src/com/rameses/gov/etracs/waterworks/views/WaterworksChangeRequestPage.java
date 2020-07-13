@@ -59,6 +59,7 @@ public class WaterworksChangeRequestPage extends javax.swing.JPanel {
         xLabel5 = new com.rameses.rcp.control.XLabel();
         xLabel6 = new com.rameses.rcp.control.XLabel();
         xLabel7 = new com.rameses.rcp.control.XLabel();
+        xLabel10 = new com.rameses.rcp.control.XLabel();
         xLookupField3 = new com.rameses.rcp.control.XLookupField();
         xLabel19 = new com.rameses.rcp.control.XLabel();
         xComboBox2 = new com.rameses.rcp.control.XComboBox();
@@ -145,7 +146,7 @@ public class WaterworksChangeRequestPage extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(xFormPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addContainerGap(202, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,6 +191,7 @@ public class WaterworksChangeRequestPage extends javax.swing.JPanel {
         xFormPanel3.add(xLookupField2);
 
         xTextField2.setCaption("New Account Name");
+        xTextField2.setDepends(new String[] {"entity.newaccount.owner"});
         xTextField2.setName("entity.newaccount.acctname"); // NOI18N
         xTextField2.setPreferredSize(new java.awt.Dimension(0, 20));
         xTextField2.setRequired(true);
@@ -208,7 +210,7 @@ public class WaterworksChangeRequestPage extends javax.swing.JPanel {
             .addGroup(pnlOwnerLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(xFormPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
         pnlOwnerLayout.setVerticalGroup(
             pnlOwnerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,7 +253,7 @@ public class WaterworksChangeRequestPage extends javax.swing.JPanel {
             .addGroup(pnlLocationLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(xFormPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addContainerGap(200, Short.MAX_VALUE))
         );
         pnlLocationLayout.setVerticalGroup(
             pnlLocationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,6 +289,12 @@ public class WaterworksChangeRequestPage extends javax.swing.JPanel {
         xLabel7.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel5.add(xLabel7);
 
+        xLabel10.setCaption("Current Meter Reading");
+        xLabel10.setDepends(new String[] {"entity.account"});
+        xLabel10.setExpression("#{ entity.account.meter.reading }");
+        xLabel10.setPreferredSize(new java.awt.Dimension(0, 20));
+        xFormPanel5.add(xLabel10);
+
         xLookupField3.setCaption("New Meter Serial No/Brand");
         xLookupField3.setDepends(new String[] {});
         xLookupField3.setExpression("#{ entity.newaccount.meter.serialno } #{ entity.newaccount.meter.brand }");
@@ -298,7 +306,7 @@ public class WaterworksChangeRequestPage extends javax.swing.JPanel {
 
         xLabel19.setCaption("New Meter Size / Capacity");
         xLabel19.setDepends(new String[] {"entity.newaccount.meter"});
-        xLabel19.setExpression("#{entity.newaccount.meter?.size} #{entity.newaccount.meter.capacity}");
+        xLabel19.setExpression("#{entity.newaccount.meter?.size} / #{entity.newaccount.meter.capacity}");
         xLabel19.setVisibleWhen("#{ entity.newaccount.meterid != null }");
         xLabel19.setBackground(new java.awt.Color(245, 245, 245));
         xLabel19.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
@@ -319,10 +327,10 @@ public class WaterworksChangeRequestPage extends javax.swing.JPanel {
         pnlMeter.setLayout(pnlMeterLayout);
         pnlMeterLayout.setHorizontalGroup(
             pnlMeterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMeterLayout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
-                .addComponent(xFormPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 563, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(71, 71, 71))
+            .addGroup(pnlMeterLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(xFormPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         pnlMeterLayout.setVerticalGroup(
             pnlMeterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -385,7 +393,7 @@ public class WaterworksChangeRequestPage extends javax.swing.JPanel {
             .addGroup(pnlAttributesLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addContainerGap(200, Short.MAX_VALUE))
         );
         pnlAttributesLayout.setVerticalGroup(
             pnlAttributesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -423,7 +431,7 @@ public class WaterworksChangeRequestPage extends javax.swing.JPanel {
             .addGroup(pnlClassificationLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(xFormPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
         pnlClassificationLayout.setVerticalGroup(
             pnlClassificationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -488,7 +496,7 @@ public class WaterworksChangeRequestPage extends javax.swing.JPanel {
             .addGroup(pnlContactLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(xFormPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(117, Short.MAX_VALUE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
         pnlContactLayout.setVerticalGroup(
             pnlContactLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -542,7 +550,7 @@ public class WaterworksChangeRequestPage extends javax.swing.JPanel {
             .addGroup(pnlSubareaLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(xFormPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(181, Short.MAX_VALUE))
         );
         pnlSubareaLayout.setVerticalGroup(
             pnlSubareaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -589,6 +597,7 @@ public class WaterworksChangeRequestPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XFormPanel xFormPanel8;
     private com.rameses.rcp.control.XIntegerField xIntegerField1;
     private com.rameses.rcp.control.XLabel xLabel1;
+    private com.rameses.rcp.control.XLabel xLabel10;
     private com.rameses.rcp.control.XLabel xLabel19;
     private com.rameses.rcp.control.XLabel xLabel2;
     private com.rameses.rcp.control.XLabel xLabel3;

@@ -73,8 +73,8 @@ class WaterworksConsumptionService {
     public def calcAndUpdate( def o ) {
         if(!o.acctid) throw new Exception("acctid is required in WaterworksConsumptionService.calcAndUpdate");
         if(!o.meterstate) throw new Exception("meterstate is required in WaterworksConsumptionService.calcAndUpdate");
-        if(!o.prevreading) throw new Exception("prev.reading is required in WaterworksConsumptionService.calcAndUpdate");
-        if(!o.reading) throw new Exception("reading is required in WaterworksConsumptionService.calcAndUpdate");
+        if(o.prevreading==null) throw new Exception("prev.reading is required in WaterworksConsumptionService.calcAndUpdate");
+        if(o.reading==null) throw new Exception("reading is required in WaterworksConsumptionService.calcAndUpdate");
         if(!o.meterstate) throw new Exception("meterstate is required in WaterworksConsumptionService.calcAndUpdate");
         if(!o.consumptionid) throw new Exception("consumptionid is required in WaterworksConsumptionService.calcAndUpdate");
 

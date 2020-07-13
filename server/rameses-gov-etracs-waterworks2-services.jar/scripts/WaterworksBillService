@@ -155,7 +155,7 @@ class WaterworksBillService {
 		c.billid = bill.objid;
 		c.year = bill.year;
 		c.month = bill.month;
-		c.reading = lastCons.reading;
+		//c.reading = lastCons.reading;  //try to make this null so it will force the user to encode the readings.
 		c.meterid = acct.meterid;
 		c.volume = 0;
 		c.amount = 0;

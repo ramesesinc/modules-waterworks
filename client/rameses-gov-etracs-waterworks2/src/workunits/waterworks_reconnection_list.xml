@@ -6,7 +6,8 @@
           allowNotify="true">
 
     <invokers>
-        <invoker folderid="/menucategory/waterworks/account" caption="Reconnection" action="init" index="10" />
+        <invoker folderid="/menucategory/waterworks/account" 
+                 caption="Reconnection" action="init" index="120" />
     </invokers>
       
 </workunit>

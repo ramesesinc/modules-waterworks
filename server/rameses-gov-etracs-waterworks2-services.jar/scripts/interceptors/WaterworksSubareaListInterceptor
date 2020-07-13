@@ -22,15 +22,15 @@ class WaterworksSubareaListInterceptor{
 
 		switch( status ) {
 			case 'forbilling':
-				str = " period.billexpirydate < NOW() ";
+				str = " ((year*12) + month) = (YEAR(NOW())*12 + MONTH(NOW())) ";
 				break; 
 
 			case 'active':
-				str = " period.billexpirydate >= NOW() ";
+				str = " ((year*12) + month) = ( (YEAR(NOW())*12) + MONTH(NOW()) - 1 ) ";
 				break;
 
 			case 'noperiod':
-				str = " period.objid IS NULL ";
+				str = " year IS NULL AND month IS NULL";
 				break;
 
 			default:	

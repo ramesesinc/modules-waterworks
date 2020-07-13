@@ -47,7 +47,7 @@ class WaterworksComputationService  {
 			meter.state = meterstate;
 			
 			if(o.prevreading == null) throw new Exception("prevreading is required in WaterworksComputationService");
-			if(!o.reading) throw new Exception("reading is required in WaterworksComputationService");
+			if(o.reading==null) throw new Exception("reading is required in WaterworksComputationService");
 
 			if( o.prevreading >= meter.capacity ) {
                 throw new Exception("Prev reading must be less than meter capacity");

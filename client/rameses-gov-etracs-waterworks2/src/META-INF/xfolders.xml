@@ -20,6 +20,7 @@
             <folder id="master" caption="Master" icon="home/icons/folder.png"/>
             <folder id="txn" caption="Request for Change" icon="home/icons/folder.png"/>
             <folder id="account" caption="Accounts" icon="home/icons/folder.png"/>
+            <folder id="workorder" caption="Work Orders" icon="home/icons/folder.png"/>
             <folder id="billing" caption="Billing" icon="home/icons/folder.png"/>
             <folder id="report" caption="Reports" icon="home/icons/folder.png"/>
         </folder>            

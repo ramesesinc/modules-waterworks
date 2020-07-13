@@ -13,48 +13,66 @@ public class WaterworksChangeRequestModel extends WorkflowTaskModel {
 	def meterStates = ["ACTIVE","DISCONNECTED","DEFECTIVE"];
 	def classTypes;
 
+        String getTitle() {
+            return "Change Request - " + entity.apptype; 
+        }
+    
+    
 	@PropertyChangeListener
 	def propListener = [
-        "entity.account" : { o->
-            entity.acctid = o.objid;
-            entity.acctinfoid = o.acctinfoid;
+            "entity.account" : { o->
+                entity.acctid = o.objid;
+                entity.acctinfoid = o.acctinfoid;
 
-            def m = [_schemaname: "vw_waterworks_account_info" ];
-            m.findBy = [objid: entity.acctinfoid ];
-            entity.account = queryService.findFirst( m );
-            entity.account.acctno = o.acctno;
-            entity.account.meterid = entity.account.meter?.objid;
+                def m = [_schemaname: "vw_waterworks_account_info" ];
+                m.findBy = [objid: entity.acctinfoid ];
+                entity.account = queryService.findFirst( m );
+                entity.account.acctno = o.acctno;
+                //entity.account.meterid = entity.account.meter?.objid;
 
-            if(entity.apptype == "CHANGE_ATTRIBUTES" && entity.account.attributes) {
-                    entity.newaccount.attributes.addAll( entity.account.attributes );		
-            };
-            else if(entity.apptype == "CHANGE_CLASSIFICATION") {
-                    entity.account.classificationid = entity.account.classification.objid		
-            };
-            else if(entity.apptype == "CHANGE_CONTACT") {
-                    entity.newaccount.mobileno = entity.account.mobileno;       
-                    entity.newaccount.email = entity.account.email;       
-                    entity.newaccount.phoneno = entity.account.phoneno;                           
-            };            
-        },
-        "entity.newaccount.meter" : { o->
-        	if(o==null) {
-        		entity.newaccount.meterid = null;
-        	}
-        	else {
-        		entity.newaccount.meterid = o.objid;
-        	}
-        },
-        "entity.newaccount.classification" : { o->
-            entity.newaccount.classificationid = o?.objid;
-        },
-        "entity.newaccount.subarea" : { o->
-            entity.newaccount.stubout = null;
-            entity.newaccount.subareaid = o?.objid;
-        },
-        "entity.newaccount.stubout" : { o->
-            entity.newaccount.stuboutid = o?.objid;
-        }           		
+                if(entity.apptype == "CHANGE_ATTRIBUTES" && entity.account.attributes) {
+                        entity.newaccount.attributes.addAll( entity.account.attributes );		
+                };
+                else if(entity.apptype == "CHANGE_CLASSIFICATION") {
+                        entity.account.classificationid = entity.account.classification.objid		
+                };
+                else if(entity.apptype == "CHANGE_CONTACT") {
+                        entity.newaccount.mobileno = entity.account.mobileno;       
+                        entity.newaccount.email = entity.account.email;       
+                        entity.newaccount.phoneno = entity.account.phoneno;                           
+                }; 
+                else if(entity.apptype == "CHANGE_METER") {
+                    m = [_schemaname: "waterworks_consumption" ];
+                    m.findBy = [acctid: entity.account.objid, meterid: entity.account.meterid ];
+                    m.orderBy = "year DESC, month DESC";
+                    def r = queryService.findFirst( m );
+                    entity.account.meter.reading = r.reading;
+                }
+            },
+            "entity.newaccount.meter" : { o->
+                    if(o==null) {
+                        entity.newaccount.meterid = null;
+                    }
+                    else {
+                        entity.newaccount.meterid = o.objid;
+                        entity.newaccount.meter.size = entity.newaccount.meter.size.title;
+                        entity.newaccount.meterstate = 'ACTIVE';
+                    }
+            },
+            "entity.newaccount.classification" : { o->
+                entity.newaccount.classificationid = o?.objid;
+            },
+            "entity.newaccount.owner" : { o->
+                entity.newaccount.acctname = o.name;
+            },
+            "entity.newaccount.subarea" : { o->
+                entity.newaccount.stubout = null;
+                entity.newaccount.subareaid = o?.objid;
+            },
+            "entity.newaccount.stubout" : { o->
+                entity.newaccount.stuboutid = o?.objid;
+            },
+        
 	];
 
 	//we are doing this becuase of a not good implementation of the WorfklowTaskList
@@ -119,6 +137,9 @@ public class WaterworksChangeRequestModel extends WorkflowTaskModel {
         }
         else if( entity.apptype == "CHANGE_OWNER" ) {
             if(!entity.newaccount.owner) throw new Exception("Owner entry is required");
+            if(entity.account.owner.objid ==entity.newaccount.owner.objid ) 
+                throw new Exception("Please specify a different owner");
+            
         }
         else if( entity.apptype == "CHANGE_ATTRIBUTES") {
             if(entity.account.attributes.sort{it} == entity.newaccount.attributes.sort{it}) 
@@ -126,7 +147,7 @@ public class WaterworksChangeRequestModel extends WorkflowTaskModel {
         }
         else if( entity.apptype == "CHANGE_METER") {
         	if( !entity.newaccount.meterid ) {
-        		if( entity.account.meterid ==null ) throw new Exception("Please specify a meter");
+        		//if( entity.account.meterid ==null ) throw new Exception("Please specify a meter");
         		if(!MsgBox.confirm("This is an unmetered account. Are you sure you want to proceed?")) return;	
         	}	
         	else if( entity.newaccount.meterid == entity.account.meterid )
@@ -143,7 +164,10 @@ public class WaterworksChangeRequestModel extends WorkflowTaskModel {
             if(b1 && b2 && b3 )
                 throw new Exception("There are no changes made in the contact information.");
         }
-    	return super.save();
+    	super.save();
+        def op = Inv.lookupOpener("waterworks_change_request:open", [entity:entity] );  
+        op.target = "topwindow";
+        return op;
     }
 
     def getLookupStubout() {

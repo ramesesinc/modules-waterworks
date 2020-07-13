@@ -12,7 +12,15 @@ public class WaterworksDisconnectionModel extends WorkflowTaskModel {
    
 
 	def viewStatement() {
-		throw new Exception("fire statement")
+            return Inv.lookupOpener("waterworks_cashreceipt_statement", [entity: [objid: entity.billid ]] ); 
 	}
 
+        def save() {
+            super.save();
+            def op = Inv.lookupOpener("waterworks_disconnection:open", [entity: entity]);
+            op.target = "topwindow";
+            return op;
+        }
+    
+    
 }

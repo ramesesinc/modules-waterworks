@@ -1,15 +1,16 @@
 <workunit schemaName="waterworks_change_request">
     <invokers>
+        
         <invoker folderid="/menucategory/waterworks/txn" caption="Change Meter" 
                 formId="waterworks_change_request:change_meter" target="popup"
-                 action="create" index="4" apptype="CHANGE_METER"/>
+                action="create" index="4" apptype="CHANGE_METER"/>
         
         <invoker folderid="/menucategory/waterworks/txn" caption="Change Owner" 
-                formId="waterworks_change_request:change_owner" target="popup"
+                 formId="waterworks_change_request:change_owner" target="popup"
                  action="create" index="5" apptype="CHANGE_OWNER"/>
         
         <invoker folderid="/menucategory/waterworks/txn" caption="Change Address" 
-                formId="waterworks_change_request:change_location" target="popup"
+                 formId="waterworks_change_request:change_location" target="popup"
                  action="create" index="6" apptype="CHANGE_ADDRESS"/>
 
         <invoker folderid="/menucategory/waterworks/txn" caption="Change Attributes"

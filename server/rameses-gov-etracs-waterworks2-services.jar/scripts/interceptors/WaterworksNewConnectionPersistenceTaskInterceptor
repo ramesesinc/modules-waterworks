@@ -21,13 +21,16 @@ class WaterworksNewConnectionPersistenceTaskInterceptor {
 	@DataContext("waterworks_newconnection")
 	def newconnectionEm;
 
+	@DataContext("waterworks_newconnection_fee")
+	def feeEm;
+
 	//NEW CONNECTION
 	@Before(pattern="PersistenceService.create", eval="#{ args[0]._schemaname == 'waterworks_newconnection'}")
 	void beforeCreateNewConnection( evt ) {
 		def p = evt.args[0]; 
-		def pattern = var.waterworks_newconnection_controlno_format;
-		if(!pattern) throw new Exception("Please specify waterworks_newconnection_controlno_format in sys_var");
-		p.controlno = controlNoSvc.getNextNo(pattern);
+		def pattern = var.waterworks_newconnection_appno_format;
+		if(!pattern) throw new Exception("Please specify waterworks_newconnection_appno_format in sys_var");
+		p.appno = controlNoSvc.getNextNo(pattern);
 		//save acct info first
 		def acctInfo = acctInfoEm.create( p.account );
 		p.acctinfoid = acctInfo.objid;
@@ -42,5 +45,12 @@ class WaterworksNewConnectionPersistenceTaskInterceptor {
 		wf.startdate = dateSvc.serverDate;
 		taskSvc.start( wf );
 	}
+
+	@After(pattern="PersistenceService.read", eval="#{ args[0]._schemaname == 'waterworks_newconnection'}")
+	void afterReadNewConnection( evt ) {
+		def result = evt.result; 
+		result.total = feeEm.find([appid: result.objid]).select("amt:{SUM(amount)}").val();
+	}
+
 
 } 

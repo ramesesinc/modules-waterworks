@@ -1,7 +1,7 @@
 <schema>
 	<element tablename="waterworks_newconnection">
 		<field name="objid" primary="true" prefix="WNCONN" />
-		<field name="controlno" required="true" />
+		<field name="appno" required="true" />
 		<field name="dtcreated" required="true" />
 
 		<complex name="account" ref="vw_waterworks_account_info" jointype="many-to-one" required="true">
