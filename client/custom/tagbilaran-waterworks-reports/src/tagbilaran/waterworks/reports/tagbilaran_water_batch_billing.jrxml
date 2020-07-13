@@ -682,17 +682,18 @@
 					<dataSourceExpression><![CDATA[$F{details}]]></dataSourceExpression>
 					<subreportExpression  class="java.lang.String"><![CDATA["tagbilaran_water_batch_billing_details.jasper"]]></subreportExpression>
 				</subreport>
-				<image  scaleImage="FillFrame" hAlign="Right" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Right" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="428"
+						mode="Opaque"
+						x="395"
 						y="6"
-						width="96"
+						width="123"
 						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
 						key="barcode-1"/>
 					<box></box>
-					<graphicElement stretchType="NoStretch">
-					<pen lineWidth="0.0"/>
-</graphicElement>
+					<graphicElement stretchType="NoStretch" fill="Solid" />
 					<imageExpression class="java.awt.Image"><![CDATA[it.businesslogic.ireport.barcode.BcImage.getBarcodeImage(5,$F{barcode},false,false,null,0,0)]]></imageExpression>
 				</image>
 				<staticText>
@@ -710,9 +711,9 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="428"
+						x="395"
 						y="23"
-						width="96"
+						width="123"
 						height="9"
 						key="textField-17"/>
 					<box></box>
