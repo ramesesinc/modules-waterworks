@@ -23,7 +23,9 @@ class WaterworksCashReceiptModel  extends CommonCashReceiptModel {
     
     
     void loadBill( def p ) {
-        query.txntype = pmttxntype;
+        if(p.action!="barcode") {
+            query.txntype = pmttxntype;
+        }
         p.collectiontype = entity.collectiontype;
         p.billdate = entity.receiptdate;
         

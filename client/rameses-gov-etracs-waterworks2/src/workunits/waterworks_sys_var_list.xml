@@ -1,0 +1,8 @@
+<workunit extends="enterprise/templates/SysVarList.xml">
+    <invokers>
+        
+        <invoker folderid="/explorer/setting" caption="Waterworks Variables" 
+                 action="init" index="10"/>
+
+    </invokers>
+</workunit>

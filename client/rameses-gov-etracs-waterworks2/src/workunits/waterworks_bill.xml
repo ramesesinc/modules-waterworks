@@ -22,15 +22,28 @@
                  action="open" />          
 
         <!-- this hooks to formActions-->
-        <invoker type="formActions" caption="Close" action="_close" immediate="true" />
-
+        <invoker type="formActions" caption="Close" action="_close" immediate="true" /> 
+        <invoker type="formActions" caption="Cancel Bill" action="cancelBill" immediate="true" 
+            visibleWhen="#{ entity.state != 'CLOSED'  }"/> 
+        
         <invoker type="formActions" caption="Generate Next Bill" 
             action="generateNextBill" visibleWhen="#{ entity.batchid == null &amp;&amp; entity.state == 'POSTED'}"  
             immediate="true" />
 
+        <invoker type="formActions" caption="View Account" action="viewAccount" immediate="true" />
+
         <!-- BILL ACTIONS -->
+        <invoker type="billActions" caption="Edit Prev Balance" action="addPrevBalance" 
+            immediate="true" visibleWhen="#{entity.balanceforward >= 0 &amp;&amp; entity.state == 'OPEN' }"/>
+        
+        <invoker type="billActions" caption="View Balance Forward" action="viewBalanceForward" 
+            immediate="true" visibleWhen="#{entity.balanceforward > 0 }"/>
+        
+        <invoker type="billActions" caption="Add Prev Reading" action="addPrevReading" 
+            immediate="true" visibleWhen="#{ entity.consumption.prev?.reading == null }"/>
+        
         <invoker type="billActions" caption="Edit Reading" action="editReading" 
-            visibleWhen="#{ readingPosted == false &amp;&amp; entity.state=='OPEN' }"
+            visibleWhen="#{ readingPosted == false &amp;&amp; entity.state=='OPEN' &amp;&amp; entity.consumption.prev?.reading !=null }"
             immediate="true" />
 
         <invoker type="billActions" caption="Process Bill" action="processBill" 
@@ -44,7 +57,17 @@
         <invoker type="billActions" caption="Approve" action="approveBill" role="APPROVER"
             visibleWhen="#{  entity.state == 'OPEN' }"
             immediate="true" />
+        
+        <invoker type="billActions" caption="Reopen" action="reopenBill" 
+            role="ADMIN"
+            visibleWhen="#{  entity.state == 'POSTED' }"
+            immediate="true" />
 
+        <invoker type="billActions" caption="Clear Surcharges" action="clearSurcharges" 
+            visibleWhen="#{ entity.state=='POSTED' }"
+            role="ADMIN"
+            immediate="true" /> 
+        
         <invoker type="paymentActions" caption="Add Payment" action="addPayment" 
             visibleWhen="#{ entity.state=='POSTED' }" role="ADMIN"
             immediate="true" />    

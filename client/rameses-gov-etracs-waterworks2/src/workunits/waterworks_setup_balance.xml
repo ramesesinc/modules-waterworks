@@ -2,12 +2,19 @@
         allowCreate="false" allowEdit="false" allowDelete="false">
     <invokers>
         <!-- this hooks in customer account. entity here refers to customer account -->
+        <!--
         <invoker type="vw_waterworks_account:form:formActions" 
                 action="init"
                 caption="Setup Begin Balance" target="popup"
                 visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; mode == 'read'}"    
                 />
-                 
+        -->
+        <!--
+        <invoker type="waterworks_bill_setup_balance" 
+                action="initFromBill"
+                caption="Setup Begin Balance" target="popup"/>
+        -->
+                          
         <!-- this should display at whatever state as long as it is initial --> 
         <!--        
         <invoker type="vw_waterworks_account:form:formActions" 
@@ -31,7 +38,7 @@
 
         
         -->
-        <invoker type="formActions" caption="Approve" action="approve" />
+        <invoker type="formActions" caption="Approve" action="approve" visibleWhen="#{fromBill == false}"/>
 
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksSetupBalanceModel" />

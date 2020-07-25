@@ -4,7 +4,7 @@ import com.rameses.util.*;
 import com.rameses.functions.*;
 import java.text.*;
 
-class WaterworksMobileSupporService {
+class WaterworksMobileSupportService {
 
 	@Service("WaterworksBillingRuleService")
 	def ruleSvc;
@@ -35,6 +35,18 @@ class WaterworksMobileSupporService {
 
 	@DataContext("waterworks_billitem")
 	def billItemEm;
+
+	@DataContext("vw_waterworks_batch_billing")
+	def vwBatchBillingEm;
+
+
+	@ProxyMethod
+	public def getBatches( def o ) {
+		if(!o.readerid) return  [ status: 'ERR', message: "Please pass readerid" ];
+		def list = vwBatchBillingEm.where( "reader.objid = :readerid AND task.state = :state ", [readerid: o.readerid, state:"mobile-reading" ] ).select("batchid:{objid}").list();
+		if(!list ) return [ status: 'ERR', message: "There are no batches to process" ];
+		return list;
+	}
 
 	@ProxyMethod
 	public def getBatch( def o ) {

@@ -37,7 +37,6 @@ public class WaterworksCashReceiptInitialPage extends javax.swing.JPanel {
         xLabel1 = new com.rameses.rcp.control.XLabel();
         xRadio1 = new com.rameses.rcp.control.XRadio();
         xRadio3 = new com.rameses.rcp.control.XRadio();
-        xRadio4 = new com.rameses.rcp.control.XRadio();
         xRadio5 = new com.rameses.rcp.control.XRadio();
         xTextField2 = new com.rameses.rcp.control.XTextField();
 
@@ -53,19 +52,13 @@ public class WaterworksCashReceiptInitialPage extends javax.swing.JPanel {
         xRadio1.setText("Regular Billing");
         xFormPanel1.add(xRadio1);
 
+        xRadio3.setCaption("Application");
         xRadio3.setName("pmttxntype"); // NOI18N
-        xRadio3.setOptionValue("newconnection");
+        xRadio3.setOptionValue("application");
         xRadio3.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         xRadio3.setShowCaption(false);
-        xRadio3.setText("New Connection");
+        xRadio3.setText("Application");
         xFormPanel1.add(xRadio3);
-
-        xRadio4.setName("pmttxntype"); // NOI18N
-        xRadio4.setOptionValue("reconnection");
-        xRadio4.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        xRadio4.setShowCaption(false);
-        xRadio4.setText("Reconnection");
-        xFormPanel1.add(xRadio4);
 
         xRadio5.setName("pmttxntype"); // NOI18N
         xRadio5.setOptionValue("compromise");
@@ -108,7 +101,6 @@ public class WaterworksCashReceiptInitialPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLabel xLabel1;
     private com.rameses.rcp.control.XRadio xRadio1;
     private com.rameses.rcp.control.XRadio xRadio3;
-    private com.rameses.rcp.control.XRadio xRadio4;
     private com.rameses.rcp.control.XRadio xRadio5;
     private com.rameses.rcp.control.XTextField xTextField2;
     // End of variables declaration//GEN-END:variables

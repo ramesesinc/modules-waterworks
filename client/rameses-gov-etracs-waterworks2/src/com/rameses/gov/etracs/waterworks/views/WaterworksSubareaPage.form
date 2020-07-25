@@ -177,7 +177,7 @@
                 </Component>
                 <Component class="com.rameses.rcp.control.XIntegerField" name="xIntegerField1">
                   <Properties>
-                    <Property name="caption" type="java.lang.String" value="Current Bill Year"/>
+                    <Property name="caption" type="java.lang.String" value="Next Bill Year"/>
                     <Property name="name" type="java.lang.String" value="entity.year" noResource="true"/>
                     <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[20, 0, 0, 0]"/>
@@ -187,7 +187,7 @@
                 </Component>
                 <Component class="com.rameses.enterprise.components.MonthList" name="monthList1">
                   <Properties>
-                    <Property name="caption" type="java.lang.String" value="Current Bill Month"/>
+                    <Property name="caption" type="java.lang.String" value="Next Bill Month"/>
                     <Property name="name" type="java.lang.String" value="entity.month" noResource="true"/>
                     <Property name="required" type="boolean" value="true"/>
                   </Properties>

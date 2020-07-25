@@ -30,5 +30,11 @@
 		<!-- links to waterworks_recurringfee. optional -->
 		<field name="recurringfeeid" />
 
+		<!-- this is used for begin balance entries -->
+		<field name="refbillid" />
+
+		<complex name="bill" ref="waterworks_bill" jointype="many-to-one" required="false" includefields="billno">
+			<key field="billid" target="objid" />
+		</complex>	
 	</element>
 </schema>

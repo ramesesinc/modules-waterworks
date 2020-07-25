@@ -13,7 +13,8 @@
 		<field name="readingdate"  type="date"/>
 		<field name="reader_objid"/>
 		<field name="reader_name"/>
-
+		
+		<field name="batchid" />
 	</element>
 </schema>
 

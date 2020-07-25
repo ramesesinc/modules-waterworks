@@ -38,6 +38,7 @@ public class WaterworksBillPage extends javax.swing.JPanel {
         xLabel22 = new com.rameses.rcp.control.XLabel();
         xLabel25 = new com.rameses.rcp.control.XLabel();
         xLabel27 = new com.rameses.rcp.control.XLabel();
+        xLabel56 = new com.rameses.rcp.control.XLabel();
         xLabel15 = new com.rameses.rcp.control.XLabel();
         xLabel28 = new com.rameses.rcp.control.XLabel();
         xLabel29 = new com.rameses.rcp.control.XLabel();
@@ -100,9 +101,16 @@ public class WaterworksBillPage extends javax.swing.JPanel {
         xLabel25.setExpression("#{ entity.acctname }");
         xFormPanel6.add(xLabel25);
 
-        xLabel27.setCaption("Meter Status");
-        xLabel27.setExpression("#{ entity.meterstate }");
+        xLabel27.setCaption("Address");
+        xLabel27.setExpression("<html>#{ entity.address.text }</html>");
+        xLabel27.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        xLabel27.setPreferredSize(new java.awt.Dimension(250, 40));
+        xLabel27.setStretchHeight(1);
         xFormPanel6.add(xLabel27);
+
+        xLabel56.setCaption("Meter Status");
+        xLabel56.setExpression("#{ entity.meterstate }");
+        xFormPanel6.add(xLabel56);
 
         xLabel15.setCaption("Acct Status");
         xLabel15.setExpression("#{ entity.acctstate }");
@@ -223,20 +231,20 @@ public class WaterworksBillPage extends javax.swing.JPanel {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(xDataTable1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(xFormPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(xFormPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(xDataTable1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
         xTabbedPane2.addTab("General Info", jPanel8);
 
-        xPanel1.setVisibleWhen("#{ entity.state == 'POSTED' }");
         xPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel14.setLayout(new java.awt.BorderLayout());
 
         xActionBar2.setFormName("formName");
         xActionBar2.setName("paymentActions"); // NOI18N
+        xActionBar2.setVisibleWhen("#{ entity.state == 'POSTED' }");
         jPanel14.add(xActionBar2, java.awt.BorderLayout.CENTER);
 
         xPanel1.add(jPanel14, java.awt.BorderLayout.NORTH);
@@ -523,12 +531,12 @@ public class WaterworksBillPage extends javax.swing.JPanel {
                 .addComponent(xFormPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(xFormPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(164, Short.MAX_VALUE))
+                .addContainerGap(181, Short.MAX_VALUE))
             .addGroup(pnlFootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlFootLayout.createSequentialGroup()
                     .addGap(16, 16, 16)
                     .addComponent(xFormPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(722, Short.MAX_VALUE)))
+                    .addContainerGap(739, Short.MAX_VALUE)))
         );
         pnlFootLayout.setVerticalGroup(
             pnlFootLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -611,6 +619,7 @@ public class WaterworksBillPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XLabel xLabel53;
     private com.rameses.rcp.control.XLabel xLabel54;
     private com.rameses.rcp.control.XLabel xLabel55;
+    private com.rameses.rcp.control.XLabel xLabel56;
     private com.rameses.rcp.control.XPanel xPanel1;
     private com.rameses.rcp.control.XPanel xPanel3;
     private com.rameses.rcp.control.XTabbedPane xTabbedPane2;

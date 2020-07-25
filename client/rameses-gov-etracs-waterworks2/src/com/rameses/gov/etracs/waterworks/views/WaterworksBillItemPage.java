@@ -4,14 +4,14 @@
  */
 package com.rameses.gov.etracs.waterworks.views;
 
+import com.rameses.osiris2.themes.OKCancelPage;
 import com.rameses.rcp.ui.annotations.Template;
-import com.rameses.seti2.views.CrudFormPage;
 
 /**
  *
  * @author Elmo Nazareno
  */
-@Template(CrudFormPage.class)
+@Template(OKCancelPage.class)
 public class WaterworksBillItemPage extends javax.swing.JPanel {
 
     /**
@@ -36,6 +36,8 @@ public class WaterworksBillItemPage extends javax.swing.JPanel {
         monthList1 = new com.rameses.enterprise.components.MonthList();
         xLookupField1 = new com.rameses.rcp.control.XLookupField();
         xDecimalField2 = new com.rameses.rcp.control.XDecimalField();
+        xDecimalField3 = new com.rameses.rcp.control.XDecimalField();
+        xLabel1 = new com.rameses.rcp.control.XLabel();
         xTextField1 = new com.rameses.rcp.control.XTextField();
         xCheckBox1 = new com.rameses.rcp.control.XCheckBox();
 
@@ -43,17 +45,20 @@ public class WaterworksBillItemPage extends javax.swing.JPanel {
         xFormPanel2.setCaptionWidth(100);
 
         xIntegerField1.setCaption("Year");
+        xIntegerField1.setDisableWhen("#{ mode != 'create' }");
         xIntegerField1.setName("entity.year"); // NOI18N
         xIntegerField1.setPattern("####");
         xIntegerField1.setRequired(true);
         xFormPanel2.add(xIntegerField1);
 
         monthList1.setCaption("Month");
+        monthList1.setDisableWhen("#{ mode != 'create' }");
         monthList1.setName("entity.month"); // NOI18N
         monthList1.setRequired(true);
         xFormPanel2.add(monthList1);
 
         xLookupField1.setCaption("Item");
+        xLookupField1.setDisableWhen("#{ mode != 'create' }");
         xLookupField1.setExpression("#{item.title}");
         xLookupField1.setHandler("waterworks_itemaccount:lookup");
         xLookupField1.setName("entity.item"); // NOI18N
@@ -61,13 +66,28 @@ public class WaterworksBillItemPage extends javax.swing.JPanel {
         xLookupField1.setRequired(true);
         xFormPanel2.add(xLookupField1);
 
-        xDecimalField2.setName("entity.amount"); // NOI18N
         xDecimalField2.setCaption("Amount");
+        xDecimalField2.setDisableWhen("#{ !mode.matches('create|update') }");
+        xDecimalField2.setName("entity.amount"); // NOI18N
         xDecimalField2.setPreferredSize(new java.awt.Dimension(120, 20));
         xDecimalField2.setRequired(true);
         xFormPanel2.add(xDecimalField2);
 
+        xDecimalField3.setCaption("Amt Paid");
+        xDecimalField3.setDisableWhen("#{ true }");
+        xDecimalField3.setName("entity.amtpaid"); // NOI18N
+        xDecimalField3.setPreferredSize(new java.awt.Dimension(120, 20));
+        xDecimalField3.setRequired(true);
+        xFormPanel2.add(xDecimalField3);
+
+        xLabel1.setCaption("Bill No");
+        xLabel1.setExpression("#{ entity.bill.billno }");
+        xLabel1.setVisibleWhen("#{ entity.billid != null }");
+        xLabel1.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
+        xFormPanel2.add(xLabel1);
+
         xTextField1.setCaption("Particulars");
+        xTextField1.setDisableWhen("#{ !mode.matches('create|update') }");
         xTextField1.setName("entity.particulars"); // NOI18N
         xTextField1.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xTextField1.setPreferredSize(new java.awt.Dimension(0, 20));
@@ -121,8 +141,10 @@ public class WaterworksBillItemPage extends javax.swing.JPanel {
     private com.rameses.enterprise.components.MonthList monthList1;
     private com.rameses.rcp.control.XCheckBox xCheckBox1;
     private com.rameses.rcp.control.XDecimalField xDecimalField2;
+    private com.rameses.rcp.control.XDecimalField xDecimalField3;
     private com.rameses.rcp.control.XFormPanel xFormPanel2;
     private com.rameses.rcp.control.XIntegerField xIntegerField1;
+    private com.rameses.rcp.control.XLabel xLabel1;
     private com.rameses.rcp.control.XLookupField xLookupField1;
     private com.rameses.rcp.control.XPanel xPanel1;
     private com.rameses.rcp.control.XTextField xTextField1;

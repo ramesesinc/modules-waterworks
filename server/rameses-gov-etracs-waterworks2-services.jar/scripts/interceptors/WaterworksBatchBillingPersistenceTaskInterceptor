@@ -52,6 +52,14 @@ class WaterworksBatchBillingTaskInterceptor {
 		}
 	}
 
+	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].action == 'send-for-mobile-reading'  }")
+	public void checkPrevReadingBeforeMobileReading( evt ) {
+		def p = evt.args[0]; 
+		def cnt = vwConsumptionEm.find( [batchid: p.refid ] ).select( "c:{COUNT(*)}" ).where("prev.reading IS NULL").val();
+		if( cnt > 0 ) 
+			throw new Exception("Some entries do not have previous readings. Please make sure that all previous readings are entered");
+	}
+
 	@Before(pattern="WorkflowTaskService.signal", eval="#{ args[0].processname == 'waterworks_batch_billing' && args[0].action == 'submit-for-reading'  }")
 	public void checkErrorsBeforeProcess( evt ) {
 		def p = evt.args[0]; 

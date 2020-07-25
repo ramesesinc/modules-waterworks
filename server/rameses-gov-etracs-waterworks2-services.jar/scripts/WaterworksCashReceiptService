@@ -2,74 +2,30 @@ import com.rameses.annotations.*;
 
 class WaterworksCashReceiptService {
 
-
-    @Service('WaterworksBillService') 
-    def billSvc; 
-
-    @Service('WaterworksPaymentService') 
-    def pmtSvc; 
-
-    @Service("NumberService")
-    def numSvc;
-
     @Service("DateService")
     def dateSvc;
 
-    @DataContext("vw_waterworks_bill")
-    def vwBillEm;
+    @Service("WaterworksApplicationBillingPaymentService")
+    def appBillPmtSvc;
 
-    @DataContext("vw_waterworks_account")
-    def vwAcctEm;
+    @Service("WaterworksCompromiseBillingPaymentService")
+    def compBillPmtSvc;
 
-    def getBillingItems( def o ) {
-        def bill = vwBillEm.find( [billno: o.id ] ).first();
-        def acct = null;
-        if(!bill) {
-            acct = vwAcctEm.find( [acctno: o.id ] ).first();
-        }
-        else {
-            acct = vwAcctEm.find([objid:bill.acctid]).first();
-        }
-        if(!acct) throw new Exception("Bill or account not found");
-        if( acct.state != "ACTIVE" ) throw new Exception("Account is not yet active");
-        if(!acct.billid) throw new Exception("Account does not yet have an active bill");
+    @Service("WaterworksRegularBillingPaymentService")
+    def regBillSvc;
 
-        //replace bill with the active bill
-        bill = vwBillEm.find( [objid: acct.billid] ).first();
-        if(!bill.state.matches("OPEN|POSTED")) 
-            throw new Exception("Bill must be OPEN or POSTED state. Please contact admin");
+    def findTxnType( def id ) {
+        def r = regBillSvc.findTxn( [id: id] );
+        if( r ) return r;
+ 
+        r = appBillPmtSvc.findTxn( [id: id] );
+        if( r ) return r;
 
-        //we need to update the bill first just for surcharges. This should run everytime cash recept 
-        if( bill.state == 'POSTED' ) {
-            billSvc.updateBillFees( [objid: bill.objid, txndate: o.txndate ] );
-        }
-
-        def param = [ acctid : bill.acctid, billid: bill.objid, include_items:true ];
-        if( o.amtpaid ) param.amtpaid = o.amtpaid;
-
-        //set billdate as txndate
-        param.txndate = o.billdate;
-        def res = pmtSvc.getBillPaymentItems( param );
-        if(!res.billitems) {
-            res.items = [];
-            res.billitems = [];
-            res.amount = 0;        
-        }
-
-        def rct = [:];
-        rct.payer = acct.owner;
-        rct.paidby = acct.acctname + " (" + acct.acctno + ")";
-        rct.paidbyaddress = acct.address?.text;
-        rct.acctno = acct.acctno;
-        rct.acctid = acct.objid;
-        rct.billid = bill.objid;
-        rct.items = res.items;
-        rct.billitems = res.billitems;
-        rct.amount = res.amount;
-        rct.pmttxntype = "billing";
-        return rct;
+        r = compBillPmtSvc.findTxn( [id: id] );
+        if( r ) return r;
+        return null;
     }
-
+ 
 	@ProxyMethod 
 	public def getBilling( o ) {
         def param = o.params;
@@ -84,9 +40,19 @@ class WaterworksCashReceiptService {
         if( param.payoption ) pp.payoption = param.payoption;
         pp.txndate = txndate;
 
+        if( txntype == null ) {
+            txntype = findTxnType( pp.id );
+        }
+
         def res = null;        
         if( txntype == "billing" ) {
-            return getBillingItems( pp ); 
+            return  regBillSvc.getBilling( pp ); 
+        }
+        else if(txntype == "application") {
+            return appBillPmtSvc.getBilling( pp );
+        }
+        else if(txntype == "compromise") {
+            return compBillPmtSvc.getBilling( pp );
         }
         else {
             throw new Exception("There are no current routine for " + txntype );

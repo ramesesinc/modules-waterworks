@@ -58,6 +58,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         jPanel7 = new javax.swing.JPanel();
         xButton14 = new com.rameses.rcp.control.XButton();
         xButton15 = new com.rameses.rcp.control.XButton();
+        xButton16 = new com.rameses.rcp.control.XButton();
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         schemaList2 = new com.rameses.seti2.components.SchemaList();
@@ -235,6 +236,12 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
         xButton15.setText("Resolve Error");
         jPanel7.add(xButton15);
 
+        xButton16.setDepends(new String[] {"selectedErr"});
+        xButton16.setName("excludeInBatch"); // NOI18N
+        xButton16.setVisibleWhen("#{ selectedErr != null }");
+        xButton16.setText("Exclude In Batch");
+        jPanel7.add(xButton16);
+
         jPanel6.add(jPanel7, java.awt.BorderLayout.CENTER);
 
         jPanel8.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 20, 1, 1));
@@ -299,21 +306,6 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
                 , new Object[]{"caption", "Error Message"}
                 , new Object[]{"width", 100}
                 , new Object[]{"minWidth", 300}
-                , new Object[]{"maxWidth", 350}
-                , new Object[]{"required", false}
-                , new Object[]{"resizable", true}
-                , new Object[]{"nullWhenEmpty", true}
-                , new Object[]{"editable", false}
-                , new Object[]{"visible", true}
-                , new Object[]{"visibleWhen", null}
-                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
-                , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
-            }),
-            new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", null}
-                , new Object[]{"caption", "-"}
-                , new Object[]{"width", 100}
-                , new Object[]{"minWidth", 0}
                 , new Object[]{"maxWidth", 0}
                 , new Object[]{"required", false}
                 , new Object[]{"resizable", true}
@@ -627,6 +619,7 @@ public class WaterworksBatchBillingPage extends javax.swing.JPanel {
     private com.rameses.rcp.control.XPanel vwProcessing;
     private com.rameses.rcp.control.XButton xButton14;
     private com.rameses.rcp.control.XButton xButton15;
+    private com.rameses.rcp.control.XButton xButton16;
     private com.rameses.rcp.control.XFormPanel xFormPanel4;
     private com.rameses.rcp.control.XFormPanel xFormPanel5;
     private com.rameses.rcp.control.XFormPanel xFormPanel6;

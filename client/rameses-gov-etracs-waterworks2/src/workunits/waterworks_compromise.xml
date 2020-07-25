@@ -2,15 +2,8 @@
           entitySchemaName="waterworks_compromise"  
           processName="waterworks_compromise">
     <invokers>
-        <invoker type="waterworks_compromise:create" caption="New Compromise" 
-            action="create" />
-
         <invoker type="waterworks_compromise:open" caption="Compromise" 
             action="open" />
-
-        <invoker type="formActions" caption="Submit" 
-            action="save" visibleWhen="#{mode=='create'}"/>
-
     </invokers>
     
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksCompromiseModel" />    

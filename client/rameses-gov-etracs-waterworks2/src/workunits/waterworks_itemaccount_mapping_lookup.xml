@@ -4,6 +4,6 @@
         <invoker type="waterworks_revenueitem:lookup" 
                  caption="Lookup Item Account" 
                  action="init" target="popup"
-                 cols="objid,code,title,fund.objid"/>
+                 cols="objid,code,title,fund.title"/>
     </invokers>    
 </workunit>

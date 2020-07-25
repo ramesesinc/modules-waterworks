@@ -37,7 +37,7 @@ class WaterworksBillStatementService {
 		if(o.include_unposted !=null) include_unposted = o.include_unposted;
 
 		//include billitems only if state is posted so it will not add confusion
-		if( include_unposted == true || bill.state == 'POSTED'  ) {
+		if( include_unposted == true || bill.state.matches('POSTED|CLOSED')  ) {
 			def billItems = billItemEm.find( [billid: bill.objid ] ).orderBy("item.sortorder ASC").list();
 			billItems.each {
 				def m = [:];

@@ -1,0 +1,15 @@
+<workunit>
+    <invokers>
+        
+        <invoker type="waterworks_bill_balance_forward_items" 
+                action="init"
+                caption="View Balance Forward" target="popup"/>
+        
+        <invoker type="formActions" caption="Close" action="_close" immediate="true" />
+
+    </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillBalanceForwardItemsModel" />
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksBillBalanceForwardItemsPage" />
+    </pages>
+</workunit>

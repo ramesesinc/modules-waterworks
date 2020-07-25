@@ -70,5 +70,16 @@ class WaterworksAccountService  {
 		
 	}
 
+	@ProxyMethod
+	public def activate( def o ) {
+		if(!o.acctid) throw new Exception("acctid is required in WaterworksAccountService.activate");
+		//before approving check if the billitem year and month is at least one month before the batch period year and month
+		def acct = vwAcctEm.find( [objid:o.acctid]).first();
+		if(acct.state!='DRAFT' ) throw new Exception("Account is not in DRAFT state");
+		def u =  [state: "ACTIVE"];
+		acctEm.find( [objid: acct.objid] ).update(u);
+		return u;
+	}
+
 
 }

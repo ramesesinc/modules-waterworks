@@ -5,18 +5,18 @@
  */
 package com.rameses.gov.etracs.waterworks.views;
 
-import com.rameses.osiris2.themes.FormPage;
 import com.rameses.rcp.ui.annotations.Template;
+import com.rameses.seti2.views.CrudFormPage;
 
 /**
  *
  * @author elmonazareno
  */
-@Template(FormPage.class)
+@Template(CrudFormPage.class)
 public class WaterworksPaymentPage extends javax.swing.JPanel {
 
     /**
-     * Creates new form CapturePaymentInitialPage
+     * Creates new form WaterworksPaymentPage
      */
     public WaterworksPaymentPage() {
         initComponents();
@@ -31,81 +31,18 @@ public class WaterworksPaymentPage extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        xPanel1 = new com.rameses.rcp.control.XPanel();
-        xFormPanel3 = new com.rameses.rcp.control.XFormPanel();
-        xLabel6 = new com.rameses.rcp.control.XLabel();
-        xTextField2 = new com.rameses.rcp.control.XTextField();
-        xDateField1 = new com.rameses.rcp.control.XDateField();
-        xDecimalField2 = new com.rameses.rcp.control.XDecimalField();
-        xTextField3 = new com.rameses.rcp.control.XTextField();
-        xPanel2 = new com.rameses.rcp.control.XPanel();
+        jPanel1 = new javax.swing.JPanel();
         xFormPanel1 = new com.rameses.rcp.control.XFormPanel();
         xLabel1 = new com.rameses.rcp.control.XLabel();
         xLabel2 = new com.rameses.rcp.control.XLabel();
+        xLabel6 = new com.rameses.rcp.control.XLabel();
         xLabel3 = new com.rameses.rcp.control.XLabel();
         xLabel4 = new com.rameses.rcp.control.XLabel();
         xLabel5 = new com.rameses.rcp.control.XLabel();
         xDataTable3 = new com.rameses.rcp.control.XDataTable();
+        jPanel2 = new javax.swing.JPanel();
 
-        setLayout(new java.awt.CardLayout());
-
-        xPanel1.setVisibleWhen("#{ mode == 'initial' }");
-
-        xFormPanel3.setCaptionVAlignment(com.rameses.rcp.constant.UIConstants.CENTER);
-        xFormPanel3.setCaptionWidth(120);
-
-        xLabel6.setCaption("Ref Type");
-        xLabel6.setExpression("#{ entity.reftype }");
-        xFormPanel3.add(xLabel6);
-
-        xTextField2.setCaption("Ref No");
-        xTextField2.setName("entity.refno"); // NOI18N
-        xTextField2.setPreferredSize(new java.awt.Dimension(150, 20));
-        xTextField2.setRequired(true);
-        xFormPanel3.add(xTextField2);
-
-        xDateField1.setCaption("Ref Date");
-        xDateField1.setName("entity.refdate"); // NOI18N
-        xDateField1.setOutputFormat("");
-        xDateField1.setPreferredSize(new java.awt.Dimension(150, 20));
-        xDateField1.setRequired(true);
-        xFormPanel3.add(xDateField1);
-
-        xDecimalField2.setCaption("Amount Paid");
-        xDecimalField2.setDisableWhen("#{ amtpaid != null }");
-        xDecimalField2.setName("entity.amount"); // NOI18N
-        xDecimalField2.setPreferredSize(new java.awt.Dimension(150, 20));
-        xDecimalField2.setRequired(true);
-        xFormPanel3.add(xDecimalField2);
-
-        xTextField3.setCaption("Remarks");
-        xTextField3.setName("entity.remarks"); // NOI18N
-        xTextField3.setStretchWidth(100);
-        xTextField3.setTextCase(com.rameses.rcp.constant.TextCase.NONE);
-        xFormPanel3.add(xTextField3);
-
-        javax.swing.GroupLayout xPanel1Layout = new javax.swing.GroupLayout(xPanel1);
-        xPanel1.setLayout(xPanel1Layout);
-        xPanel1Layout.setHorizontalGroup(
-            xPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(xPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(xFormPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(422, Short.MAX_VALUE))
-        );
-        xPanel1Layout.setVerticalGroup(
-            xPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(xPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(xFormPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(248, Short.MAX_VALUE))
-        );
-
-        add(xPanel1, "card2");
-
-        xPanel2.setVisibleWhen("#{ mode == 'view' }");
-        xPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        xPanel2.setLayout(new java.awt.BorderLayout(10, 10));
+        setLayout(new java.awt.BorderLayout());
 
         xFormPanel1.setCaptionVAlignment(com.rameses.rcp.constant.UIConstants.CENTER);
         xFormPanel1.setCaptionWidth(120);
@@ -121,6 +58,12 @@ public class WaterworksPaymentPage extends javax.swing.JPanel {
         xLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
         xLabel2.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel1.add(xLabel2);
+
+        xLabel6.setCaption("Txn Mode");
+        xLabel6.setExpression("#{ entity.txnmode }");
+        xLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(180, 180, 180)));
+        xLabel6.setPreferredSize(new java.awt.Dimension(0, 20));
+        xFormPanel1.add(xLabel6);
 
         xLabel3.setCaption("Ref Date");
         xLabel3.setExpression("#{ entity.refdate }");
@@ -142,28 +85,30 @@ public class WaterworksPaymentPage extends javax.swing.JPanel {
         xLabel5.setPreferredSize(new java.awt.Dimension(0, 20));
         xFormPanel1.add(xLabel5);
 
-        xPanel2.add(xFormPanel1, java.awt.BorderLayout.NORTH);
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(xFormPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(315, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(xFormPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-        xDataTable3.setHandler("itemHandler");
+        add(jPanel1, java.awt.BorderLayout.NORTH);
+
+        xDataTable3.setHandler("listHandler");
         xDataTable3.setItems("");
         xDataTable3.setName("selectedItem"); // NOI18N
         xDataTable3.setVisibleWhen("");
         xDataTable3.setColumns(new com.rameses.rcp.common.Column[]{
-            new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "selected"}
-                , new Object[]{"caption", "-"}
-                , new Object[]{"width", 50}
-                , new Object[]{"minWidth", 50}
-                , new Object[]{"maxWidth", 50}
-                , new Object[]{"required", false}
-                , new Object[]{"resizable", true}
-                , new Object[]{"nullWhenEmpty", true}
-                , new Object[]{"editable", false}
-                , new Object[]{"visible", true}
-                , new Object[]{"visibleWhen", null}
-                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
-                , new Object[]{"typeHandler", new com.rameses.rcp.common.CheckBoxColumnHandler(java.lang.Boolean.class, true, false)}
-            }),
             new com.rameses.rcp.common.Column(new Object[]{
                 new Object[]{"name", "year"}
                 , new Object[]{"caption", "Year"}
@@ -185,21 +130,6 @@ public class WaterworksPaymentPage extends javax.swing.JPanel {
                 , new Object[]{"width", 80}
                 , new Object[]{"minWidth", 80}
                 , new Object[]{"maxWidth", 80}
-                , new Object[]{"required", false}
-                , new Object[]{"resizable", true}
-                , new Object[]{"nullWhenEmpty", true}
-                , new Object[]{"editable", false}
-                , new Object[]{"visible", true}
-                , new Object[]{"visibleWhen", null}
-                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
-                , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
-            }),
-            new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "item.objid"}
-                , new Object[]{"caption", "Item Code"}
-                , new Object[]{"width", 100}
-                , new Object[]{"minWidth", 100}
-                , new Object[]{"maxWidth", 100}
                 , new Object[]{"required", false}
                 , new Object[]{"resizable", true}
                 , new Object[]{"nullWhenEmpty", true}
@@ -255,44 +185,37 @@ public class WaterworksPaymentPage extends javax.swing.JPanel {
                 , new Object[]{"visibleWhen", null}
                 , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
-            }),
-            new com.rameses.rcp.common.Column(new Object[]{
-                new Object[]{"name", "total"}
-                , new Object[]{"caption", "Total"}
-                , new Object[]{"width", 100}
-                , new Object[]{"minWidth", 100}
-                , new Object[]{"maxWidth", 100}
-                , new Object[]{"required", false}
-                , new Object[]{"resizable", true}
-                , new Object[]{"nullWhenEmpty", true}
-                , new Object[]{"editable", false}
-                , new Object[]{"visible", true}
-                , new Object[]{"visibleWhen", null}
-                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
-                , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
             })
         });
-        xPanel2.add(xDataTable3, java.awt.BorderLayout.CENTER);
+        add(xDataTable3, java.awt.BorderLayout.CENTER);
 
-        add(xPanel2, "card3");
+        jPanel2.setPreferredSize(new java.awt.Dimension(893, 20));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 772, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+
+        add(jPanel2, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private com.rameses.rcp.control.XDataTable xDataTable3;
-    private com.rameses.rcp.control.XDateField xDateField1;
-    private com.rameses.rcp.control.XDecimalField xDecimalField2;
     private com.rameses.rcp.control.XFormPanel xFormPanel1;
-    private com.rameses.rcp.control.XFormPanel xFormPanel3;
     private com.rameses.rcp.control.XLabel xLabel1;
     private com.rameses.rcp.control.XLabel xLabel2;
     private com.rameses.rcp.control.XLabel xLabel3;
     private com.rameses.rcp.control.XLabel xLabel4;
     private com.rameses.rcp.control.XLabel xLabel5;
     private com.rameses.rcp.control.XLabel xLabel6;
-    private com.rameses.rcp.control.XPanel xPanel1;
-    private com.rameses.rcp.control.XPanel xPanel2;
-    private com.rameses.rcp.control.XTextField xTextField2;
-    private com.rameses.rcp.control.XTextField xTextField3;
     // End of variables declaration//GEN-END:variables
 }

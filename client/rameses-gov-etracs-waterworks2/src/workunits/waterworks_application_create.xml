@@ -1,0 +1,19 @@
+<workunit schemaName="waterworks_application">
+
+    <invokers>
+        <invoker folderid="/menucategory/waterworks/app" caption="New Connection"
+                 action="create" apptype="NEW" index="10"/>
+
+        <invoker folderid="/menucategory/waterworks/app" caption="Reconnection"
+                 action="create" apptype="RECONNECTION" index="10"/>
+        
+        <invoker type="formActions" caption="Submit"
+                 action="save" visibleWhen="#{mode == 'create'}"/>
+    </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksApplicationModel" />    
+
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksApplicationPage"/>
+    </pages>    
+    
+</workunit>

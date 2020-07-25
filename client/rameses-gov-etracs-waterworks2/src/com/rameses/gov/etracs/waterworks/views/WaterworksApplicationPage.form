@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <Properties>
+    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+      <Dimension value="[1060, 550]"/>
+    </Property>
+  </Properties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -11,55 +16,33 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,108,0,0,4,97"/>
   </AuxValues>
 
-  <Layout>
-    <DimensionLayout dim="0">
-      <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="xTabbedPane1" pref="958" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Component id="xFormPanel3" min="-2" pref="610" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="xFormPanel5" min="-2" pref="313" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
-      </Group>
-    </DimensionLayout>
-    <DimensionLayout dim="1">
-      <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="xFormPanel3" max="32767" attributes="0"/>
-                  <Component id="xFormPanel5" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="xTabbedPane1" pref="395" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
-      </Group>
-    </DimensionLayout>
-  </Layout>
+  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
   <SubComponents>
     <Container class="com.rameses.rcp.control.XTabbedPane" name="xTabbedPane1">
       <Properties>
-        <Property name="items" type="java.lang.String" value="sectors"/>
-        <Property name="dynamic" type="boolean" value="true"/>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[300, 50]"/>
+        </Property>
       </Properties>
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+          <BorderConstraints direction="Center"/>
+        </Constraint>
+      </Constraints>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="jPanel1">
+        <Container class="com.rameses.rcp.control.XPanel" name="pnlNew">
+          <Properties>
+            <Property name="visibleWhen" type="java.lang.String" value="#{ entity.apptype == &apos;NEW&apos; }"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="General Information">
-                <Property name="tabTitle" type="java.lang.String" value="General Information"/>
+              <JTabbedPaneConstraints tabName="General Info">
+                <Property name="tabTitle" type="java.lang.String" value="General Info"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -67,64 +50,1311 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="937" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="349" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-        </Container>
-        <Container class="javax.swing.JPanel" name="jPanel4">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Requirements">
-                <Property name="tabTitle" type="java.lang.String" value="Requirements"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="953" max="32767" attributes="0"/>
-                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="xDataTable2" min="-2" pref="649" max="-2" attributes="0"/>
-                          <EmptySpace pref="294" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                      <Component id="jPanel14" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="xPanel7" alignment="0" max="32767" attributes="0"/>
+                          <Component id="xPanel8" alignment="0" max="32767" attributes="0"/>
                       </Group>
+                      <EmptySpace pref="65" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="367" max="32767" attributes="0"/>
-                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="xDataTable2" pref="345" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jPanel14" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="xPanel7" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="xPanel8" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
+                      <EmptySpace pref="29" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="com.rameses.rcp.control.XDataTable" name="xDataTable2">
+            <Container class="javax.swing.JPanel" name="jPanel14">
               <Properties>
-                <Property name="handler" type="java.lang.String" value="requirementList"/>
-                <Property name="name" type="java.lang.String" value="selectedRequirement" noResource="true"/>
-                <Property name="columns" type="[Lcom.rameses.rcp.common.Column;" editor="com.rameses.beaninfo.editor.ColumnPropertyEditor">
-                  <SerializedValue value="-84,-19,0,5,117,114,0,32,91,76,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,111,108,117,109,110,59,-113,88,47,82,32,-6,-98,-32,2,0,0,120,112,0,0,0,5,115,114,0,29,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,111,108,117,109,110,0,0,0,0,0,0,0,1,2,0,37,90,0,7,100,121,110,97,109,105,99,90,0,8,101,100,105,116,97,98,108,101,90,0,11,104,116,109,108,68,105,115,112,108,97,121,73,0,8,109,97,120,87,105,100,116,104,73,0,8,109,105,110,87,105,100,116,104,90,0,13,110,117,108,108,87,104,101,110,69,109,112,116,121,90,0,7,112,114,105,109,97,114,121,90,0,8,114,101,113,117,105,114,101,100,90,0,9,114,101,115,105,122,97,98,108,101,73,0,9,114,111,119,104,101,105,103,104,116,90,0,7,118,105,115,105,98,108,101,73,0,5,119,105,100,116,104,76,0,6,97,99,116,105,111,110,116,0,18,76,106,97,118,97,47,108,97,110,103,47,79,98,106,101,99,116,59,76,0,9,97,108,105,103,110,109,101,110,116,116,0,18,76,106,97,118,97,47,108,97,110,103,47,83,116,114,105,110,103,59,76,0,7,99,97,112,116,105,111,110,113,0,126,0,4,76,0,8,99,97,116,101,103,111,114,121,113,0,126,0,4,76,0,10,99,104,101,99,107,86,97,108,117,101,113,0,126,0,3,76,0,12,101,100,105,116,97,98,108,101,87,104,101,110,113,0,126,0,4,76,0,10,101,120,112,114,101,115,115,105,111,110,113,0,126,0,4,76,0,9,102,105,101,108,100,84,121,112,101,116,0,17,76,106,97,118,97,47,108,97,110,103,47,67,108,97,115,115,59,76,0,9,102,105,101,108,100,110,97,109,101,113,0,126,0,4,76,0,6,102,111,114,109,97,116,113,0,126,0,4,76,0,7,104,97,110,100,108,101,114,113,0,126,0,3,76,0,10,104,101,97,100,101,114,73,99,111,110,113,0,126,0,4,76,0,4,105,99,111,110,113,0,126,0,4,76,0,15,105,99,111,110,79,114,105,101,110,116,97,116,105,111,110,113,0,126,0,4,76,0,15,105,99,111,110,86,105,115,105,98,108,101,87,104,101,110,113,0,126,0,4,76,0,5,105,116,101,109,115,113,0,126,0,3,76,0,4,110,97,109,101,113,0,126,0,4,76,0,10,112,114,111,112,101,114,116,105,101,115,116,0,15,76,106,97,118,97,47,117,116,105,108,47,77,97,112,59,76,0,8,116,101,120,116,67,97,115,101,116,0,35,76,99,111,109,47,114,97,109,101,115,101,115,47,114,99,112,47,99,111,110,115,116,97,110,116,47,84,101,120,116,67,97,115,101,59,76,0,10,116,111,103,103,108,101,73,99,111,110,113,0,126,0,4,76,0,4,116,121,112,101,113,0,126,0,4,76,0,11,116,121,112,101,72,97,110,100,108,101,114,116,0,43,76,99,111,109,47,114,97,109,101,115,101,115,47,114,99,112,47,99,111,109,109,111,110,47,67,111,108,117,109,110,36,84,121,112,101,72,97,110,100,108,101,114,59,76,0,12,117,110,99,104,101,99,107,86,97,108,117,101,113,0,126,0,3,76,0,18,118,97,108,105,100,97,116,101,69,120,112,114,101,115,115,105,111,110,113,0,126,0,4,76,0,11,118,105,115,105,98,108,101,87,104,101,110,113,0,126,0,4,120,112,0,0,0,0,0,0,50,0,0,0,50,1,0,0,1,0,0,0,0,1,0,0,0,50,112,112,116,0,4,67,111,100,101,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,4,99,111,100,101,115,114,0,17,106,97,118,97,46,117,116,105,108,46,72,97,115,104,77,97,112,5,7,-38,-63,-61,22,96,-47,3,0,2,70,0,10,108,111,97,100,70,97,99,116,111,114,73,0,9,116,104,114,101,115,104,111,108,100,120,112,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,126,114,0,33,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,110,115,116,97,110,116,46,84,101,120,116,67,97,115,101,0,0,0,0,0,0,0,0,18,0,0,120,114,0,14,106,97,118,97,46,108,97,110,103,46,69,110,117,109,0,0,0,0,0,0,0,0,18,0,0,120,112,116,0,4,78,79,78,69,112,116,0,6,115,116,114,105,110,103,115,114,0,40,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,84,101,120,116,67,111,108,117,109,110,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,0,120,114,0,41,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,111,108,117,109,110,36,84,121,112,101,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,1,76,0,6,99,111,108,117,109,110,116,0,31,76,99,111,109,47,114,97,109,101,115,101,115,47,114,99,112,47,99,111,109,109,111,110,47,67,111,108,117,109,110,59,120,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,50,0,0,0,50,1,0,0,1,0,0,0,0,1,0,0,0,50,112,112,113,0,126,0,10,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,11,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,116,0,6,115,116,114,105,110,103,113,0,126,0,22,112,112,112,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,-56,0,0,0,-56,1,0,0,1,0,0,0,0,1,0,0,0,-56,112,112,116,0,5,84,105,116,108,101,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,5,116,105,116,108,101,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,113,0,126,0,19,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,-56,0,0,0,-56,1,0,0,1,0,0,0,0,1,0,0,0,-56,112,112,113,0,126,0,27,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,28,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,30,112,112,112,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,-106,0,0,0,-106,1,0,0,1,0,0,0,0,1,0,0,0,-106,112,112,116,0,7,77,101,115,115,97,103,101,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,7,109,101,115,115,97,103,101,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,113,0,126,0,19,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,-106,0,0,0,-106,1,0,0,1,0,0,0,0,1,0,0,0,-106,112,112,113,0,126,0,34,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,35,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,37,112,112,112,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,100,0,0,0,100,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,116,0,8,82,101,113,117,105,114,101,100,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,8,114,101,113,117,105,114,101,100,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,114,0,44,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,104,101,99,107,66,111,120,67,111,108,117,109,110,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,3,76,0,10,99,104,101,99,107,86,97,108,117,101,113,0,126,0,3,76,0,12,117,110,99,104,101,99,107,86,97,108,117,101,113,0,126,0,3,76,0,9,118,97,108,117,101,84,121,112,101,113,0,126,0,5,120,113,0,126,0,20,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,100,0,0,0,100,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,113,0,126,0,41,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,42,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,45,112,112,112,116,0,1,49,116,0,1,48,118,114,0,17,106,97,118,97,46,108,97,110,103,46,73,110,116,101,103,101,114,18,-30,-96,-92,-9,-127,-121,56,2,0,1,73,0,5,118,97,108,117,101,120,114,0,16,106,97,118,97,46,108,97,110,103,46,78,117,109,98,101,114,-122,-84,-107,29,11,-108,-32,-117,2,0,0,120,112,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,116,0,1,45,112,112,112,116,0,4,86,105,101,119,112,112,112,112,112,112,112,112,112,116,0,15,118,105,101,119,82,101,113,117,105,114,101,109,101,110,116,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,114,0,42,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,66,117,116,116,111,110,67,111,108,117,109,110,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,1,76,0,11,118,105,115,105,98,108,101,87,104,101,110,113,0,126,0,4,120,113,0,126,0,20,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,113,0,126,0,54,112,112,112,113,0,126,0,55,112,112,112,112,112,112,112,112,112,113,0,126,0,56,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,59,112,112,112,112,112,112,112"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <PropertyBean type="com.rameses.rcp.control.border.XTitledBorder">
+                    <Property name="title" type="java.lang.String" value="Account Information"/>
+                  </PropertyBean>
                 </Property>
               </Properties>
-            </Component>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="xFormPanel2" min="-2" pref="517" max="-2" attributes="0"/>
+                          <EmptySpace pref="18" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="xFormPanel2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="15" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel2">
+                  <Properties>
+                    <Property name="captionWidth" type="int" value="150"/>
+                    <Property name="padding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                      <Insets value="[10, 5, 0, 5]"/>
+                    </Property>
+                  </Properties>
+                  <SubComponents>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel13">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="App No"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.appno }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="14" style="1"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel14">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="App Type"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.apptype }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="14" style="1"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel15">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="App Date"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.dtcreated }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="dateFormat" type="java.lang.String" value="yyyy-MM-dd"/>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="14" style="1"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLookupField" name="xLookupField2">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Owner Name"/>
+                        <Property name="expression" type="java.lang.String" value="#{entity.account.owner.name}"/>
+                        <Property name="handler" type="java.lang.String" value="entity:lookup"/>
+                        <Property name="name" type="java.lang.String" value="entity.account.owner" noResource="true"/>
+                        <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                          <Insets value="[20, 0, 0, 0]"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XTextField" name="xTextField3">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Account Name"/>
+                        <Property name="depends" type="[Ljava.lang.String;" editor="org.netbeans.beaninfo.editors.StringArrayEditor">
+                          <StringArray count="1">
+                            <StringItem index="0" value="entity.account.owner"/>
+                          </StringArray>
+                        </Property>
+                        <Property name="name" type="java.lang.String" value="entity.account.acctname" noResource="true"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                        <Property name="required" type="boolean" value="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.enterprise.components.AddressEditor" name="addressEditor2">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Account Address"/>
+                        <Property name="name" type="java.lang.String" value="entity.account.address" noResource="true"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 53]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XComboBox" name="xComboBox2">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Classification"/>
+                        <Property name="expression" type="java.lang.String" value="#{item.objid}"/>
+                        <Property name="items" type="java.lang.String" value="classTypes"/>
+                        <Property name="name" type="java.lang.String" value="entity.account.classification" noResource="true"/>
+                        <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                          <Insets value="[20, 0, 0, 0]"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                        <Property name="required" type="boolean" value="true"/>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XIntegerField" name="xIntegerField2">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="No.of Units"/>
+                        <Property name="name" type="java.lang.String" value="entity.account.units" noResource="true"/>
+                        <Property name="required" type="boolean" value="true"/>
+                      </Properties>
+                    </Component>
+                    <Container class="com.rameses.rcp.control.XPanel" name="xPanel6">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Attributes"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                            <EmptyBorder bottom="10" left="0" right="0" top="0"/>
+                          </Border>
+                        </Property>
+                        <Property name="captionFontStyle" type="java.lang.String" value=""/>
+                        <Property name="opaque" type="boolean" value="false"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 120]"/>
+                        </Property>
+                      </Properties>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                      <SubComponents>
+                        <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+                          <Properties>
+                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[0, 90]"/>
+                            </Property>
+                          </Properties>
+                          <AuxValues>
+                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                          </AuxValues>
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                              <BorderConstraints direction="Center"/>
+                            </Constraint>
+                          </Constraints>
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                          <SubComponents>
+                            <Component class="com.rameses.rcp.control.XList" name="xList2">
+                              <Properties>
+                                <Property name="items" type="java.lang.String" value="entity.account.attributes"/>
+                                <Property name="name" type="java.lang.String" value="selectedAttribute" noResource="true"/>
+                                <Property name="dynamic" type="boolean" value="true"/>
+                                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                  <Dimension value="[80, 30]"/>
+                                </Property>
+                              </Properties>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                        <Container class="javax.swing.JPanel" name="jPanel8">
+                          <Properties>
+                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                              <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                                <EmptyBorder bottom="3" left="0" right="0" top="0"/>
+                              </Border>
+                            </Property>
+                            <Property name="opaque" type="boolean" value="false"/>
+                          </Properties>
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                              <BorderConstraints direction="South"/>
+                            </Constraint>
+                          </Constraints>
+                          <SubComponents>
+                            <Component class="com.rameses.rcp.control.XButton" name="xButton6">
+                              <Properties>
+                                <Property name="name" type="java.lang.String" value="addAttribute" noResource="true"/>
+                                <Property name="visibleWhen" type="java.lang.String" value="#{ mode != &apos;read&apos; }"/>
+                                <Property name="immediate" type="boolean" value="true"/>
+                                <Property name="text" type="java.lang.String" value="Add"/>
+                              </Properties>
+                            </Component>
+                            <Component class="com.rameses.rcp.control.XButton" name="xButton7">
+                              <Properties>
+                                <Property name="name" type="java.lang.String" value="removeAttribute" noResource="true"/>
+                                <Property name="visibleWhen" type="java.lang.String" value="#{ mode != &apos;read&apos; }"/>
+                                <Property name="immediate" type="boolean" value="true"/>
+                                <Property name="text" type="java.lang.String" value="Remove"/>
+                              </Properties>
+                            </Component>
+                          </SubComponents>
+                          <LayoutCode>
+                            <CodeStatement>
+                              <CodeExpression id="1_flowLayout1">
+                                <CodeVariable name="flowLayout1" type="4096" declaredType="java.awt.FlowLayout"/>
+                                <ExpressionOrigin>
+                                  <ExpressionProvider type="CodeConstructor">
+                                    <CodeConstructor class="java.awt.FlowLayout" parameterTypes="int, int, int"/>
+                                  </ExpressionProvider>
+                                  <Parameters>
+                                    <CodeExpression id="2">
+                                      <ExpressionOrigin>
+                                        <Value type="int" value="0"/>
+                                      </ExpressionOrigin>
+                                    </CodeExpression>
+                                    <CodeExpression id="3">
+                                      <ExpressionOrigin>
+                                        <Value type="int" value="0"/>
+                                      </ExpressionOrigin>
+                                    </CodeExpression>
+                                    <CodeExpression id="4">
+                                      <ExpressionOrigin>
+                                        <Value type="int" value="2"/>
+                                      </ExpressionOrigin>
+                                    </CodeExpression>
+                                  </Parameters>
+                                </ExpressionOrigin>
+                              </CodeExpression>
+                              <StatementProvider type="CodeExpression">
+                                <CodeExpression id="1_flowLayout1"/>
+                              </StatementProvider>
+                              <Parameters>
+                                <CodeExpression id="2"/>
+                                <CodeExpression id="3"/>
+                                <CodeExpression id="4"/>
+                              </Parameters>
+                            </CodeStatement>
+                            <CodeStatement>
+                              <CodeExpression id="1_flowLayout1"/>
+                              <StatementProvider type="CodeMethod">
+                                <CodeMethod name="setAlignOnBaseline" class="java.awt.FlowLayout" parameterTypes="boolean"/>
+                              </StatementProvider>
+                              <Parameters>
+                                <CodeExpression id="5">
+                                  <ExpressionOrigin>
+                                    <Value type="boolean" value="true"/>
+                                  </ExpressionOrigin>
+                                </CodeExpression>
+                              </Parameters>
+                            </CodeStatement>
+                            <CodeStatement>
+                              <CodeExpression id="6_jPanel8">
+                                <CodeVariable name="jPanel8" type="8194" declaredType="javax.swing.JPanel"/>
+                                <ExpressionOrigin>
+                                  <ExpressionProvider type="ComponentRef">
+                                    <ComponentRef name="jPanel8"/>
+                                  </ExpressionProvider>
+                                </ExpressionOrigin>
+                              </CodeExpression>
+                              <StatementProvider type="CodeMethod">
+                                <CodeMethod name="setLayout" class="java.awt.Container" parameterTypes="java.awt.LayoutManager"/>
+                              </StatementProvider>
+                              <Parameters>
+                                <CodeExpression id="1_flowLayout1"/>
+                              </Parameters>
+                            </CodeStatement>
+                            <CodeStatement>
+                              <CodeExpression id="6_jPanel8"/>
+                              <StatementProvider type="CodeMethod">
+                                <CodeMethod name="add" class="java.awt.Container" parameterTypes="java.awt.Component"/>
+                              </StatementProvider>
+                              <Parameters>
+                                <CodeExpression id="7_xButton6">
+                                  <CodeVariable name="xButton6" type="8194" declaredType="com.rameses.rcp.control.XButton"/>
+                                  <ExpressionOrigin>
+                                    <ExpressionProvider type="ComponentRef">
+                                      <ComponentRef name="xButton6"/>
+                                    </ExpressionProvider>
+                                  </ExpressionOrigin>
+                                </CodeExpression>
+                              </Parameters>
+                            </CodeStatement>
+                            <CodeStatement>
+                              <CodeExpression id="6_jPanel8"/>
+                              <StatementProvider type="CodeMethod">
+                                <CodeMethod name="add" class="java.awt.Container" parameterTypes="java.awt.Component"/>
+                              </StatementProvider>
+                              <Parameters>
+                                <CodeExpression id="8_xButton7">
+                                  <CodeVariable name="xButton7" type="8194" declaredType="com.rameses.rcp.control.XButton"/>
+                                  <ExpressionOrigin>
+                                    <ExpressionProvider type="ComponentRef">
+                                      <ComponentRef name="xButton7"/>
+                                    </ExpressionProvider>
+                                  </ExpressionOrigin>
+                                </CodeExpression>
+                              </Parameters>
+                            </CodeStatement>
+                          </LayoutCode>
+                        </Container>
+                      </SubComponents>
+                    </Container>
+                    <Component class="com.rameses.rcp.control.XTextField" name="xTextField7">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Mobile No"/>
+                        <Property name="name" type="java.lang.String" value="entity.account.mobileno" noResource="true"/>
+                        <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                          <Insets value="[20, 0, 0, 0]"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XTextField" name="xTextField9">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Phone No"/>
+                        <Property name="name" type="java.lang.String" value="entity.account.phoneno" noResource="true"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XTextField" name="xTextField8">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Email"/>
+                        <Property name="name" type="java.lang.String" value="entity.account.email" noResource="true"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                        <Property name="textCase" type="com.rameses.rcp.constant.TextCase" editor="com.rameses.beaninfo.editor.TextCasePropertyEditor">
+                          <SerializedValue value="-84,-19,0,5,126,114,0,33,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,110,115,116,97,110,116,46,84,101,120,116,67,97,115,101,0,0,0,0,0,0,0,0,18,0,0,120,114,0,14,106,97,118,97,46,108,97,110,103,46,69,110,117,109,0,0,0,0,0,0,0,0,18,0,0,120,112,116,0,4,78,79,78,69"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+            <Container class="com.rameses.rcp.control.XPanel" name="xPanel7">
+              <Properties>
+                <Property name="visibleWhen" type="java.lang.String" value="#{ mode != &apos;create&apos; }"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <PropertyBean type="com.rameses.rcp.control.border.XTitledBorder">
+                    <Property name="title" type="java.lang.String" value="Sub Area / Stubout Information"/>
+                  </PropertyBean>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                              <Component id="xFormPanel8" min="-2" pref="419" max="-2" attributes="0"/>
+                              <EmptySpace pref="27" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="147" max="32767" attributes="0"/>
+                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="xFormPanel8" pref="135" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel8">
+                  <Properties>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                        <EmptyBorder/>
+                      </Border>
+                    </Property>
+                    <Property name="captionVAlignment" type="java.lang.String" value="CENTER"/>
+                    <Property name="captionWidth" type="int" value="120"/>
+                    <Property name="padding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                      <Insets value="[0, 5, 0, 5]"/>
+                    </Property>
+                  </Properties>
+                  <SubComponents>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel16">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Sub Area"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.account.subarea.code }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="14" style="0"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel17">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Stubout"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.account.stubout.code }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="14" style="0"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+            <Container class="com.rameses.rcp.control.XPanel" name="xPanel8">
+              <Properties>
+                <Property name="visibleWhen" type="java.lang.String" value="#{ mode != &apos;create&apos; }"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <PropertyBean type="com.rameses.rcp.control.border.XTitledBorder">
+                    <Property name="title" type="java.lang.String" value="Meter Information"/>
+                  </PropertyBean>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                          <Component id="xFormPanel9" min="-2" pref="422" max="-2" attributes="0"/>
+                          <EmptySpace pref="26" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="xFormPanel9" min="-2" pref="110" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel9">
+                  <Properties>
+                    <Property name="captionVAlignment" type="java.lang.String" value="CENTER"/>
+                    <Property name="captionWidth" type="int" value="120"/>
+                    <Property name="padding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                      <Insets value="[0, 5, 0, 5]"/>
+                    </Property>
+                  </Properties>
+                  <SubComponents>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel20">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Meter Serial No"/>
+                        <Property name="expression" type="java.lang.String" value="#{entity.account.meter.serialno}"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="f5" green="f5" red="f5" type="rgb"/>
+                        </Property>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="opaque" type="boolean" value="true"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel19">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Brand"/>
+                        <Property name="depends" type="[Ljava.lang.String;" editor="org.netbeans.beaninfo.editors.StringArrayEditor">
+                          <StringArray count="1">
+                            <StringItem index="0" value="entity.account.meter"/>
+                          </StringArray>
+                        </Property>
+                        <Property name="expression" type="java.lang.String" value="#{entity.account.meter.brand}"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="f5" green="f5" red="f5" type="rgb"/>
+                        </Property>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="opaque" type="boolean" value="true"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel21">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Capacity"/>
+                        <Property name="depends" type="[Ljava.lang.String;" editor="org.netbeans.beaninfo.editors.StringArrayEditor">
+                          <StringArray count="1">
+                            <StringItem index="0" value="entity.account.meter"/>
+                          </StringArray>
+                        </Property>
+                        <Property name="expression" type="java.lang.String" value="#{entity.account.meter.capacity}"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="f5" green="f5" red="f5" type="rgb"/>
+                        </Property>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="opaque" type="boolean" value="true"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel5">
+        <Container class="com.rameses.rcp.control.XPanel" name="pnlReconnection">
+          <Properties>
+            <Property name="visibleWhen" type="java.lang.String" value="#{ entity.apptype == &apos;RECONNECTION&apos; }"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="General Info">
+                <Property name="tabTitle" type="java.lang.String" value="General Info"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                      <Component id="jPanel15" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="xPanel10" alignment="0" max="32767" attributes="0"/>
+                          <Component id="xPanel11" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="65" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jPanel15" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="xPanel10" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="xPanel11" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JPanel" name="jPanel15">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <PropertyBean type="com.rameses.rcp.control.border.XTitledBorder">
+                    <Property name="title" type="java.lang.String" value="Account Information"/>
+                  </PropertyBean>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="xFormPanel3" min="-2" pref="517" max="-2" attributes="0"/>
+                          <EmptySpace pref="18" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="xFormPanel3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="16" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel3">
+                  <Properties>
+                    <Property name="captionWidth" type="int" value="150"/>
+                    <Property name="padding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                      <Insets value="[10, 5, 0, 5]"/>
+                    </Property>
+                  </Properties>
+                  <SubComponents>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel18">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="App No"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.appno }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="14" style="1"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel22">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="App Type"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.apptype }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="14" style="1"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel23">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="App Date"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.dtcreated }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="dateFormat" type="java.lang.String" value="yyyy-MM-dd"/>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="14" style="1"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLookupField" name="xLookupField3">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Acct No"/>
+                        <Property name="expression" type="java.lang.String" value="#{entity.acctno} "/>
+                        <Property name="handler" type="java.lang.String" value="lookupDisconnected"/>
+                        <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                          <Insets value="[20, 0, 0, 0]"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel36">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Acct Owner"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.account.owner.name }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="13" style="0"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel35">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Acct Name"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.account.acctname }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="13" style="0"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.enterprise.components.AddressEditor" name="addressEditor3">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Account Address"/>
+                        <Property name="enabled" type="boolean" value="false"/>
+                        <Property name="name" type="java.lang.String" value="entity.account.address" noResource="true"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 53]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel29">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Classification"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.account.classification.objid }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                          <Insets value="[20, 0, 0, 0]"/>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="13" style="0"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel30">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="No. of Units"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.account.units }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="13" style="0"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Container class="com.rameses.rcp.control.XPanel" name="xPanel9">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Attributes"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                            <EmptyBorder bottom="10" left="0" right="0" top="0"/>
+                          </Border>
+                        </Property>
+                        <Property name="captionFontStyle" type="java.lang.String" value=""/>
+                        <Property name="opaque" type="boolean" value="false"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 120]"/>
+                        </Property>
+                      </Properties>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                      <SubComponents>
+                        <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+                          <Properties>
+                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[0, 90]"/>
+                            </Property>
+                          </Properties>
+                          <AuxValues>
+                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                          </AuxValues>
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                              <BorderConstraints direction="Center"/>
+                            </Constraint>
+                          </Constraints>
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                          <SubComponents>
+                            <Component class="com.rameses.rcp.control.XList" name="xList3">
+                              <Properties>
+                                <Property name="items" type="java.lang.String" value="entity.account.attributes"/>
+                                <Property name="name" type="java.lang.String" value="selectedAttribute" noResource="true"/>
+                                <Property name="dynamic" type="boolean" value="true"/>
+                                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                  <Dimension value="[80, 30]"/>
+                                </Property>
+                              </Properties>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                        <Container class="javax.swing.JPanel" name="jPanel11">
+                          <Properties>
+                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                              <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                                <EmptyBorder bottom="3" left="0" right="0" top="0"/>
+                              </Border>
+                            </Property>
+                            <Property name="opaque" type="boolean" value="false"/>
+                          </Properties>
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                              <BorderConstraints direction="South"/>
+                            </Constraint>
+                          </Constraints>
+                          <SubComponents>
+                            <Component class="com.rameses.rcp.control.XButton" name="xButton8">
+                              <Properties>
+                                <Property name="name" type="java.lang.String" value="addAttribute" noResource="true"/>
+                                <Property name="visibleWhen" type="java.lang.String" value="#{ mode != &apos;read&apos; }"/>
+                                <Property name="immediate" type="boolean" value="true"/>
+                                <Property name="text" type="java.lang.String" value="Add"/>
+                              </Properties>
+                            </Component>
+                            <Component class="com.rameses.rcp.control.XButton" name="xButton9">
+                              <Properties>
+                                <Property name="name" type="java.lang.String" value="removeAttribute" noResource="true"/>
+                                <Property name="visibleWhen" type="java.lang.String" value="#{ mode != &apos;read&apos; }"/>
+                                <Property name="immediate" type="boolean" value="true"/>
+                                <Property name="text" type="java.lang.String" value="Remove"/>
+                              </Properties>
+                            </Component>
+                          </SubComponents>
+                          <LayoutCode>
+                            <CodeStatement>
+                              <CodeExpression id="9_flowLayout2">
+                                <CodeVariable name="flowLayout2" type="4096" declaredType="java.awt.FlowLayout"/>
+                                <ExpressionOrigin>
+                                  <ExpressionProvider type="CodeConstructor">
+                                    <CodeConstructor class="java.awt.FlowLayout" parameterTypes="int, int, int"/>
+                                  </ExpressionProvider>
+                                  <Parameters>
+                                    <CodeExpression id="10">
+                                      <ExpressionOrigin>
+                                        <Value type="int" value="0"/>
+                                      </ExpressionOrigin>
+                                    </CodeExpression>
+                                    <CodeExpression id="11">
+                                      <ExpressionOrigin>
+                                        <Value type="int" value="0"/>
+                                      </ExpressionOrigin>
+                                    </CodeExpression>
+                                    <CodeExpression id="12">
+                                      <ExpressionOrigin>
+                                        <Value type="int" value="2"/>
+                                      </ExpressionOrigin>
+                                    </CodeExpression>
+                                  </Parameters>
+                                </ExpressionOrigin>
+                              </CodeExpression>
+                              <StatementProvider type="CodeExpression">
+                                <CodeExpression id="9_flowLayout2"/>
+                              </StatementProvider>
+                              <Parameters>
+                                <CodeExpression id="10"/>
+                                <CodeExpression id="11"/>
+                                <CodeExpression id="12"/>
+                              </Parameters>
+                            </CodeStatement>
+                            <CodeStatement>
+                              <CodeExpression id="9_flowLayout2"/>
+                              <StatementProvider type="CodeMethod">
+                                <CodeMethod name="setAlignOnBaseline" class="java.awt.FlowLayout" parameterTypes="boolean"/>
+                              </StatementProvider>
+                              <Parameters>
+                                <CodeExpression id="13">
+                                  <ExpressionOrigin>
+                                    <Value type="boolean" value="true"/>
+                                  </ExpressionOrigin>
+                                </CodeExpression>
+                              </Parameters>
+                            </CodeStatement>
+                            <CodeStatement>
+                              <CodeExpression id="14_jPanel11">
+                                <CodeVariable name="jPanel11" type="8194" declaredType="javax.swing.JPanel"/>
+                                <ExpressionOrigin>
+                                  <ExpressionProvider type="ComponentRef">
+                                    <ComponentRef name="jPanel11"/>
+                                  </ExpressionProvider>
+                                </ExpressionOrigin>
+                              </CodeExpression>
+                              <StatementProvider type="CodeMethod">
+                                <CodeMethod name="setLayout" class="java.awt.Container" parameterTypes="java.awt.LayoutManager"/>
+                              </StatementProvider>
+                              <Parameters>
+                                <CodeExpression id="9_flowLayout2"/>
+                              </Parameters>
+                            </CodeStatement>
+                            <CodeStatement>
+                              <CodeExpression id="14_jPanel11"/>
+                              <StatementProvider type="CodeMethod">
+                                <CodeMethod name="add" class="java.awt.Container" parameterTypes="java.awt.Component"/>
+                              </StatementProvider>
+                              <Parameters>
+                                <CodeExpression id="15_xButton8">
+                                  <CodeVariable name="xButton8" type="8194" declaredType="com.rameses.rcp.control.XButton"/>
+                                  <ExpressionOrigin>
+                                    <ExpressionProvider type="ComponentRef">
+                                      <ComponentRef name="xButton8"/>
+                                    </ExpressionProvider>
+                                  </ExpressionOrigin>
+                                </CodeExpression>
+                              </Parameters>
+                            </CodeStatement>
+                            <CodeStatement>
+                              <CodeExpression id="14_jPanel11"/>
+                              <StatementProvider type="CodeMethod">
+                                <CodeMethod name="add" class="java.awt.Container" parameterTypes="java.awt.Component"/>
+                              </StatementProvider>
+                              <Parameters>
+                                <CodeExpression id="16_xButton9">
+                                  <CodeVariable name="xButton9" type="8194" declaredType="com.rameses.rcp.control.XButton"/>
+                                  <ExpressionOrigin>
+                                    <ExpressionProvider type="ComponentRef">
+                                      <ComponentRef name="xButton9"/>
+                                    </ExpressionProvider>
+                                  </ExpressionOrigin>
+                                </CodeExpression>
+                              </Parameters>
+                            </CodeStatement>
+                          </LayoutCode>
+                        </Container>
+                      </SubComponents>
+                    </Container>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel31">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Mobile No"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.account.mobileno }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="13" style="0"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel32">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Email"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.account.email }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="13" style="0"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel33">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Phone No"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.account.phoneno }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="13" style="0"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+            <Container class="com.rameses.rcp.control.XPanel" name="xPanel10">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <PropertyBean type="com.rameses.rcp.control.border.XTitledBorder">
+                    <Property name="title" type="java.lang.String" value="Sub Area / Stubout Information"/>
+                  </PropertyBean>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                              <Component id="xFormPanel10" min="-2" pref="419" max="-2" attributes="0"/>
+                              <EmptySpace pref="27" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="147" max="32767" attributes="0"/>
+                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="xFormPanel10" pref="135" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel10">
+                  <Properties>
+                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                      <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                        <EmptyBorder/>
+                      </Border>
+                    </Property>
+                    <Property name="captionVAlignment" type="java.lang.String" value="CENTER"/>
+                    <Property name="captionWidth" type="int" value="120"/>
+                    <Property name="padding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                      <Insets value="[0, 5, 0, 5]"/>
+                    </Property>
+                  </Properties>
+                  <SubComponents>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel24">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Sub Area"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.account.subarea.code }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="13" style="0"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel25">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Stubout"/>
+                        <Property name="expression" type="java.lang.String" value="#{ entity.account.stubout.code }"/>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="SansSerif" size="13" style="0"/>
+                        </Property>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+            <Container class="com.rameses.rcp.control.XPanel" name="xPanel11">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <PropertyBean type="com.rameses.rcp.control.border.XTitledBorder">
+                    <Property name="title" type="java.lang.String" value="Meter Information"/>
+                  </PropertyBean>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                          <Component id="xFormPanel11" min="-2" pref="422" max="-2" attributes="0"/>
+                          <EmptySpace pref="26" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="xFormPanel11" min="-2" pref="110" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel11">
+                  <Properties>
+                    <Property name="captionVAlignment" type="java.lang.String" value="CENTER"/>
+                    <Property name="captionWidth" type="int" value="120"/>
+                    <Property name="padding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                      <Insets value="[0, 5, 0, 5]"/>
+                    </Property>
+                  </Properties>
+                  <SubComponents>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel26">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Meter Serial No"/>
+                        <Property name="expression" type="java.lang.String" value="#{entity.account.meter.serialno}"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="f5" green="f5" red="f5" type="rgb"/>
+                        </Property>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="opaque" type="boolean" value="true"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel27">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Brand"/>
+                        <Property name="depends" type="[Ljava.lang.String;" editor="org.netbeans.beaninfo.editors.StringArrayEditor">
+                          <StringArray count="1">
+                            <StringItem index="0" value="entity.account.meter"/>
+                          </StringArray>
+                        </Property>
+                        <Property name="expression" type="java.lang.String" value="#{entity.account.meter.brand}"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="f5" green="f5" red="f5" type="rgb"/>
+                        </Property>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="opaque" type="boolean" value="true"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="com.rameses.rcp.control.XLabel" name="xLabel28">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="Capacity"/>
+                        <Property name="depends" type="[Ljava.lang.String;" editor="org.netbeans.beaninfo.editors.StringArrayEditor">
+                          <StringArray count="1">
+                            <StringItem index="0" value="entity.account.meter"/>
+                          </StringArray>
+                        </Property>
+                        <Property name="expression" type="java.lang.String" value="#{entity.account.meter.capacity}"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="f5" green="f5" red="f5" type="rgb"/>
+                        </Property>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                            <LineBorder>
+                              <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
+                            </LineBorder>
+                          </Border>
+                        </Property>
+                        <Property name="opaque" type="boolean" value="true"/>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[0, 20]"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+          </SubComponents>
+        </Container>
+        <Container class="com.rameses.rcp.control.XPanel" name="pnlFees">
+          <Properties>
+            <Property name="visibleWhen" type="java.lang.String" value="#{ task.state != &apos;draft&apos; }"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Fees">
@@ -133,49 +1363,230 @@
             </Constraint>
           </Constraints>
 
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="xFormPanel2" min="-2" max="-2" attributes="0"/>
-                          <Component id="xDataTable1" min="-2" pref="683" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace pref="260" max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="xDataTable1" pref="287" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="xFormPanel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-            </DimensionLayout>
-          </Layout>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
           <SubComponents>
-            <Component class="com.rameses.rcp.control.XDataTable" name="xDataTable1">
+            <Container class="javax.swing.JPanel" name="jPanel9">
               <Properties>
-                <Property name="handler" type="java.lang.String" value="feeList"/>
-                <Property name="columns" type="[Lcom.rameses.rcp.common.Column;" editor="com.rameses.beaninfo.editor.ColumnPropertyEditor">
-                  <SerializedValue value="-84,-19,0,5,117,114,0,32,91,76,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,111,108,117,109,110,59,-113,88,47,82,32,-6,-98,-32,2,0,0,120,112,0,0,0,3,115,114,0,29,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,111,108,117,109,110,0,0,0,0,0,0,0,1,2,0,37,90,0,7,100,121,110,97,109,105,99,90,0,8,101,100,105,116,97,98,108,101,90,0,11,104,116,109,108,68,105,115,112,108,97,121,73,0,8,109,97,120,87,105,100,116,104,73,0,8,109,105,110,87,105,100,116,104,90,0,13,110,117,108,108,87,104,101,110,69,109,112,116,121,90,0,7,112,114,105,109,97,114,121,90,0,8,114,101,113,117,105,114,101,100,90,0,9,114,101,115,105,122,97,98,108,101,73,0,9,114,111,119,104,101,105,103,104,116,90,0,7,118,105,115,105,98,108,101,73,0,5,119,105,100,116,104,76,0,6,97,99,116,105,111,110,116,0,18,76,106,97,118,97,47,108,97,110,103,47,79,98,106,101,99,116,59,76,0,9,97,108,105,103,110,109,101,110,116,116,0,18,76,106,97,118,97,47,108,97,110,103,47,83,116,114,105,110,103,59,76,0,7,99,97,112,116,105,111,110,113,0,126,0,4,76,0,8,99,97,116,101,103,111,114,121,113,0,126,0,4,76,0,10,99,104,101,99,107,86,97,108,117,101,113,0,126,0,3,76,0,12,101,100,105,116,97,98,108,101,87,104,101,110,113,0,126,0,4,76,0,10,101,120,112,114,101,115,115,105,111,110,113,0,126,0,4,76,0,9,102,105,101,108,100,84,121,112,101,116,0,17,76,106,97,118,97,47,108,97,110,103,47,67,108,97,115,115,59,76,0,9,102,105,101,108,100,110,97,109,101,113,0,126,0,4,76,0,6,102,111,114,109,97,116,113,0,126,0,4,76,0,7,104,97,110,100,108,101,114,113,0,126,0,3,76,0,10,104,101,97,100,101,114,73,99,111,110,113,0,126,0,4,76,0,4,105,99,111,110,113,0,126,0,4,76,0,15,105,99,111,110,79,114,105,101,110,116,97,116,105,111,110,113,0,126,0,4,76,0,15,105,99,111,110,86,105,115,105,98,108,101,87,104,101,110,113,0,126,0,4,76,0,5,105,116,101,109,115,113,0,126,0,3,76,0,4,110,97,109,101,113,0,126,0,4,76,0,10,112,114,111,112,101,114,116,105,101,115,116,0,15,76,106,97,118,97,47,117,116,105,108,47,77,97,112,59,76,0,8,116,101,120,116,67,97,115,101,116,0,35,76,99,111,109,47,114,97,109,101,115,101,115,47,114,99,112,47,99,111,110,115,116,97,110,116,47,84,101,120,116,67,97,115,101,59,76,0,10,116,111,103,103,108,101,73,99,111,110,113,0,126,0,4,76,0,4,116,121,112,101,113,0,126,0,4,76,0,11,116,121,112,101,72,97,110,100,108,101,114,116,0,43,76,99,111,109,47,114,97,109,101,115,101,115,47,114,99,112,47,99,111,109,109,111,110,47,67,111,108,117,109,110,36,84,121,112,101,72,97,110,100,108,101,114,59,76,0,12,117,110,99,104,101,99,107,86,97,108,117,101,113,0,126,0,3,76,0,18,118,97,108,105,100,97,116,101,69,120,112,114,101,115,115,105,111,110,113,0,126,0,4,76,0,11,118,105,115,105,98,108,101,87,104,101,110,113,0,126,0,4,120,112,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,116,0,9,73,116,101,109,32,67,111,100,101,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,9,105,116,101,109,46,99,111,100,101,115,114,0,17,106,97,118,97,46,117,116,105,108,46,72,97,115,104,77,97,112,5,7,-38,-63,-61,22,96,-47,3,0,2,70,0,10,108,111,97,100,70,97,99,116,111,114,73,0,9,116,104,114,101,115,104,111,108,100,120,112,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,126,114,0,33,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,110,115,116,97,110,116,46,84,101,120,116,67,97,115,101,0,0,0,0,0,0,0,0,18,0,0,120,114,0,14,106,97,118,97,46,108,97,110,103,46,69,110,117,109,0,0,0,0,0,0,0,0,18,0,0,120,112,116,0,4,78,79,78,69,112,116,0,6,115,116,114,105,110,103,115,114,0,40,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,84,101,120,116,67,111,108,117,109,110,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,0,120,114,0,41,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,111,108,117,109,110,36,84,121,112,101,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,1,76,0,6,99,111,108,117,109,110,116,0,31,76,99,111,109,47,114,97,109,101,115,101,115,47,114,99,112,47,99,111,109,109,111,110,47,67,111,108,117,109,110,59,120,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,113,0,126,0,10,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,11,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,116,0,6,115,116,114,105,110,103,113,0,126,0,22,112,112,112,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,-56,112,112,116,0,10,73,116,101,109,32,84,105,116,108,101,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,10,105,116,101,109,46,116,105,116,108,101,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,113,0,126,0,19,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,-56,112,112,113,0,126,0,27,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,28,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,30,112,112,112,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,116,0,6,65,109,111,117,110,116,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,6,97,109,111,117,110,116,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,114,0,43,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,68,101,99,105,109,97,108,67,111,108,117,109,110,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,5,68,0,8,109,97,120,86,97,108,117,101,68,0,8,109,105,110,86,97,108,117,101,73,0,5,115,99,97,108,101,90,0,17,117,115,101,80,114,105,109,105,116,105,118,101,86,97,108,117,101,76,0,6,102,111,114,109,97,116,113,0,126,0,4,120,113,0,126,0,20,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,113,0,126,0,34,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,35,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,38,112,112,112,-65,-16,0,0,0,0,0,0,-65,-16,0,0,0,0,0,0,0,0,0,2,0,116,0,8,35,44,35,35,48,46,48,48,112,112,112"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[0, 60]"/>
                 </Property>
               </Properties>
-            </Component>
-            <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel2">
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="South"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="1100" max="32767" attributes="0"/>
+                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace pref="419" max="32767" attributes="0"/>
+                              <Component id="xFormPanel4" min="-2" pref="261" max="-2" attributes="0"/>
+                              <EmptySpace pref="420" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="60" max="32767" attributes="0"/>
+                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="xFormPanel4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="29" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
               <SubComponents>
-                <Component class="com.rameses.rcp.control.XDecimalField" name="xDecimalField1">
+                <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel4">
+                  <SubComponents>
+                    <Component class="com.rameses.rcp.control.XDecimalField" name="xDecimalField2">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="T O T A L"/>
+                        <Property name="disableWhen" type="java.lang.String" value="#{1==1}"/>
+                        <Property name="name" type="java.lang.String" value="entity.total" noResource="true"/>
+                        <Property name="fontStyle" type="java.lang.String" value="font-weight:bold;"/>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="jPanel10">
+              <Properties>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[0, 30]"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="North"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+              <SubComponents>
+                <Component class="com.rameses.rcp.control.XActionBar" name="xActionBar2">
                   <Properties>
-                    <Property name="caption" type="java.lang.String" value="Total"/>
-                    <Property name="disableWhen" type="java.lang.String" value="#{1==1}"/>
-                    <Property name="fontStyle" type="java.lang.String" value="font-weight:bold;"/>
-                    <Property name="name" type="java.lang.String" value="entity.total" noResource="true"/>
+                    <Property name="formName" type="java.lang.String" value="formName"/>
+                    <Property name="name" type="java.lang.String" value="feeActions" noResource="true"/>
                   </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                      <BorderConstraints direction="Center"/>
+                    </Constraint>
+                  </Constraints>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="com.rameses.seti2.components.SchemaList" name="schemaList1">
+              <Properties>
+                <Property name="columns" type="[Lcom.rameses.rcp.common.Column;" editor="com.rameses.beaninfo.editor.ColumnPropertyEditor">
+                  <SerializedValue value="-84,-19,0,5,117,114,0,32,91,76,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,111,108,117,109,110,59,-113,88,47,82,32,-6,-98,-32,2,0,0,120,112,0,0,0,6,115,114,0,29,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,111,108,117,109,110,0,0,0,0,0,0,0,1,2,0,37,90,0,7,100,121,110,97,109,105,99,90,0,8,101,100,105,116,97,98,108,101,90,0,11,104,116,109,108,68,105,115,112,108,97,121,73,0,8,109,97,120,87,105,100,116,104,73,0,8,109,105,110,87,105,100,116,104,90,0,13,110,117,108,108,87,104,101,110,69,109,112,116,121,90,0,7,112,114,105,109,97,114,121,90,0,8,114,101,113,117,105,114,101,100,90,0,9,114,101,115,105,122,97,98,108,101,73,0,9,114,111,119,104,101,105,103,104,116,90,0,7,118,105,115,105,98,108,101,73,0,5,119,105,100,116,104,76,0,6,97,99,116,105,111,110,116,0,18,76,106,97,118,97,47,108,97,110,103,47,79,98,106,101,99,116,59,76,0,9,97,108,105,103,110,109,101,110,116,116,0,18,76,106,97,118,97,47,108,97,110,103,47,83,116,114,105,110,103,59,76,0,7,99,97,112,116,105,111,110,113,0,126,0,4,76,0,8,99,97,116,101,103,111,114,121,113,0,126,0,4,76,0,10,99,104,101,99,107,86,97,108,117,101,113,0,126,0,3,76,0,12,101,100,105,116,97,98,108,101,87,104,101,110,113,0,126,0,4,76,0,10,101,120,112,114,101,115,115,105,111,110,113,0,126,0,4,76,0,9,102,105,101,108,100,84,121,112,101,116,0,17,76,106,97,118,97,47,108,97,110,103,47,67,108,97,115,115,59,76,0,9,102,105,101,108,100,110,97,109,101,113,0,126,0,4,76,0,6,102,111,114,109,97,116,113,0,126,0,4,76,0,7,104,97,110,100,108,101,114,113,0,126,0,3,76,0,10,104,101,97,100,101,114,73,99,111,110,113,0,126,0,4,76,0,4,105,99,111,110,113,0,126,0,4,76,0,15,105,99,111,110,79,114,105,101,110,116,97,116,105,111,110,113,0,126,0,4,76,0,15,105,99,111,110,86,105,115,105,98,108,101,87,104,101,110,113,0,126,0,4,76,0,5,105,116,101,109,115,113,0,126,0,3,76,0,4,110,97,109,101,113,0,126,0,4,76,0,10,112,114,111,112,101,114,116,105,101,115,116,0,15,76,106,97,118,97,47,117,116,105,108,47,77,97,112,59,76,0,8,116,101,120,116,67,97,115,101,116,0,35,76,99,111,109,47,114,97,109,101,115,101,115,47,114,99,112,47,99,111,110,115,116,97,110,116,47,84,101,120,116,67,97,115,101,59,76,0,10,116,111,103,103,108,101,73,99,111,110,113,0,126,0,4,76,0,4,116,121,112,101,113,0,126,0,4,76,0,11,116,121,112,101,72,97,110,100,108,101,114,116,0,43,76,99,111,109,47,114,97,109,101,115,101,115,47,114,99,112,47,99,111,109,109,111,110,47,67,111,108,117,109,110,36,84,121,112,101,72,97,110,100,108,101,114,59,76,0,12,117,110,99,104,101,99,107,86,97,108,117,101,113,0,126,0,3,76,0,18,118,97,108,105,100,97,116,101,69,120,112,114,101,115,115,105,111,110,113,0,126,0,4,76,0,11,118,105,115,105,98,108,101,87,104,101,110,113,0,126,0,4,120,112,0,0,0,0,0,0,-106,0,0,0,-106,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,116,0,9,73,116,101,109,32,67,111,100,101,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,10,105,116,101,109,46,111,98,106,105,100,115,114,0,17,106,97,118,97,46,117,116,105,108,46,72,97,115,104,77,97,112,5,7,-38,-63,-61,22,96,-47,3,0,2,70,0,10,108,111,97,100,70,97,99,116,111,114,73,0,9,116,104,114,101,115,104,111,108,100,120,112,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,126,114,0,33,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,110,115,116,97,110,116,46,84,101,120,116,67,97,115,101,0,0,0,0,0,0,0,0,18,0,0,120,114,0,14,106,97,118,97,46,108,97,110,103,46,69,110,117,109,0,0,0,0,0,0,0,0,18,0,0,120,112,116,0,4,78,79,78,69,112,116,0,6,115,116,114,105,110,103,115,114,0,40,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,84,101,120,116,67,111,108,117,109,110,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,0,120,114,0,41,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,111,108,117,109,110,36,84,121,112,101,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,1,76,0,6,99,111,108,117,109,110,116,0,31,76,99,111,109,47,114,97,109,101,115,101,115,47,114,99,112,47,99,111,109,109,111,110,47,67,111,108,117,109,110,59,120,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,-106,0,0,0,-106,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,113,0,126,0,10,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,11,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,116,0,6,115,116,114,105,110,103,113,0,126,0,22,112,112,112,112,112,112,115,113,0,126,0,2,0,0,0,0,0,1,94,0,0,1,44,1,0,0,1,0,0,0,0,1,0,0,0,-56,112,112,116,0,9,73,116,101,109,32,78,97,109,101,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,10,105,116,101,109,46,116,105,116,108,101,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,113,0,126,0,19,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,1,94,0,0,1,44,1,0,0,1,0,0,0,0,1,0,0,0,-56,112,112,113,0,126,0,27,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,28,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,30,112,112,112,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,-106,0,0,0,-106,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,116,0,6,65,109,111,117,110,116,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,6,97,109,111,117,110,116,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,114,0,43,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,68,101,99,105,109,97,108,67,111,108,117,109,110,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,5,68,0,8,109,97,120,86,97,108,117,101,68,0,8,109,105,110,86,97,108,117,101,73,0,5,115,99,97,108,101,90,0,17,117,115,101,80,114,105,109,105,116,105,118,101,86,97,108,117,101,76,0,6,102,111,114,109,97,116,113,0,126,0,4,120,113,0,126,0,20,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,-106,0,0,0,-106,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,113,0,126,0,34,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,35,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,38,112,112,112,-65,-16,0,0,0,0,0,0,-65,-16,0,0,0,0,0,0,0,0,0,2,0,116,0,8,35,44,35,35,48,46,48,48,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,-106,0,0,0,-106,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,116,0,8,65,109,116,32,80,97,105,100,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,7,97,109,116,112,97,105,100,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,113,0,126,0,37,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,-106,0,0,0,-106,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,113,0,126,0,43,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,44,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,46,112,112,112,-65,-16,0,0,0,0,0,0,-65,-16,0,0,0,0,0,0,0,0,0,2,0,116,0,8,35,44,35,35,48,46,48,48,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,-106,0,0,0,-106,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,116,0,7,66,97,108,97,110,99,101,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,7,98,97,108,97,110,99,101,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,113,0,126,0,37,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,-106,0,0,0,-106,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,113,0,126,0,51,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,52,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,54,112,112,112,-65,-16,0,0,0,0,0,0,-65,-16,0,0,0,0,0,0,0,0,0,2,0,113,0,126,0,49,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,116,0,1,45,112,112,112,112,112,112,112,112,112,112,112,112,112,112,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,113,0,126,0,19,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,113,0,126,0,58,112,112,112,112,112,112,112,112,112,112,112,112,112,112,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,60,112,112,112,112,112,112"/>
+                </Property>
+                <Property name="customFilter" type="java.lang.String" value="appid = :appid"/>
+                <Property name="handler" type="java.lang.String" value="feeListModel"/>
+                <Property name="queryName" type="java.lang.String" value="entityQry"/>
+                <Property name="schemaName" type="java.lang.String" value="waterworks_application_fee"/>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="Center"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="com.rameses.rcp.control.XPanel" name="pnlRequirements">
+          <Properties>
+            <Property name="visibleWhen" type="java.lang.String" value="#{ false }"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Requirements">
+                <Property name="tabTitle" type="java.lang.String" value="Requirements"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+          <SubComponents>
+            <Component class="com.rameses.rcp.control.XDataTable" name="xDataTable2">
+              <Properties>
+                <Property name="handler" type="java.lang.String" value="requirementList"/>
+                <Property name="name" type="java.lang.String" value="selectedRequirement" noResource="true"/>
+                <Property name="columns" type="[Lcom.rameses.rcp.common.Column;" editor="com.rameses.beaninfo.editor.ColumnPropertyEditor">
+                  <SerializedValue value="-84,-19,0,5,117,114,0,32,91,76,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,111,108,117,109,110,59,-113,88,47,82,32,-6,-98,-32,2,0,0,120,112,0,0,0,5,115,114,0,29,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,111,108,117,109,110,0,0,0,0,0,0,0,1,2,0,37,90,0,7,100,121,110,97,109,105,99,90,0,8,101,100,105,116,97,98,108,101,90,0,11,104,116,109,108,68,105,115,112,108,97,121,73,0,8,109,97,120,87,105,100,116,104,73,0,8,109,105,110,87,105,100,116,104,90,0,13,110,117,108,108,87,104,101,110,69,109,112,116,121,90,0,7,112,114,105,109,97,114,121,90,0,8,114,101,113,117,105,114,101,100,90,0,9,114,101,115,105,122,97,98,108,101,73,0,9,114,111,119,104,101,105,103,104,116,90,0,7,118,105,115,105,98,108,101,73,0,5,119,105,100,116,104,76,0,6,97,99,116,105,111,110,116,0,18,76,106,97,118,97,47,108,97,110,103,47,79,98,106,101,99,116,59,76,0,9,97,108,105,103,110,109,101,110,116,116,0,18,76,106,97,118,97,47,108,97,110,103,47,83,116,114,105,110,103,59,76,0,7,99,97,112,116,105,111,110,113,0,126,0,4,76,0,8,99,97,116,101,103,111,114,121,113,0,126,0,4,76,0,10,99,104,101,99,107,86,97,108,117,101,113,0,126,0,3,76,0,12,101,100,105,116,97,98,108,101,87,104,101,110,113,0,126,0,4,76,0,10,101,120,112,114,101,115,115,105,111,110,113,0,126,0,4,76,0,9,102,105,101,108,100,84,121,112,101,116,0,17,76,106,97,118,97,47,108,97,110,103,47,67,108,97,115,115,59,76,0,9,102,105,101,108,100,110,97,109,101,113,0,126,0,4,76,0,6,102,111,114,109,97,116,113,0,126,0,4,76,0,7,104,97,110,100,108,101,114,113,0,126,0,3,76,0,10,104,101,97,100,101,114,73,99,111,110,113,0,126,0,4,76,0,4,105,99,111,110,113,0,126,0,4,76,0,15,105,99,111,110,79,114,105,101,110,116,97,116,105,111,110,113,0,126,0,4,76,0,15,105,99,111,110,86,105,115,105,98,108,101,87,104,101,110,113,0,126,0,4,76,0,5,105,116,101,109,115,113,0,126,0,3,76,0,4,110,97,109,101,113,0,126,0,4,76,0,10,112,114,111,112,101,114,116,105,101,115,116,0,15,76,106,97,118,97,47,117,116,105,108,47,77,97,112,59,76,0,8,116,101,120,116,67,97,115,101,116,0,35,76,99,111,109,47,114,97,109,101,115,101,115,47,114,99,112,47,99,111,110,115,116,97,110,116,47,84,101,120,116,67,97,115,101,59,76,0,10,116,111,103,103,108,101,73,99,111,110,113,0,126,0,4,76,0,4,116,121,112,101,113,0,126,0,4,76,0,11,116,121,112,101,72,97,110,100,108,101,114,116,0,43,76,99,111,109,47,114,97,109,101,115,101,115,47,114,99,112,47,99,111,109,109,111,110,47,67,111,108,117,109,110,36,84,121,112,101,72,97,110,100,108,101,114,59,76,0,12,117,110,99,104,101,99,107,86,97,108,117,101,113,0,126,0,3,76,0,18,118,97,108,105,100,97,116,101,69,120,112,114,101,115,115,105,111,110,113,0,126,0,4,76,0,11,118,105,115,105,98,108,101,87,104,101,110,113,0,126,0,4,120,112,0,0,0,0,0,0,50,0,0,0,50,1,0,0,1,0,0,0,0,1,0,0,0,50,112,112,116,0,4,67,111,100,101,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,4,99,111,100,101,115,114,0,17,106,97,118,97,46,117,116,105,108,46,72,97,115,104,77,97,112,5,7,-38,-63,-61,22,96,-47,3,0,2,70,0,10,108,111,97,100,70,97,99,116,111,114,73,0,9,116,104,114,101,115,104,111,108,100,120,112,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,126,114,0,33,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,110,115,116,97,110,116,46,84,101,120,116,67,97,115,101,0,0,0,0,0,0,0,0,18,0,0,120,114,0,14,106,97,118,97,46,108,97,110,103,46,69,110,117,109,0,0,0,0,0,0,0,0,18,0,0,120,112,116,0,4,78,79,78,69,112,116,0,6,115,116,114,105,110,103,115,114,0,40,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,84,101,120,116,67,111,108,117,109,110,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,0,120,114,0,41,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,111,108,117,109,110,36,84,121,112,101,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,1,76,0,6,99,111,108,117,109,110,116,0,31,76,99,111,109,47,114,97,109,101,115,101,115,47,114,99,112,47,99,111,109,109,111,110,47,67,111,108,117,109,110,59,120,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,50,0,0,0,50,1,0,0,1,0,0,0,0,1,0,0,0,50,112,112,113,0,126,0,10,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,11,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,116,0,6,115,116,114,105,110,103,113,0,126,0,22,112,112,112,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,-56,0,0,0,-56,1,0,0,1,0,0,0,0,1,0,0,0,-56,112,112,116,0,5,84,105,116,108,101,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,5,116,105,116,108,101,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,113,0,126,0,19,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,-56,0,0,0,-56,1,0,0,1,0,0,0,0,1,0,0,0,-56,112,112,113,0,126,0,27,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,28,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,30,112,112,112,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,-106,0,0,0,-106,1,0,0,1,0,0,0,0,1,0,0,0,-106,112,112,116,0,7,77,101,115,115,97,103,101,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,7,109,101,115,115,97,103,101,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,113,0,126,0,19,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,-106,0,0,0,-106,1,0,0,1,0,0,0,0,1,0,0,0,-106,112,112,113,0,126,0,34,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,35,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,37,112,112,112,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,100,0,0,0,100,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,116,0,8,82,101,113,117,105,114,101,100,112,112,112,112,112,112,112,112,112,112,112,112,112,116,0,8,114,101,113,117,105,114,101,100,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,114,0,44,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,67,104,101,99,107,66,111,120,67,111,108,117,109,110,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,3,76,0,10,99,104,101,99,107,86,97,108,117,101,113,0,126,0,3,76,0,12,117,110,99,104,101,99,107,86,97,108,117,101,113,0,126,0,3,76,0,9,118,97,108,117,101,84,121,112,101,113,0,126,0,5,120,113,0,126,0,20,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,100,0,0,0,100,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,113,0,126,0,41,112,112,112,112,112,112,112,112,112,112,112,112,112,113,0,126,0,42,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,45,112,112,112,116,0,1,49,116,0,1,48,118,114,0,17,106,97,118,97,46,108,97,110,103,46,73,110,116,101,103,101,114,18,-30,-96,-92,-9,-127,-121,56,2,0,1,73,0,5,118,97,108,117,101,120,114,0,16,106,97,118,97,46,108,97,110,103,46,78,117,109,98,101,114,-122,-84,-107,29,11,-108,-32,-117,2,0,0,120,112,112,112,112,115,113,0,126,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,116,0,1,45,112,112,112,116,0,4,86,105,101,119,112,112,112,112,112,112,112,112,112,116,0,15,118,105,101,119,82,101,113,117,105,114,101,109,101,110,116,115,113,0,126,0,12,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,18,115,114,0,42,99,111,109,46,114,97,109,101,115,101,115,46,114,99,112,46,99,111,109,109,111,110,46,66,117,116,116,111,110,67,111,108,117,109,110,72,97,110,100,108,101,114,0,0,0,0,0,0,0,1,2,0,3,76,0,6,97,99,116,105,111,110,113,0,126,0,4,76,0,3,116,97,103,113,0,126,0,4,76,0,11,118,105,115,105,98,108,101,87,104,101,110,113,0,126,0,4,120,113,0,126,0,20,63,64,0,0,0,0,0,0,119,8,0,0,0,1,0,0,0,0,120,115,113,0,126,0,2,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,100,112,112,113,0,126,0,54,112,112,112,113,0,126,0,55,112,112,112,112,112,112,112,112,112,113,0,126,0,56,115,113,0,126,0,12,63,64,0,0,0,0,0,16,119,8,0,0,0,16,0,0,0,0,120,113,0,126,0,16,112,113,0,126,0,25,113,0,126,0,59,112,112,112,112,112,112,112,112,112"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="Center"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="com.rameses.rcp.control.XPanel" name="pnlBOM">
+          <Properties>
+            <Property name="visibleWhen" type="java.lang.String" value="#{ task.state != &apos;draft&apos; }"/>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Bill of Materials">
+                <Property name="tabTitle" type="java.lang.String" value="Bill of Materials"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+          <SubComponents>
+            <Container class="javax.swing.JPanel" name="jPanel12">
+              <Properties>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[0, 60]"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="South"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="1100" max="32767" attributes="0"/>
+                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace pref="419" max="32767" attributes="0"/>
+                              <Component id="xFormPanel5" min="-2" pref="261" max="-2" attributes="0"/>
+                              <EmptySpace pref="420" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <EmptySpace min="0" pref="60" max="32767" attributes="0"/>
+                      <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="xFormPanel5" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="29" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel5">
+                  <SubComponents>
+                    <Component class="com.rameses.rcp.control.XDecimalField" name="xDecimalField3">
+                      <Properties>
+                        <Property name="caption" type="java.lang.String" value="T O T A L"/>
+                        <Property name="disableWhen" type="java.lang.String" value="#{1==1}"/>
+                        <Property name="name" type="java.lang.String" value="entity.bomtotal" noResource="true"/>
+                        <Property name="fontStyle" type="java.lang.String" value="font-weight:bold;"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="xDecimalField3ActionPerformed"/>
+                      </Events>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="jPanel13">
+              <Properties>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[0, 30]"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="North"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+              <SubComponents>
+                <Component class="com.rameses.rcp.control.XActionBar" name="xActionBar4">
+                  <Properties>
+                    <Property name="formName" type="java.lang.String" value="formName"/>
+                    <Property name="name" type="java.lang.String" value="bomActions" noResource="true"/>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                      <BorderConstraints direction="Center"/>
+                    </Constraint>
+                  </Constraints>
                 </Component>
               </SubComponents>
             </Container>
@@ -183,147 +1594,30 @@
         </Container>
       </SubComponents>
     </Container>
-    <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel3">
+    <Container class="javax.swing.JPanel" name="jPanel3">
       <Properties>
-        <Property name="captionWidth" type="int" value="105"/>
-        <Property name="padding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-          <Insets value="[5, 5, 10, 1]"/>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[200, 30]"/>
         </Property>
       </Properties>
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+          <BorderConstraints direction="North"/>
+        </Constraint>
+      </Constraints>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
       <SubComponents>
-        <Component class="com.rameses.rcp.control.XLabel" name="xLabel10">
+        <Component class="com.rameses.rcp.control.XActionBar" name="xActionBar3">
           <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="f5" green="f5" red="f5" type="rgb"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                <LineBorder>
-                  <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
-                </LineBorder>
-              </Border>
-            </Property>
-            <Property name="caption" type="java.lang.String" value="Owner"/>
-            <Property name="expression" type="java.lang.String" value="#{entity.owner.name}"/>
-            <Property name="opaque" type="boolean" value="true"/>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[0, 20]"/>
-            </Property>
+            <Property name="formName" type="java.lang.String" value="formName"/>
+            <Property name="name" type="java.lang.String" value="appActions" noResource="true"/>
           </Properties>
-        </Component>
-        <Component class="com.rameses.rcp.control.XLabel" name="xLabel12">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="f5" green="f5" red="f5" type="rgb"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                <LineBorder>
-                  <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
-                </LineBorder>
-              </Border>
-            </Property>
-            <Property name="caption" type="java.lang.String" value="Address"/>
-            <Property name="expression" type="java.lang.String" value="#{entity.address.text}"/>
-            <Property name="opaque" type="boolean" value="true"/>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[0, 20]"/>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="com.rameses.rcp.control.XLabel" name="xLabel14">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="f5" green="f5" red="f5" type="rgb"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                <LineBorder>
-                  <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
-                </LineBorder>
-              </Border>
-            </Property>
-            <Property name="caption" type="java.lang.String" value="Acct Name"/>
-            <Property name="expression" type="java.lang.String" value="#{entity.acctname}"/>
-            <Property name="opaque" type="boolean" value="true"/>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[0, 20]"/>
-            </Property>
-          </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Container class="com.rameses.rcp.control.XFormPanel" name="xFormPanel5">
-      <Properties>
-        <Property name="captionWidth" type="int" value="105"/>
-        <Property name="padding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-          <Insets value="[5, 5, 10, 1]"/>
-        </Property>
-      </Properties>
-      <SubComponents>
-        <Component class="com.rameses.rcp.control.XLabel" name="xLabel13">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="f5" green="f5" red="f5" type="rgb"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                <LineBorder>
-                  <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
-                </LineBorder>
-              </Border>
-            </Property>
-            <Property name="caption" type="java.lang.String" value="App No"/>
-            <Property name="expression" type="java.lang.String" value="#{entity.appno}"/>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Tahoma" size="14" style="1"/>
-            </Property>
-            <Property name="opaque" type="boolean" value="true"/>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[0, 20]"/>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="com.rameses.rcp.control.XLabel" name="xLabel15">
-          <Properties>
-            <Property name="caption" type="java.lang.String" value="Date Applied"/>
-            <Property name="expression" type="java.lang.String" value="#{entity.appdate}"/>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="f5" green="f5" red="f5" type="rgb"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                <LineBorder>
-                  <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
-                </LineBorder>
-              </Border>
-            </Property>
-            <Property name="dateFormat" type="java.lang.String" value="yyyy-MM-dd"/>
-            <Property name="opaque" type="boolean" value="true"/>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[0, 20]"/>
-            </Property>
-          </Properties>
-        </Component>
-        <Component class="com.rameses.rcp.control.XLabel" name="xLabel11">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="f5" green="f5" red="f5" type="rgb"/>
-            </Property>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                <LineBorder>
-                  <Color PropertyName="color" blue="b4" green="b4" red="b4" type="rgb"/>
-                </LineBorder>
-              </Border>
-            </Property>
-            <Property name="caption" type="java.lang.String" value="Classification"/>
-            <Property name="expression" type="java.lang.String" value="#{entity.classificationid}"/>
-            <Property name="opaque" type="boolean" value="true"/>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[0, 20]"/>
-            </Property>
-          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+              <BorderConstraints direction="Center"/>
+            </Constraint>
+          </Constraints>
         </Component>
       </SubComponents>
     </Container>

@@ -17,6 +17,12 @@
             <action role="SHARED" allowEdit="false" allowCreate="false"/> 
         </invoker>     
         
+        <invoker type="formActions" caption="Activate" 
+                 role="APPROVER"   
+                 action="activate" visibleWhen="#{ mode!='create' &amp;&amp; entity.state == 'DRAFT' }" /> 
+        
+        
+        
         <!-- for calling processes -->
         <invoker type="vw_waterworks_account:exec" target="process" />
 

@@ -66,6 +66,7 @@
             <Component class="com.rameses.rcp.control.XIntegerField" name="xIntegerField1">
               <Properties>
                 <Property name="caption" type="java.lang.String" value="Year"/>
+                <Property name="disableWhen" type="java.lang.String" value="#{ mode != &apos;create&apos; }"/>
                 <Property name="name" type="java.lang.String" value="entity.year" noResource="true"/>
                 <Property name="pattern" type="java.lang.String" value="####"/>
                 <Property name="required" type="boolean" value="true"/>
@@ -74,6 +75,7 @@
             <Component class="com.rameses.enterprise.components.MonthList" name="monthList1">
               <Properties>
                 <Property name="caption" type="java.lang.String" value="Month"/>
+                <Property name="disableWhen" type="java.lang.String" value="#{ mode != &apos;create&apos; }"/>
                 <Property name="name" type="java.lang.String" value="entity.month" noResource="true"/>
                 <Property name="required" type="boolean" value="true"/>
               </Properties>
@@ -81,6 +83,7 @@
             <Component class="com.rameses.rcp.control.XLookupField" name="xLookupField1">
               <Properties>
                 <Property name="caption" type="java.lang.String" value="Item"/>
+                <Property name="disableWhen" type="java.lang.String" value="#{ mode != &apos;create&apos; }"/>
                 <Property name="expression" type="java.lang.String" value="#{item.title}"/>
                 <Property name="handler" type="java.lang.String" value="waterworks_itemaccount:lookup"/>
                 <Property name="name" type="java.lang.String" value="entity.item" noResource="true"/>
@@ -92,17 +95,40 @@
             </Component>
             <Component class="com.rameses.rcp.control.XDecimalField" name="xDecimalField2">
               <Properties>
-                <Property name="name" type="java.lang.String" value="entity.amount" noResource="true"/>
                 <Property name="caption" type="java.lang.String" value="Amount"/>
+                <Property name="disableWhen" type="java.lang.String" value="#{ !mode.matches(&apos;create|update&apos;) }"/>
+                <Property name="name" type="java.lang.String" value="entity.amount" noResource="true"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[120, 20]"/>
                 </Property>
                 <Property name="required" type="boolean" value="true"/>
               </Properties>
             </Component>
+            <Component class="com.rameses.rcp.control.XDecimalField" name="xDecimalField3">
+              <Properties>
+                <Property name="caption" type="java.lang.String" value="Amt Paid"/>
+                <Property name="disableWhen" type="java.lang.String" value="#{ true }"/>
+                <Property name="name" type="java.lang.String" value="entity.amtpaid" noResource="true"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[120, 20]"/>
+                </Property>
+                <Property name="required" type="boolean" value="true"/>
+              </Properties>
+            </Component>
+            <Component class="com.rameses.rcp.control.XLabel" name="xLabel1">
+              <Properties>
+                <Property name="caption" type="java.lang.String" value="Bill No"/>
+                <Property name="expression" type="java.lang.String" value="#{ entity.bill.billno }"/>
+                <Property name="visibleWhen" type="java.lang.String" value="#{ entity.billid != null }"/>
+                <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                  <Insets value="[20, 0, 0, 0]"/>
+                </Property>
+              </Properties>
+            </Component>
             <Component class="com.rameses.rcp.control.XTextField" name="xTextField1">
               <Properties>
                 <Property name="caption" type="java.lang.String" value="Particulars"/>
+                <Property name="disableWhen" type="java.lang.String" value="#{ !mode.matches(&apos;create|update&apos;) }"/>
                 <Property name="name" type="java.lang.String" value="entity.particulars" noResource="true"/>
                 <Property name="cellPadding" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[20, 0, 0, 0]"/>

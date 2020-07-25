@@ -19,8 +19,11 @@ public class WaterworksBillModel extends CrudFormModel {
     @Service("WaterworksBatchBillingService")
     def batchSvc;
 
-    @Service("WaterworksPaymentService")
+    @Service("WaterworksCapturePaymentService")
     def pmtSvc;
+    
+    @Service("WaterworksConsumptionService")
+    def consumptionSvc;
     
     //do not remove this. This is used to qualify the formActions
     def viewmode = "summary";
@@ -36,8 +39,6 @@ public class WaterworksBillModel extends CrudFormModel {
         buildDetails();
         updatePmtList();
     }
-
-    
 
     def detailList;
     def detailListHandler = [
@@ -123,6 +124,24 @@ public class WaterworksBillModel extends CrudFormModel {
         billSvc.approve( [objid: entity.objid ] );
         entity.state = 'POSTED';
         refreshTotals();
+        buildDetails();
+        updatePmtList();
+    }
+    
+    void reopenBill() {
+        if(!MsgBox.confirm("You are about to reopen this bill. Make sure there are no payments made yet. Proceed?")) return;
+        billSvc.reopen( [objid:entity.objid] );
+        entity.state = 'OPEN';
+        refreshTotals();
+        buildDetails();
+        updatePmtList();
+    }
+    
+    void clearSurcharges() {
+        if(!MsgBox.confirm("You are about to clear surcharges for this bill. Surcharges that are already paid will not be removed. Proceed?")) return;
+        billSvc.clearSurcharges( [objid: entity.objid ]);
+        buildDetails();
+        refreshTotals();
     }
     
     /****************************************
@@ -140,6 +159,9 @@ public class WaterworksBillModel extends CrudFormModel {
     def pmtListHandler = [
         fetchList: { o->
             return pmtList;
+        },
+        openItem: { itm, colName ->
+            return Inv.lookupOpener("waterworks_payment:open", [entity: itm]);
         }
     ] as BasicListModel;
 
@@ -159,7 +181,7 @@ public class WaterworksBillModel extends CrudFormModel {
     def cancelPayment() {
         if(!selectedPayment) throw new Exception("Please select a payment item first");
         if(!MsgBox.confirm("You are about to cancel this payment. Proceed?")) return;
-        pmtSvc.cancelPayment([refid: selectedPayment.objid ]);
+        pmtSvc.cancelPayment([refid: selectedPayment.objid, pmttxntype: "billing" ]);
         refreshTotals();
         updatePmtList();
         buildDetails();
@@ -175,19 +197,22 @@ public class WaterworksBillModel extends CrudFormModel {
 
     //create bills
     void addNewBill() {
+        def subareaid = caller.entity.subareaid;
+        if(!subareaid) subareaid = caller.entity.subarea.objid;
         def f = [
             [name: "year", caption: "Year", type:"integer"],
             [name: "month", caption: "Month", type:"monthlist"],
+            [name: "scheduleid", caption: "Schedule", editable:false],            
         ];
         def z = [_schemaname: "waterworks_subarea"];
-        z.select = "year,month,schedulegroupid";
-        z.findBy = [objid: caller.entity.subareaid];
+        z.select = "year,month,scheduleid:{schedulegroupid}";
+        z.findBy = [objid: subareaid];
         def d = queryService.findFirst(z);
         def b = [:];
         def h = { o->
             b.year = o.year;
             b.month = o.month;
-            b.scheduleid = d.schedulegroupid;
+            b.scheduleid = o.scheduleid;
         }
         Modal.show("dynamic:form", [fields: f, data:d, handler: h], [title: 'Specify Bill Year/Month']);
         if(!b) throw new BreakException();
@@ -215,5 +240,65 @@ public class WaterworksBillModel extends CrudFormModel {
         open();
     }
 
+    
+    
+    //this is a workaround where you can setup begin balance in the bill
+    def addPrevBalance() {
+        def p = [:]
+        p.acctid = entity.acctid;
+        p.account = [objid: entity.acctid ];
+        p.year = entity.year;
+        p.month = entity.month - 1;
+        if( p.month <= 0 ) {
+            p.month = 12;
+            p.year = p.year - 1;
+        }
+        p.saveItemHandler = {
+            refreshTotals();                
+            buildDetails();
+        }
+        p.billid = entity.objid; 
+        //return Inv.lookupOpener("waterworks_bill_setup_balance", p );
+        return Inv.lookupOpener("waterworks_bill_begin_balance", p );
+    }
+    
+    def viewBalanceForward() {
+        return Inv.lookupOpener("waterworks_bill_balance_forward_items", [billid: entity.objid] );
+    }
+    
+    void addPrevReading() {
+        def p = [:];
+        p.fields = [
+            [name:'reading', caption:'Enter Prev Reading', type:'integer']
+        ];
+        p.data = [:];
+        p.handler = { o->
+            o.year = entity.year;
+            o.month = entity.month - 1;
+            if( o.month <= 0 ) {
+                o.month = 12;
+                o.year = o.year - 1
+            }
+            o.acctid = entity.acctid;
+            o.meterid = entity.meterid;
+            o.txnmode = "CAPTURE";
+            consumptionSvc.addConsumption( o );
+            reloadEntity();
+            binding.refresh();
+        };
+        Modal.show( "dynamic:form", p, [title:"Add Previous Reading" ] );
+    }
+    
+    def viewAccount() {
+        def op = Inv.lookupOpener("vw_waterworks_account:open", [entity: [objid: entity.acctid ]]);
+        op.target = "windows";
+        return op;
+   }
+    
+   def cancelBill() {
+       if(! MsgBox.confirm("This will clear the bill and remove associated items which cannot be recovered. Are you sure ") ) return null;
+       billSvc.cancelBill( [objid: entity.objid] );
+       return "_close";
+   }
 
 }

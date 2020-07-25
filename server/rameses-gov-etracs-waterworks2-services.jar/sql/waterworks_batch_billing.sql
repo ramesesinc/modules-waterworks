@@ -26,3 +26,9 @@ AND wa.objid NOT IN (
 AND wa.objid NOT IN (
 	SELECT acctid FROM waterworks_batch_billing_error WHERE batchid = $P{batchid}	
 )
+
+[resetExcludeInBatchAccounts]
+UPDATE waterworks_account wa, waterworks_account_info wi
+SET wa.excludeinbatch = 0
+WHERE wa.acctinfoid = wi.objid 
+AND wi.subareaid = $P{subareaid}

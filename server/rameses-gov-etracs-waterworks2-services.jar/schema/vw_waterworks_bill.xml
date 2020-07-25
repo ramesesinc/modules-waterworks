@@ -77,7 +77,7 @@
 		<field name="totaldiscount" type="decimal" />
 
 		<field name="totalunpaid" expr="(totalprevunpaid+totalbillunpaid)" type="decimal" />
-		<field name="totalamtdue" expr="(balanceforward+billamount+totalsurcharge-totalpayment-totaldiscount)" type="decimal" />
+		<field name="totalamtdue" expr="(balanceforward+billamount+totalsurcharge-totalpayment-totaldiscount)" type="decimal" caption="Total Due"/>
 
 	</element>
 </schema>

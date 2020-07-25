@@ -2,13 +2,12 @@
           processName="waterworks_compromise"
           schemaName="vw_waterworks_compromise" 
           entitySchemaName="waterworks_compromise"
-          cols="controlno,dtcreated,account.acctno,account.acctname,task.state"
-          allowCreate="true"
+          cols="controlno,dtcreated,acctno,account.acctname,task.state"
           allowNotify="true">
 
     <invokers>
-        <invoker folderid="/menucategory/waterworks/billing" caption="Compromise Agreement List"
-                 action="init" index="10" />
+        <invoker folderid="/menucategory/waterworks/app" caption="Compromise Agreement List"
+                 action="init" index="40" />
     </invokers>
       
 </workunit>

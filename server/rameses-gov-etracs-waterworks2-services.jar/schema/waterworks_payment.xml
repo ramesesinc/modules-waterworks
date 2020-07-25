@@ -1,7 +1,7 @@
 <schema>
 	<element tablename="waterworks_payment" autopost="true">
 		<field name="objid" primary="true" prefix="WP"/>
-		<field name="acctid" required="true"/>		
+		<field name="acctid" />		
 		<field name="refno" required="true" caption="Ref No"/>
 		<field name="reftype" required="true" caption="Ref Type"/>
 		<!-- soft link to refid like cashreceipt -->

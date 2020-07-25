@@ -1,7 +1,7 @@
 <schema>
 	<element tablename="vw_waterworks_batch_billing">
 		<field name="objid" primary="true"/> 
-		<field name="batchno" />
+		<field name="batchno" searchable="true"/>
 		<field name="state" />
 		<field name="subareaid" />
 		<field name="dtposted" />
@@ -10,12 +10,12 @@
 		<field name="readingdate" />
 
 		<field name="scheduleid" />
-		<field name="year" />
+		<field name="year" indexed="true"/>
 		<field name="month" />
-		<field name="monthname" />
+		<field name="monthname" indexed="true"/>
 
-		<field name="subarea_code" /> 
-		<field name="subarea_barangay_name" /> 
+		<field name="subarea_code" searchable="true"/> 
+		<field name="subarea_barangay_name" searchable="true"/> 
 		<field name="area_code" /> 
 
 		<field name="period_fromdate" type="date"/>

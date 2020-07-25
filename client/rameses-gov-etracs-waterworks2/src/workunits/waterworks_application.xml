@@ -1,0 +1,32 @@
+<workunit 
+    processName="waterworks_application"
+    schemaName="vw_waterworks_application" 
+    entitySchemaName="waterworks_application">
+
+    <invokers>
+        <invoker type="waterworks_application:open" caption="New Connection"
+                 action="open" index="5"/>
+
+        <invoker type="appActions" caption="Change Subarea" action="changeSubArea"
+                  visibleWhen="#{!task.state.matches('receiving|end') &amp;&amp; entity.apptype == 'NEW' }"/>
+        
+        <invoker type="appActions" caption="Change Stubout" action="changeStubout"
+                  visibleWhen="#{entity.account.subareaid != null &amp;&amp; !task.state.matches('receiving|end')  &amp;&amp; entity.apptype == 'NEW'}"/>
+
+        <invoker type="appActions" caption="Change Meter" action="changeMeter"
+                  visibleWhen="#{!task.state.matches('receiving|end') &amp;&amp; entity.apptype == 'NEW'}"/>
+        
+         <invoker type="feeActions" caption="Assess" action="assess"
+                  visibleWhen="#{task.state == 'assessment'}"/>
+         
+          <invoker type="feeActions" caption="Clear Fees" action="clearFees"
+                  visibleWhen="#{task.state == 'assessment'}"/>
+        
+    </invokers>
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksApplicationModel" />    
+
+    <pages>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksApplicationPage"/>
+    </pages>    
+    
+</workunit>

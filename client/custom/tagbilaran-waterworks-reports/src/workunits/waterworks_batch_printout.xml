@@ -18,7 +18,7 @@
                  reportId="waterworks_bill" 
                  reportName="tagbilaran/waterworks/reports/tagbilaran_water_batch_billing.jasper"
                  txnid="#{entity.objid}" 
-                 visibleWhen="#{ entity.state == 'POSTED' &amp;&amp; viewmode == 'summary' }"/>
+                 visibleWhen="#{ entity.state.matches('POSTED|CLOSED') &amp;&amp; viewmode == 'summary' }"/>
     
         <!-- called by batch print -->         
         <invoker type="waterworks_batch:print" 

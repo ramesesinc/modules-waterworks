@@ -103,12 +103,12 @@ public class WaterworksSetupBalancePage extends javax.swing.JPanel {
         jPanel16.add(xButton12);
 
         xButton20.setName("addCredit"); // NOI18N
-        xButton20.setVisibleWhen("#{ totalamount == 0 }");
+        xButton20.setVisibleWhen("#{ totalamount == 0  && fromBill == false}");
         xButton20.setText("Add Credit");
         jPanel16.add(xButton20);
 
         xButton21.setName("removeCredit"); // NOI18N
-        xButton21.setVisibleWhen("#{ totalamount < 0 }");
+        xButton21.setVisibleWhen("#{ totalamount < 0 && fromBill == false }");
         xButton21.setText("Remove Credit");
         jPanel16.add(xButton21);
 
@@ -183,6 +183,36 @@ public class WaterworksSetupBalancePage extends javax.swing.JPanel {
                 , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
             }),
             new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", "balance"}
+                , new Object[]{"caption", "Balance"}
+                , new Object[]{"width", 100}
+                , new Object[]{"minWidth", 100}
+                , new Object[]{"maxWidth", 100}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.DecimalColumnHandler("#,##0.00", -1.0, -1.0, false, 2)}
+            }),
+            new com.rameses.rcp.common.Column(new Object[]{
+                new Object[]{"name", "billno"}
+                , new Object[]{"caption", "Bill No"}
+                , new Object[]{"width", 100}
+                , new Object[]{"minWidth", 150}
+                , new Object[]{"maxWidth", 200}
+                , new Object[]{"required", false}
+                , new Object[]{"resizable", true}
+                , new Object[]{"nullWhenEmpty", true}
+                , new Object[]{"editable", false}
+                , new Object[]{"visible", true}
+                , new Object[]{"visibleWhen", null}
+                , new Object[]{"textCase", com.rameses.rcp.constant.TextCase.NONE}
+                , new Object[]{"typeHandler", new com.rameses.rcp.common.TextColumnHandler()}
+            }),
+            new com.rameses.rcp.common.Column(new Object[]{
                 new Object[]{"name", null}
                 , new Object[]{"caption", "-"}
                 , new Object[]{"width", 100}
@@ -202,6 +232,7 @@ public class WaterworksSetupBalancePage extends javax.swing.JPanel {
 
         xTabbedPane1.addTab("Bill Items", xPanel3);
 
+        xPanel1.setVisibleWhen("#{ fromBill == false }");
         xPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel17.setOpaque(false);

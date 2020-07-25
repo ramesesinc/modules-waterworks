@@ -120,13 +120,13 @@ public class WaterworksSubareaPage extends javax.swing.JPanel {
         xLookupField4.setRequired(true);
         xFormPanel2.add(xLookupField4);
 
-        xIntegerField1.setCaption("Current Bill Year");
+        xIntegerField1.setCaption("Next Bill Year");
         xIntegerField1.setName("entity.year"); // NOI18N
         xIntegerField1.setCellPadding(new java.awt.Insets(20, 0, 0, 0));
         xIntegerField1.setRequired(true);
         xFormPanel2.add(xIntegerField1);
 
-        monthList1.setCaption("Current Bill Month");
+        monthList1.setCaption("Next Bill Month");
         monthList1.setName("entity.month"); // NOI18N
         monthList1.setRequired(true);
         xFormPanel2.add(monthList1);

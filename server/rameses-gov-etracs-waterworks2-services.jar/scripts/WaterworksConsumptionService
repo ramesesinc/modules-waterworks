@@ -100,4 +100,12 @@ class WaterworksConsumptionService {
         consumptionEm.find([objid:o.consumptionid]).update( [hold: o.hold] );
     }
 
+    @ProxyMethod
+    public def addConsumption( def o ) {
+        o.volume = 0;
+        o.amount = 0;
+        o.hold = 0;
+        consumptionEm.create(o);
+    }
+
 }

@@ -1,57 +1,46 @@
 import com.rameses.annotations.*;
-import java.rmi.server.*;
 
-/*****
-* 
-*
-*****/
-class WaterworksCompromiseService {
+import com.rameses.rules.common.*;
+import waterworks.facts.*;
+import treasury.facts.*;
+import treasury.actions.*;
+
+class WaterworksCompromiseService  {
 	
-	@DataContext("waterworks_promissory")
-	def promissoryEm;
+	@DataContext("waterworks_compromise")
+	def compEm;
 
-	@DataContext("waterworks_billitem")
-	def billItemEm;
+	@DataContext("waterworks_compromise_fee")
+	def compFeeEm;
 
-	@DataContext("waterworks_recurringfee")
-	def recurringFeeEm;
+	@Service("NumberService")
+	def numSvc;
 
+	@Service("BillingRuleService")
+	def ruleSvc;
 
 	@ProxyMethod
-	public def post( def o ) {
+	public def buildInstallment( def o ) {
+		def comp = compEm.find( [objid: o.objid ]).first();
+		def bal = comp.amount - comp.downpayment;
 
-		def prom = promissoryEm.find( [objid: o.objid]).first();
+		def facts = [];
+		facts << new WaterCompromise( comp );
 
-		//pay the billitems 
-		prom.items.each {
-			billItemEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid + :amt}", [amt: it.amount ] ] );
+		def installAmt = numSvc.round((bal / comp.term));
+		def amt = bal;
+		(i..term).each {
+			amt = amt - installAmt;
+			def m = [:];
+			m.
+			if(amt % installAmt == 0 ) {
+				m.amount = amt;
+			} 
+			else {
+				m.amount = installAmt;
+			}
 		}
-
-		//insert promissory note into the recurring fee so it can be scheduled during billing
-		def m = [:];
-		m.acctid = prom.acctid;
-		m.system = 1;
-		m.type = "installment";
-		m.amount = prom.amount - prom.downpayment;
-		m.amtpaid = 0;
-		m.startyear = prom.startyear;
-		m.startmonth = prom.startmonth;
-		m.installmentamount = prom.installmentamount;
-		m.refid = prom.objid;
-		m.reftype = "promissory";
-		recurringFeeEm.create( m );	
-
-		prom.find( [objid: o.objid ] ).update( [state: "POSTED" ] );
-
-	}
-
-	@ProxyMethod
-	public def applyDefault( def o ) {
-		def 
-
 
 	}
 
 }
-
-

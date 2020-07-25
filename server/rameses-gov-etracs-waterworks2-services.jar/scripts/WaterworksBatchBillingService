@@ -45,6 +45,9 @@ class WaterworksBatchBillingService {
 		o.state = 'DRAFT';	
 		o = batchEm.create( o ); 
 
+		//we also need to update all accounts included in this subarea excludeinbatch to 0;
+		batchEm.resetExcludeInBatchAccounts( [subareaid: o.subarea.objid ] );
+
 		def p = [:];
 		p.processname = 'waterworks_batch_billing';
 		p.refid = o.objid;
@@ -106,6 +109,7 @@ class WaterworksBatchBillingService {
 			p.limit = batch_process_size;
 			items = batchEm.getAccountsForBilling( p );
 			items?.each {
+				//check if bill already exists. do not create it
 				try {
 					def vv = [acctid: it.objid, year:it.year,month:it.month,scheduleid:it.scheduleid, batchid: o.batchid];
 					vv.billnoformat = o.batchid + "-[%05d]"; 
@@ -227,5 +231,12 @@ class WaterworksBatchBillingService {
 
 		return [batchid: batch.objid];			
 	}
+
+	@ProxyMethod
+	public def excludeInBatch( def o ) {
+		if(!o.acctid) throw new Exception("acctid is required in WaterworksBatchBillingService.excludeInBatch");
+		acctEm.find( [objid: o.acctid ]).update( [excludeinbatch: 1]);
+	}
+
 
 } 

@@ -2,7 +2,8 @@ DROP VIEW IF EXISTS vw_waterworks_compromise;
 CREATE VIEW vw_waterworks_compromise AS 
 SELECT   
   wcr.*,
-  wa.acctno AS account_acctno, 
+  wcr.amount - wcr.downpayment AS balance,
+  wa.acctno AS acctno, 
 
  t.state AS task_state,
  t.startdate AS task_startdate,

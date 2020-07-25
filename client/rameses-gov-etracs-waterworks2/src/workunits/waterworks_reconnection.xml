@@ -2,10 +2,10 @@
           entitySchemaName="waterworks_reconnection"  
           processName="waterworks_reconnection">
     <invokers>
-        <invoker type="waterworks_reconnection:create" caption="New Reconnection" 
+        <invoker type="waterworks_reconnection:create" caption="Reconnection" 
             action="create" />
 
-        <invoker type="waterworks_reconnection:open" caption="Resconnection" 
+        <invoker type="waterworks_reconnection:open" caption="Reconnection" 
             action="open" />
 
         <invoker type="formActions" caption="View Statement" 
@@ -13,6 +13,9 @@
 
         <invoker type="formActions" caption="Submit" 
             action="save" visibleWhen="#{mode=='create'}"/>
+
+        <invoker type="feeActions" caption="Assess" action="assess"
+                  visibleWhen="#{task.state == 'assessment'}"/>
 
     </invokers>
     

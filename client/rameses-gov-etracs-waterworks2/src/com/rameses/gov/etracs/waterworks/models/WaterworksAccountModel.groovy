@@ -9,6 +9,9 @@ import java.text.*;
 
 public class WaterworksAccountModel extends CrudFormModel {
     
+    @Service("WaterworksAccountService")
+    def acctSvc;
+    
     def dateFormatter = new java.text.SimpleDateFormat('yyyy-MM-dd'); 
     
     def meterStates = ["ACTIVE","DISCONNECTED","DEFECTIVE"];
@@ -143,6 +146,12 @@ public class WaterworksAccountModel extends CrudFormModel {
         m.findBy = [objid: entity.objid];
         m.excludeinbatch = 0;
         persistenceService.update( m );
+    }
+    
+    void activate() {
+        if(!MsgBox.confirm("You are about to activate this account. Data cannot be edited once activated but can be done only thru change requests. Proceed? ")) return;
+        def u = acctSvc.activate( [acctid: entity.objid ]); 
+        entity.state = u.state;
     }
     
 }

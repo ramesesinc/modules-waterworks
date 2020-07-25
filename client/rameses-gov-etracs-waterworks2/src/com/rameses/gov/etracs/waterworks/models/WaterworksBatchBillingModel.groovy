@@ -130,6 +130,9 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
     **************************/
     def billListHandler = [
         isColumnEditable: { item, colName->
+            if(item.consumption.prev?.reading == null ) {
+                return false;
+            }
             return (task.state == "for-reading");        
         },
         onColumnUpdate: {v, colName ->
@@ -269,6 +272,12 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
         launchProcess( handler , info.totalcount, preview );
     }
 
+    //exclude in batch
+    public def excludeInBatch() {
+        if( !selectedErr ) throw new Exception("Please select an item");
+        batchSvc.excludeInBatch([acctid: selectedErr.acctid ]);
+        errListHandler.reload();
+    }
 
 
 }	

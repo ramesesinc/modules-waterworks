@@ -1,0 +1,14 @@
+<workunit extends="com/rameses/seti2/templates/WorkflowTaskList.xml" 
+          processName="waterworks_application"
+          schemaName="vw_waterworks_application" 
+          entitySchemaName="waterworks_application"
+          cols="appno,acctno,apptype,dtcreated,account.acctname,task.state"
+          allowCreate="false"
+          allowNotify="true">
+
+    <invokers>
+        <invoker folderid="/menucategory/waterworks/app" caption="View Application List"
+                 action="init" index="0" />
+    </invokers>
+      
+</workunit>

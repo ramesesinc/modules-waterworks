@@ -24,15 +24,21 @@ public class WaterworksSetupBalanceModel {
 
     @Service("WaterworksAccountService")
     def acctSvc;
+    
+    @Service("WaterworksBeginBalanceService")
+    def beginBalSvc;
 
     int year;
     int month;
     String monthname;
 
     def account;
+    def saveItemHandler;
+    boolean fromBill = false;
+    def billid;
     
     String title = "Setup Begin Balance";
-
+    
     void init() {
         account = caller.entity;
         
@@ -62,6 +68,13 @@ public class WaterworksSetupBalanceModel {
         buildItemList();
     }
 
+    void initFromBill() {
+        fromBill = true;
+        this.monthname = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"][this.month-1]; 
+        buildItemList();
+    }
+    
+    
     /*********************************************
     * Consumptions List
     **********************************************/
@@ -113,24 +126,36 @@ public class WaterworksSetupBalanceModel {
     }
 
     void buildItemList() {
-        def m = [_schemaname: "waterworks_billitem"];
-        m.findBy = [acctid: account.objid ];
-        m.where = "billid IS NULL";
-        m.orderBy = "year DESC, month DESC, item.sortorder";
-        itemList = queryService.getList( m ).collect{
-            def p = it.year + " " + it.monthname + " - " + it.item.title;
-            if(it.particulars) p = p +  " (" + it.particulars + ") ";
-            [ objid:it.objid, particulars: p, amount: it.amount ]
-        };
+        if( fromBill == false ) {
+            def m = [_schemaname: "waterworks_billitem"];
+            m.findBy = [acctid: account.objid ];
+            m.where = "billid IS NULL";
+            m.orderBy = "year DESC, month DESC, item.sortorder";
+            itemList = queryService.getList( m ).collect{
+                def p = it.year + " " + it.monthname + " - " + it.item.title;
+                if(it.particulars) p = p +  " (" + it.particulars + ") ";
+                [ objid:it.objid, particulars: p, amount: it.amount, balance: it.balance ]
+            };
 
-        //check first if there are credits and add also to the list;
-        m = [_schemaname:"waterworks_credit"];
-        m.findBy = [acctid: account.objid];
-        m.select = "amount:{SUM(cr-dr)}";
-        def dec = queryService.findFirst( m );
-        if(dec?.amount) {
-            itemList.add( [particulars:'WATER CREDIT', amount: dec.amount] );
-        }        
+            //check first if there are credits and add also to the list;
+            m = [_schemaname:"waterworks_credit"];
+            m.findBy = [acctid: account.objid];
+            m.select = "amount:{SUM(cr-dr)}";
+            def dec = queryService.findFirst( m );
+            if(dec?.amount) {
+                itemList.add( [particulars:'WATER CREDIT', amount: dec.amount, balance: dec.amount] );
+            }        
+        }
+        else {
+            def m = [_schemaname: "waterworks_billitem"];
+            m.findBy = [acctid: account.objid ];
+            m.where = [ " ((year*12)+month) <= :ym" , [ym: (year*12)+month ] ];
+            itemList = queryService.getList( m ).collect {
+                def p = it.year + " " + it.monthname + " - " + it.item.title;
+                if(it.particulars) p = p +  " (" + it.particulars + ") ";
+                [ objid:it.objid, particulars: p, amount: it.amount, balance: it.balance, billno: it.bill.billno, billid: it.billid ]
+            };
+        }
     }
 
     def listHandler = [
@@ -141,8 +166,11 @@ public class WaterworksSetupBalanceModel {
     
     def addItem() {
         def p = [:];
-        p.saveHandler = { 
+        p.saveHandler = { o->
+            o.billid = billid;
+            beginBalSvc.addItem( o );
             refreshTotals();
+            saveItemHandler();
         };
         p.account = account;
         p.year = year;
@@ -153,11 +181,14 @@ public class WaterworksSetupBalanceModel {
     def openItem() {
         if(!selectedItem) throw new Exception("Please select item");
         def p = [:];
-        p.saveHandler = { 
+        p.saveHandler = { o->
+            o.billid = billid;
+            beginBalSvc.updateItem( o );
             refreshTotals();
+            saveItemHandler();
         }
         p.account = account;
-        p.entity = selectedItem;
+        p.entity = [objid: selectedItem.objid];
         p.year = year;
         p.month = month;
         return Inv.lookupOpener("waterworks_billitem:open", p);        
@@ -165,10 +196,10 @@ public class WaterworksSetupBalanceModel {
 
     void removeItem() {
         if(!selectedItem) throw new Exception("Please select item");
-        def m = [_schemaname: "waterworks_billitem"];
-        m.findBy = [objid: selectedItem.objid ];
-        persistenceService.removeEntity( m );
+        if( selectedItem.billid ) throw new Exception("Cannot delete item that has bill");
+        beginBalSvc.removeItem( [objid: selectedItem.objid, billid: billid ] );
         refreshTotals();
+        saveItemHandler();
     }
 
     /*********************************************
