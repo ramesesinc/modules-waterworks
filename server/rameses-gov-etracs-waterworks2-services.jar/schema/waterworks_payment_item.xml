@@ -13,5 +13,10 @@
 
 		<!-- derived fields -->
 		<field name="remarks"  />
+
+		<!-- this is only for referential integrity -->
+		<field name="billitemid"  />
+		<field name="compromisefeeid"  />
+
 	</element>
 </schema>

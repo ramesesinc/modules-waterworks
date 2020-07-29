@@ -245,6 +245,18 @@ class WaterworksBillService {
 		}
 	}
 
+	/*
+	@ProxyMethod
+	public void processCurrentBill( def o ) {
+		//this will process the consumption online and other related fees based on consumption. 
+	}
+
+	@ProxyMethod
+	public void processPenalties( def o  ) {
+		
+	}
+	*/
+
 	//This updates the whole billing process. Running this should wait that the consumption is provided already provided  
 	@ProxyMethod
 	public void updateBillFees( def o ) {

@@ -24,24 +24,28 @@ class WaterworksCompromiseBillingPaymentService  {
 
 	@ProxyMethod
 	public def findTxn( def o ) {
-        def r = appEm.find([appno: o.id]).first();
+        def r = vwCompromiseEm.find([controlno: o.id]).select("objid").first();
         return (( r ) ? "compromise" : null);
 	}
 
 	@ProxyMethod
 	public def getBilling( def o ) {
-        def comp = vwCompromiseEm.find([controlno: o.id]).first();
-        if( app.task.state !="payment")
+		def comp = vwCompromiseEm.find([controlno: o.id]).first();
+		println "task is " + comp.task.state;
+
+        if( !comp.task.state.matches(".*payment"))
             throw new Exception("This application is not yet for payment");
         def acct = comp.account;    
         def rct = [:];
         rct.payer = acct.owner;
-        rct.paidby = acct.acctname + " (Compromise No." + comp.appno + ")";
+        rct.paidby = acct.acctname + " (Compromise No." + comp.controlno + ")";
         rct.paidbyaddress = acct.address?.text;
         rct.pmttxntype = "compromise";
         rct.items = [];
         rct.compromiseid = comp.objid;
-        rct.billitems = compFeeEm.find([appid: app.objid]).list();
+        rct.billitems = compFeeEm.find([parentid: comp.objid]).where("amount - amtpaid > 0").list();
+        if(!rct.billitems) throw new Exception("There are no billitems found");
+
         rct.billitems.each {
             def mi = itemMappingEm.find([parentid: it.itemid]).first();
             if(!mi) throw new Exception("There is no item mapping for " + it.itemid);
@@ -66,15 +70,16 @@ class WaterworksCompromiseBillingPaymentService  {
 		pmt.txnmode = rct.txnmode;
 		pmt.remarks = rct.remarks;
 		pmt.acctid = rct.acctid;
-		pmt.appid = rct.appid;
+		pmt.compromiseid = rct.compromiseid;
 		pmt.pmttxntype = rct.pmttxntype;
 		pmt.txndate = dateSvc.getServerDate();
+
 		pmt = paymentEm.create( pmt );
-		appFeeEm.find( [appid: rct.appid ] ).update( [amtpaid: "{amount}"] );
+		compFeeEm.find( [parentid: rct.compromiseid ] ).update( [amtpaid: "{amount}"] );
 		//update also workflow to move it from payment
 		def wf = [:];
-		wf.processname = 'waterworks_application';
-		wf.refid = rct.appid;
+		wf.processname = 'waterworks_compromise';
+		wf.refid = rct.compromiseid;
 		wf.startdate = dateSvc.serverDate;
 		wf.action = "post-payment";
 		taskSvc.signal( wf );		
@@ -84,12 +89,12 @@ class WaterworksCompromiseBillingPaymentService  {
 	public void voidPayment(def o ) {
         def pmt = paymentEm.find( [objid: o.pmtid  ]).first();
         if(!pmt) throw new Exception("Payment does not exist");
-
+        if(!pmt.compromiseid ) throw new Exception("voidPayment error. compromiseid is null in waterworks_payment");
 		paymentEm.find( [objid: pmt.objid] ).update( [voided: 1 ] );
-		appFeeEm.find( [appid: pmt.appid ] ).update( [amtpaid: 0] );
+		compFeeEm.find( [parentid: pmt.compromiseid ] ).update( [amtpaid: 0] );
 		def wf = [:];
-		wf.processname = 'waterworks_application';
-		wf.refid = pmt.appid;
+		wf.processname = 'waterworks_compromise';
+		wf.refid = pmt.compromiseid;
 		wf.startdate = dateSvc.serverDate;
 		wf.action = "void-payment";
 		taskSvc.signal( wf );	

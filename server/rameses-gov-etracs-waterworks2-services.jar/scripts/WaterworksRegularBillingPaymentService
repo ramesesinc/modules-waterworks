@@ -37,6 +37,9 @@ class WaterworksRegularBillingPaymentService  {
     @DataContext("waterworks_billitem")
     def billItemEm;
 
+    @DataContext("waterworks_compromise_fee")
+    def compromiseFeeEm;
+
 	@ProxyMethod
 	public def findTxn( def o ) {
 		def r = vwBillEm.find( [billno: o.id ] ).first();
@@ -97,7 +100,12 @@ class WaterworksRegularBillingPaymentService  {
         if(!pmt.items) throw new Exception("payment items is required");
         def cr = pmt.items.find{ it.reftype == "waterworks_credit" };
 
-        pmt.items = pmt.items.findAll{ it.reftype == "waterworks_billitem" };
+        pmt.items = pmt.items.findAll{ it.reftype.matches("waterworks_billitem|waterworks_compromise_fee") };
+        pmt.items.each {
+            if( it.reftype == "waterworks_billitem") it.billitemid = it.refid;
+            else if( it.reftype == "waterworks_compromise_fee") it.compromisefeeid = it.refid;
+        }
+
         pmt.voided = 0;
         pmt.txndate = dateSvc.getServerDate();
 
@@ -112,7 +120,12 @@ class WaterworksRegularBillingPaymentService  {
         pmt.items.each {
             if(it.discount == null) it.discount = 0;
             if(it.amount == null ) it.amount = 0;
-            billItemEm.find( [objid: it.refid ]  ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ] , [amt: it.amount]  );
+            if( it.reftype == "waterworks_billitem" ) {
+                billItemEm.find( [objid: it.refid ]  ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ] , [amt: it.amount]  );
+            }
+            else if(it.reftype == "waterworks_compromise_fee") {
+                compromiseFeeEm.find( [objid: it.refid ]  ).update( [amtpaid: "{amtpaid + :amt}", discount: it.discount ] , [amt: it.amount]  );
+            }
         }
 
         //this is for overpayments and deposits. log into the credit.
@@ -131,7 +144,7 @@ class WaterworksRegularBillingPaymentService  {
     //posts the items and packages 
     private void postCredit( def o ) {
         //do not include waterworks_credit
-        def bitems = o.billitems.findAll{ it.reftype == "waterworks_billitem" };
+        def bitems = o.billitems.findAll{ it.reftype.matches("waterworks_billitem|waterworks_compromise_fee") };
         def pmt = [:];
         pmt.reftype = "credit";
         pmt.refno = o.refno;
@@ -197,6 +210,9 @@ class WaterworksRegularBillingPaymentService  {
 			if(it.reftype == "waterworks_billitem") {
 				billItemEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid - :amt}", discount: 0 ], [amt: it.amount] );
 			}
+            else if(it.reftype == "waterworks_compromise_fee" ) {
+                compromiseFeeEm.find( [objid: it.refid ] ).update( [amtpaid: "{amtpaid - :amt}", discount: 0 ], [amt: it.amount] );
+            }
 		};
 		//automatically delete all related credits
 		creditEm.find( [paymentrefid: pmt.objid ] ).delete();
@@ -265,7 +281,7 @@ class WaterworksRegularBillingPaymentService  {
         cr.acctid = bill.acctid;
         cr.billid = bill.objid;     
         cr.refno = bill.billno;
-        cr.billitems = b.billitems.findAll{ it.reftype == "waterworks_billitem" };
+        cr.billitems = b.billitems.findAll{ it.reftype.matches("waterworks_billitem|waterworks_compromise_fee") };
         cr.amount = b.amount;  
         postPayment( cr );
     } 

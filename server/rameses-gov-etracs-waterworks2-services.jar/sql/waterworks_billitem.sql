@@ -77,3 +77,20 @@ FROM
       
   INNER JOIN waterworks_itemaccount ia ON c.itemid = ia.objid
   ORDER BY c.year, c.month, ia.sortorder    
+
+[getBillItemsForPayment]
+SELECT bi.*, b.billyear, b.billmonth  
+FROM waterworks_billitem bi 
+INNER JOIN waterworks_bill b ON bi.billid = b.objid 
+WHERE (bi.amount - bi.amtpaid) > 0
+AND ((b.billyear*12)+b.billmonth) <= ${yearmonth}
+UNION
+SELECT bi.*, b.billyear, b.billmonth  
+FROM waterworks_billitem bi 
+INNER JOIN waterworks_bill b ON bi.refbillid = b.objid 
+WHERE (bi.amount - bi.amtpaid) > 0
+AND ((b.billyear*12)+b.billmonth) <= ${yearmonth}
+
+
+
+

@@ -46,7 +46,7 @@ public class WaterworksItemAccountPage extends javax.swing.JPanel {
         xTextField1.setCaption("Code");
         xTextField1.setDisableWhen("#{ mode != 'create' }");
         xTextField1.setName("entity.objid"); // NOI18N
-        xTextField1.setPreferredSize(new java.awt.Dimension(150, 20));
+        xTextField1.setPreferredSize(new java.awt.Dimension(0, 20));
         xTextField1.setRequired(true);
         xTextField1.setSpaceChar('_');
         xFormPanel1.add(xTextField1);
