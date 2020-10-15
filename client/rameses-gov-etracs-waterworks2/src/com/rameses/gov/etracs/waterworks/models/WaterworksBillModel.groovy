@@ -69,15 +69,6 @@ public class WaterworksBillModel extends CrudFormModel {
         binding.refresh();
     }
 
-    boolean getReadingPosted() {
-        if( detailList.find{ it.consumption_posted == true }) {
-            return true;        
-        }
-        else {
-            return false;
-        }
-    }
-
     def editReading() {
         def pp = [:];
         pp.bill = entity;
@@ -101,7 +92,8 @@ public class WaterworksBillModel extends CrudFormModel {
 
     void processBill() {
         if( !MsgBox.confirm("You are about to add the consumption to the bill. You cannot edit this anymore once posted. Proceed?")) return;
-        billSvc.updateBillFees( [objid: entity.objid ]);
+        billSvc.addCurrentBillItems( [objid: entity.objid ] );
+        entity.billed = 1;
         refreshTotals();                
         buildDetails();
     }
@@ -109,6 +101,7 @@ public class WaterworksBillModel extends CrudFormModel {
     void resetBill() {
         if( !MsgBox.confirm("You are about to clear the bill contents. Proceed?")) return;
         billSvc.resetBill( [objid: entity.objid ]);
+        entity.billed = 0;
         refreshTotals();                
         buildDetails();
     }
@@ -152,6 +145,8 @@ public class WaterworksBillModel extends CrudFormModel {
     void updatePmtList() {
         def m = [_schemaname: "waterworks_payment"];
         m.findBy = [billid: entity.objid];
+        m.where = ["voided = 0"];
+        m.orderBy = "txndate";
         pmtList = queryService.getList(m);
         pmtListHandler.reload();
     }
@@ -187,6 +182,10 @@ public class WaterworksBillModel extends CrudFormModel {
         buildDetails();
     }
 
+    def viewPayment() {
+        if(!selectedPayment) throw new Exception("Please select a payment item first");
+        return Inv.lookupOpener("waterworks_payment:open", [entity: selectedPayment ]);
+    }
 
     void rejoinBatch() {
         if(!MsgBox.confirm("You are about to join this batch. This process cannot be undone. Proceed?")) return;

@@ -55,10 +55,7 @@ class WaterworksCapturePaymentModel extends PageFlowController  {
     def itemHandler = [
         fetchList: { o->
             return entity.billitems;
-        },
-        onColumnUpdate: {v, colName ->
-            println " col:" + colName + "val:" + v;
-        }        
+        }       
     ] as EditorListModel;
 
     public def postPayment() {

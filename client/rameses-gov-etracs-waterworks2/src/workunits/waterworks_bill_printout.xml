@@ -1,28 +1,8 @@
 <workunit extends="com/rameses/seti2/templates/FormReport.xml">
     <invokers>
-        <invoker type="vw_waterworks_bill:form:formActions" 
-                 caption="Print Initial Bill" 
-                 target="self" 
-                 action="preview"
-                 index="50"
-                 reportId="waterworks_bill" 
-                 reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_billing.jasper"
-                 txnid="#{entity.objid}" 
-                 visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; viewmode == 'summary' }"/>
-
-        <invoker type="vw_waterworks_bill:form:formActions" 
-                 caption="View Statement" 
-                 target="self" 
-                 action="preview"
-                 index="51"
-                 reportId="waterworks_bill" 
-                 reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_statement.jasper"
-                 txnid="#{ entity.objid }" 
-                 visibleWhen="#{ entity.state == 'DRAFT' &amp;&amp; viewmode == 'summary' }"/>
-
         <!-- bill from view bill -->         
         <invoker type="vw_waterworks_bill:form:formActions" 
-                 caption="Print Initial Bill" 
+                 caption="Print Formal Bill" 
                  target="self" 
                  action="preview"
                  index="50"
@@ -34,12 +14,11 @@
         <invoker type="vw_waterworks_bill:form:formActions" 
                  caption="View Statement" 
                  target="self" 
-                 action="query"
+                 action="preview"
                  index="51"
-                 reportId="waterworks_bill" 
+                 reportId="waterworks_statement" 
                  reportName="com/rameses/gov/etracs/waterworks/reports/waterworks_statement.jasper"
-                 txnid="#{ entity.objid }" 
-                 visibleWhen="#{ entity.state != 'DRAFT' &amp;&amp; viewmode == 'summary' }"/>
+                 txnid="#{ entity.objid }" />
 
     </invokers> 
 </workunit>

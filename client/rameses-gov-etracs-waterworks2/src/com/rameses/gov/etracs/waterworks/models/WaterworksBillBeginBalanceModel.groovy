@@ -96,4 +96,28 @@ public class WaterworksBillBeginBalanceModel  {
         saveItemHandler();
     }
     
+    /*
+    public def addCredit() {
+        def h = { o->
+            def m = [_schemaname: "waterworks_credit"];
+            m.acctid = account.objid;
+            m.dr = o;
+            m.cr = 0;
+            persistenceService.create( m );
+            refreshTotals();
+        }
+        if(totalamount >0)
+            throw new Exception("You cannot enter a beginning credit because there is unpaid amount");
+        return Inv.lookupOpener("decimal:prompt", [handler: h, title: "Enter beginning credit" ]);        
+    }
+
+    public void removeCredit() {
+        if(!MsgBox.confirm("You are about to remove the credit payment. Continue?")) return;
+        def m = [_schemaname: "waterworks_credit"];
+        m.findBy = [acctid :account.objid];
+        persistenceService.removeEntity( m );
+        refreshTotals();
+    }
+    */
+    
 }

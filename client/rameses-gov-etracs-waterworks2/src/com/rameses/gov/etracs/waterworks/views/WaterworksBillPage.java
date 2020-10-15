@@ -244,7 +244,6 @@ public class WaterworksBillPage extends javax.swing.JPanel {
 
         xActionBar2.setFormName("formName");
         xActionBar2.setName("paymentActions"); // NOI18N
-        xActionBar2.setVisibleWhen("#{ entity.state == 'POSTED' }");
         jPanel14.add(xActionBar2, java.awt.BorderLayout.CENTER);
 
         xPanel1.add(jPanel14, java.awt.BorderLayout.NORTH);

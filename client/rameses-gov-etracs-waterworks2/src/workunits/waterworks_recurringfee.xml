@@ -10,7 +10,7 @@
 
          <invoker type="formActions" 
             caption="Activate" action="activate"
-            visibleWhen="#{entity.state == 'DRAFT'}"/>
+            visibleWhen="#{entity.state == 'DRAFT' &amp;&amp; mode=='read'}"/>
 
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksRecurringFeeModel" />

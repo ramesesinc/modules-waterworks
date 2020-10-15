@@ -3,7 +3,7 @@
           processName="waterworks_compromise">
     <invokers>
         <invoker type="waterworks_compromise:open" caption="Compromise" 
-            action="open" />
+            action="open" formId="#{entity.objid}"/>
     </invokers>
     
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksCompromiseModel" />    

@@ -43,19 +43,19 @@
             immediate="true" visibleWhen="#{ entity.consumption.prev?.reading == null }"/>
         
         <invoker type="billActions" caption="Edit Reading" action="editReading" 
-            visibleWhen="#{ readingPosted == false &amp;&amp; entity.state=='OPEN' &amp;&amp; entity.consumption.prev?.reading !=null }"
+            visibleWhen="#{ entity.billed==0 &amp;&amp; entity.state=='OPEN' &amp;&amp; entity.consumption.prev?.reading !=null }"
             immediate="true" />
 
         <invoker type="billActions" caption="Process Bill" action="processBill" 
-            visibleWhen="#{ readingPosted == false &amp;&amp;  entity.consumption?.amount &gt; 0 &amp;&amp; entity.state=='OPEN' }"
+            visibleWhen="#{ entity.billed==0 &amp;&amp;  entity.consumption?.amount &gt; 0 &amp;&amp; entity.state=='OPEN' }"
             immediate="true" />
 
         <invoker type="billActions" caption="Reset Bill" action="resetBill" 
-            visibleWhen="#{ readingPosted == true &amp;&amp; entity.state=='OPEN' }"
+            visibleWhen="#{ entity.billed==1 &amp;&amp; entity.state=='OPEN' }"
             immediate="true" />    
 
         <invoker type="billActions" caption="Approve" action="approveBill" role="APPROVER"
-            visibleWhen="#{  entity.state == 'OPEN' }"
+            visibleWhen="#{ entity.billed==1 &amp;&amp; entity.state == 'OPEN' }"
             immediate="true" />
         
         <invoker type="billActions" caption="Reopen" action="reopenBill" 
@@ -68,17 +68,22 @@
             role="ADMIN"
             immediate="true" /> 
         
-        <invoker type="paymentActions" caption="Add Payment" action="addPayment" 
-            visibleWhen="#{ entity.state=='POSTED' }" role="ADMIN"
-            immediate="true" />    
-
-        <invoker type="paymentActions" caption="Cancel Payment" action="cancelPayment" 
-            visibleWhen="#{ entity.state=='POSTED' }" role="ADMIN"
-            immediate="true" />    
-
         <invoker type="billActions" caption="Rejoin Batch" action="rejoinBatch" 
             visibleWhen="#{ entity.batchid == null }"
             immediate="true" />
+
+                
+        <!-- PAYMENT BAR ACTIONS -->
+        <invoker type="paymentActions" caption="Add Payment" action="addPayment" 
+            visibleWhen="#{ entity.state!='CLOSED' }" role="ADMIN"
+            immediate="true" />    
+
+        <invoker type="paymentActions" caption="Cancel Payment" action="cancelPayment" 
+            visibleWhen="#{ entity.state!='CLOSED' }" role="ADMIN"
+            immediate="true" />    
+
+        <invoker type="paymentActions" caption="View Payment" action="viewPayment" 
+            immediate="true" />    
 
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksBillModel" />

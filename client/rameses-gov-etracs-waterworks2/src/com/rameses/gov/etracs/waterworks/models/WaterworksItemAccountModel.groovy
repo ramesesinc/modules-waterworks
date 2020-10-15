@@ -12,6 +12,8 @@ public class WaterworksItemAccountModel extends CrudFormModel {
     def selectedItem;
     def listHandler;
     
+    def itemTypes = ["SURCHARGE", "WATER_FEE"];
+    
     def addMapping() {
         def h = { o->
             def m = [_schemaname: "waterworks_itemaccount_mapping"];

@@ -1,16 +1,23 @@
 <workunit schemaName="waterworks_compromise">
 
     <invokers>
-        <invoker folderid="/menucategory/waterworks/app" caption="Compromise Agreement"
+        <invoker folderid="/menucategory/waterworks/app" caption="New Compromise Agreement"
                  action="create" index="50"/>
 
+        <invoker type="formActions" caption="Back" immediate="true"
+                 action="doBack" visibleWhen="#{step != 1}"/>
+
+        <invoker type="formActions" caption="Next" immediate="false"
+                 action="doNext" visibleWhen="#{step &lt; 4}"/>
+
+
         <invoker type="formActions" caption="Submit"
-                 action="save" visibleWhen="#{mode == 'create'}"/>
+                 action="save" visibleWhen="#{step == 4}"/>
     </invokers>
-    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksCompromiseModel" />    
+    <code class="com.rameses.gov.etracs.waterworks.models.WaterworksCompromiseNewModel" />    
 
     <pages>
-        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksCompromisePage"/>
+        <page template="com.rameses.gov.etracs.waterworks.views.WaterworksCompromiseNewPage"/>
     </pages>    
     
 </workunit>
