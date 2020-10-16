@@ -37,7 +37,7 @@ const InitialInfo = ({
     setLoading(true);
     setError(null);
     getBilling(billOptions).then(bill => {
-      dispatch({type: "SET_BILL", refno: refno, bill: bill.info});
+      dispatch({type: "SET_BILL", refno: refno, bill: bill});
       moveNextStep();
     }).catch(err => {
       setError(err.toString());

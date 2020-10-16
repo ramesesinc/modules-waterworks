@@ -11,9 +11,11 @@ import {
   Error,
   Subtitle,
   Title,
-  Decimal,
   BackLink,
-  useData
+  useData,
+  Table,
+  TableColumn,
+  currencyFormat
 } from 'rsi-react-web-components'
 
 import PayOption from '../components/PayOption'
@@ -47,7 +49,7 @@ const OnlineBilling = ({
     setLoading(true);
     setError(null);
     getBilling(billOptions).then(bill => {
-      setBill(bill.info);
+      setBill(bill);
       setBarcode(`51030:${bill.billno}`);
       setLoading(false)
     }).catch(err => {
@@ -123,10 +125,12 @@ const OnlineBilling = ({
         </FormPanel>
       <ActionBar disabled={loading}>
         <BackLink caption='Back' action={onCancelBilling} />
-        <Panel row>
-          <Button caption='Pay Option' action={() => setShowPayOption(true)} variant="outlined" />
-          <Button caption='Confirm Payment' action={checkoutPayment} disableWhen={bill.amount === 0} />
-        </Panel>
+        {/**
+          <Panel row>
+            <Button caption='Pay Option' action={() => setShowPayOption(true)} variant="outlined" />
+            <Button caption='Confirm Payment' action={checkoutPayment} disableWhen={bill.amount === 0} />
+          </Panel>
+         */}
       </ActionBar>
 
       <PayOption
@@ -143,5 +147,26 @@ const OnlineBilling = ({
     </Card>
   )
 }
+
+const styles = {
+  subtitle: {
+    fontSize: 16,
+    fontWeight: 400,
+    opacity: 0.8,
+    color: "green"
+  },
+  totalContainer: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginTop: -10
+  },
+  total: {
+    fontWeight: 800,
+    marginRight: 40,
+  },
+  amount: {
+    marginRight: 20,
+  }
+};
 
 export default OnlineBilling

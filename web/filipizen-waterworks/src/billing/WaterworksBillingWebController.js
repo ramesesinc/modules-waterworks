@@ -69,7 +69,7 @@ const WaterworksBillingWebController = ({
     moveNextStep,
     movePrevStep,
     cancelPayment,
-    title: "Realty Tax Online Billing",
+    title: "Waterworks Online Billing",
   };
 
   return (
