@@ -40,7 +40,7 @@ const OnlineBilling = ({
   const [barcode, setBarcode] = useState()
 
   const getBilling = async (billOptions = {}) => {
-    const svc = await Service.lookupAsync(`${partner.id}:WaterworksOnlineBillingService`)
+    const svc = await Service.lookupAsync(`${partner.id}:WaterworksOnlineBillingService`, "waterworks")
     const params = { txntype, refno, ...billOptions }
     return await svc.getBilling(params)
   }
