@@ -7,7 +7,6 @@ import {
   FormPanel,
   ActionBar,
   Spacer,
-  Service,
   Error,
   Subtitle,
   Title,
@@ -17,8 +16,6 @@ import {
   TableColumn,
   currencyFormat
 } from 'rsi-react-web-components'
-
-import PayOption from '../components/PayOption'
 
 const origin = 'filipizen'
 
@@ -34,34 +31,6 @@ const OnlineBilling = ({
   const [bill, setBill] = useState(initialBill);
   const [error, setError] = useState(paymentError);
   const [loading, setLoading] = useState(false)
-  const [showPayOption, setShowPayOption] = useState(false)
-  const [year, setYear] = useState()
-  const [qtr, setQtr] = useState()
-  const [barcode, setBarcode] = useState()
-
-  const getBilling = async (billOptions = {}) => {
-    const svc = await Service.lookupAsync(`${partner.id}:WaterworksOnlineBillingService`, "waterworks")
-    const params = { txntype, refno, ...billOptions }
-    return await svc.getBilling(params)
-  }
-
-  const loadBill = (billOptions = {}) => {
-    setLoading(true);
-    setError(null);
-    getBilling(billOptions).then(bill => {
-      setBill(bill);
-      setBarcode(`51030:${bill.billno}`);
-      setLoading(false)
-    }).catch(err => {
-      setError(err.toString());
-      setLoading(false)
-    })
-  }
-
-  const payOptionHandler = (billOption) => {
-    setShowPayOption(false)
-    loadBill(billOption)
-  }
 
   const checkoutPayment = () => {
     onSubmit({
@@ -75,7 +44,7 @@ const OnlineBilling = ({
       paidbyaddress: bill.paidbyaddress,
       amount: bill.amount,
       info: {data: bill },
-      paymentdetails: `Wateworks Account No. ${bill.acctno}`
+      particulars: `Wateworks Account No. ${bill.acctno}`
     });
   }
 
@@ -83,7 +52,6 @@ const OnlineBilling = ({
     onCancel(0);
   }
 
-  const blur = contact.email !== bill.email;
   return (
     <Card style={{maxWidth: 500}}>
       <Title>{title}</Title>
@@ -125,25 +93,8 @@ const OnlineBilling = ({
         </FormPanel>
       <ActionBar disabled={loading}>
         <BackLink caption='Back' action={onCancelBilling} />
-        {/**
-          <Panel row>
-            <Button caption='Pay Option' action={() => setShowPayOption(true)} variant="outlined" />
-            <Button caption='Confirm Payment' action={checkoutPayment} disableWhen={bill.amount === 0} />
-          </Panel>
-         */}
+        <Button caption='Confirm Payment' action={checkoutPayment} disableWhen={bill.amount === 0} />
       </ActionBar>
-
-      <PayOption
-        initialValue={
-          bill && {
-            billtoyear: bill.billtoyear,
-            billtoqtr: bill.billtoqtr
-          }
-        }
-        open={showPayOption}
-        onAccept={payOptionHandler}
-        onCancel={() => setShowPayOption(false)}
-      />
     </Card>
   )
 }

@@ -3,14 +3,14 @@ import com.rameses.annotations.*;
 class WaterworksOnlineBillingService {
 	
 	@Service(value="WaterworksRegularBillingPaymentService")
-	def billingSvc;
+	def svc;
 
 	@Service(value="QueryService")
 	def querySvc;
 
 	@ProxyMethod 
 	public def getBilling( param ) {
-		def bill = billingSvc.getBilling( [id: param.refno] );
+		def bill = svc.getBilling( [id: param.refno] );
 		def m = [_schemaname:"vw_waterworks_bill"];
 		m.findBy = [objid: bill.billid];
 		def b = querySvc.findFirst( m );
@@ -20,7 +20,7 @@ class WaterworksOnlineBillingService {
 
 	@ProxyMethod
 	public def verifyPayment(  def param ) {
-		return billingSvc.getBilling( [id: param.refno] );
+		return svc.getBilling( [id: param.refno] );
 	}
 
 	@ProxyMethod
@@ -31,8 +31,10 @@ class WaterworksOnlineBillingService {
 		o.receiptno = eor.receiptno; 
 		o.receiptdate = eor.receiptdate;
 		o.billitems = bill.billitems;
-		o.billid = bill.objid;
-		postPaymentSvc.postPayment( o ); 
+		o.billid = bill.billid;
+		o.pmttxntype = bill.pmttxntype;
+		o.amount = bill.amount;
+		svc.postPayment( o ); 
 	}
 
 	@ProxyMethod

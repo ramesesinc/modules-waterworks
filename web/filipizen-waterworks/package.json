@@ -1,6 +1,6 @@
 {
   "name": "filipizen-waterworks",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Filipizen Waterworks Web Module",
   "author": "ramesesinc",
   "license": "MIT",
@@ -27,8 +27,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
-    "rsi-react-filipizen-components": "^0.1.0",
-    "rsi-react-web-components": "^0.1.0"
+    "rsi-react-filipizen-components": "^0.2.0",
+    "rsi-react-web-components": "^0.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
@@ -50,8 +50,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
-    "rsi-react-filipizen-components": "^0.1.0",
-    "rsi-react-web-components": "^0.1.0"
+    "rsi-react-filipizen-components": "^0.2.0",
+    "rsi-react-web-components": "^0.2.0"
   },
   "files": [
     "dist"
