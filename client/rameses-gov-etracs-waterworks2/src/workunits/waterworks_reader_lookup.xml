@@ -1,7 +1,9 @@
-<workunit extends="wtemplates/ServiceLookupController.xml" 
-          serviceName="SysUserLookupService" 
-          tag="WATERWORKS.READER">
+<workunit extends="com/rameses/seti2/templates/CrudLookup.xml" 
+          schemaName="sys_user_role">
     <invokers>
-        <invoker type="waterworks_reader:lookup" caption="Lookup Reader"/>
+        <invoker type="waterworks_reader:lookup" caption="Lookup Reader" 
+            cols="user.lastname,user.firstname"
+            hiddenCols="user.name"
+            customFilter=" role = 'READER' " action="init" target="popup" />
     </invokers>
 </workunit>

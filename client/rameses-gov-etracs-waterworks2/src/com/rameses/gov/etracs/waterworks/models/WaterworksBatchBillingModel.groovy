@@ -55,6 +55,9 @@ public class WaterworksBatchBillingModel extends WorkflowTaskModel {
             entity.year = o.year;            
             entity.month = o.month;                        
             binding.refresh();
+        },
+        "entity.reader": { o->
+            entity.reader = [objid: o.objid, name: o.user.name];
         }
     ];
 

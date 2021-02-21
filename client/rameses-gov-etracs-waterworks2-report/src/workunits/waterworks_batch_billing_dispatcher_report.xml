@@ -8,6 +8,14 @@
             txnid="#{ entity.objid }"
             visibleWhen="#{ task?.state?.matches('for-reading|for-approval|approved|end') }"
             action="preview"/>
+        
+        <invoker type="vw_waterworks_batch_billing:form:formActions" 
+            reportId="waterworks_batch_dispatcher_report" 
+            caption="Batch Disptacher List" 
+            reportName="com/rameses/gov/etracs/waterworks/report/forms/batch_dispatcher_list.jasper"
+            txnid="#{ entity.objid }"
+            visibleWhen="#{ task?.state?.matches('for-reading|for-approval|approved|end') }"
+            action="preview"/>
     </invokers>
     
 </workunit>
