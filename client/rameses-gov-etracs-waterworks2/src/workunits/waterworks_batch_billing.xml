@@ -1,11 +1,11 @@
 <workunit processName="waterworks_batch_billing">
     <invokers> 
         <invoker folderid="/menucategory/waterworks/billing" 
-                 caption="New Batch Billing" action="create" role="BILLING" index="1" 
+                 caption="New Batch Billing" action="create" role="BILLER" index="1" 
                  formId="batchbillingcreate" formTitle="New Batch Billing"/>
         
         <invoker type="waterworks_batch_billing:create" 
-                 caption="New Batch Billing" action="create" role="BILLING" 
+                 caption="New Batch Billing" action="create" role="BILLER" 
                  formId="batchbillingcreate" formTitle="New Batch Billing"/>
 
         <invoker type="waterworks_batch_billing:open" caption="Batch Billing" 

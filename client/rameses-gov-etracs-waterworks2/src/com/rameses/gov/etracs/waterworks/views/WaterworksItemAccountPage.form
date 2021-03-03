@@ -53,7 +53,9 @@
               <Dimension value="[0, 20]"/>
             </Property>
             <Property name="required" type="boolean" value="true"/>
-            <Property name="spaceChar" type="char" value="_"/>
+            <Property name="spaceChar" type="char" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="&apos;_&apos;" type="code"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="com.rameses.rcp.control.XTextField" name="xTextField2">

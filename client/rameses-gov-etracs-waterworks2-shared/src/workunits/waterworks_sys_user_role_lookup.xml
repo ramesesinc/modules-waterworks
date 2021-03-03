@@ -1,0 +1,6 @@
+<workunit extends="com/rameses/admin/plugin/templates/UserRoleLookup.xml">
+    <invokers>
+        <invoker type="sys_user_role:waterworks:lookup" 
+                 caption="Lookup Waterworks Roles" action="initLookup" />
+   </invokers>
+</workunit>

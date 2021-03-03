@@ -47,7 +47,7 @@
             immediate="true" />
 
         <invoker type="billActions" caption="Process Bill" action="processBill" 
-            visibleWhen="#{ entity.billed==0 &amp;&amp;  entity.consumption?.amount &gt; 0 &amp;&amp; entity.state=='OPEN' }"
+            visibleWhen="#{ entity.billed==0 &amp;&amp;  entity.consumption?.amount &gt;= 0 &amp;&amp; entity.state=='OPEN' }"
             immediate="true" />
 
         <invoker type="billActions" caption="Reset Bill" action="resetBill" 

@@ -8,7 +8,7 @@
 
     <invokers>
         <invoker folderid="/menucategory/waterworks/app" caption="View Application List"
-                 action="init" index="0" />
+                 action="init" index="0" role="PROCESSOR"/>
     </invokers>
       
 </workunit>

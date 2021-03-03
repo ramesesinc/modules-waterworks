@@ -2,10 +2,10 @@
 
     <invokers>
         <invoker folderid="/menucategory/waterworks/app" caption="New Connection"
-                 action="create" apptype="NEW" index="10"/>
+                 action="create" apptype="NEW" index="10" role="PROCESSOR" permission="waterworks_newconnection.create"/>
 
         <invoker folderid="/menucategory/waterworks/app" caption="Reconnection"
-                 action="create" apptype="RECONNECTION" index="10"/>
+                 action="create" apptype="RECONNECTION" index="10" role="PROCESSOR" permission="waterworks_reconnection.create"/>
         
         <invoker type="formActions" caption="Submit"
                  action="save" visibleWhen="#{mode == 'create'}"/>

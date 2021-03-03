@@ -3,31 +3,38 @@
         
         <invoker folderid="/menucategory/waterworks/txn" caption="Change Meter" 
                 formId="waterworks_change_request:change_meter" target="popup"
-                action="create" index="4" apptype="CHANGE_METER"/>
+                action="create" index="4" apptype="CHANGE_METER" 
+                role="PROCESSOR" permission="waterworks_change_request.changeMeter" />
         
         <invoker folderid="/menucategory/waterworks/txn" caption="Change Owner" 
                  formId="waterworks_change_request:change_owner" target="popup"
-                 action="create" index="5" apptype="CHANGE_OWNER"/>
+                 action="create" index="5" apptype="CHANGE_OWNER"
+                role="PROCESSOR" permission="waterworks_change_request.changeOwner"    />
         
         <invoker folderid="/menucategory/waterworks/txn" caption="Change Address" 
                  formId="waterworks_change_request:change_location" target="popup"
-                 action="create" index="6" apptype="CHANGE_ADDRESS"/>
+                 action="create" index="6" apptype="CHANGE_ADDRESS"
+                role="PROCESSOR" permission="waterworks_change_request.changeAddress"    />
 
         <invoker folderid="/menucategory/waterworks/txn" caption="Change Attributes"
                  formId="waterworks_change_request:change_attributes"  target="popup"
-                 action="create" index="7" apptype="CHANGE_ATTRIBUTES"/>
+                 action="create" index="7" apptype="CHANGE_ATTRIBUTES"
+                role="PROCESSOR" permission="waterworks_change_request.changeAttributes"    />
 
         <invoker folderid="/menucategory/waterworks/txn" caption="Change Classification"
                  formId="waterworks_change_request:change_classification"  target="popup"
-                 action="create" index="8" apptype="CHANGE_CLASSIFICATION"/>         
+                 action="create" index="8" apptype="CHANGE_CLASSIFICATION"
+                role="PROCESSOR" permission="waterworks_change_request.changeClassification"    />         
 
         <invoker folderid="/menucategory/waterworks/txn" caption="Change Contact"
                  formId="waterworks_change_request:change_contact"  target="popup"
-                 action="create" index="8" apptype="CHANGE_CONTACT"/>         
+                 action="create" index="8" apptype="CHANGE_CONTACT"
+                role="PROCESSOR" permission="waterworks_change_request.changeContact" />         
 
         <invoker folderid="/menucategory/waterworks/txn" caption="Change Subarea and Stubout"
                  formId="waterworks_change_request:change_subarea"  target="popup"
-                 action="create" index="8" apptype="CHANGE_SUBAREA"/>         
+                 action="create" index="8" apptype="CHANGE_SUBAREA"
+                role="PROCESSOR" permission="waterworks_change_request.changeSubArea"    />         
 
         <invoker type="formActions" caption="Submit" immediate="false"
                 action="save" visibleWhen="#{ mode == 'create' }" />

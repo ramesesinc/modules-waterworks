@@ -6,7 +6,7 @@
                  action="init"
                 cols="billno,batchid,year,monthname,acctno,acctname,totalamtdue,subarea.code,seqno"
                 index="0">
-            <action role="BILLING" /> 
+            <action role="BILLER" /> 
             <action role="SHARED" allowCreate="false" allowDelete="false" /> 
         </invoker>
     </invokers>

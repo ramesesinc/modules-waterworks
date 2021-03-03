@@ -2,11 +2,11 @@
     <invokers>
         <invoker type="waterworks_disconnection_notice:create"  
                  caption="New Disconnection Notice" action="create" 
-                 role="BILLING" target="popup"/>
+                 role="PROCESSOR" target="popup"/>
         
         <invoker type="waterworks_disconnection_notice:open"  
                  caption="New Disconnection Notice" action="open" 
-                 role="BILLING" target="popup"/>
+                 role="PROCESSOR" target="popup"/>
 
     </invokers>
     <code class="com.rameses.gov.etracs.waterworks.models.WaterworksDisconnectionNoticeModel"/>

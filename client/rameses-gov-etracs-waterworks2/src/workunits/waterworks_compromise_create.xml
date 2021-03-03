@@ -2,7 +2,7 @@
 
     <invokers>
         <invoker folderid="/menucategory/waterworks/app" caption="New Compromise Agreement"
-                 action="create" index="50"/>
+                 action="create" index="50" role="PROCESSOR" permission="waterworks_compromise.create"/>
 
         <invoker type="formActions" caption="Back" immediate="true"
                  action="doBack" visibleWhen="#{step != 1}"/>

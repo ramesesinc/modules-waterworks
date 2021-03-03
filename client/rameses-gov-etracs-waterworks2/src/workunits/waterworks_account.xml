@@ -3,25 +3,24 @@
 
     <invokers>
         <invoker folderid="/menucategory/waterworks/account" caption="Capture Customer Account" 
-                 action="create" role="MASTER" index="4"/>
+                 action="create" role="PROCESSOR" permission="waterworks_account.captureAccount" index="4"/>
         
         <!-- create or open -->
         <invoker type="vw_waterworks_account:create" caption="Waterworks Customer Account (Capture)" 
-                 action="create" target="window"/>        
+                 action="create" target="window" 
+                 role="PROCESSOR" permission="waterworks_account.captureAccount" />        
         
         <invoker type="vw_waterworks_account:open" 
                  formTitle="Waterworks Account (#{entity.acctno}) #{entity.acctname}" 
                  formId="#{entity.objid}"
                  action="open" target="window">
-            <action role="MASTER" /> 
+            <action role="PROCESSOR" /> 
             <action role="SHARED" allowEdit="false" allowCreate="false"/> 
         </invoker>     
         
         <invoker type="formActions" caption="Activate" 
                  role="APPROVER"   
                  action="activate" visibleWhen="#{ mode!='create' &amp;&amp; entity.state == 'DRAFT' }" /> 
-        
-        
         
         <!-- for calling processes -->
         <invoker type="vw_waterworks_account:exec" target="process" />
